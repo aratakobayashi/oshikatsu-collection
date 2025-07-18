@@ -1,9 +1,29 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Search, ArrowRight, Calendar, MapPin, Package, ExternalLink, Star, TrendingUp, Users, Eye, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Search, ArrowRight, Calendar, MapPin, Package, Users, ChevronLeft, ChevronRight } from 'lucide-react'
 import Card, { CardContent } from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
-import { db, supabase, Celebrity, Episode, UserPost, Work } from '../../lib/supabase'
+import { db, supabase } from '../../lib/supabase'
+
+// 必要な型定義を追加
+type Celebrity = {
+  id: string
+  name: string
+  slug: string
+  image_url?: string | null
+  group_name?: string | null
+  [key: string]: any
+}
+
+type Episode = {
+  id: string
+  title: string
+  date: string
+  description?: string | null
+  thumbnail_url?: string | null
+  video_url?: string | null
+  [key: string]: any
+}
 
 // Star Logo Component
 const StarLogo = ({ className = "h-12 w-12" }: { className?: string }) => (
@@ -16,28 +36,9 @@ export default function Home() {
   const navigate = useNavigate()
   const [celebrities, setCelebrities] = useState<Celebrity[]>([])
   const [recentEpisodes, setRecentEpisodes] = useState<Episode[]>([])
-  const [recentPosts, setRecentPosts] = useState<UserPost[]>([])
-  const [trendingWorks, setTrendingWorks] = useState<Work[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [currentSlide, setCurrentSlide] = useState(0)
-  
-  // Sample data for demonstration
-  const sampleCelebrities = [
-    { id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890', name: '二宮和也', slug: 'ninomiya-kazunari', image_url: 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg', group: '嵐' },
-    { id: 'b2c3d4e5-f6g7-8901-bcde-f23456789012', name: '橋本涼', slug: 'hashimoto-ryo', image_url: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg', group: 'よにの' },
-    { id: 'c3d4e5f6-g7h8-9012-cdef-345678901234', name: '田中美咲', slug: 'tanaka-misaki', image_url: 'https://images.pexels.com/photos/1065084/pexels-photo-1065084.jpeg', group: 'YouTuber' },
-    { id: 'd4e5f6g7-h8i9-0123-defg-456789012345', name: '佐藤健太', slug: 'sato-kenta', image_url: 'https://images.pexels.com/photos/1040881/pexels-photo-1040881.jpeg', group: 'ファッション系' },
-    { id: 'e5f6g7h8-i9j0-1234-efgh-567890123456', name: '山田花子', slug: 'yamada-hanako', image_url: 'https://images.pexels.com/photos/1043473/pexels-photo-1043473.jpeg', group: 'ライフスタイル系' },
-    { id: 'f6g7h8i9-j0k1-2345-fghi-678901234567', name: '鈴木一郎', slug: 'suzuki-ichiro', image_url: 'https://images.pexels.com/photos/1040882/pexels-photo-1040882.jpeg', group: 'お笑い' },
-  ]
-
-  const sampleEpisodes = [
-    { id: 'ep1a2b3c-d4e5-f678-9012-345678901234', title: 'よにの朝ごはん#1', date: '2024-01-15', image: 'https://images.pexels.com/photos/1040903/pexels-photo-1040903.jpeg', description: '二宮和也の朝食ルーティンを紹介' },
-    { id: 'ep2b3c4d-e5f6-g789-0123-456789012345', title: 'VS嵐#33', date: '2024-01-20', image: 'https://images.pexels.com/photos/1065105/pexels-photo-1065105.jpeg', description: '橋本涼がゲスト出演したバラエティ番組' },
-    { id: 'ep3c4d5e-f6g7-h890-1234-567890123456', title: '美咲の美容ルーティン', date: '2024-01-25', image: 'https://images.pexels.com/photos/1043494/pexels-photo-1043494.jpeg', description: '田中美咲のスキンケア・メイクアップ' },
-    { id: 'ep4d5e6f-g7h8-i901-2345-678901234567', title: 'ケンタのファッションチェック', date: '2024-02-01', image: 'https://images.pexels.com/photos/1040904/pexels-photo-1040904.jpeg', description: '佐藤健太の今季おすすめコーディネート' },
-  ]
   
   useEffect(() => {
     fetchData()
@@ -51,7 +52,7 @@ export default function Home() {
       const searchTerm = searchQuery.trim().toLowerCase()
       
       // Search celebrities
-      const celebrityMatch = sampleCelebrities.find(c => 
+      const celebrityMatch = celebrities.find(c => 
         c.name.toLowerCase().includes(searchTerm)
       )
       
@@ -77,33 +78,40 @@ export default function Home() {
         throw new Error(`Database connection failed: ${connectionError.message}`)
       }
       
-      const [celebritiesData, episodesData, postsData, trendingWorksData] = await Promise.all([
+      // 必要なデータのみフェッチする
+      const [celebritiesData, episodesData] = await Promise.all([
         db.celebrities.getAll(),
-        db.episodes.getAll(),
-        db.userPosts.getAll(),
-        db.works.getTrending()
+        db.episodes.getAll()
       ])
+      
+      if (celebritiesData.length === 0) {
+        console.warn('No celebrities found in database, showing placeholder message')
+      }
+      
+      if (episodesData.length === 0) {
+        console.warn('No episodes found in database, showing placeholder message')
+      }
+      
       setCelebrities(celebritiesData)
       setRecentEpisodes(episodesData.slice(0, 6))
-      setRecentPosts(postsData.slice(0, 6))
-      setTrendingWorks(trendingWorksData)
     } catch (error) {
       console.error('Error fetching data:', error)
-      const errorMessage = error instanceof Error ? error.message : 'データの取得に失敗しました'
-      // Use sample data as fallback
-      setCelebrities(sampleCelebrities as any)
-      setRecentEpisodes(sampleEpisodes as any)
+      // データ取得に失敗した場合は空の配列を設定
+      setCelebrities([])
+      setRecentEpisodes([])
     } finally {
       setLoading(false)
     }
   }
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % sampleEpisodes.length)
+    if (recentEpisodes.length === 0) return
+    setCurrentSlide((prev) => (prev + 1) % recentEpisodes.length)
   }
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + sampleEpisodes.length) % sampleEpisodes.length)
+    if (recentEpisodes.length === 0) return
+    setCurrentSlide((prev) => (prev - 1 + recentEpisodes.length) % recentEpisodes.length)
   }
   
   if (loading) {
@@ -204,31 +212,62 @@ export default function Home() {
             </p>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
-            {sampleCelebrities.map((celebrity) => (
-              <Link key={celebrity.id} to={`/celebrities/${celebrity.slug}`}>
-                <Card className="group hover:shadow-2xl transition-all duration-500 cursor-pointer border-0 shadow-lg overflow-hidden">
-                  <CardContent className="p-0">
-                    <div className="relative">
-                      <img
-                        src={celebrity.image_url}
-                        alt={celebrity.name}
-                        className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    </div>
-                    
-                    <div className="p-6 text-center">
-                      <h3 className="font-bold text-gray-900 mb-2 group-hover:text-rose-600 transition-colors">
-                        {celebrity.name}
-                      </h3>
-                      <p className="text-sm text-gray-500">{celebrity.group}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
+          {celebrities.length > 0 ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+              {celebrities.slice(0, 6).map((celebrity) => (
+                <Link key={celebrity.id} to={`/celebrities/${celebrity.slug}`}>
+                  <Card className="group hover:shadow-2xl transition-all duration-500 cursor-pointer border-0 shadow-lg overflow-hidden">
+                    <CardContent className="p-0">
+                      <div className="relative">
+                        {celebrity.image_url ? (
+                          <img
+                            src={celebrity.image_url}
+                            alt={celebrity.name}
+                            className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement
+                              target.src = 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg'
+                            }}
+                          />
+                        ) : (
+                          <div className="w-full h-48 bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                            <Users className="h-16 w-16 text-rose-400" />
+                          </div>
+                        )}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      </div>
+                      
+                      <div className="p-6 text-center">
+                        <h3 className="font-bold text-gray-900 mb-2 group-hover:text-rose-600 transition-colors">
+                          {celebrity.name}
+                        </h3>
+                        <p className="text-sm text-gray-500">{celebrity.group_name || '個人'}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <Card className="shadow-xl border-0">
+              <CardContent className="p-16 text-center">
+                <div className="bg-gray-50 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
+                  <Users className="h-12 w-12 text-gray-400" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  まだ推しが登録されていません
+                </h3>
+                <p className="text-gray-500 mb-6">
+                  データベースに推しの情報がありません。新しい推しを登録してください。
+                </p>
+                <Link to="/submit">
+                  <Button className="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 rounded-full">
+                    推しを質問する
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          )}
           
           <div className="text-center mt-12">
             <Link to="/celebrities">
@@ -253,77 +292,112 @@ export default function Home() {
             </p>
           </div>
           
-          <div className="relative">
-            <div className="overflow-hidden rounded-2xl">
-              <div 
-                className="flex transition-transform duration-500 ease-in-out"
-                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-              >
-                {sampleEpisodes.map((episode, index) => (
-                  <div key={episode.id} className="w-full flex-shrink-0">
-                    <Card className="mx-4 shadow-xl border-0 overflow-hidden">
-                      <CardContent className="p-0">
-                        <div className="grid grid-cols-1 lg:grid-cols-2">
-                          <div className="relative h-64 lg:h-80">
-                            <img
-                              src={episode.image}
-                              alt={episode.title}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          <div className="p-8 lg:p-12 flex flex-col justify-center">
-                            <div className="flex items-center text-sm text-gray-500 mb-4">
-                              <Calendar className="h-4 w-4 mr-2" />
-                              {new Date(episode.date).toLocaleDateString()}
+          {recentEpisodes.length > 0 ? (
+            <div className="relative">
+              <div className="overflow-hidden rounded-2xl">
+                <div 
+                  className="flex transition-transform duration-500 ease-in-out"
+                  style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                >
+                  {recentEpisodes.map((episode) => (
+                    <div key={episode.id} className="w-full flex-shrink-0">
+                      <Card className="mx-4 shadow-xl border-0 overflow-hidden">
+                        <CardContent className="p-0">
+                          <div className="grid grid-cols-1 lg:grid-cols-2">
+                            <div className="relative h-64 lg:h-80">
+                              {episode.thumbnail_url ? (
+                                <img
+                                  src={episode.thumbnail_url}
+                                  alt={episode.title}
+                                  className="w-full h-full object-cover"
+                                  onError={(e) => {
+                                    const target = e.target as HTMLImageElement
+                                    target.src = 'https://images.pexels.com/photos/1040903/pexels-photo-1040903.jpeg'
+                                  }}
+                                />
+                              ) : (
+                                <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                                  <Calendar className="h-16 w-16 text-gray-400" />
+                                </div>
+                              )}
                             </div>
-                            <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4">
-                              {episode.title}
-                            </h3>
-                            <p className="text-gray-600 mb-6 leading-relaxed">
-                              {episode.description}
-                            </p>
-                            <Link to={`/episodes/${episode.id}`}>
-                              <Button className="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white px-6 py-3 rounded-full">
-                                詳細を見る
-                                <ArrowRight className="h-4 w-4 ml-2" />
-                              </Button>
-                            </Link>
+                            <div className="p-8 lg:p-12 flex flex-col justify-center">
+                              <div className="flex items-center text-sm text-gray-500 mb-4">
+                                <Calendar className="h-4 w-4 mr-2" />
+                                {new Date(episode.date).toLocaleDateString()}
+                              </div>
+                              <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4">
+                                {episode.title}
+                              </h3>
+                              <p className="text-gray-600 mb-6 leading-relaxed">
+                                {episode.description || 'エピソードの詳細はありません'}
+                              </p>
+                              <Link to={`/episodes/${episode.id}`}>
+                                <Button className="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white px-6 py-3 rounded-full">
+                                  詳細を見る
+                                  <ArrowRight className="h-4 w-4 ml-2" />
+                                </Button>
+                              </Link>
+                            </div>
                           </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                ))}
+                        </CardContent>
+                      </Card>
+                    </div>
+                  ))}
+                </div>
               </div>
+              
+              {/* Carousel Controls - Only show if there are multiple episodes */}
+              {recentEpisodes.length > 1 && (
+                <>
+                  <button
+                    onClick={prevSlide}
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200"
+                  >
+                    <ChevronLeft className="h-6 w-6" />
+                  </button>
+                  <button
+                    onClick={nextSlide}
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200"
+                  >
+                    <ChevronRight className="h-6 w-6" />
+                  </button>
+                  
+                  {/* Carousel Indicators */}
+                  <div className="flex justify-center mt-8 space-x-2">
+                    {recentEpisodes.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setCurrentSlide(i)}
+                        className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                          i === currentSlide ? 'bg-rose-500' : 'bg-gray-300'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
-            
-            {/* Carousel Controls */}
-            <button
-              onClick={prevSlide}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200"
-            >
-              <ChevronLeft className="h-6 w-6" />
-            </button>
-            <button
-              onClick={nextSlide}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200"
-            >
-              <ChevronRight className="h-6 w-6" />
-            </button>
-            
-            {/* Carousel Indicators */}
-            <div className="flex justify-center mt-8 space-x-2">
-              {sampleEpisodes.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentSlide(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                    index === currentSlide ? 'bg-rose-500' : 'bg-gray-300'
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
+          ) : (
+            <Card className="shadow-xl border-0">
+              <CardContent className="p-16 text-center">
+                <div className="bg-gray-50 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
+                  <Calendar className="h-12 w-12 text-gray-400" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  まだエピソードが登録されていません
+                </h3>
+                <p className="text-gray-500 mb-6">
+                  データベースにエピソードの情報がありません。新しいエピソードを登録してください。
+                </p>
+                <Link to="/submit">
+                  <Button className="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 rounded-full">
+                    エピソードを投稿する
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </section>
 
