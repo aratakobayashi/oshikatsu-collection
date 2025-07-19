@@ -1,8 +1,8 @@
-import React from 'react'
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
+import AdminLayout from './components/AdminLayout'
 import PublicProtectedRoute from './components/PublicProtectedRoute'
-import { useAuth } from './components/AuthProvider'
+import ProtectedRoute from './components/ProtectedRoute'
 
 // Admin Pages
 import AdminDashboard from './pages/admin/Dashboard'
@@ -30,61 +30,88 @@ import Submit from './pages/public/Submit'
 import Login from './pages/public/Login'
 import Register from './pages/public/Register'
 
-// 管理画面用の保護ルートコンポーネント
-const AdminProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user, loading } = useAuth()
-  
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-      </div>
-    )
-  }
-  
-  if (!user) {
-    return <Navigate to="/login" />
-  }
-  
-  return <>{children}</>
-}
-
 function App() {
   return (
     <Router>
-      <Layout>
-        <Routes>
-          {/* メイン画面 */}
-          <Route path="/" element={<Home />} />
-          <Route path="/celebrities" element={<Celebrities />} />
-          <Route path="/items" element={<Items />} />
-          <Route path="/locations" element={<Locations />} />
-          <Route path="/posts" element={<Posts />} />
-          <Route path="/works" element={<Works />} />
-          
-          {/* 詳細画面 */}
-          <Route path="/celebrities/:slug" element={<CelebrityProfile />} />
-          <Route path="/episodes/:id" element={<EpisodeDetail />} />
-          <Route path="/posts/:id" element={<PostDetail />} />
-          <Route path="/items/:id" element={<ItemDetail />} />
-          <Route path="/locations/:id" element={<LocationDetail />} />
-          <Route path="/works/:slug" element={<WorkDetail />} />
-          
-          {/* Admin Routes */}
-          <Route path="/admin" element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>} />
-          <Route path="/admin/works" element={<AdminProtectedRoute><AdminWorks /></AdminProtectedRoute>} />
-          <Route path="/admin/celebrities" element={<AdminProtectedRoute><AdminCelebrities /></AdminProtectedRoute>} />
-          <Route path="/admin/episodes" element={<AdminProtectedRoute><AdminEpisodes /></AdminProtectedRoute>} />
-          <Route path="/admin/items" element={<AdminProtectedRoute><AdminItems /></AdminProtectedRoute>} />
-          <Route path="/admin/locations" element={<AdminProtectedRoute><AdminLocations /></AdminProtectedRoute>} />
-          <Route path="/admin/posts" element={<AdminProtectedRoute><AdminUserPosts /></AdminProtectedRoute>} />
-          
-          {/* 認証・投稿 */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/submit" element={<PublicProtectedRoute><Submit /></PublicProtectedRoute>} />
-        </Routes>
-      </Layout>
+      <Routes>
+        {/* Admin Routes */}
+        <Route path="/admin" element={
+          <ProtectedRoute>
+            <AdminLayout>
+              <AdminDashboard />
+            </AdminLayout>
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/works" element={
+          <ProtectedRoute>
+            <AdminLayout>
+              <AdminWorks />
+            </AdminLayout>
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/celebrities" element={
+          <ProtectedRoute>
+            <AdminLayout>
+              <AdminCelebrities />
+            </AdminLayout>
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/episodes" element={
+          <ProtectedRoute>
+            <AdminLayout>
+              <AdminEpisodes />
+            </AdminLayout>
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/items" element={
+          <ProtectedRoute>
+            <AdminLayout>
+              <AdminItems />
+            </AdminLayout>
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/locations" element={
+          <ProtectedRoute>
+            <AdminLayout>
+              <AdminLocations />
+            </AdminLayout>
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/posts" element={
+          <ProtectedRoute>
+            <AdminLayout>
+              <AdminUserPosts />
+            </AdminLayout>
+          </ProtectedRoute>
+        } />
+        
+        {/* Public Routes */}
+        <Route path="/" element={<Layout><Home /></Layout>} />
+        <Route path="/celebrities" element={<Layout><Celebrities /></Layout>} />
+        <Route path="/items" element={<Layout><Items /></Layout>} />
+        <Route path="/locations" element={<Layout><Locations /></Layout>} />
+        <Route path="/posts" element={<Layout><Posts /></Layout>} />
+        <Route path="/works" element={<Layout><Works /></Layout>} />
+        
+        {/* Detail Routes */}
+        <Route path="/celebrities/:slug" element={<Layout><CelebrityProfile /></Layout>} />
+        <Route path="/episodes/:id" element={<Layout><EpisodeDetail /></Layout>} />
+        <Route path="/posts/:id" element={<Layout><PostDetail /></Layout>} />
+        <Route path="/items/:id" element={<Layout><ItemDetail /></Layout>} />
+        <Route path="/locations/:id" element={<Layout><LocationDetail /></Layout>} />
+        <Route path="/works/:slug" element={<Layout><WorkDetail /></Layout>} />
+        
+        {/* Auth Routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/submit" element={
+          <Layout>
+            <PublicProtectedRoute>
+              <Submit />
+            </PublicProtectedRoute>
+          </Layout>
+        } />
+      </Routes>
     </Router>
   )
 }
