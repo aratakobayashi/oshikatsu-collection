@@ -1,10 +1,17 @@
 import React from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './components/Layout'
 import PublicProtectedRoute from './components/PublicProtectedRoute'
+import { useAuth } from './components/AuthProvider'
 
 // Admin Pages
+import AdminDashboard from './pages/admin/Dashboard'
 import AdminWorks from './pages/admin/Works'
+import AdminCelebrities from './pages/admin/Celebrities'
+import AdminEpisodes from './pages/admin/Episodes'
+import AdminItems from './pages/admin/Items'
+import AdminLocations from './pages/admin/Locations'
+import AdminUserPosts from './pages/admin/UserPosts'
 
 // Public Pages
 import Home from './pages/public/Home'
@@ -22,6 +29,25 @@ import WorkDetail from './pages/public/WorkDetail'
 import Submit from './pages/public/Submit'
 import Login from './pages/public/Login'
 import Register from './pages/public/Register'
+
+// 管理画面用の保護ルートコンポーネント
+const AdminProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { user, loading } = useAuth()
+  
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    )
+  }
+  
+  if (!user) {
+    return <Navigate to="/login" />
+  }
+  
+  return <>{children}</>
+}
 
 function App() {
   return (
@@ -45,7 +71,13 @@ function App() {
           <Route path="/works/:slug" element={<WorkDetail />} />
           
           {/* Admin Routes */}
-          <Route path="/admin/works" element={<AdminWorks />} />
+          <Route path="/admin" element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>} />
+          <Route path="/admin/works" element={<AdminProtectedRoute><AdminWorks /></AdminProtectedRoute>} />
+          <Route path="/admin/celebrities" element={<AdminProtectedRoute><AdminCelebrities /></AdminProtectedRoute>} />
+          <Route path="/admin/episodes" element={<AdminProtectedRoute><AdminEpisodes /></AdminProtectedRoute>} />
+          <Route path="/admin/items" element={<AdminProtectedRoute><AdminItems /></AdminProtectedRoute>} />
+          <Route path="/admin/locations" element={<AdminProtectedRoute><AdminLocations /></AdminProtectedRoute>} />
+          <Route path="/admin/posts" element={<AdminProtectedRoute><AdminUserPosts /></AdminProtectedRoute>} />
           
           {/* 認証・投稿 */}
           <Route path="/login" element={<Login />} />
