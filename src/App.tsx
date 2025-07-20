@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import AdminLayout from './components/AdminLayout'
 import PublicProtectedRoute from './components/PublicProtectedRoute'
-import ProtectedRoute from './components/ProtectedRoute'
+import AdminProtectedRoute from './components/AdminProtectedRoute' // 追加
 
 // Admin Pages
 import AdminDashboard from './pages/admin/Dashboard'
@@ -34,55 +34,55 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Admin Routes */}
+        {/* Admin Routes - ProtectedRouteをAdminProtectedRouteに変更 */}
         <Route path="/admin" element={
-          <ProtectedRoute>
+          <AdminProtectedRoute>
             <AdminLayout>
               <AdminDashboard />
             </AdminLayout>
-          </ProtectedRoute>
+          </AdminProtectedRoute>
         } />
         <Route path="/admin/works" element={
-          <ProtectedRoute>
+          <AdminProtectedRoute>
             <AdminLayout>
               <AdminWorks />
             </AdminLayout>
-          </ProtectedRoute>
+          </AdminProtectedRoute>
         } />
         <Route path="/admin/celebrities" element={
-          <ProtectedRoute>
+          <AdminProtectedRoute>
             <AdminLayout>
               <AdminCelebrities />
             </AdminLayout>
-          </ProtectedRoute>
+          </AdminProtectedRoute>
         } />
         <Route path="/admin/episodes" element={
-          <ProtectedRoute>
+          <AdminProtectedRoute>
             <AdminLayout>
               <AdminEpisodes />
             </AdminLayout>
-          </ProtectedRoute>
+          </AdminProtectedRoute>
         } />
         <Route path="/admin/items" element={
-          <ProtectedRoute>
+          <AdminProtectedRoute>
             <AdminLayout>
               <AdminItems />
             </AdminLayout>
-          </ProtectedRoute>
+          </AdminProtectedRoute>
         } />
         <Route path="/admin/locations" element={
-          <ProtectedRoute>
+          <AdminProtectedRoute>
             <AdminLayout>
               <AdminLocations />
             </AdminLayout>
-          </ProtectedRoute>
+          </AdminProtectedRoute>
         } />
         <Route path="/admin/posts" element={
-          <ProtectedRoute>
+          <AdminProtectedRoute>
             <AdminLayout>
               <AdminUserPosts />
             </AdminLayout>
-          </ProtectedRoute>
+          </AdminProtectedRoute>
         } />
         
         {/* Public Routes */}
