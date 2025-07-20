@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { Search, Filter, Package, ExternalLink, User, Tag, Calendar, ShoppingBag, Star, TrendingUp, Heart, Eye } from 'lucide-react'
+import { Search, Filter, Package, User, Calendar, ShoppingBag, Star, TrendingUp, Eye } from 'lucide-react'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import Select from '../../components/ui/Select'
 import Card, { CardContent } from '../../components/ui/Card'
-import { db, supabase } from '../../lib/supabase'
+import { supabase } from '../../lib/supabase'
 
 interface ItemWithDetails {
   id: string
@@ -56,8 +56,8 @@ function Items() {
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '')
   const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'created_at')
   
-  // Sample data for demonstration
-  const sampleItems = [
+  // Sample data for demonstration - wrapped in useMemo to prevent recreation
+  const sampleItems = useMemo(() => [
     {
       id: 'it1a2b3c-d4e5-f678-9012-345678901234',
       name: 'オーバーサイズTシャツ',
@@ -178,27 +178,10 @@ function Items() {
         }
       }
     }
-  ]
+  ], [])
   
-  useEffect(() => {
-    fetchData()
-  }, [])
-  
-  useEffect(() => {
-    filterAndSortItems()
-  }, [items, searchTerm, selectedCategory, sortBy])
-  
-  useEffect(() => {
-    // Update URL params when filters change
-    const params = new URLSearchParams()
-    if (searchTerm) params.set('search', searchTerm)
-    if (selectedCategory) params.set('category', selectedCategory)
-    if (sortBy !== 'created_at') params.set('sort', sortBy)
-    
-    setSearchParams(params)
-  }, [searchTerm, selectedCategory, sortBy, setSearchParams])
-  
-  async function fetchData() {
+  // Define functions BEFORE using them in useEffect
+  const fetchData = useCallback(async () => {
     try {
       // Fetch all items with related data
       const { data: itemsData, error: itemsError } = await supabase
@@ -222,13 +205,13 @@ function Items() {
     } catch (error) {
       console.error('Error fetching data:', error)
       // Use sample data as fallback
-      setItems(sampleItems as any)
+      setItems(sampleItems)
     } finally {
       setLoading(false)
     }
-  }
+  }, [sampleItems])
   
-  function filterAndSortItems() {
+  const filterAndSortItems = useCallback(() => {
     let filtered = [...(items.length > 0 ? items : sampleItems)]
     
     // Search filter
@@ -264,7 +247,26 @@ function Items() {
     })
     
     setFilteredItems(filtered)
-  }
+  }, [items, sampleItems, searchTerm, selectedCategory, sortBy])
+  
+  // Now use the functions in useEffect
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
+  
+  useEffect(() => {
+    filterAndSortItems()
+  }, [filterAndSortItems])
+  
+  useEffect(() => {
+    // Update URL params when filters change
+    const params = new URLSearchParams()
+    if (searchTerm) params.set('search', searchTerm)
+    if (selectedCategory) params.set('category', selectedCategory)
+    if (sortBy !== 'created_at') params.set('sort', sortBy)
+    
+    setSearchParams(params)
+  }, [searchTerm, selectedCategory, sortBy, setSearchParams])
   
   function getCategoryLabel(category: string) {
     const labels = {

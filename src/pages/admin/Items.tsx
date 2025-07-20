@@ -1,10 +1,41 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Plus, Edit, Trash2, ExternalLink } from 'lucide-react'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import Select from '../../components/ui/Select'
 import Card, { CardHeader, CardContent } from '../../components/ui/Card'
-import { db, Item, Episode } from '../../lib/supabase'
+import { db } from '../../lib/supabase'
+
+// 型定義を直接定義
+interface Item {
+  id: string
+  episode_id: string
+  name: string
+  brand: string
+  affiliate_url: string
+  image_url: string
+  price: number
+  category?: string
+  subcategory?: string
+  currency?: string
+  description?: string
+  color?: string
+  size?: string
+  material?: string
+  is_available?: boolean
+  created_at?: string
+  updated_at?: string
+}
+
+interface Episode {
+  id: string
+  title: string
+  celebrity?: {
+    id: string
+    name: string
+    slug: string
+  }
+}
 
 export default function Items() {
   const [items, setItems] = useState<Item[]>([])
@@ -21,11 +52,7 @@ export default function Items() {
     price: ''
   })
   
-  useEffect(() => {
-    fetchData()
-  }, [])
-  
-  async function fetchData() {
+  const fetchData = useCallback(async () => {
     try {
       const episodesData = await db.episodes.getAll()
       setEpisodes(episodesData)
@@ -42,9 +69,26 @@ export default function Items() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
   
-  async function handleSubmit(e: React.FormEvent) {
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
+  
+  const resetForm = useCallback(() => {
+    setShowForm(false)
+    setEditingItem(null)
+    setFormData({
+      episode_id: '',
+      name: '',
+      brand: '',
+      affiliate_url: '',
+      image_url: '',
+      price: ''
+    })
+  }, [])
+  
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault()
     
     try {
@@ -64,9 +108,9 @@ export default function Items() {
     } catch (error) {
       console.error('Error saving item:', error)
     }
-  }
+  }, [formData, editingItem, fetchData, resetForm])
   
-  async function handleDelete(id: string) {
+  const handleDelete = useCallback(async (id: string) => {
     if (!confirm('このアイテムを削除してもよろしいですか？')) return
     
     try {
@@ -75,22 +119,9 @@ export default function Items() {
     } catch (error) {
       console.error('Error deleting item:', error)
     }
-  }
+  }, [fetchData])
   
-  function resetForm() {
-    setShowForm(false)
-    setEditingItem(null)
-    setFormData({
-      episode_id: '',
-      name: '',
-      brand: '',
-      affiliate_url: '',
-      image_url: '',
-      price: ''
-    })
-  }
-  
-  function startEdit(item: Item) {
+  const startEdit = useCallback((item: Item) => {
     setEditingItem(item)
     setFormData({
       episode_id: item.episode_id,
@@ -101,7 +132,7 @@ export default function Items() {
       price: item.price.toString()
     })
     setShowForm(true)
-  }
+  }, [])
   
   if (loading) {
     return (
