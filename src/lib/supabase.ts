@@ -3,7 +3,21 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
+// 🔧 環境変数チェック
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error('❌ Supabase environment variables are missing:')
+  console.error('VITE_SUPABASE_URL:', supabaseUrl ? '✅ Set' : '❌ Missing')
+  console.error('VITE_SUPABASE_ANON_KEY:', supabaseAnonKey ? '✅ Set' : '❌ Missing')
+  throw new Error('Missing Supabase environment variables. Check your .env file or Netlify environment variables.')
+}
+
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+
+// 🔧 Supabase接続テスト
+console.log('🔌 Supabase client initialized:', {
+  url: supabaseUrl,
+  hasKey: !!supabaseAnonKey
+})
 
 // 型定義
 interface CreateItemData {
@@ -23,38 +37,68 @@ interface WorkUpdates {
 function createCrudOperations(tableName: string) {
   return {
     async getAll() {
+      console.log(`🔍 Fetching all from ${tableName}`)
       const { data, error } = await supabase.from(tableName).select('*')
-      if (error) throw error
+      if (error) {
+        console.error(`❌ Error fetching from ${tableName}:`, error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} records from ${tableName}`)
       return data
     },
     
     async getById(id: string) {
+      console.log(`🔍 Fetching ${tableName} by ID:`, id)
       const { data, error } = await supabase.from(tableName).select('*').eq('id', id).single()
-      if (error) throw error
+      if (error) {
+        console.error(`❌ Error fetching ${tableName} by ID:`, error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${tableName}:`, data?.id)
       return data
     },
     
     async getBySlug(slug: string) {
+      console.log(`🔍 Fetching ${tableName} by slug:`, slug)
       const { data, error } = await supabase.from(tableName).select('*').eq('slug', slug).maybeSingle()
-      if (error) throw error
+      if (error) {
+        console.error(`❌ Error fetching ${tableName} by slug:`, error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${tableName}:`, data?.slug || 'not found')
       return data
     },
     
     async create(item: CreateItemData) {
+      console.log(`🔍 Creating ${tableName}:`, item)
       const { data, error } = await supabase.from(tableName).insert(item).select().single()
-      if (error) throw error
+      if (error) {
+        console.error(`❌ Error creating ${tableName}:`, error)
+        throw error
+      }
+      console.log(`✅ Successfully created ${tableName}:`, data?.id)
       return data
     },
     
     async update(id: string, updates: UpdateItemData) {
+      console.log(`🔍 Updating ${tableName} ${id}:`, updates)
       const { data, error } = await supabase.from(tableName).update(updates).eq('id', id).select().single()
-      if (error) throw error
+      if (error) {
+        console.error(`❌ Error updating ${tableName}:`, error)
+        throw error
+      }
+      console.log(`✅ Successfully updated ${tableName}:`, data?.id)
       return data
     },
     
     async delete(id: string) {
+      console.log(`🔍 Deleting ${tableName}:`, id)
       const { error } = await supabase.from(tableName).delete().eq('id', id)
-      if (error) throw error
+      if (error) {
+        console.error(`❌ Error deleting ${tableName}:`, error)
+        throw error
+      }
+      console.log(`✅ Successfully deleted ${tableName}:`, id)
       return true
     }
   }
@@ -66,8 +110,13 @@ export const db = {
   celebrities: {
     ...createCrudOperations('celebrities'),
     async getByCelebrityId(celebrityId: string) {
+      console.log('🔍 Fetching celebrities by celebrity ID:', celebrityId)
       const { data, error } = await supabase.from('celebrities').select('*').eq('id', celebrityId)
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error fetching celebrities:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} celebrities`)
       return data
     }
   },
@@ -75,17 +124,23 @@ export const db = {
   // Episodes - 🔧 celebrity情報をJOINして取得
   episodes: {
     async getAll() {
+      console.log('🔍 Fetching all episodes with celebrity info')
       const { data, error } = await supabase
         .from('episodes')
         .select(`
           *,
           celebrity:celebrities(id, name, slug, image_url)
         `)
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error fetching episodes:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} episodes`)
       return data
     },
     
     async getById(id: string) {
+      console.log('🔍 Fetching episode with celebrity info, ID:', id)
       const { data, error } = await supabase
         .from('episodes')
         .select(`
@@ -95,11 +150,23 @@ export const db = {
         .eq('id', id)
         .single()
       
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error fetching episode by ID:', error)
+        console.error('❌ Error details:', {
+          code: error.code,
+          message: error.message,
+          details: error.details,
+          hint: error.hint
+        })
+        throw error
+      }
+      console.log('✅ Successfully fetched episode:', data?.title)
+      console.log('✅ Celebrity info:', data?.celebrity?.name || 'No celebrity')
       return data
     },
     
     async getBySlug(slug: string) {
+      console.log('🔍 Fetching episode by slug with celebrity info:', slug)
       const { data, error } = await supabase
         .from('episodes')
         .select(`
@@ -108,25 +175,44 @@ export const db = {
         `)
         .eq('slug', slug)
         .maybeSingle()
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error fetching episode by slug:', error)
+        throw error
+      }
+      console.log('✅ Successfully fetched episode:', data?.title || 'not found')
       return data
     },
     
     async create(item: CreateItemData) {
+      console.log('🔍 Creating episode:', item)
       const { data, error } = await supabase.from('episodes').insert(item).select().single()
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error creating episode:', error)
+        throw error
+      }
+      console.log('✅ Successfully created episode:', data?.id)
       return data
     },
     
     async update(id: string, updates: UpdateItemData) {
+      console.log('🔍 Updating episode:', id, updates)
       const { data, error } = await supabase.from('episodes').update(updates).eq('id', id).select().single()
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error updating episode:', error)
+        throw error
+      }
+      console.log('✅ Successfully updated episode:', data?.id)
       return data
     },
     
     async delete(id: string) {
+      console.log('🔍 Deleting episode:', id)
       const { error } = await supabase.from('episodes').delete().eq('id', id)
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error deleting episode:', error)
+        throw error
+      }
+      console.log('✅ Successfully deleted episode:', id)
       return true
     },
     
@@ -161,6 +247,7 @@ export const db = {
     },
     
     async getByWorkId(workId: string) {
+      console.log('🔍 Fetching episodes by work ID with celebrity info:', workId)
       const { data, error } = await supabase
         .from('episodes')
         .select(`
@@ -170,7 +257,11 @@ export const db = {
         .eq('work_id', workId)
         .order('date', { ascending: false })
       
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error fetching episodes by work ID:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} episodes by work ID`)
       return data
     }
   },
@@ -179,13 +270,23 @@ export const db = {
   items: {
     ...createCrudOperations('items'),
     async getByEpisodeId(episodeId: string) {
+      console.log('🔍 Fetching items by episode ID:', episodeId)
       const { data, error } = await supabase.from('items').select('*').eq('episode_id', episodeId)
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error fetching items by episode ID:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} items`)
       return data
     },
     async getByWorkId(workId: string) {
+      console.log('🔍 Fetching items by work ID:', workId)
       const { data, error } = await supabase.from('items').select('*').eq('work_id', workId)
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error fetching items by work ID:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} items`)
       return data
     }
   },
@@ -194,13 +295,23 @@ export const db = {
   locations: {
     ...createCrudOperations('locations'),
     async getByEpisodeId(episodeId: string) {
+      console.log('🔍 Fetching locations by episode ID:', episodeId)
       const { data, error } = await supabase.from('locations').select('*').eq('episode_id', episodeId)
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error fetching locations by episode ID:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} locations`)
       return data
     },
     async getByWorkId(workId: string) {
+      console.log('🔍 Fetching locations by work ID:', workId)
       const { data, error } = await supabase.from('locations').select('*').eq('work_id', workId)
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error fetching locations by work ID:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} locations`)
       return data
     }
   },
@@ -209,17 +320,27 @@ export const db = {
   works: {
     ...createCrudOperations('works'),
     async getTrending() {
+      console.log('🔍 Fetching trending works')
       const { data, error } = await supabase.from('works').select('*').eq('is_trending', true).order('trending_order', { ascending: true })
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error fetching trending works:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} trending works`)
       return data
     },
     async updateTrending(id: string, isTrending: boolean, trendingOrder?: number) {
+      console.log('🔍 Updating trending status for work:', id)
       const updates: WorkUpdates = { is_trending: isTrending }
       if (trendingOrder !== undefined) {
         updates.trending_order = trendingOrder
       }
       const { data, error } = await supabase.from('works').update(updates).eq('id', id).select().single()
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error updating trending status:', error)
+        throw error
+      }
+      console.log('✅ Successfully updated trending status:', data?.id)
       return data
     }
   },
@@ -231,13 +352,23 @@ export const db = {
   celebrityGroups: {
     ...createCrudOperations('celebrity_groups'),
     async getByCelebrityId(celebrityId: string) {
+      console.log('🔍 Fetching celebrity groups by celebrity ID:', celebrityId)
       const { data, error } = await supabase.from('celebrity_groups').select('*').eq('celebrity_id', celebrityId)
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error fetching celebrity groups:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} celebrity groups`)
       return data
     },
     async getByGroupId(groupId: string) {
+      console.log('🔍 Fetching celebrity groups by group ID:', groupId)
       const { data, error } = await supabase.from('celebrity_groups').select('*').eq('group_id', groupId)
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error fetching celebrity groups by group ID:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} celebrity groups`)
       return data
     }
   },
@@ -249,8 +380,13 @@ export const db = {
   appearances: {
     ...createCrudOperations('appearances'),
     async getByEpisodeId(episodeId: string) {
+      console.log('🔍 Fetching appearances by episode ID:', episodeId)
       const { data, error } = await supabase.from('appearances').select('*').eq('episode_id', episodeId)
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error fetching appearances:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} appearances`)
       return data
     }
   },
@@ -262,23 +398,43 @@ export const db = {
   userPosts: {
     ...createCrudOperations('user_posts'),
     async getByUserId(userId: string) {
+      console.log('🔍 Fetching user posts by user ID:', userId)
       const { data, error } = await supabase.from('user_posts').select('*').eq('user_id', userId).order('created_at', { ascending: false })
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error fetching user posts:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} user posts`)
       return data
     },
     async getByCelebrityId(celebrityId: string) {
+      console.log('🔍 Fetching user posts by celebrity ID:', celebrityId)
       const { data, error } = await supabase.from('user_posts').select('*').eq('celebrity_id', celebrityId).order('created_at', { ascending: false })
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error fetching user posts by celebrity ID:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} user posts`)
       return data
     },
     async getByEpisodeId(episodeId: string) {
+      console.log('🔍 Fetching user posts by episode ID:', episodeId)
       const { data, error } = await supabase.from('user_posts').select('*').eq('episode_id', episodeId).order('created_at', { ascending: false })
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error fetching user posts by episode ID:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} user posts`)
       return data
     },
     async getByWorkId(workId: string) {
+      console.log('🔍 Fetching user posts by work ID:', workId)
       const { data, error } = await supabase.from('user_posts').select('*').eq('work_id', workId).order('created_at', { ascending: false })
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error fetching user posts by work ID:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} user posts`)
       return data
     }
   },
@@ -287,13 +443,23 @@ export const db = {
   userAnswers: {
     ...createCrudOperations('user_answers'),
     async getByPostId(postId: string) {
+      console.log('🔍 Fetching user answers by post ID:', postId)
       const { data, error } = await supabase.from('user_answers').select('*').eq('post_id', postId).order('created_at', { ascending: false })
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error fetching user answers:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} user answers`)
       return data
     },
     async getByUserId(userId: string) {
+      console.log('🔍 Fetching user answers by user ID:', userId)
       const { data, error } = await supabase.from('user_answers').select('*').eq('user_id', userId).order('created_at', { ascending: false })
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error fetching user answers by user ID:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} user answers`)
       return data
     }
   },
@@ -301,25 +467,37 @@ export const db = {
   // Storage operations
   storage: {
     async uploadImage(bucket: string, path: string, file: File) {
+      console.log('🔍 Uploading image:', { bucket, path, fileName: file.name })
       const { data, error } = await supabase.storage.from(bucket).upload(path, file)
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error uploading image:', error)
+        throw error
+      }
+      console.log('✅ Successfully uploaded image:', data?.path)
       return data
     },
     
     async getPublicUrl(bucket: string, path: string) {
+      console.log('🔍 Getting public URL:', { bucket, path })
       const { data } = supabase.storage.from(bucket).getPublicUrl(path)
+      console.log('✅ Generated public URL:', data.publicUrl)
       return data.publicUrl
     },
     
     async deleteFile(bucket: string, path: string) {
+      console.log('🔍 Deleting file:', { bucket, path })
       const { error } = await supabase.storage.from(bucket).remove([path])
-      if (error) throw error
+      if (error) {
+        console.error('❌ Error deleting file:', error)
+        throw error
+      }
+      console.log('✅ Successfully deleted file:', path)
       return true
     }
   }
 }
 
-// Database types (you can generate these with supabase gen types typescript)
+// Database types (継続...)
 export type Database = {
   public: {
     Tables: {
