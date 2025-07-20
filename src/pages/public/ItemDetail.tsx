@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { ArrowLeft, ExternalLink, Tag, Calendar, MapPin } from 'lucide-react'
+import { ArrowLeft, ExternalLink, Tag, Calendar } from 'lucide-react'
 import Button from '../../components/ui/Button'
 import Card, { CardHeader, CardContent } from '../../components/ui/Card'
-import { db } from '../../lib/supabase'
+import { supabase } from '../../lib/supabase'
 
 interface ItemWithDetails {
   id: string
@@ -45,9 +45,10 @@ export default function ItemDetail() {
   
   async function fetchItem(id: string) {
     try {
-      // This would need to be implemented in the db service
-      // For now, we'll simulate the data structure
-      const { data, error } = await db.supabase
+      console.log('🔍 Fetching item with ID:', id)
+      
+      // ✅ 修正: supabaseクライアントを直接使用
+      const { data, error } = await supabase
         .from('items')
         .select(`
           *,
@@ -61,7 +62,12 @@ export default function ItemDetail() {
         .eq('id', id)
         .single()
       
-      if (error) throw error
+      if (error) {
+        console.error('❌ Supabase error:', error)
+        throw error
+      }
+      
+      console.log('✅ Successfully fetched item:', data)
       setItem(data)
     } catch (error) {
       console.error('Error fetching item:', error)
