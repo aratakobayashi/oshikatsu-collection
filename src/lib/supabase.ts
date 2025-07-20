@@ -5,6 +5,20 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
+// 型定義
+interface CreateItemData {
+  [key: string]: unknown
+}
+
+interface UpdateItemData {
+  [key: string]: unknown
+}
+
+interface WorkUpdates {
+  is_trending: boolean
+  trending_order?: number
+}
+
 // Generic CRUD operations helper
 function createCrudOperations(tableName: string) {
   return {
@@ -26,13 +40,13 @@ function createCrudOperations(tableName: string) {
       return data
     },
     
-    async create(item: any) {
+    async create(item: CreateItemData) {
       const { data, error } = await supabase.from(tableName).insert(item).select().single()
       if (error) throw error
       return data
     },
     
-    async update(id: string, updates: any) {
+    async update(id: string, updates: UpdateItemData) {
       const { data, error } = await supabase.from(tableName).update(updates).eq('id', id).select().single()
       if (error) throw error
       return data
@@ -58,15 +72,73 @@ export const db = {
     }
   },
   
-  // Episodes
+  // Episodes - 🔧 celebrity情報をJOINして取得
   episodes: {
-    ...createCrudOperations('episodes'),
+    async getAll() {
+      const { data, error } = await supabase
+        .from('episodes')
+        .select(`
+          *,
+          celebrity:celebrities(id, name, slug, image_url)
+        `)
+      if (error) throw error
+      return data
+    },
+    
+    async getById(id: string) {
+      const { data, error } = await supabase
+        .from('episodes')
+        .select(`
+          *,
+          celebrity:celebrities(id, name, slug, image_url)
+        `)
+        .eq('id', id)
+        .single()
+      
+      if (error) throw error
+      return data
+    },
+    
+    async getBySlug(slug: string) {
+      const { data, error } = await supabase
+        .from('episodes')
+        .select(`
+          *,
+          celebrity:celebrities(id, name, slug, image_url)
+        `)
+        .eq('slug', slug)
+        .maybeSingle()
+      if (error) throw error
+      return data
+    },
+    
+    async create(item: CreateItemData) {
+      const { data, error } = await supabase.from('episodes').insert(item).select().single()
+      if (error) throw error
+      return data
+    },
+    
+    async update(id: string, updates: UpdateItemData) {
+      const { data, error } = await supabase.from('episodes').update(updates).eq('id', id).select().single()
+      if (error) throw error
+      return data
+    },
+    
+    async delete(id: string) {
+      const { error } = await supabase.from('episodes').delete().eq('id', id)
+      if (error) throw error
+      return true
+    },
+    
     async getByCelebrityId(celebrityId: string) {
       console.log('🔍 [DEBUG] episodes.getByCelebrityId called with:', celebrityId)
       
       const { data, error } = await supabase
         .from('episodes')
-        .select('*')
+        .select(`
+          *,
+          celebrity:celebrities(id, name, slug, image_url)
+        `)
         .eq('celebrity_id', celebrityId)
         .order('date', { ascending: false })
       
@@ -87,8 +159,17 @@ export const db = {
       console.log('✅ [DEBUG] Episodes query successful, count:', data?.length || 0)
       return data
     },
+    
     async getByWorkId(workId: string) {
-      const { data, error } = await supabase.from('episodes').select('*').eq('work_id', workId).order('date', { ascending: false })
+      const { data, error } = await supabase
+        .from('episodes')
+        .select(`
+          *,
+          celebrity:celebrities(id, name, slug, image_url)
+        `)
+        .eq('work_id', workId)
+        .order('date', { ascending: false })
+      
       if (error) throw error
       return data
     }
@@ -133,7 +214,7 @@ export const db = {
       return data
     },
     async updateTrending(id: string, isTrending: boolean, trendingOrder?: number) {
-      const updates: any = { is_trending: isTrending }
+      const updates: WorkUpdates = { is_trending: isTrending }
       if (trendingOrder !== undefined) {
         updates.trending_order = trendingOrder
       }
@@ -249,7 +330,7 @@ export type Database = {
           slug: string
           image_url: string | null
           youtube_url: string | null
-          sns_links: any | null
+          sns_links: Record<string, unknown> | null
           bio: string | null
           birth_date: string | null
           nationality: string | null
@@ -272,7 +353,7 @@ export type Database = {
           slug: string
           image_url?: string | null
           youtube_url?: string | null
-          sns_links?: any | null
+          sns_links?: Record<string, unknown> | null
           bio?: string | null
           birth_date?: string | null
           nationality?: string | null
@@ -295,7 +376,7 @@ export type Database = {
           slug?: string
           image_url?: string | null
           youtube_url?: string | null
-          sns_links?: any | null
+          sns_links?: Record<string, unknown> | null
           bio?: string | null
           birth_date?: string | null
           nationality?: string | null
@@ -443,7 +524,7 @@ export type Database = {
           phone: string | null
           website: string | null
           reservation_url: string | null
-          opening_hours: any | null
+          opening_hours: Record<string, unknown> | null
           price_range: string | null
           description: string | null
           work_id: string | null
@@ -464,7 +545,7 @@ export type Database = {
           phone?: string | null
           website?: string | null
           reservation_url?: string | null
-          opening_hours?: any | null
+          opening_hours?: Record<string, unknown> | null
           price_range?: string | null
           description?: string | null
           work_id?: string | null
@@ -485,7 +566,7 @@ export type Database = {
           phone?: string | null
           website?: string | null
           reservation_url?: string | null
-          opening_hours?: any | null
+          opening_hours?: Record<string, unknown> | null
           price_range?: string | null
           description?: string | null
           work_id?: string | null
