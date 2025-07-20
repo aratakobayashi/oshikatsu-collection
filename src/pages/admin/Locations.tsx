@@ -1,11 +1,43 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Plus, Edit, Trash2, X } from 'lucide-react'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import TextArea from '../../components/ui/TextArea'
 import Select from '../../components/ui/Select'
 import Card, { CardHeader, CardContent } from '../../components/ui/Card'
-import { db, Location, Episode } from '../../lib/supabase'
+import { db } from '../../lib/supabase'
+
+// 型定義を直接定義
+interface Location {
+  id: string
+  episode_id: string
+  name: string
+  address: string
+  latitude?: number | null
+  longitude?: number | null
+  map_url: string
+  menu_example: string[]
+  image_urls: string[]
+  category?: string
+  phone?: string
+  website?: string
+  reservation_url?: string
+  opening_hours?: Record<string, unknown>
+  price_range?: string
+  description?: string
+  created_at?: string
+  updated_at?: string
+}
+
+interface Episode {
+  id: string
+  title: string
+  celebrity?: {
+    id: string
+    name: string
+    slug: string
+  }
+}
 
 export default function Locations() {
   const [locations, setLocations] = useState<Location[]>([])
@@ -27,12 +59,10 @@ export default function Locations() {
   const [newMenuItem, setNewMenuItem] = useState('')
   const [newImageUrl, setNewImageUrl] = useState('')
   
-  useEffect(() => {
-    fetchData()
-  }, [])
-  
-  async function fetchData() {
+  // ✅ 依存関係を空にして無限ループを防ぐ
+  const fetchData = useCallback(async () => {
     try {
+      console.log('🔍 Admin Locations: Fetching data...')
       const episodesData = await db.episodes.getAll()
       setEpisodes(episodesData)
       
@@ -43,14 +73,32 @@ export default function Locations() {
         locationsData.push(...episodeLocations)
       }
       setLocations(locationsData)
+      console.log('✅ Admin Locations: Data fetched successfully', { locations: locationsData.length, episodes: episodesData.length })
     } catch (error) {
-      console.error('Error fetching data:', error)
+      console.error('❌ Admin Locations: Error fetching data:', error)
     } finally {
       setLoading(false)
     }
-  }
+  }, []) // ✅ 空の依存配列
   
-  async function handleSubmit(e: React.FormEvent) {
+  const resetForm = useCallback(() => {
+    setShowForm(false)
+    setEditingLocation(null)
+    setFormData({
+      episode_id: '',
+      name: '',
+      address: '',
+      latitude: '',
+      longitude: '',
+      map_url: '',
+      menu_example: [],
+      image_urls: []
+    })
+    setNewMenuItem('')
+    setNewImageUrl('')
+  }, [])
+  
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault()
     
     try {
@@ -71,9 +119,9 @@ export default function Locations() {
     } catch (error) {
       console.error('Error saving location:', error)
     }
-  }
+  }, [formData, editingLocation, fetchData, resetForm])
   
-  async function handleDelete(id: string) {
+  const handleDelete = useCallback(async (id: string) => {
     if (!confirm('このロケーションを削除してもよろしいですか？')) return
     
     try {
@@ -82,26 +130,9 @@ export default function Locations() {
     } catch (error) {
       console.error('Error deleting location:', error)
     }
-  }
+  }, [fetchData])
   
-  function resetForm() {
-    setShowForm(false)
-    setEditingLocation(null)
-    setFormData({
-      episode_id: '',
-      name: '',
-      address: '',
-      latitude: '',
-      longitude: '',
-      map_url: '',
-      menu_example: [],
-      image_urls: []
-    })
-    setNewMenuItem('')
-    setNewImageUrl('')
-  }
-  
-  function startEdit(location: Location) {
+  const startEdit = useCallback((location: Location) => {
     setEditingLocation(location)
     setFormData({
       episode_id: location.episode_id,
@@ -110,11 +141,11 @@ export default function Locations() {
       latitude: location.latitude?.toString() || '',
       longitude: location.longitude?.toString() || '',
       map_url: location.map_url,
-      menu_example: location.menu_example,
-      image_urls: location.image_urls
+      menu_example: location.menu_example || [],
+      image_urls: location.image_urls || []
     })
     setShowForm(true)
-  }
+  }, [])
   
   function addMenuItem() {
     if (newMenuItem.trim()) {
@@ -150,10 +181,16 @@ export default function Locations() {
     }))
   }
   
+  // ✅ 初回のみ実行
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
+  
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <p className="ml-4 text-gray-600">データを読み込み中...</p>
       </div>
     )
   }
@@ -162,15 +199,15 @@ export default function Locations() {
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-3xl font-bold text-gray-900">Locations</h2>
-          <p className="text-gray-600 mt-2">Manage episode locations and venues</p>
+          <h2 className="text-3xl font-bold text-gray-900">ロケーション</h2>
+          <p className="text-gray-600 mt-2">エピソードで紹介された店舗・場所を管理</p>
         </div>
         <Button 
           icon={Plus} 
           onClick={() => setShowForm(true)}
           className="bg-blue-600 hover:bg-blue-700"
         >
-          Add Location
+          ロケーションを追加
         </Button>
       </div>
       
