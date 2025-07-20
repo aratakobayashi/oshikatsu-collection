@@ -52,8 +52,10 @@ export default function Items() {
     price: ''
   })
   
+  // ✅ 依存関係を空にして無限ループを防ぐ
   const fetchData = useCallback(async () => {
     try {
+      console.log('🔍 Admin Items: Fetching data...')
       const episodesData = await db.episodes.getAll()
       setEpisodes(episodesData)
       
@@ -64,16 +66,13 @@ export default function Items() {
         itemsData.push(...episodeItems)
       }
       setItems(itemsData)
+      console.log('✅ Admin Items: Data fetched successfully', { items: itemsData.length, episodes: episodesData.length })
     } catch (error) {
-      console.error('Error fetching data:', error)
+      console.error('❌ Admin Items: Error fetching data:', error)
     } finally {
       setLoading(false)
     }
-  }, [])
-  
-  useEffect(() => {
-    fetchData()
-  }, [fetchData])
+  }, []) // ✅ 空の依存配列
   
   const resetForm = useCallback(() => {
     setShowForm(false)
@@ -134,10 +133,16 @@ export default function Items() {
     setShowForm(true)
   }, [])
   
+  // ✅ 初回のみ実行
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
+  
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <p className="ml-4 text-gray-600">データを読み込み中...</p>
       </div>
     )
   }
