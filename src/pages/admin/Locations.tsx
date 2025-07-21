@@ -63,17 +63,20 @@ export default function Locations() {
   const fetchData = useCallback(async () => {
     try {
       console.log('🔍 Admin Locations: Fetching data...')
-      const episodesData = await db.episodes.getAll()
-      setEpisodes(episodesData)
       
-      // Fetch locations for all episodes
-      const locationsData = []
-      for (const episode of episodesData) {
-        const episodeLocations = await db.locations.getByEpisodeId(episode.id)
-        locationsData.push(...episodeLocations)
-      }
+      // ✅ 修正: 1回のクエリで全ロケーションを取得
+      const [episodesData, locationsData] = await Promise.all([
+        db.episodes.getAll(),
+        db.locations.getAll() // ✅ 全ロケーションを一度に取得
+      ])
+      
+      setEpisodes(episodesData)
       setLocations(locationsData)
-      console.log('✅ Admin Locations: Data fetched successfully', { locations: locationsData.length, episodes: episodesData.length })
+      
+      console.log('✅ Admin Locations: Data fetched successfully', { 
+        locations: locationsData.length, 
+        episodes: episodesData.length 
+      })
     } catch (error) {
       console.error('❌ Admin Locations: Error fetching data:', error)
     } finally {

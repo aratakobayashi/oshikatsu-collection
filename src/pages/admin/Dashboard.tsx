@@ -19,37 +19,28 @@ export default function Dashboard() {
     try {
       console.log('🔍 Dashboard: Fetching stats...')
       
-      const [celebrities, episodes, userPosts] = await Promise.all([
+      // ✅ 修正: 1回のクエリで全データを取得（1000回ループを削除）
+      const [celebrities, episodes, userPosts, locations, items] = await Promise.all([
         db.celebrities.getAll(),
         db.episodes.getAll(),
-        db.userPosts.getAll()
+        db.userPosts.getAll(),
+        db.locations.getAll(), // ✅ 全ロケーションを一度に取得
+        db.items.getAll()      // ✅ 全アイテムを一度に取得
       ])
-      
-      let totalLocations = 0
-      let totalItems = 0
-      
-      for (const episode of episodes) {
-        const [locations, items] = await Promise.all([
-          db.locations.getByEpisodeId(episode.id),
-          db.items.getByEpisodeId(episode.id)
-        ])
-        totalLocations += locations.length
-        totalItems += items.length
-      }
       
       setStats({
         celebrities: celebrities.length,
         episodes: episodes.length,
-        locations: totalLocations,
-        items: totalItems,
+        locations: locations.length,
+        items: items.length,
         userPosts: userPosts.length
       })
       
       console.log('✅ Dashboard: Stats fetched successfully', {
         celebrities: celebrities.length,
         episodes: episodes.length,
-        locations: totalLocations,
-        items: totalItems,
+        locations: locations.length,
+        items: items.length,
         userPosts: userPosts.length
       })
     } catch (error) {
