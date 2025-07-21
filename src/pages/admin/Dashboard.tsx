@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Users, Calendar, MapPin, Package, MessageSquare } from 'lucide-react'
 import Card, { CardHeader, CardContent } from '../../components/ui/Card'
 import { db } from '../../lib/supabase'
@@ -14,43 +14,55 @@ export default function Dashboard() {
   
   const [loading, setLoading] = useState(true)
   
-  useEffect(() => {
-    async function fetchStats() {
-      try {
-        const [celebrities, episodes, userPosts] = await Promise.all([
-          db.celebrities.getAll(),
-          db.episodes.getAll(),
-          db.userPosts.getAll()
+  // ✅ useCallbackで無限ループを防ぐ
+  const fetchStats = useCallback(async () => {
+    try {
+      console.log('🔍 Dashboard: Fetching stats...')
+      
+      const [celebrities, episodes, userPosts] = await Promise.all([
+        db.celebrities.getAll(),
+        db.episodes.getAll(),
+        db.userPosts.getAll()
+      ])
+      
+      let totalLocations = 0
+      let totalItems = 0
+      
+      for (const episode of episodes) {
+        const [locations, items] = await Promise.all([
+          db.locations.getByEpisodeId(episode.id),
+          db.items.getByEpisodeId(episode.id)
         ])
-        
-        let totalLocations = 0
-        let totalItems = 0
-        
-        for (const episode of episodes) {
-          const [locations, items] = await Promise.all([
-            db.locations.getByEpisodeId(episode.id),
-            db.items.getByEpisodeId(episode.id)
-          ])
-          totalLocations += locations.length
-          totalItems += items.length
-        }
-        
-        setStats({
-          celebrities: celebrities.length,
-          episodes: episodes.length,
-          locations: totalLocations,
-          items: totalItems,
-          userPosts: userPosts.length
-        })
-      } catch (error) {
-        console.error('Error fetching stats:', error)
-      } finally {
-        setLoading(false)
+        totalLocations += locations.length
+        totalItems += items.length
       }
+      
+      setStats({
+        celebrities: celebrities.length,
+        episodes: episodes.length,
+        locations: totalLocations,
+        items: totalItems,
+        userPosts: userPosts.length
+      })
+      
+      console.log('✅ Dashboard: Stats fetched successfully', {
+        celebrities: celebrities.length,
+        episodes: episodes.length,
+        locations: totalLocations,
+        items: totalItems,
+        userPosts: userPosts.length
+      })
+    } catch (error) {
+      console.error('❌ Dashboard: Error fetching stats:', error)
+    } finally {
+      setLoading(false)
     }
-    
+  }, []) // ✅ 空の依存配列
+  
+  // ✅ 初回のみ実行
+  useEffect(() => {
     fetchStats()
-  }, [])
+  }, [fetchStats])
   
   const statCards = [
     { 
@@ -89,6 +101,7 @@ export default function Dashboard() {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <p className="ml-4 text-gray-600">統計データを読み込み中...</p>
       </div>
     )
   }

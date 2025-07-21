@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, ExternalLink, MapPin, Phone, Globe, Calendar, Tag, Clock } from 'lucide-react'
 import Button from '../../components/ui/Button'
 import Card, { CardHeader, CardContent } from '../../components/ui/Card'
-import { db } from '../../lib/supabase'
+import { supabase } from '../../lib/supabase'
 
 interface LocationWithDetails {
   id: string
@@ -18,7 +18,7 @@ interface LocationWithDetails {
   phone: string
   website: string
   reservation_url: string
-  opening_hours: any
+  opening_hours: Record<string, unknown>
   price_range: string
   description: string
   episode?: {
@@ -46,7 +46,10 @@ export default function LocationDetail() {
   
   async function fetchLocation(id: string) {
     try {
-      const { data, error } = await db.supabase
+      console.log('🔍 Fetching location with ID:', id)
+      
+      // ✅ 修正: supabaseクライアントを直接使用
+      const { data, error } = await supabase
         .from('locations')
         .select(`
           *,
@@ -60,7 +63,12 @@ export default function LocationDetail() {
         .eq('id', id)
         .single()
       
-      if (error) throw error
+      if (error) {
+        console.error('❌ Supabase error:', error)
+        throw error
+      }
+      
+      console.log('✅ Successfully fetched location:', data)
       setLocation(data)
     } catch (error) {
       console.error('Error fetching location:', error)

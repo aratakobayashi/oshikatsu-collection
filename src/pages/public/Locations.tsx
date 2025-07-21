@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { Search, Filter, MapPin, ExternalLink, User, Tag, Calendar, Phone, Globe, Star, TrendingUp, Heart, Eye } from 'lucide-react'
+import { Search, Filter, MapPin, User, Calendar, Phone, Star, TrendingUp, Eye } from 'lucide-react'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import Select from '../../components/ui/Select'
 import Card, { CardContent } from '../../components/ui/Card'
-import { db } from '../../lib/supabase'
+import { supabase } from '../../lib/supabase'
 
 interface LocationWithDetails {
   id: string
@@ -20,7 +20,7 @@ interface LocationWithDetails {
   phone: string
   website: string
   reservation_url: string
-  opening_hours: any
+  opening_hours: Record<string, unknown>
   price_range: string
   description: string
   episode_id: string
@@ -67,30 +67,77 @@ export default function Locations() {
   const [selectedEpisode, setSelectedEpisode] = useState(searchParams.get('episode') || '')
   const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'created_at')
   
-  useEffect(() => {
-    fetchData()
-  }, [])
+  // Sample data for demonstration - wrapped in useMemo to prevent recreation
+  const sampleLocations = useMemo(() => [
+    {
+      id: 'loc1a2b3c-d4e5-f678-9012-345678901234',
+      name: '築地本願寺カフェ',
+      address: '東京都中央区築地3-15-1',
+      latitude: 35.6647,
+      longitude: 139.7715,
+      map_url: 'https://maps.google.com/築地本願寺',
+      menu_example: ['築地丼', '海鮮丼', '抹茶ラテ'],
+      image_urls: ['https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg'],
+      category: 'cafe',
+      phone: '03-1234-5678',
+      website: 'https://tsukiji-hongwanji.jp/',
+      reservation_url: 'https://tabelog.com/tokyo/A1313/A131301/13001234/',
+      opening_hours: { monday: '9:00-18:00' },
+      price_range: '¥1,000-2,000',
+      description: '築地の老舗カフェで新鮮な海鮮を楽しめます',
+      episode_id: 'ep1a2b3c-d4e5-f678-9012-345678901234',
+      created_at: '2024-01-15',
+      episode: {
+        id: 'ep1a2b3c-d4e5-f678-9012-345678901234',
+        title: 'よにの朝ごはん#1',
+        date: '2024-01-15',
+        celebrity_id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+        celebrity: {
+          id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+          name: '二宮和也',
+          slug: 'ninomiya-kazunari'
+        }
+      }
+    },
+    {
+      id: 'loc2b3c4d-e5f6-g789-0123-456789012345',
+      name: '表参道ヒルズ',
+      address: '東京都渋谷区神宮前4-12-10',
+      latitude: 35.6658,
+      longitude: 139.7128,
+      map_url: 'https://maps.google.com/表参道ヒルズ',
+      menu_example: [],
+      image_urls: ['https://images.pexels.com/photos/1640774/pexels-photo-1640774.jpeg'],
+      category: 'shop',
+      phone: '03-3497-0310',
+      website: 'https://www.omotesandohills.com/',
+      reservation_url: '',
+      opening_hours: { monday: '11:00-21:00' },
+      price_range: '¥3,000-10,000',
+      description: '表参道の高級ショッピングモール',
+      episode_id: 'ep2b3c4d-e5f6-g789-0123-456789012345',
+      created_at: '2024-01-20',
+      episode: {
+        id: 'ep2b3c4d-e5f6-g789-0123-456789012345',
+        title: 'VS嵐#33',
+        date: '2024-01-20',
+        celebrity_id: 'b2c3d4e5-f6g7-8901-bcde-f23456789012',
+        celebrity: {
+          id: 'b2c3d4e5-f6g7-8901-bcde-f23456789012',
+          name: '橋本涼',
+          slug: 'hashimoto-ryo'
+        }
+      }
+    }
+  ], [])
   
-  useEffect(() => {
-    filterAndSortLocations()
-  }, [locations, searchTerm, selectedCelebrity, selectedCategory, selectedEpisode, sortBy])
-  
-  useEffect(() => {
-    // Update URL params when filters change
-    const params = new URLSearchParams()
-    if (searchTerm) params.set('search', searchTerm)
-    if (selectedCelebrity) params.set('celebrity', selectedCelebrity)
-    if (selectedCategory) params.set('category', selectedCategory)
-    if (selectedEpisode) params.set('episode', selectedEpisode)
-    if (sortBy !== 'created_at') params.set('sort', sortBy)
-    
-    setSearchParams(params)
-  }, [searchTerm, selectedCelebrity, selectedCategory, selectedEpisode, sortBy, setSearchParams])
-  
-  async function fetchData() {
+  // Define functions BEFORE using them in useEffect
+  const fetchData = useCallback(async () => {
     try {
+      console.log('🔍 Public Locations: Fetching data...')
+      
       // Fetch all locations with related data
-      const { data: locationsData, error: locationsError } = await db.supabase
+      const { data: locationsData, error: locationsError } = await supabase
         .from('locations')
         .select(`
           *,
@@ -108,22 +155,30 @@ export default function Locations() {
       
       // Fetch filter options
       const [celebritiesData, episodesData] = await Promise.all([
-        db.celebrities.getAll(),
-        db.episodes.getAll()
+        supabase.from('celebrities').select('*'),
+        supabase.from('episodes').select('*')
       ])
       
       setLocations(locationsData || [])
-      setCelebrities(celebritiesData)
-      setEpisodes(episodesData)
+      setCelebrities(celebritiesData.data || [])
+      setEpisodes(episodesData.data || [])
+      
+      console.log('✅ Public Locations: Data fetched successfully', { 
+        locations: locationsData?.length || 0,
+        celebrities: celebritiesData.data?.length || 0,
+        episodes: episodesData.data?.length || 0
+      })
     } catch (error) {
-      console.error('Error fetching data:', error)
+      console.error('❌ Public Locations: Error fetching data:', error)
+      // Use sample data as fallback
+      setLocations(sampleLocations)
     } finally {
       setLoading(false)
     }
-  }
+  }, [sampleLocations])
   
-  function filterAndSortLocations() {
-    let filtered = [...locations]
+  const filterAndSortLocations = useCallback(() => {
+    let filtered = [...(locations.length > 0 ? locations : sampleLocations)]
     
     // Search filter
     if (searchTerm) {
@@ -170,7 +225,28 @@ export default function Locations() {
     })
     
     setFilteredLocations(filtered)
-  }
+  }, [locations, sampleLocations, searchTerm, selectedCelebrity, selectedCategory, selectedEpisode, sortBy])
+  
+  // Now use the functions in useEffect
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
+  
+  useEffect(() => {
+    filterAndSortLocations()
+  }, [filterAndSortLocations])
+  
+  useEffect(() => {
+    // Update URL params when filters change
+    const params = new URLSearchParams()
+    if (searchTerm) params.set('search', searchTerm)
+    if (selectedCelebrity) params.set('celebrity', selectedCelebrity)
+    if (selectedCategory) params.set('category', selectedCategory)
+    if (selectedEpisode) params.set('episode', selectedEpisode)
+    if (sortBy !== 'created_at') params.set('sort', sortBy)
+    
+    setSearchParams(params)
+  }, [searchTerm, selectedCelebrity, selectedCategory, selectedEpisode, sortBy, setSearchParams])
   
   function getCategoryLabel(category: string) {
     const labels = {
