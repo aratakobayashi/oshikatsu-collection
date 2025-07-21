@@ -1,123 +1,299 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Users, Calendar, MapPin, Package, MessageSquare } from 'lucide-react'
+import { Plus, Edit, Trash2, ExternalLink } from 'lucide-react'
+import Button from '../../components/ui/Button'
+import Input from '../../components/ui/Input'
+import Select from '../../components/ui/Select'
 import Card, { CardHeader, CardContent } from '../../components/ui/Card'
 import { db } from '../../lib/supabase'
 
-export default function Dashboard() {
-  const [stats, setStats] = useState({
-    celebrities: 0,
-    episodes: 0,
-    locations: 0,
-    items: 0,
-    userPosts: 0
+// 型定義を直接定義
+interface Item {
+  id: string
+  episode_id: string
+  name: string
+  brand: string
+  affiliate_url: string
+  image_url: string
+  price: number
+  category?: string
+  subcategory?: string
+  currency?: string
+  description?: string
+  color?: string
+  size?: string
+  material?: string
+  is_available?: boolean
+  created_at?: string
+  updated_at?: string
+}
+
+interface Episode {
+  id: string
+  title: string
+  celebrity?: {
+    id: string
+    name: string
+    slug: string
+  }
+}
+
+export default function Items() {
+  const [items, setItems] = useState<Item[]>([])
+  const [episodes, setEpisodes] = useState<Episode[]>([])
+  const [loading, setLoading] = useState(true)
+  const [showForm, setShowForm] = useState(false)
+  const [editingItem, setEditingItem] = useState<Item | null>(null)
+  const [formData, setFormData] = useState({
+    episode_id: '',
+    name: '',
+    brand: '',
+    affiliate_url: '',
+    image_url: '',
+    price: ''
   })
   
-  const [loading, setLoading] = useState(true)
-  
-  // ✅ useCallbackで無限ループを防ぐ
-  const fetchStats = useCallback(async () => {
+  // ✅ 依存関係を空にして無限ループを防ぐ
+  const fetchData = useCallback(async () => {
     try {
-      console.log('🔍 Dashboard: Fetching stats...')
+      console.log('🔍 Admin Items: Fetching data...')
       
       // ✅ 修正: 1回のクエリで全データを取得
-      const [celebrities, episodes, userPosts, locations, items] = await Promise.all([
-        db.celebrities.getAll(),
+      const [episodesData, itemsData] = await Promise.all([
         db.episodes.getAll(),
-        db.userPosts.getAll(),
-        db.locations.getAll(), // ✅ 全ロケーションを一度に取得
-        db.items.getAll()      // ✅ 全アイテムを一度に取得
+        db.items.getAll() // ✅ 全アイテムを一度に取得
       ])
       
-      setStats({
-        celebrities: celebrities.length,
-        episodes: episodes.length,
-        locations: locations.length,
-        items: items.length,
-        userPosts: userPosts.length
-      })
+      setEpisodes(episodesData)
+      setItems(itemsData)
       
-      console.log('✅ Dashboard: Stats fetched successfully', {
-        celebrities: celebrities.length,
-        episodes: episodes.length,
-        locations: locations.length,
-        items: items.length,
-        userPosts: userPosts.length
+      console.log('✅ Admin Items: Data fetched successfully', { 
+        items: itemsData.length, 
+        episodes: episodesData.length 
       })
     } catch (error) {
-      console.error('❌ Dashboard: Error fetching stats:', error)
+      console.error('❌ Admin Items: Error fetching data:', error)
     } finally {
       setLoading(false)
     }
   }, []) // ✅ 空の依存配列
   
+  const resetForm = useCallback(() => {
+    setShowForm(false)
+    setEditingItem(null)
+    setFormData({
+      episode_id: '',
+      name: '',
+      brand: '',
+      affiliate_url: '',
+      image_url: '',
+      price: ''
+    })
+  }, [])
+  
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    try {
+      const itemData = {
+        ...formData,
+        price: formData.price ? parseFloat(formData.price) : 0
+      }
+      
+      if (editingItem) {
+        await db.items.update(editingItem.id, itemData)
+      } else {
+        await db.items.create(itemData)
+      }
+      
+      await fetchData()
+      resetForm()
+    } catch (error) {
+      console.error('Error saving item:', error)
+    }
+  }, [formData, editingItem, fetchData, resetForm])
+  
+  const handleDelete = useCallback(async (id: string) => {
+    if (!confirm('このアイテムを削除してもよろしいですか？')) return
+    
+    try {
+      await db.items.delete(id)
+      await fetchData()
+    } catch (error) {
+      console.error('Error deleting item:', error)
+    }
+  }, [fetchData])
+  
+  const startEdit = useCallback((item: Item) => {
+    setEditingItem(item)
+    setFormData({
+      episode_id: item.episode_id,
+      name: item.name,
+      brand: item.brand,
+      affiliate_url: item.affiliate_url,
+      image_url: item.image_url,
+      price: item.price.toString()
+    })
+    setShowForm(true)
+  }, [])
+  
   // ✅ 初回のみ実行
   useEffect(() => {
-    fetchStats()
-  }, [fetchStats])
-  
-  const statCards = [
-    { 
-      title: '推し', 
-      value: stats.celebrities, 
-      icon: Users, 
-      color: 'text-blue-600 bg-blue-100' 
-    },
-    { 
-      title: 'エピソード', 
-      value: stats.episodes, 
-      icon: Calendar, 
-      color: 'text-green-600 bg-green-100' 
-    },
-    { 
-      title: 'ロケーション', 
-      value: stats.locations, 
-      icon: MapPin, 
-      color: 'text-purple-600 bg-purple-100' 
-    },
-    { 
-      title: 'アイテム', 
-      value: stats.items, 
-      icon: Package, 
-      color: 'text-orange-600 bg-orange-100' 
-    },
-    { 
-      title: 'ユーザー投稿', 
-      value: stats.userPosts, 
-      icon: MessageSquare, 
-      color: 'text-pink-600 bg-pink-100' 
-    },
-  ]
+    fetchData()
+  }, [fetchData])
   
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-        <p className="ml-4 text-gray-600">統計データを読み込み中...</p>
+        <p className="ml-4 text-gray-600">データを読み込み中...</p>
       </div>
     )
   }
   
   return (
     <div className="space-y-8">
-      <div>
-        <h2 className="text-3xl font-bold text-gray-900">管理ダッシュボード</h2>
-        <p className="text-gray-600 mt-2">推し活検索システムの管理画面</p>
+      <div className="flex justify-between items-center">
+        <div>
+          <h2 className="text-3xl font-bold text-gray-900">アイテム</h2>
+          <p className="text-gray-600 mt-2">エピソードで紹介された商品とアイテムを管理</p>
+        </div>
+        <Button 
+          icon={Plus} 
+          onClick={() => setShowForm(true)}
+          className="bg-blue-600 hover:bg-blue-700"
+        >
+          アイテムを追加
+        </Button>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {statCards.map((stat) => {
-          const Icon = stat.icon
+      {showForm && (
+        <Card>
+          <CardHeader>
+            <h3 className="text-lg font-semibold text-gray-900">
+              {editingItem ? 'アイテムを編集' : '新しいアイテムを追加'}
+            </h3>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Select
+                  label="エピソード"
+                  value={formData.episode_id}
+                  onChange={(e) => setFormData(prev => ({ ...prev, episode_id: e.target.value }))}
+                  options={[
+                    { value: '', label: 'エピソードを選択' },
+                    ...episodes.map(e => ({ value: e.id, label: `${e.title} (${e.celebrity?.name})` }))
+                  ]}
+                  required
+                />
+                
+                <Input
+                  label="名前"
+                  value={formData.name}
+                  onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                  required
+                />
+                
+                <Input
+                  label="ブランド"
+                  value={formData.brand}
+                  onChange={(e) => setFormData(prev => ({ ...prev, brand: e.target.value }))}
+                />
+                
+                <Input
+                  label="価格"
+                  type="number"
+                  step="0.01"
+                  value={formData.price}
+                  onChange={(e) => setFormData(prev => ({ ...prev, price: e.target.value }))}
+                />
+              </div>
+              
+              <Input
+                label="アフィリエイトURL"
+                value={formData.affiliate_url}
+                onChange={(e) => setFormData(prev => ({ ...prev, affiliate_url: e.target.value }))}
+                placeholder="https://example.com/affiliate-link"
+              />
+              
+              <Input
+                label="画像URL"
+                value={formData.image_url}
+                onChange={(e) => setFormData(prev => ({ ...prev, image_url: e.target.value }))}
+                placeholder="https://example.com/image.jpg"
+              />
+              
+              <div className="flex space-x-4">
+                <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
+                  {editingItem ? '更新' : '作成'}
+                </Button>
+                <Button type="button" variant="outline" onClick={resetForm}>
+                  キャンセル
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
+      )}
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {items.map((item) => {
+          const episode = episodes.find(e => e.id === item.episode_id)
           return (
-            <Card key={stat.title}>
+            <Card key={item.id} className="hover:shadow-md transition-shadow">
               <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">{stat.title}</p>
-                    <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+                <div className="flex items-start space-x-4">
+                  {item.image_url && (
+                    <img
+                      src={item.image_url}
+                      alt={item.name}
+                      className="w-16 h-16 rounded-lg object-cover"
+                    />
+                  )}
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-gray-900">{item.name}</h3>
+                    {item.brand && (
+                      <p className="text-sm text-gray-500">{item.brand}</p>
+                    )}
+                    <p className="text-sm text-gray-500 mt-1">
+                      {episode?.title} • {episode?.celebrity?.name}
+                    </p>
+                    {item.price > 0 && (
+                      <p className="text-lg font-bold text-green-600 mt-2">
+                        ¥{item.price.toLocaleString()}
+                      </p>
+                    )}
+                    {item.affiliate_url && (
+                      <a
+                        href={item.affiliate_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 mt-2"
+                      >
+                        <ExternalLink className="h-4 w-4 mr-1" />
+                        商品を見る
+                      </a>
+                    )}
                   </div>
-                  <div className={`p-3 rounded-full ${stat.color}`}>
-                    <Icon className="h-6 w-6" />
-                  </div>
+                </div>
+                
+                <div className="flex justify-end space-x-2 mt-4">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    icon={Edit}
+                    onClick={() => startEdit(item)}
+                  >
+                    編集
+                  </Button>
+                  <Button 
+                    variant="danger" 
+                    size="sm" 
+                    icon={Trash2}
+                    onClick={() => handleDelete(item.id)}
+                  >
+                    削除
+                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -125,46 +301,13 @@ export default function Dashboard() {
         })}
       </div>
       
-      <Card>
-        <CardHeader>
-          <h3 className="text-lg font-semibold text-gray-900">クイックアクション</h3>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <a
-              href="/admin/celebrities"
-              className="block p-4 text-center bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
-            >
-              <Users className="h-8 w-8 text-blue-600 mx-auto mb-2" />
-              <p className="text-sm font-medium text-blue-900">推し管理</p>
-            </a>
-            
-            <a
-              href="/admin/episodes"
-              className="block p-4 text-center bg-green-50 rounded-lg hover:bg-green-100 transition-colors"
-            >
-              <Calendar className="h-8 w-8 text-green-600 mx-auto mb-2" />
-              <p className="text-sm font-medium text-green-900">エピソード管理</p>
-            </a>
-            
-            <a
-              href="/admin/locations"
-              className="block p-4 text-center bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
-            >
-              <MapPin className="h-8 w-8 text-purple-600 mx-auto mb-2" />
-              <p className="text-sm font-medium text-purple-900">ロケーション管理</p>
-            </a>
-            
-            <a
-              href="/admin/posts"
-              className="block p-4 text-center bg-pink-50 rounded-lg hover:bg-pink-100 transition-colors"
-            >
-              <MessageSquare className="h-8 w-8 text-pink-600 mx-auto mb-2" />
-              <p className="text-sm font-medium text-pink-900">ユーザー投稿管理</p>
-            </a>
-          </div>
-        </CardContent>
-      </Card>
+      {items.length === 0 && (
+        <Card>
+          <CardContent className="p-12 text-center">
+            <p className="text-gray-500">アイテムが見つかりません。最初のアイテムを作成して開始してください。</p>
+          </CardContent>
+        </Card>
+      )}
     </div>
   )
 }
