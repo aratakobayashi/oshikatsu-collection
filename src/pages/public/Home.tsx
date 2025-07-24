@@ -12,7 +12,6 @@ type Celebrity = {
   slug: string
   image_url?: string | null
   group_name?: string | null
-  [key: string]: any
 }
 
 type Episode = {
@@ -22,7 +21,6 @@ type Episode = {
   description?: string | null
   thumbnail_url?: string | null
   video_url?: string | null
-  [key: string]: any
 }
 
 // Star Logo Component
@@ -447,7 +445,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
+    {/* Footer */}
       <footer className="bg-gray-900 text-white py-16">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
@@ -491,18 +489,29 @@ export default function Home() {
             <div>
               <h3 className="text-lg font-semibold mb-6">サポート</h3>
               <ul className="space-y-4">
+                <li><Link to="/about" className="text-gray-400 hover:text-white transition-colors">サイト概要</Link></li>
+                <li><Link to="/contact" className="text-gray-400 hover:text-white transition-colors">お問い合わせ</Link></li>
                 <li><Link to="/how-to-use" className="text-gray-400 hover:text-white transition-colors">使い方</Link></li>
                 <li><Link to="/faq" className="text-gray-400 hover:text-white transition-colors">よくある質問</Link></li>
                 <li><a href="https://oshikatsu-guide.com/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">推し活ガイドブック</a></li>
-                <li><Link to="/contact" className="text-gray-400 hover:text-white transition-colors">お問い合わせ</Link></li>
               </ul>
             </div>
           </div>
           
-          <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-            <p className="text-gray-400">
-              © 2024 推し活コレクション. All rights reserved.
-            </p>
+          <div className="border-t border-gray-800 mt-12 pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+              <p className="text-gray-400">
+                © 2024 推し活コレクション. All rights reserved.
+              </p>
+              <div className="flex space-x-6 text-sm">
+                <Link to="/privacy-policy" className="text-gray-400 hover:text-white transition-colors">
+                  プライバシーポリシー
+                </Link>
+                <Link to="/terms-of-service" className="text-gray-400 hover:text-white transition-colors">
+                  利用規約
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </footer>

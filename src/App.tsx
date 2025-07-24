@@ -30,6 +30,12 @@ import Submit from './pages/public/Submit'
 import Login from './pages/public/Login'
 import Register from './pages/public/Register'
 
+// Legal Pages
+import { PrivacyPolicy } from './components/legal/PrivacyPolicy'
+import { TermsOfService } from './components/legal/TermsOfService'  
+import { Contact } from './components/legal/Contact'
+import { About } from './components/legal/About'
+
 function App() {
   return (
     <Router>
@@ -111,6 +117,13 @@ function App() {
             </PublicProtectedRoute>
           </Layout>
         } />
+        
+        {/* Legal Routes */}
+        <Route path="/privacy-policy" element={<Layout><PrivacyPolicy /></Layout>} />
+        <Route path="/terms-of-service" element={<Layout><TermsOfService /></Layout>} />
+        <Route path="/contact" element={<Layout><Contact /></Layout>} />
+        <Route path="/about" element={<Layout><About /></Layout>} />
+        
       </Routes>
     </Router>
   )

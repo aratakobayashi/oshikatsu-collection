@@ -1,0 +1,281 @@
+[
+  {
+    "episode_id": "3862cd9f-3368-49b3-9a3b-ec864a7d1965",
+    "extracted_items": [],
+    "extracted_locations": [
+      {
+        "name": "探訪蒼穹作戦 in 函館 2024」出演. 7月. ・「蒼穹のファフナー20周年",
+        "category": "filming_location",
+        "confidence": "high",
+        "source_text": "ロケ地探訪蒼穹作戦 in 函館 2024」出演. 7月. ・「蒼穹のファフナー20周年",
+        "source_url": "https://angela-official.com/profile"
+      },
+      {
+        "name": "利用サービスを開始 ～スタイリッシュで先進的な空間で、多様な ... アニサマの",
+        "category": "filming_location",
+        "confidence": "high",
+        "source_text": "ロケ地利用サービスを開始 ～スタイリッシュで先進的な空間で、多様な ... アニサマの",
+        "source_url": "https://www.skyperfectjsat.space/news/sjc/outline/"
+      },
+      {
+        "name": "digimon real scene visit ... Butter-Fly",
+        "category": "filming_location",
+        "confidence": "high",
+        "source_text": "ロケ地digimon real scene visit ... Butter-Fly",
+        "source_url": "https://www.youtube.com/watch?v=s4llQvvIixo"
+      },
+      {
+        "name": "カフェ",
+        "category": "cafe",
+        "confidence": "medium",
+        "source_text": "... Jul 20, 2022 ... ... カフェ",
+        "source_url": "https://www.instagram.com/p/CgQX1CvJsZY/"
+      }
+    ],
+    "extraction_stats": {
+      "items_found": 0,
+      "locations_found": 4,
+      "extraction_accuracy": 0.35,
+      "processing_time": 9
+    }
+  },
+  {
+    "episode_id": "0726da9e-e51a-41c6-9f98-94b9d5bd339b",
+    "extracted_items": [
+      {
+        "brand": "プロモT",
+        "name": "シャツ",
+        "price": 0,
+        "confidence": "high",
+        "source_text": "プロモTシャツ [L] トップス 20年以上前のヴィンテージ・アイテムとなりますので、当方のプロフィールを ... 自然な着用感の他、フロントのネックリブとの接合部分に2箇所の縫い漏らし、背面 ...",
+        "source_url": "https://crossfitreykjavik.is/590441766"
+      },
+      {
+        "brand": "服・",
+        "name": "バッグ",
+        "price": 0,
+        "confidence": "high",
+        "source_text": "服・バッグ ... Sep 1, 2023 ... [マイハル 衣装] 広瀬アリス (バッグ). トートバッグ 引用:https://wear.jp. Actually（アクチュアリー） ... 着用アイテム [服・バッグ・アクセサリー等].",
+        "source_url": "https://fashion-express.hatenablog.jp/entry/maiharu-hirosealice02"
+      },
+      {
+        "brand": "Actually",
+        "name": "バッグ",
+        "price": 161,
+        "confidence": "high",
+        "source_text": "Actuallyのバッグを使ったコーディネート(ZOZOTOWN Yahoo!店 ... モデル情報: 161cm. 着用アイテム. ショルダーバッグ バッグ フェイクレザー ポケットショルダー レディース メンズ｜ZOZOTOWN Yahoo!店. ショルダーバッグ バッグ ...",
+        "source_url": "https://store.shopping.yahoo.co.jp/coordinate/fashion/zozo?coord=c15e449c7734823c87d8d56bf655fbf45336b55c0b1d82513875b26d7abcee20"
+      },
+      {
+        "brand": "キャンバストート",
+        "name": "バッグ",
+        "price": 1980,
+        "confidence": "high",
+        "source_text": "キャンバストートバッグBIRTHDAY ... Actually キャンバストートバッグBIRTHDAY BAR. Actually キャンバストートバッグ. ￥1,980.",
+        "source_url": "https://www.palcloset.jp/addons/coordinate/detail/?acd=50317139&b=birthdaybar"
+      }
+    ],
+    "extracted_locations": [
+      {
+        "name": "カフェ",
+        "category": "cafe",
+        "confidence": "medium",
+        "source_text": "アザーカット 9thBDライブ衣装 1枚 ... カフェ",
+        "source_url": "https://sonapguinee.com/?o=92828185115200&channel=ff6126&from=goods.php%3Fid%3D1851152-487%26name%3D%E4%B9%83%E6%9C%A8%E5%9D%8246+%E7%94%9F%E5%86%99%E7%9C%9F+%E6%97%A9%E5%B7%9D%E8%81%96%E6%9D%A5+%E3%82%A2%E3%82%B6%E3%83%BC%E3%82%AB%E3%83%83%E3%83%88+9thBD%E3%83%A9%E3%82%A4%E3%83%96%E8%A1%A3%E8%A3%85+1%E6%9E%9A"
+      },
+      {
+        "name": "に行ってきた（齋藤飛鳥 ... Nov 7, 2023 ... 急遽作られたとい",
+        "category": "filming_location",
+        "confidence": "high",
+        "source_text": "ロケ地に行ってきた（齋藤飛鳥 ... Nov 7, 2023 ... 急遽作られたとい",
+        "source_url": "https://hinatafan.com/1065/"
+      },
+      {
+        "name": "巡りしてきました",
+        "category": "filming_location",
+        "confidence": "high",
+        "source_text": "ロケ地巡りしてきました",
+        "source_url": "https://ameblo.jp/pennylane0116/entry-11037143866.html"
+      },
+      {
+        "name": "で興奮する ... Oct 27, 2021 ... ▽川沿いを散歩して映画のロ",
+        "category": "filming_location",
+        "confidence": "high",
+        "source_text": "撮影地で興奮する ... Oct 27, 2021 ... ▽川沿いを散歩して映画のロ",
+        "source_url": "https://note.com/22vingt_deux/n/n20a8e3f4358b"
+      },
+      {
+        "name": "... May 6, 2022 ... フラワーラインのロケ地巡りで訪れた場所.",
+        "category": "filming_location",
+        "confidence": "high",
+        "source_text": "ロケ地 ... May 6, 2022 ... フラワーラインのロケ地巡りで訪れた場所.",
+        "source_url": "https://tsuredure-nogi-blog.com/29th-rokechi-flower-line/"
+      },
+      {
+        "name": "まとめ - Another View Nov 24, 2022 ... ロケ地：",
+        "category": "filming_location",
+        "confidence": "high",
+        "source_text": "ロケ地まとめ - Another View Nov 24, 2022 ... ロケ地：",
+        "source_url": "https://anotherview-location.com/mv-nogizaka46-actually/"
+      },
+      {
+        "name": "新宿区 発売年月日： ... メンバーが踊っている場所. 0",
+        "category": "hotel",
+        "confidence": "high",
+        "source_text": "東京都新宿区 発売年月日： ... メンバーが踊っている場所. 0",
+        "source_url": "https://anotherview-location.com/mv-nogizaka46-actually/"
+      },
+      {
+        "name": "トップ10 (Top 10 ... WatchMojo 映画 ホラー 撮影 階段",
+        "category": "filming_location",
+        "confidence": "high",
+        "source_text": "ロケ地トップ10 (Top 10 ... WatchMojo 映画 ホラー 撮影 階段",
+        "source_url": "https://jp.voicetube.com/videos/171526"
+      },
+      {
+        "name": "トップ10 (Top 10 Horror Movie Locations You",
+        "category": "filming_location",
+        "confidence": "high",
+        "source_text": "ロケ地トップ10 (Top 10 Horror Movie Locations You",
+        "source_url": "https://jp.voicetube.com/videos/171526"
+      },
+      {
+        "name": "）まとめ 乃木坂46の4期生弓木奈於さんが撮影やロケ、プライベートで訪れられた場",
+        "category": "filming_location",
+        "confidence": "high",
+        "source_text": "ロケ地）まとめ 乃木坂46の4期生弓木奈於さんが撮影やロケ、プライベートで訪れられた場",
+        "source_url": "https://nao-welina.com/place/"
+      },
+      {
+        "name": "巡り：「ノッティングヒルの恋人」、「ラブ ... Aug 7, 2014 ...",
+        "category": "filming_location",
+        "confidence": "high",
+        "source_text": "ロケ地巡り：「ノッティングヒルの恋人」、「ラブ ... Aug 7, 2014 ...",
+        "source_url": "https://oxonian.hatenadiary.org/entry/20140807/1407377469"
+      },
+      {
+        "name": "レストラン",
+        "category": "restaurant",
+        "confidence": "medium",
+        "source_text": "· レストラン",
+        "source_url": "https://jp.pinterest.com/pin/273664114833490942/"
+      }
+    ],
+    "extraction_stats": {
+      "items_found": 4,
+      "locations_found": 12,
+      "extraction_accuracy": 1,
+      "processing_time": 5
+    }
+  },
+  {
+    "episode_id": "329c0a08-a582-4120-8bc2-200286767e02",
+    "extracted_items": [],
+    "extracted_locations": [
+      {
+        "name": "・撮影場所はここ!? ... 衣装はどこで ...",
+        "category": "filming_location",
+        "confidence": "high",
+        "source_text": "ロケ地・撮影場所はここ!? ... 衣装はどこで ...",
+        "source_url": "https://locatetrek.com/sitemap/"
+      },
+      {
+        "name": "情報・TOPページ ... Dec 29, 2024 ... が現地に赴き確認し",
+        "category": "filming_location",
+        "confidence": "high",
+        "source_text": "ロケ地情報・TOPページ ... Dec 29, 2024 ... が現地に赴き確認し",
+        "source_url": "https://note.com/happy_aid/n/n1ab4b0483fcf"
+      },
+      {
+        "name": "）が混合しています",
+        "category": "filming_location",
+        "confidence": "high",
+        "source_text": "ロケ地）が混合しています",
+        "source_url": "https://note.com/happy_aid/n/n1ab4b0483fcf"
+      },
+      {
+        "name": "の1つとなった丸の内TOEIが長い歴史に幕を下ろそうとしています…",
+        "category": "filming_location",
+        "confidence": "high",
+        "source_text": "ロケ地の1つとなった丸の内TOEIが長い歴史に幕を下ろそうとしています…",
+        "source_url": "https://x.com/oshinoko_lapj"
+      },
+      {
+        "name": "としてご利用いただきました ... 周辺エリアneighborhood · 施設",
+        "category": "filming_location",
+        "confidence": "high",
+        "source_text": "ロケ地としてご利用いただきました ... 周辺エリアneighborhood · 施設",
+        "source_url": "https://gl-terrace.com/"
+      },
+      {
+        "name": "の一つ喫茶 ... Jan 3, 2025 ... ... ところ、『#銀魂』ミ",
+        "category": "filming_location",
+        "confidence": "high",
+        "source_text": "ロケ地の一つ喫茶 ... Jan 3, 2025 ... ... ところ、『#銀魂』ミ",
+        "source_url": "https://x.com/hiro_81_98/status/1875183757168459924"
+      },
+      {
+        "name": "・撮影場所はここ!?齋藤飛鳥主演 ... Jan 27, 2024 ... まず",
+        "category": "filming_location",
+        "confidence": "high",
+        "source_text": "ロケ地・撮影場所はここ!?齋藤飛鳥主演 ... Jan 27, 2024 ... まず",
+        "source_url": "https://locatetrek.com/oshinoko_jissya_loca/"
+      },
+      {
+        "name": "として使われる可能性が高そうです",
+        "category": "filming_location",
+        "confidence": "high",
+        "source_text": "ロケ地として使われる可能性が高そうです",
+        "source_url": "https://locatetrek.com/oshinoko_jissya_loca/"
+      },
+      {
+        "name": "にもなった丸の内TOEIの舞台へ凱旋",
+        "category": "filming_location",
+        "confidence": "high",
+        "source_text": "ロケ地にもなった丸の内TOEIの舞台へ凱旋",
+        "source_url": "https://www.toei.co.jp/entertainment/news/detail/1246110_3483.html"
+      },
+      {
+        "name": "にもなった「丸の内TOEI」に櫻井海音、齊藤なぎさ、原菜乃華 、 ...",
+        "category": "filming_location",
+        "confidence": "high",
+        "source_text": "ロケ地にもなった「丸の内TOEI」に櫻井海音、齊藤なぎさ、原菜乃華 、 ...",
+        "source_url": "https://www.youtube.com/@oshinoko_lapj/posts"
+      },
+      {
+        "name": "の一つ喫茶 ... Jan 3, 2025 ... 映画『#推しの子 -The",
+        "category": "filming_location",
+        "confidence": "high",
+        "source_text": "ロケ地の一つ喫茶 ... Jan 3, 2025 ... 映画『#推しの子 -The",
+        "source_url": "https://x.com/hiro_81_98/status/1875183757168459924"
+      },
+      {
+        "name": "の一つ喫茶シルビア西新井店へ",
+        "category": "shop",
+        "confidence": "medium",
+        "source_text": "ロケ地の一つ喫茶シルビア西新井店へ",
+        "source_url": "https://x.com/hiro_81_98/status/1875183757168459924"
+      },
+      {
+        "name": "カフェ",
+        "category": "cafe",
+        "confidence": "medium",
+        "source_text": "12月20日（金）より全国にて公開 ... シネマカフェ",
+        "source_url": "https://www.cinemacafe.net/article/2024/12/05/95868.html"
+      },
+      {
+        "name": "情報・TOPページ ... Dec 29, 2024 ... 映画『The Fi",
+        "category": "filming_location",
+        "confidence": "high",
+        "source_text": "ロケ地情報・TOPページ ... Dec 29, 2024 ... 映画『The Fi",
+        "source_url": "https://note.com/happy_aid/n/n1ab4b0483fcf"
+      }
+    ],
+    "extraction_stats": {
+      "items_found": 0,
+      "locations_found": 14,
+      "extraction_accuracy": 0.7,
+      "processing_time": 3
+    }
+  }
+]
