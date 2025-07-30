@@ -1,5 +1,4 @@
 // src/components/legal/TermsOfService.tsx
-import React from 'react'
 
 export const TermsOfService = () => {
   return (

@@ -1,5 +1,4 @@
 // src/components/legal/PrivacyPolicy.tsx
-import React from 'react'
 
 export const PrivacyPolicy = () => {
   return (
