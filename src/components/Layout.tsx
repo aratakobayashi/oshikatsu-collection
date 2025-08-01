@@ -1,185 +1,291 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { useAuth } from './AuthProvider'
-import { 
-  Home,
-  Users,
-  HelpCircle,
-  ExternalLink,
-  MessageSquare
-} from 'lucide-react'
-
-// Star Logo Component
-const StarLogo = ({ className = "h-8 w-8" }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-  </svg>
-)
+import { Home, Users, Search, MessageSquare, Plus, Menu, X, Heart, Star, Package, MapPin, ExternalLink } from 'lucide-react'
 
 interface LayoutProps {
   children: React.ReactNode
 }
 
-export default function Layout({ children }: LayoutProps) {
+const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const location = useLocation()
-  const { user, signOut } = useAuth()
+
+  const navigationItems = [
+    { id: 'home', path: '/', icon: Home, label: 'ホーム', color: 'text-blue-500', bgColor: 'bg-blue-50' },
+    { id: 'celebrities', path: '/celebrities', icon: Users, label: '推し一覧', color: 'text-rose-500', bgColor: 'bg-rose-50' },
+    { id: 'items', path: '/items', icon: Package, label: 'アイテム', color: 'text-orange-500', bgColor: 'bg-orange-50' },
+    { id: 'posts', path: '/posts', icon: MessageSquare, label: '質問', color: 'text-green-500', bgColor: 'bg-green-50' }
+  ]
+
+  const quickActions = [
+    { icon: Package, label: 'アイテム', path: '/items', color: 'from-orange-400 to-red-500' },
+    { icon: MapPin, label: '店舗', path: '/locations', color: 'from-blue-400 to-indigo-500' },
+    { icon: Heart, label: 'お気に入り', path: '/favorites', color: 'from-pink-400 to-rose-500' },
+    { icon: Star, label: '人気', path: '/popular', color: 'from-yellow-400 to-orange-500' }
+  ]
+
+
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-100 sticky top-0 z-50 backdrop-blur-sm bg-white/95">
+    <div className="min-h-screen bg-gray-50">
+      {/* Desktop Header */}
+      <header className="hidden lg:block bg-white shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            {/* Logo */}
+          <div className="flex items-center justify-between h-16">
+            {/* Desktop Logo */}
             <Link to="/" className="flex items-center space-x-3">
-              <div className="text-rose-400">
-                <StarLogo className="h-8 w-8" />
+              <div className="bg-gradient-to-br from-rose-400 to-pink-500 p-2 rounded-xl">
+                <Heart className="h-6 w-6 text-white" fill="currentColor" />
               </div>
-              <span className="text-xl font-bold text-gray-900 tracking-tight">
-                推し活コレクション
-              </span>
+              <div>
+                <h1 className="text-xl font-bold text-gray-900">推し活コレクション</h1>
+              </div>
             </Link>
-            
+
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center space-x-8">
-              <Link 
-                to="/" 
-                className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 ${
-                  location.pathname === '/' 
-                    ? 'text-rose-600 bg-rose-50' 
-                    : 'text-gray-700 hover:text-rose-600 hover:bg-gray-50'
-                }`}
-              >
-                <Home className="h-4 w-4" />
-                <span>ホーム</span>
-              </Link>
-              
-              <Link 
-                to="/celebrities" 
-                className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 ${
-                  location.pathname === '/celebrities' 
-                    ? 'text-rose-600 bg-rose-50' 
-                    : 'text-gray-700 hover:text-rose-600 hover:bg-gray-50'
-                }`}
-              >
-                <Users className="h-4 w-4" />
-                <span>推し一覧</span>
-              </Link>
-              
-              <a 
-                href="https://oshikatsu-guide.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center space-x-2 text-gray-700 hover:text-rose-600 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-gray-50 border-b-2 border-rose-200"
-              >
-                <span className="underline">推し活ガイドブック</span>
-                <ExternalLink className="h-4 w-4" />
-              </a>
-              
-              <Link 
-                to="/posts" 
-                className="flex items-center space-x-2 text-gray-700 hover:text-rose-600 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-gray-50"
-              >
-                <MessageSquare className="h-4 w-4" />
-                <span>みんなの質問</span>
-              </Link>
+              {navigationItems.map((item) => (
+                <Link
+                  key={item.id}
+                  to={item.path}
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-xl transition-colors ${
+                    location.pathname === item.path
+                      ? `${item.bgColor} ${item.color}`
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  <item.icon className="h-5 w-5" />
+                  <span className="font-medium">{item.label}</span>
+                </Link>
+              ))}
             </nav>
-            
-            {/* Auth Buttons */}
-            <div className="flex items-center space-x-4">
-              {user ? (
-                <>
-                  <Link 
-                    to="/submit"
-                    className="bg-gradient-to-r from-rose-500 to-pink-500 text-white px-6 py-2.5 rounded-full hover:from-rose-600 hover:to-pink-600 transition-all duration-200 font-medium shadow-lg hover:shadow-xl"
-                  >
-                    質問投稿
-                  </Link>
-                  <button
-                    onClick={() => signOut()}
-                    className="text-gray-600 hover:text-gray-800 transition-colors px-4 py-2"
-                  >
-                    ログアウト
-                  </button>
-                </>
-              ) : (
-                <>
-                  <Link 
-                    to="/login" 
-                    className="text-gray-600 hover:text-gray-800 transition-colors px-4 py-2 rounded-lg hover:bg-gray-50"
-                  >
-                    ログイン
-                  </Link>
-                  <Link 
-                    to="/register"
-                    className="bg-gradient-to-r from-rose-500 to-pink-500 text-white px-6 py-2.5 rounded-full hover:from-rose-600 hover:to-pink-600 transition-all duration-200 font-medium shadow-lg hover:shadow-xl"
-                  >
-                    新規登録
-                  </Link>
-                </>
-              )}
-            </div>
+
+            {/* Desktop CTA */}
+            <Link
+              to="/submit"
+              className="bg-gradient-to-r from-rose-500 to-pink-500 text-white px-6 py-2 rounded-xl font-semibold hover:from-rose-600 hover:to-pink-600 transition-all"
+            >
+              質問を投稿
+            </Link>
           </div>
         </div>
       </header>
-      
-      {/* Mobile Navigation */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 shadow-lg z-50">
-        <div className="grid grid-cols-4 py-2">
-          <Link 
-            to="/" 
-            className={`flex flex-col items-center py-3 px-2 ${
-              location.pathname === '/' 
-                ? 'text-rose-600' 
-                : 'text-gray-500'
-            }`}
-          >
-            <Home className="h-5 w-5" />
-            <span className="text-xs mt-1">ホーム</span>
-          </Link>
-          
-          <Link 
-            to="/celebrities" 
-            className={`flex flex-col items-center py-3 px-2 ${
-              location.pathname === '/celebrities' 
-                ? 'text-rose-600' 
-                : 'text-gray-500'
-            }`}
-          >
-            <Users className="h-5 w-5" />
-            <span className="text-xs mt-1">推し一覧</span>
-          </Link>
-          
-          <Link 
-            to="/posts" 
-            className={`flex flex-col items-center py-3 px-2 ${
-              location.pathname === '/posts' 
-                ? 'text-rose-600' 
-                : 'text-gray-500'
-            }`}
-          >
-            <MessageSquare className="h-5 w-5" />
-            <span className="text-xs mt-1">質問</span>
-          </Link>
-          
-          <Link 
-            to="/posts" 
-            className={`flex flex-col items-center py-3 px-2 ${
-              location.pathname === '/posts' 
-                ? 'text-rose-600' 
-                : 'text-gray-500'
-            }`}
-          >
-            <MessageSquare className="h-5 w-5" />
-            <span className="text-xs mt-1">質問</span>
-          </Link>
+
+      {/* Mobile Header */}
+      <header className="lg:hidden bg-white shadow-lg sticky top-0 z-50">
+        <div className="px-4 py-3">
+          <div className="flex items-center justify-between">
+            {/* Mobile Logo */}
+            <Link to="/" className="flex items-center space-x-3">
+              <div className="bg-gradient-to-br from-rose-400 to-pink-500 p-2 rounded-xl">
+                <Heart className="h-6 w-6 text-white" fill="currentColor" />
+              </div>
+              <div>
+                <h1 className="text-lg font-bold text-gray-900">推し活コレクション</h1>
+                <p className="text-xs text-gray-500">みんなで作る推し活辞典</p>
+              </div>
+            </Link>
+
+            {/* Hamburger Menu */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="p-2 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors"
+            >
+              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
+
+          {/* Mobile Search Bar */}
+          <div className="mt-4">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="推し名・ブランド・アイテムで検索..."
+                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-rose-400 focus:border-transparent"
+              />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+            </div>
+          </div>
         </div>
-      </div>
-      
+
+        {/* Mobile Dropdown Menu */}
+        {isMenuOpen && (
+          <div className="border-t border-gray-100 bg-white">
+            <div className="px-4 py-6 space-y-6">
+              {/* Quick Actions Grid */}
+              <div>
+                <h3 className="text-sm font-semibold text-gray-900 mb-3">クイックアクション</h3>
+                <div className="grid grid-cols-2 gap-3">
+                  {quickActions.map((action, index) => (
+                    <Link
+                      key={index}
+                      to={action.path}
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center space-x-3 p-4 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors group"
+                    >
+                      <div className={`p-2 bg-gradient-to-r ${action.color} rounded-xl text-white group-hover:scale-110 transition-transform`}>
+                        <action.icon className="h-5 w-5" />
+                      </div>
+                      <span className="font-medium text-gray-900">{action.label}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Main Navigation */}
+              <div>
+                <h3 className="text-sm font-semibold text-gray-900 mb-3">メニュー</h3>
+                <div className="space-y-2">
+                  {navigationItems.map((item) => (
+                    <Link
+                      key={item.id}
+                      to={item.path}
+                      onClick={() => setIsMenuOpen(false)}
+                      className={`w-full flex items-center space-x-3 p-4 rounded-2xl transition-all ${
+                        location.pathname === item.path
+                          ? `${item.bgColor} ${item.color}`
+                          : 'hover:bg-gray-100 text-gray-700'
+                      }`}
+                    >
+                      <item.icon className="h-5 w-5" />
+                      <span className="font-medium">{item.label}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Mobile CTA Button */}
+              <Link
+                to="/submit"
+                onClick={() => setIsMenuOpen(false)}
+                className="w-full bg-gradient-to-r from-rose-500 to-pink-500 text-white py-4 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center space-x-2"
+              >
+                <Plus className="h-5 w-5" />
+                <span>質問を投稿する</span>
+              </Link>
+
+              {/* External Links */}
+              <div className="border-t border-gray-100 pt-6">
+                <h3 className="text-sm font-semibold text-gray-900 mb-3">外部リンク</h3>
+                <a
+                  href="https://oshikatsu-guide.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-3 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl hover:from-purple-100 hover:to-pink-100 transition-colors"
+                >
+                  <div className="p-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl text-white">
+                    <ExternalLink className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <span className="font-medium text-gray-900 block">推し活ガイドブック</span>
+                    <span className="text-xs text-gray-500">推し活の基本をチェック</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
+      </header>
+
       {/* Main Content */}
-      <main className="pb-20 lg:pb-0">
+      <main className="min-h-screen">
         {children}
       </main>
+
+      {/* Mobile Bottom Navigation */}
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 shadow-2xl">
+        <div className="px-2 py-2">
+          <div className="flex justify-around">
+            {navigationItems.map((item) => (
+              <Link
+                key={item.id}
+                to={item.path}
+                className={`flex flex-col items-center p-3 rounded-2xl transition-all ${
+                  location.pathname === item.path
+                    ? `${item.bgColor} ${item.color} scale-110`
+                    : 'text-gray-400 hover:text-gray-600'
+                }`}
+              >
+                <item.icon className={`h-6 w-6 mb-1 ${
+                  location.pathname === item.path ? 'animate-bounce' : ''
+                }`} />
+                <span className="text-xs font-medium">{item.label}</span>
+                {location.pathname === item.path && (
+                  <div className="absolute -top-1 w-2 h-2 bg-current rounded-full animate-ping" />
+                )}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Floating Action Button */}
+        <Link
+          to="/submit"
+          className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-rose-500 to-pink-500 text-white p-4 rounded-full shadow-2xl hover:shadow-3xl transition-all hover:scale-110"
+        >
+          <Plus className="h-6 w-6" />
+        </Link>
+      </nav>
+
+      {/* Bottom padding for mobile to avoid FAB overlap */}
+      <div className="lg:hidden h-24" />
+
+      {/* Desktop Footer */}
+      <footer className="hidden lg:block bg-gray-900 text-white py-16">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div className="md:col-span-2">
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="text-rose-400">
+                  <Heart className="h-8 w-8" fill="currentColor" />
+                </div>
+                <span className="text-xl font-bold">推し活コレクション</span>
+              </div>
+              <p className="text-gray-400 leading-relaxed mb-6">
+                推し活の聖地巡礼・私服特定をもっとリッチに。<br />
+                ファン同士で情報を共有し、お気に入りのアイテムやスポットを発見するプラットフォームです。
+              </p>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-semibold mb-6">サービス</h3>
+              <ul className="space-y-4">
+                <li><Link to="/celebrities" className="text-gray-400 hover:text-white transition-colors">推し一覧</Link></li>
+                <li><Link to="/items" className="text-gray-400 hover:text-white transition-colors">アイテム</Link></li>
+                <li><Link to="/locations" className="text-gray-400 hover:text-white transition-colors">店舗・ロケ地</Link></li>
+                <li><Link to="/posts" className="text-gray-400 hover:text-white transition-colors">質問・投稿</Link></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-semibold mb-6">サポート</h3>
+              <ul className="space-y-4">
+                <li><Link to="/about" className="text-gray-400 hover:text-white transition-colors">サイト概要</Link></li>
+                <li><Link to="/contact" className="text-gray-400 hover:text-white transition-colors">お問い合わせ</Link></li>
+                <li><a href="https://oshikatsu-guide.com/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">推し活ガイドブック</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="border-t border-gray-800 mt-12 pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+              <p className="text-gray-400">
+                © 2024 推し活コレクション. All rights reserved.
+              </p>
+              <div className="flex space-x-6 text-sm">
+                <Link to="/privacy-policy" className="text-gray-400 hover:text-white transition-colors">
+                  プライバシーポリシー
+                </Link>
+                <Link to="/terms-of-service" className="text-gray-400 hover:text-white transition-colors">
+                  利用規約
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }
+
+export default Layout
