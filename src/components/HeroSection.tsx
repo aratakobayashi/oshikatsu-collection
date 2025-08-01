@@ -12,9 +12,7 @@ const FloatingIcon = ({ icon: Icon, delay = 0, size = "h-6 w-6" }: {
     className={`absolute text-rose-300 opacity-70 animate-bounce ${size}`}
     style={{ 
       animationDelay: `${delay}ms`,
-      animationDuration: '3s',
-      left: `${Math.random() * 80 + 10}%`,
-      top: `${Math.random() * 80 + 10}%`
+      animationDuration: '3s' 
     }}
   >
     <Icon />
@@ -24,7 +22,7 @@ const FloatingIcon = ({ icon: Icon, delay = 0, size = "h-6 w-6" }: {
 // キラキラエフェクト
 const SparkleEffect = () => (
   <div className="absolute inset-0 overflow-hidden pointer-events-none">
-    {[...Array(15)].map((_, i) => (
+    {[...Array(20)].map((_, i) => (
       <div
         key={i}
         className="absolute text-yellow-400 opacity-30 animate-pulse"
@@ -60,7 +58,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
       setCurrentFeature((prev) => (prev + 1) % features.length)
     }, 3000)
     return () => clearInterval(interval)
-  }, [])
+  }, [features.length])
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -85,7 +83,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
           <div className="mb-8">
             <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight tracking-tight">
               推し活を
-              <span className="relative inline-block mx-4">
+              <span className="relative inline-block">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 animate-pulse">
                   もっと
                 </span>
@@ -98,14 +96,14 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
             
             {/* Dynamic Feature Display */}
             <div className="h-16 flex items-center justify-center mb-8">
-              <div className="relative">
+              <div className="transition-all duration-500 ease-in-out">
                 {features.map((feature, index) => (
                   <div
                     key={index} 
                     className={`flex items-center space-x-3 text-xl md:text-2xl font-medium transition-all duration-500 ${
                       index === currentFeature 
                         ? 'opacity-100 scale-100' 
-                        : 'opacity-0 scale-95 absolute inset-0'
+                        : 'opacity-0 scale-95 absolute'
                     }`}
                   >
                     <feature.icon className={`h-8 w-8 ${feature.color}`} />
