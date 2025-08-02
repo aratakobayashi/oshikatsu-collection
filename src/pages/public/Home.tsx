@@ -4,6 +4,7 @@ import { ArrowRight, Calendar, MapPin, Package, Users, ChevronLeft, ChevronRight
 import Card, { CardContent } from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
 import HeroSection from '../../components/HeroSection'
+import WikipediaAPITest from '../../components/WikipediaAPITest'
 import { db, supabase } from '../../lib/supabase'
 
 // 必要な型定義を追加
@@ -126,6 +127,19 @@ export default function Home() {
     <div className="bg-white">
       {/* Hero Section */}
       <HeroSection onSearch={handleSearch} />
+
+      {/* Wikipedia API Test Section - 開発用 */}
+      <section className="py-20 bg-yellow-50">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="bg-yellow-100 border border-yellow-300 rounded-xl p-4 mb-8">
+            <h3 className="text-yellow-800 font-semibold mb-2">🚧 開発用セクション</h3>
+            <p className="text-yellow-700 text-sm">
+              Wikipedia APIのテスト用コンポーネントです。データ収集が完了したら削除予定です。
+            </p>
+          </div>
+          <WikipediaAPITest />
+        </div>
+      </section>
 
       {/* Popular Celebrities Section */}
       <section className="py-20 bg-white">

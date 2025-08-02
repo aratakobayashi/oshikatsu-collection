@@ -12,6 +12,7 @@ import AdminEpisodes from './pages/admin/Episodes'
 import AdminItems from './pages/admin/Items'
 import AdminLocations from './pages/admin/Locations'
 import AdminUserPosts from './pages/admin/UserPosts'
+import AdminDataCollection from './pages/admin/DataCollection' // 追加
 
 // Public Pages
 import Home from './pages/public/Home'
@@ -87,6 +88,13 @@ function App() {
           <AdminProtectedRoute>
             <AdminLayout>
               <AdminUserPosts />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        } />
+        <Route path="/admin/data-collection" element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <AdminDataCollection />
             </AdminLayout>
           </AdminProtectedRoute>
         } />
