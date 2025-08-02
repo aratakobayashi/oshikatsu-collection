@@ -9,6 +9,7 @@ import {
   Package,
   MessageSquare,
   Film,
+  Database,
   LogOut
 } from 'lucide-react'
 
@@ -22,6 +23,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   const navItems = [
     { path: '/admin', label: 'ダッシュボード', icon: Home },
+    { path: '/admin/data-collection', label: 'データ収集', icon: Database },
     { path: '/admin/celebrities', label: '推し管理', icon: Users },
     { path: '/admin/episodes', label: 'エピソード', icon: Calendar },
     { path: '/admin/locations', label: 'ロケーション', icon: MapPin },
