@@ -241,7 +241,7 @@ export default function DataCollection() {
     ]
     
     for (const { pattern, group } of groupPatterns) {
-if (pattern.test(text) || pattern.test(_name)) {
+      if (pattern.test(text) || pattern.test(_name)) {
         return group
       }
     }
@@ -302,28 +302,38 @@ if (pattern.test(text) || pattern.test(_name)) {
     
     try {
       // Step 1: 基本情報取得
+      console.log('Step 1: Summary API呼び出し開始')
       const summaryResponse = await fetch(
         `https://ja.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(name)}`
       )
+      
+      console.log('Summary API レスポンス状態:', summaryResponse.status)
       
       if (!summaryResponse.ok) {
         throw new Error(`Wikipedia Summary API Error: ${summaryResponse.status}`)
       }
       
       const summaryData = await summaryResponse.json()
+      console.log('Summary API データ取得完了:', summaryData.title)
+      console.log('Extract:', summaryData.extract?.substring(0, 100) + '...')
       
       // Step 2: 詳細なページコンテンツ取得
       let detailedText = ''
       let infoboxData = ''
       
+      console.log('Step 2: 詳細API呼び出し開始')
       try {
         // ページの完全なWikitextを取得
         const wikiResponse = await fetch(
           `https://ja.wikipedia.org/w/api.php?action=query&format=json&titles=${encodeURIComponent(name)}&prop=extracts|revisions&exintro=false&explaintext=true&rvprop=content&origin=*`
         )
         
+        console.log('詳細API レスポンス状態:', wikiResponse.status)
+        
         if (wikiResponse.ok) {
           const wikiData = await wikiResponse.json()
+          console.log('詳細API データ構造:', Object.keys(wikiData))
+          
           const pages = wikiData.query?.pages
           
           if (pages) {
@@ -332,10 +342,12 @@ if (pattern.test(text) || pattern.test(_name)) {
             
             if (page.extract) {
               detailedText = page.extract
+              console.log('詳細テキスト取得:', detailedText.length, '文字')
             }
             
             if (page.revisions && page.revisions[0]) {
               infoboxData = page.revisions[0]['*'] || ''
+              console.log('Infobox取得:', infoboxData.length, '文字')
             }
           }
         }
@@ -345,7 +357,10 @@ if (pattern.test(text) || pattern.test(_name)) {
       }
       
       // Step 3: データ抽出・統合
+      console.log('Step 3: データ抽出開始')
       const fullText = `${summaryData.extract || ''} ${detailedText} ${infoboxData}`
+      console.log('統合テキスト長:', fullText.length, '文字')
+      console.log('統合テキスト先頭:', fullText.substring(0, 200) + '...')
       
       const slug = summaryData.title.toLowerCase()
         .replace(/\s+/g, '-')
@@ -353,12 +368,22 @@ if (pattern.test(text) || pattern.test(_name)) {
         .substring(0, 100)
 
       // 詳細情報抽出
+      console.log('詳細情報抽出開始')
       const birthDate = parseDate(fullText)
       const height = extractHeight(fullText)
       const bloodType = extractBloodType(fullText)
       const groupName = detectGroupName(name, fullText)
       const gender = estimateGender(name, fullText)
       const agency = extractAgency(fullText)
+      
+      console.log('抽出結果:', {
+        birthDate,
+        height,
+        bloodType,
+        groupName,
+        gender,
+        agency
+      })
       
       // 出身地抽出
       const birthPlaceMatch = fullText.match(/出身[：:\s]*([^\n\r。、]+)/)
@@ -421,6 +446,7 @@ if (pattern.test(text) || pattern.test(_name)) {
       celebrityData.data_completeness_score = Math.min(score, 1.0)
       
       console.log(`✅ ${name} 詳細抽出完了 - 品質: ${Math.round(score * 100)}%`)
+      console.log('最終データ:', celebrityData)
       
       return celebrityData
       
