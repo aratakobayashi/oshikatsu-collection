@@ -128,18 +128,20 @@ export default function Home() {
       {/* Hero Section */}
       <HeroSection onSearch={handleSearch} />
 
-      {/* Wikipedia API Test Section - 開発用 */}
-      <section className="py-20 bg-yellow-50">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="bg-yellow-100 border border-yellow-300 rounded-xl p-4 mb-8">
-            <h3 className="text-yellow-800 font-semibold mb-2">🚧 開発用セクション</h3>
-            <p className="text-yellow-700 text-sm">
-              Wikipedia APIのテスト用コンポーネントです。データ収集が完了したら削除予定です。
-            </p>
+      {/* Wikipedia API Test Section - 開発用 (開発環境でのみ表示) */}
+      {import.meta.env.DEV && (
+        <section className="py-20 bg-yellow-50">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="bg-yellow-100 border border-yellow-300 rounded-xl p-4 mb-8">
+              <h3 className="text-yellow-800 font-semibold mb-2">🚧 開発用セクション</h3>
+              <p className="text-yellow-700 text-sm">
+                Wikipedia APIのテスト用コンポーネントです。データ収集が完了したら削除予定です。
+              </p>
+            </div>
+            <WikipediaAPITest />
           </div>
-          <WikipediaAPITest />
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Popular Celebrities Section */}
       <section className="py-20 bg-white">
