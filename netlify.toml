@@ -1,8 +1,63 @@
-[build]
-  publish = "dist"
-  command = "npm run build"
+# Netlify設定ファイル
+# https://docs.netlify.com/configure-builds/file-based-configuration/
 
+[build]
+  # ビルドコマンド
+  command = "npm run build"
+  
+  # ビルド出力ディレクトリ
+  publish = "dist"
+  
+  # Node.jsバージョン
+  environment = { NODE_VERSION = "18" }
+
+# リダイレクト設定（SPAのため）
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+# Basic認証用のリダイレクト（Netlify Functionsで処理）
+[[redirects]]
+  from = "/api/auth"
+  to = "/.netlify/functions/auth"
+  status = 200
+
+# robots.txt の動的生成
+[[redirects]]
+  from = "/robots.txt"
+  to = "/.netlify/functions/robots"
+  status = 200
+
+# ヘッダー設定
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# ========================================
+# 環境別設定
+# ========================================
+
+# 本番環境（mainブランチ）
+[context.production]
+  environment = { APP_ENV = "production", VITE_ENVIRONMENT = "production" }
+  command = "npm run build"
+
+# ステージング環境（developブランチ）
+[context."develop"]
+  environment = { APP_ENV = "staging", VITE_ENVIRONMENT = "staging" }
+  command = "npm run build"
+
+# プレビュー環境（PRごと）
+[context.deploy-preview]
+  environment = { APP_ENV = "preview", VITE_ENVIRONMENT = "preview" }
+  command = "npm run build"
+
+# ブランチデプロイ（develop以外のブランチ）
+[context.branch-deploy]
+  environment = { APP_ENV = "staging", VITE_ENVIRONMENT = "staging" }
+  command = "npm run build"
