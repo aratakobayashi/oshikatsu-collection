@@ -3,7 +3,6 @@
 > よにのちゃんねる推し活情報を収集・共有するWebアプリケーション
 
 [![Deploy Status](https://api.netlify.com/api/v1/badges/your-site-id/deploy-status)](https://app.netlify.com/sites/oshikatsu-collection/deploys)
-[![CI/CD](https://github.com/aratakobayashi/oshikatsu-collection/actions/workflows/ci.yml/badge.svg)](https://github.com/aratakobayashi/oshikatsu-collection/actions/workflows/ci.yml)
 
 ## 🚀 プロジェクト概要
 
@@ -23,7 +22,7 @@ oshikatsu-collectionは、よにのちゃんねるのエピソードに登場す
 | 環境 | ブランチ | URL | 用途 |
 |------|---------|-----|------|
 | **Production** | `main` | https://collection.oshikatsu-guide.com | 本番運用 |
-| **Staging** | `develop` | https://develop--oshikatsu-collection.netlify.app | 検証・テスト |
+| **Staging** | `develop` | https://develop--oshikatsu-collection.netlify.app | 検証・テスト（既存oshikatsu-development DB使用） |
 | **Preview** | PR branches | 自動生成URL | PR単位テスト |
 
 ## 🛠️ 技術スタック
