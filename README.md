@@ -3,7 +3,6 @@
 > よにのちゃんねる推し活情報を収集・共有するWebアプリケーション
 
 [![Deploy Status](https://api.netlify.com/api/v1/badges/your-site-id/deploy-status)](https://app.netlify.com/sites/oshikatsu-collection/deploys)
-[![CI/CD](https://github.com/aratakobayashi/oshikatsu-collection/actions/workflows/ci.yml/badge.svg)](https://github.com/aratakobayashi/oshikatsu-collection/actions/workflows/ci.yml)
 
 ## 🚀 プロジェクト概要
 
