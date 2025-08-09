@@ -9,8 +9,29 @@ const EnvironmentGate: React.FC<EnvironmentGateProps> = ({ children }) => {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
-  const appEnv = import.meta.env.VITE_ENVIRONMENT || 'development'
+  // 環境判定（環境変数 + URL判定）
+  let appEnv = import.meta.env.VITE_ENVIRONMENT || import.meta.env.APP_ENV || 'development'
+  const currentUrl = window.location.href
+  
+  // URL ベースの環境判定（フォールバック）
+  if (currentUrl.includes('deploy-preview-')) {
+    appEnv = 'preview'
+  } else if (currentUrl.includes('develop--')) {
+    appEnv = 'staging'  
+  } else if (currentUrl.includes('collection.oshikatsu-guide.com')) {
+    appEnv = 'production'
+  }
+  
   const requiresAuth = appEnv === 'staging' || appEnv === 'preview'
+  
+  // デバッグ情報
+  console.log('EnvironmentGate Debug:', {
+    VITE_ENVIRONMENT: import.meta.env.VITE_ENVIRONMENT,
+    APP_ENV: import.meta.env.APP_ENV,
+    appEnv,
+    requiresAuth,
+    url: window.location.href
+  })
 
   // 認証不要な環境はそのまま表示
   useEffect(() => {
