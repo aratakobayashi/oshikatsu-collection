@@ -8,20 +8,20 @@ import { supabase } from '../../lib/supabase'
 interface LocationWithDetails {
   id: string
   name: string
-  address: string
+  slug: string
+  address: string | null
+  description: string | null
+  website_url: string | null
+  phone: string | null
+  opening_hours: any
   latitude: number | null
   longitude: number | null
-  map_url: string
-  menu_example: string[]
-  image_urls: string[]
-  category: string
-  phone: string
-  website: string
-  reservation_url: string
-  opening_hours: Record<string, unknown>
-  price_range: string
-  description: string
-  episode?: {
+  image_url: string | null
+  tags: string[] | null
+  celebrity_id: string | null
+  created_at: string
+  updated_at: string
+  episodes?: {
     id: string
     title: string
     date: string
@@ -29,7 +29,7 @@ interface LocationWithDetails {
       name: string
       slug: string
     }
-  }
+  }[]
 }
 
 export default function LocationDetail() {
@@ -48,28 +48,47 @@ export default function LocationDetail() {
     try {
       console.log('🔍 Fetching location with ID:', id)
       
-      // ✅ 修正: supabaseクライアントを直接使用
-      const { data, error } = await supabase
+      // 基本的なlocation情報を取得
+      const { data: locationData, error: locationError } = await supabase
         .from('locations')
-        .select(`
-          *,
-          episode:episodes(
-            id,
-            title,
-            date,
-            celebrity:celebrities(name, slug)
-          )
-        `)
+        .select('*')
         .eq('id', id)
         .single()
       
-      if (error) {
-        console.error('❌ Supabase error:', error)
-        throw error
+      if (locationError) {
+        console.error('❌ Location error:', locationError)
+        throw locationError
       }
       
-      console.log('✅ Successfully fetched location:', data)
-      setLocation(data)
+      // このlocationに関連するエピソード情報を取得
+      const { data: episodeLinks, error: episodeError } = await supabase
+        .from('episode_locations')
+        .select(`
+          episodes!inner(
+            id,
+            title,
+            date,
+            celebrities!inner(name, slug)
+          )
+        `)
+        .eq('location_id', id)
+      
+      // エピソード情報をlocationに統合
+      const locationWithEpisodes = {
+        ...locationData,
+        episodes: episodeLinks?.map(link => ({
+          id: link.episodes.id,
+          title: link.episodes.title,
+          date: link.episodes.date,
+          celebrity: {
+            name: link.episodes.celebrities.name,
+            slug: link.episodes.celebrities.slug
+          }
+        })) || []
+      }
+      
+      console.log('✅ Successfully fetched location:', locationWithEpisodes)
+      setLocation(locationWithEpisodes)
     } catch (error) {
       console.error('Error fetching location:', error)
       setError('ロケーションが見つかりません')
@@ -135,10 +154,16 @@ export default function LocationDetail() {
             <Card>
               <CardContent className="p-8">
                 <div className="space-y-4">
-                  {/* Category */}
-                  <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
-                    {getCategoryLabel(location.category)}
-                  </span>
+                  {/* Tags */}
+                  {location.tags && location.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {location.tags.slice(0, 3).map((tag, index) => (
+                        <span key={index} className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                   
                   {/* Name */}
                   <h1 className="text-3xl font-bold text-gray-900">
@@ -160,55 +185,59 @@ export default function LocationDetail() {
                     </p>
                   )}
                   
-                  {/* Price Range */}
-                  {location.price_range && (
-                    <div className="text-lg font-semibold text-green-600">
-                      価格帯: {location.price_range}
+                  {/* Website */}
+                  {location.website_url && (
+                    <div className="flex items-center space-x-2">
+                      <Globe className="h-5 w-5 text-blue-600" />
+                      <a
+                        href={location.website_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800 underline"
+                      >
+                        公式サイト
+                      </a>
                     </div>
                   )}
                 </div>
               </CardContent>
             </Card>
             
-            {/* Images */}
-            {location.image_urls.length > 0 && (
+            {/* Episode Information */}
+            {location.episodes && location.episodes.length > 0 && (
               <Card>
                 <CardHeader>
-                  <h2 className="text-xl font-bold text-gray-900">写真</h2>
+                  <h2 className="text-xl font-bold text-gray-900">関連エピソード</h2>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {location.image_urls.map((url, index) => (
-                      <img
-                        key={index}
-                        src={url}
-                        alt={`${location.name} photo ${index + 1}`}
-                        className="w-full h-48 object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
-                        onClick={() => window.open(url, '_blank')}
-                      />
+                  <div className="space-y-4">
+                    {location.episodes.map((episode) => (
+                      <Link
+                        key={episode.id}
+                        to={`/episodes/${episode.id}`}
+                        className="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                      >
+                        <div className="space-y-2">
+                          <h3 className="font-semibold text-gray-900 hover:text-blue-600">
+                            {episode.title}
+                          </h3>
+                          {episode.celebrity && (
+                            <p className="text-sm text-gray-600">
+                              {episode.celebrity.name}
+                            </p>
+                          )}
+                          <div className="flex items-center text-sm text-gray-500">
+                            <Calendar className="h-4 w-4 mr-1" />
+                            {new Date(episode.date).toLocaleDateString('ja-JP')}
+                          </div>
+                        </div>
+                      </Link>
                     ))}
                   </div>
                 </CardContent>
               </Card>
             )}
             
-            {/* Menu */}
-            {location.menu_example.length > 0 && (
-              <Card>
-                <CardHeader>
-                  <h2 className="text-xl font-bold text-gray-900">メニュー例</h2>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    {location.menu_example.map((item, index) => (
-                      <div key={index} className="p-3 bg-gray-50 rounded-lg">
-                        {item}
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
           </div>
           
           {/* Sidebar */}
@@ -230,11 +259,11 @@ export default function LocationDetail() {
                 )}
                 
                 {/* Website */}
-                {location.website && (
+                {location.website_url && (
                   <div className="flex items-center space-x-3">
                     <Globe className="h-5 w-5 text-gray-400" />
                     <a 
-                      href={location.website}
+                      href={location.website_url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-blue-600 hover:text-blue-800"
@@ -258,69 +287,24 @@ export default function LocationDetail() {
                   </div>
                 )}
                 
-                {/* Action Buttons */}
-                <div className="space-y-3 pt-4">
-                  {location.reservation_url && (
-                    <a
-                      href={location.reservation_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block"
-                    >
-                      <Button className="w-full bg-green-600 hover:bg-green-700">
-                        <ExternalLink className="h-4 w-4 mr-2" />
-                        予約・詳細を見る
-                      </Button>
-                    </a>
-                  )}
-                  
-                  {location.map_url && (
-                    <a
-                      href={location.map_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block"
-                    >
-                      <Button variant="outline" className="w-full">
-                        <MapPin className="h-4 w-4 mr-2" />
-                        地図で見る
-                      </Button>
-                    </a>
-                  )}
-                </div>
+                {/* Tags */}
+                {location.tags && location.tags.length > 0 && (
+                  <div>
+                    <div className="flex items-center space-x-3 mb-2">
+                      <Tag className="h-5 w-5 text-gray-400" />
+                      <span className="font-medium">タグ</span>
+                    </div>
+                    <div className="ml-8 flex flex-wrap gap-2">
+                      {location.tags.map((tag, index) => (
+                        <span key={index} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
-            
-            {/* Episode Information */}
-            {location.episode && (
-              <Card>
-                <CardHeader>
-                  <h2 className="text-xl font-bold text-gray-900">関連エピソード</h2>
-                </CardHeader>
-                <CardContent>
-                  <Link 
-                    to={`/episodes/${location.episode.id}`}
-                    className="block hover:bg-gray-50 p-4 rounded-lg transition-colors"
-                  >
-                    <div className="space-y-2">
-                      <h3 className="font-semibold text-gray-900">{location.episode.title}</h3>
-                      <div className="flex items-center space-x-4 text-sm text-gray-500">
-                        <span className="flex items-center">
-                          <Calendar className="h-4 w-4 mr-1" />
-                          {new Date(location.episode.date).toLocaleDateString()}
-                        </span>
-                        {location.episode.celebrity && (
-                          <span className="flex items-center">
-                            <Tag className="h-4 w-4 mr-1" />
-                            {location.episode.celebrity.name}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </Link>
-                </CardContent>
-              </Card>
-            )}
           </div>
         </div>
       </div>

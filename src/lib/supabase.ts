@@ -1,23 +1,38 @@
 import { createClient } from '@supabase/supabase-js'
+import { developmentDb } from './mock-database'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
-// 🔧 環境変数チェック
-if (!supabaseUrl || !supabaseAnonKey) {
+// 🔧 開発環境判定
+const isDevelopment = import.meta.env.VITE_ENVIRONMENT === 'development'
+const isLocalEnvironment = supabaseUrl?.includes('localhost')
+
+// 🔧 環境変数チェック（本番環境の場合のみ）
+if (!isDevelopment && (!supabaseUrl || !supabaseAnonKey)) {
   console.error('❌ Supabase environment variables are missing:')
   console.error('VITE_SUPABASE_URL:', supabaseUrl ? '✅ Set' : '❌ Missing')
   console.error('VITE_SUPABASE_ANON_KEY:', supabaseAnonKey ? '✅ Set' : '❌ Missing')
   throw new Error('Missing Supabase environment variables. Check your .env file or Netlify environment variables.')
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// 開発環境の場合は仮の値を使用
+const finalSupabaseUrl = supabaseUrl || 'http://localhost:5432'
+const finalSupabaseKey = supabaseAnonKey || 'local-dev-key'
 
-// 🔧 Supabase接続テスト
-console.log('🔌 Supabase client initialized:', {
-  url: supabaseUrl,
-  hasKey: !!supabaseAnonKey
-})
+export const supabase = createClient(finalSupabaseUrl, finalSupabaseKey)
+
+// 🔧 環境情報表示
+if (isDevelopment && isLocalEnvironment) {
+  console.log('🔧 開発環境: モックデータベースを使用')
+  console.log('🌐 データはローカルストレージに保存されます')
+} else {
+  console.log('🔌 Supabase client initialized:', {
+    url: finalSupabaseUrl,
+    hasKey: !!finalSupabaseKey,
+    environment: isDevelopment ? 'development' : 'production'
+  })
+}
 
 // 型定義
 interface CreateItemData {
@@ -105,7 +120,7 @@ function createCrudOperations(tableName: string) {
 }
 
 // Database helper object with CRUD operations
-export const db = {
+const supabaseDb = {
   // Celebrities
   celebrities: {
     ...createCrudOperations('celebrities'),
@@ -117,6 +132,142 @@ export const db = {
         throw error
       }
       console.log(`✅ Successfully fetched ${data?.length || 0} celebrities`)
+      return data
+    },
+    
+    // 統一検索機能
+    async unifiedSearch(query: string, filters?: { type?: string; agency?: string; status?: string }) {
+      console.log('🔍 Unified search for:', query, 'with filters:', filters)
+      
+      let searchQuery = supabase
+        .from('celebrities')
+        .select(`
+          *,
+          parent_group:parent_group_id(id, name, slug, type),
+          group_members:celebrity_groups!group_id(
+            celebrity:celebrity_id(id, name, slug, image_url, type)
+          )
+        `)
+      
+      // テキスト検索（名前、経歴、事務所で検索）
+      if (query && query.trim()) {
+        const searchTerm = query.trim()
+        searchQuery = searchQuery.or(`
+          name.ilike.%${searchTerm}%,
+          bio.ilike.%${searchTerm}%,
+          agency.ilike.%${searchTerm}%,
+          fandom_name.ilike.%${searchTerm}%
+        `)
+      }
+      
+      // フィルター適用
+      if (filters?.type) {
+        searchQuery = searchQuery.eq('type', filters.type)
+      }
+      if (filters?.agency) {
+        searchQuery = searchQuery.eq('agency', filters.agency)
+      }
+      if (filters?.status) {
+        searchQuery = searchQuery.eq('status', filters.status)
+      }
+      
+      // 結果をタイプ別、人気度順でソート
+      searchQuery = searchQuery.order('type').order('popularity', { ascending: false, nullsLast: true })
+      
+      const { data, error } = await searchQuery
+      
+      if (error) {
+        console.error('❌ Error in unified search:', error)
+        throw error
+      }
+      
+      console.log(`✅ Unified search returned ${data?.length || 0} results`)
+      return data
+    },
+    
+    // タイプ別取得
+    async getByType(type: 'individual' | 'group' | 'youtube_channel') {
+      console.log('🔍 Fetching celebrities by type:', type)
+      const { data, error } = await supabase
+        .from('celebrities')
+        .select(`
+          *,
+          parent_group:parent_group_id(id, name, slug, type),
+          group_members:celebrity_groups!group_id(
+            celebrity:celebrity_id(id, name, slug, image_url)
+          )
+        `)
+        .eq('type', type)
+        .eq('status', 'active')
+        .order('popularity', { ascending: false, nullsLast: true })
+      
+      if (error) {
+        console.error('❌ Error fetching by type:', error)
+        throw error
+      }
+      
+      console.log(`✅ Successfully fetched ${data?.length || 0} ${type} celebrities`)
+      return data
+    },
+    
+    // グループメンバー取得
+    async getGroupMembers(groupId: string) {
+      console.log('🔍 Fetching group members for:', groupId)
+      const { data, error } = await supabase
+        .from('celebrity_groups')
+        .select(`
+          *,
+          celebrity:celebrity_id(*)
+        `)
+        .eq('group_id', groupId)
+        .eq('is_active', true)
+        .order('joined_date')
+      
+      if (error) {
+        console.error('❌ Error fetching group members:', error)
+        throw error
+      }
+      
+      console.log(`✅ Successfully fetched ${data?.length || 0} group members`)
+      return data
+    },
+    
+    // 人気ランキング取得
+    async getPopular(limit = 20) {
+      console.log('🔍 Fetching popular celebrities, limit:', limit)
+      const { data, error } = await supabase
+        .from('celebrities')
+        .select('*')
+        .eq('status', 'active')
+        .order('popularity', { ascending: false, nullsLast: true })
+        .order('subscriber_count', { ascending: false, nullsLast: true })
+        .limit(limit)
+      
+      if (error) {
+        console.error('❌ Error fetching popular celebrities:', error)
+        throw error
+      }
+      
+      console.log(`✅ Successfully fetched ${data?.length || 0} popular celebrities`)
+      return data
+    },
+    
+    // 事務所別取得
+    async getByAgency(agency: string) {
+      console.log('🔍 Fetching celebrities by agency:', agency)
+      const { data, error } = await supabase
+        .from('celebrities')
+        .select('*')
+        .eq('agency', agency)
+        .eq('status', 'active')
+        .order('debut_date', { ascending: false, nullsLast: true })
+      
+      if (error) {
+        console.error('❌ Error fetching by agency:', error)
+        throw error
+      }
+      
+      console.log(`✅ Successfully fetched ${data?.length || 0} celebrities from ${agency}`)
       return data
     }
   },
@@ -288,6 +439,52 @@ export const db = {
       }
       console.log(`✅ Successfully fetched ${data?.length || 0} items`)
       return data
+    },
+    async getByCelebrityId(celebrityId: string) {
+      console.log('🔍 Fetching items by celebrity ID:', celebrityId)
+      
+      // まずそのcelebrityのエピソードを取得
+      const { data: episodes, error: episodeError } = await supabase
+        .from('episodes')
+        .select('id')
+        .eq('celebrity_id', celebrityId)
+      
+      if (episodeError) {
+        console.error('❌ Error fetching episodes for celebrity:', episodeError)
+        throw episodeError
+      }
+      
+      if (!episodes || episodes.length === 0) {
+        console.log('ℹ️ No episodes found for celebrity:', celebrityId)
+        return []
+      }
+      
+      const episodeIds = episodes.map(ep => ep.id)
+      
+      // エピソードに関連するitemsを取得
+      const { data, error } = await supabase
+        .from('episode_items')
+        .select(`
+          items (*)
+        `)
+        .in('episode_id', episodeIds)
+      
+      if (error) {
+        console.error('❌ Error fetching items by celebrity ID:', error)
+        throw error
+      }
+      
+      // itemsデータを展開してユニークにする
+      const itemMap = new Map()
+      data?.forEach(item => {
+        if (item.items) {
+          itemMap.set(item.items.id, item.items)
+        }
+      })
+      
+      const uniqueItems = Array.from(itemMap.values())
+      console.log(`✅ Successfully fetched ${uniqueItems.length} unique items`)
+      return uniqueItems
     }
   },
   
@@ -313,6 +510,52 @@ export const db = {
       }
       console.log(`✅ Successfully fetched ${data?.length || 0} locations`)
       return data
+    },
+    async getByCelebrityId(celebrityId: string) {
+      console.log('🔍 Fetching locations by celebrity ID:', celebrityId)
+      
+      // まずそのcelebrityのエピソードを取得
+      const { data: episodes, error: episodeError } = await supabase
+        .from('episodes')
+        .select('id')
+        .eq('celebrity_id', celebrityId)
+      
+      if (episodeError) {
+        console.error('❌ Error fetching episodes for celebrity:', episodeError)
+        throw episodeError
+      }
+      
+      if (!episodes || episodes.length === 0) {
+        console.log('ℹ️ No episodes found for celebrity:', celebrityId)
+        return []
+      }
+      
+      const episodeIds = episodes.map(ep => ep.id)
+      
+      // エピソードに関連するlocationsを取得
+      const { data, error } = await supabase
+        .from('episode_locations')
+        .select(`
+          locations (*)
+        `)
+        .in('episode_id', episodeIds)
+      
+      if (error) {
+        console.error('❌ Error fetching locations by celebrity ID:', error)
+        throw error
+      }
+      
+      // locationsデータを展開してユニークにする
+      const locationMap = new Map()
+      data?.forEach(item => {
+        if (item.locations) {
+          locationMap.set(item.locations.id, item.locations)
+        }
+      })
+      
+      const uniqueLocations = Array.from(locationMap.values())
+      console.log(`✅ Successfully fetched ${uniqueLocations.length} unique locations`)
+      return uniqueLocations
     }
   },
   
@@ -1084,5 +1327,39 @@ export type Database = {
         }
       }
     }
+  }
+}
+
+// 🔧 開発環境での DB 切り替え
+export const db = (isDevelopment && isLocalEnvironment && developmentDb) 
+  ? developmentDb 
+  : supabaseDb
+
+// デバッグ情報
+if (isDevelopment && isLocalEnvironment && developmentDb) {
+  console.log('🔧 開発モード: MockDatabaseを使用')
+  console.log('💾 データはローカルストレージに保存されます')
+} else {
+  console.log('🔌 本番モード: Supabaseクライアントを使用')
+}
+
+// YouTube Data API設定
+export const youtube = {
+  apiKey: import.meta.env.VITE_YOUTUBE_API_KEY,
+  baseUrl: 'https://www.googleapis.com/youtube/v3',
+  
+  // よにのチャンネル設定
+  yoniChannel: {
+    id: import.meta.env.VITE_YONI_CHANNEL_ID || 'UC2alHD2WkakOiTxCxF-uMAg',
+    url: import.meta.env.VITE_YONI_CHANNEL_URL || 'https://www.youtube.com/channel/UC2alHD2WkakOiTxCxF-uMAg',
+    name: 'よにのチャンネル'
+  },
+  
+  // API制限設定
+  rateLimit: {
+    requestsPerSecond: 1,
+    maxConcurrentRequests: 1,
+    retryAttempts: 3,
+    retryDelay: 2000
   }
 }

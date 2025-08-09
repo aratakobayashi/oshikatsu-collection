@@ -22,4 +22,31 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Supabase
+.branches
+.temp
+.import
+.vscode/settings.json
+
+# Development data - 実データの保護
+/data/real-data/
+/data/production/
+*.real.json
+*-production-*.json
+
+# Real YouTube data (安全のため)
+/data/*real*.json
+/data/*production*.json
+/data/*live*.json
+
+# Backup files
+*.backup
+*.bak

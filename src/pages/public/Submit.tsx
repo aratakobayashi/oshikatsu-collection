@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Camera, X, Upload, Send, AlertCircle, Check } from 'lucide-react'
+import { Camera, X, Upload, Send, AlertCircle, Check, MapPin, ShoppingBag, Plus, Trash2 } from 'lucide-react'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import TextArea from '../../components/ui/TextArea'
@@ -15,6 +15,22 @@ interface ImageFile {
   id: string
 }
 
+interface LocationData {
+  id: string
+  name: string
+  address: string
+  website: string
+}
+
+interface ItemData {
+  id: string
+  name: string
+  brand: string
+  category: string
+  price: string
+  purchase_url: string
+}
+
 export default function Submit() {
   const navigate = useNavigate()
   const { user } = useAuth()
@@ -26,6 +42,8 @@ export default function Submit() {
   
   // Form state
   const [images, setImages] = useState<ImageFile[]>([])
+  const [locations, setLocations] = useState<LocationData[]>([])
+  const [items, setItems] = useState<ItemData[]>([])
   const [formData, setFormData] = useState({
     title: '',
     celebrity_id: '',
@@ -114,6 +132,50 @@ export default function Submit() {
   function removeImage(id: string) {
     setImages(prev => prev.filter(img => img.id !== id))
   }
+
+  // Location management functions
+  function addLocation() {
+    const newLocation: LocationData = {
+      id: Math.random().toString(36).substr(2, 9),
+      name: '',
+      address: '',
+      website: ''
+    }
+    setLocations(prev => [...prev, newLocation])
+  }
+
+  function updateLocation(id: string, field: keyof LocationData, value: string) {
+    setLocations(prev => prev.map(loc => 
+      loc.id === id ? { ...loc, [field]: value } : loc
+    ))
+  }
+
+  function removeLocation(id: string) {
+    setLocations(prev => prev.filter(loc => loc.id !== id))
+  }
+
+  // Item management functions
+  function addItem() {
+    const newItem: ItemData = {
+      id: Math.random().toString(36).substr(2, 9),
+      name: '',
+      brand: '',
+      category: '',
+      price: '',
+      purchase_url: ''
+    }
+    setItems(prev => [...prev, newItem])
+  }
+
+  function updateItem(id: string, field: keyof ItemData, value: string) {
+    setItems(prev => prev.map(item => 
+      item.id === id ? { ...item, [field]: value } : item
+    ))
+  }
+
+  function removeItem(id: string) {
+    setItems(prev => prev.filter(item => item.id !== id))
+  }
   
   function validateForm() {
     const newErrors: Record<string, string> = {}
@@ -175,7 +237,41 @@ export default function Submit() {
       }
       
       // Create the post
-      await db.userPosts.create(postData)
+      const newPost = await db.userPosts.create(postData)
+      
+      // Create location entries if any
+      for (const location of locations.filter(loc => loc.name.trim())) {
+        try {
+          await db.locations.create({
+            celebrity_id: formData.celebrity_id || null,
+            name: location.name,
+            address: location.address,
+            website: location.website,
+            description: `ユーザー投稿: ${formData.title}`,
+            tags: ['ユーザー投稿']
+          })
+        } catch (error) {
+          console.error('Location creation error:', error)
+        }
+      }
+      
+      // Create item entries if any
+      for (const item of items.filter(itm => itm.name.trim())) {
+        try {
+          await db.items.create({
+            celebrity_id: formData.celebrity_id || null,
+            name: item.name,
+            brand: item.brand,
+            category: item.category,
+            price: parseFloat(item.price) || null,
+            purchase_url: item.purchase_url,
+            description: `ユーザー投稿: ${formData.title}`,
+            tags: ['ユーザー投稿']
+          })
+        } catch (error) {
+          console.error('Item creation error:', error)
+        }
+      }
       
       // Redirect to success page or post detail
       navigate('/', { state: { message: '投稿が完了しました！' } })
@@ -321,6 +417,141 @@ export default function Submit() {
                 helpText={`${formData.content.length}/500文字`}
               />
               
+              {/* Location Information Section */}
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    <MapPin className="inline h-4 w-4 mr-1" />
+                    店舗・場所情報（任意）
+                  </label>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={addLocation}
+                    icon={Plus}
+                  >
+                    場所を追加
+                  </Button>
+                </div>
+                
+                {locations.map((location, index) => (
+                  <div key={location.id} className="bg-gray-50 p-4 rounded-lg mb-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="text-sm font-medium text-gray-700">場所 {index + 1}</h4>
+                      <button
+                        type="button"
+                        onClick={() => removeLocation(location.id)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <Input
+                        label="店舗・場所名"
+                        value={location.name}
+                        onChange={(e) => updateLocation(location.id, 'name', e.target.value)}
+                        placeholder="例：スターバックス 渋谷店"
+                      />
+                      <Input
+                        label="住所"
+                        value={location.address}
+                        onChange={(e) => updateLocation(location.id, 'address', e.target.value)}
+                        placeholder="例：東京都渋谷区..."
+                      />
+                      <Input
+                        label="ウェブサイト・予約URL"
+                        value={location.website}
+                        onChange={(e) => updateLocation(location.id, 'website', e.target.value)}
+                        placeholder="https://..."
+                        className="md:col-span-2"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              {/* Item Information Section */}
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    <ShoppingBag className="inline h-4 w-4 mr-1" />
+                    ファッション・アイテム情報（任意）
+                  </label>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={addItem}
+                    icon={Plus}
+                  >
+                    アイテムを追加
+                  </Button>
+                </div>
+                
+                {items.map((item, index) => (
+                  <div key={item.id} className="bg-gray-50 p-4 rounded-lg mb-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="text-sm font-medium text-gray-700">アイテム {index + 1}</h4>
+                      <button
+                        type="button"
+                        onClick={() => removeItem(item.id)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <Input
+                        label="アイテム名"
+                        value={item.name}
+                        onChange={(e) => updateItem(item.id, 'name', e.target.value)}
+                        placeholder="例：ワンピース"
+                      />
+                      <Input
+                        label="ブランド"
+                        value={item.brand}
+                        onChange={(e) => updateItem(item.id, 'brand', e.target.value)}
+                        placeholder="例：ZARA"
+                      />
+                      <Select
+                        label="カテゴリ"
+                        value={item.category}
+                        onChange={(e) => updateItem(item.id, 'category', e.target.value)}
+                        options={[
+                          { value: '', label: 'カテゴリを選択' },
+                          { value: 'トップス', label: 'トップス' },
+                          { value: 'ボトムス', label: 'ボトムス' },
+                          { value: 'ワンピース', label: 'ワンピース' },
+                          { value: 'アウター', label: 'アウター' },
+                          { value: 'バッグ', label: 'バッグ' },
+                          { value: 'シューズ', label: 'シューズ' },
+                          { value: 'アクセサリー', label: 'アクセサリー' },
+                          { value: 'その他', label: 'その他' }
+                        ]}
+                      />
+                      <Input
+                        label="価格（円）"
+                        value={item.price}
+                        onChange={(e) => updateItem(item.id, 'price', e.target.value)}
+                        placeholder="例：5980"
+                        type="number"
+                      />
+                      <Input
+                        label="購入URL"
+                        value={item.purchase_url}
+                        onChange={(e) => updateItem(item.id, 'purchase_url', e.target.value)}
+                        placeholder="https://..."
+                        className="md:col-span-2"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
               {/* Terms Agreement */}
               <div className="flex items-start space-x-3">
                 <input
@@ -381,7 +612,7 @@ export default function Submit() {
         <Card className="mt-8">
           <CardContent className="p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">投稿のコツ</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
                 <h4 className="font-medium text-gray-900 mb-2">📷 良い画像の撮り方</h4>
                 <ul className="text-sm text-gray-600 space-y-1">
@@ -392,11 +623,20 @@ export default function Submit() {
               </div>
               
               <div>
-                <h4 className="font-medium text-gray-900 mb-2">📝 質問のコツ</h4>
+                <h4 className="font-medium text-gray-900 mb-2">📍 場所情報の活用</h4>
                 <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• 具体的に何を知りたいか書く</li>
-                  <li>• 分かっている情報も一緒に書く</li>
-                  <li>• 丁寧な言葉遣いを心がける</li>
+                  <li>• 店舗名や住所を正確に入力</li>
+                  <li>• 予約URLで聖地巡礼をサポート</li>
+                  <li>• 他のファンの参考になる情報を</li>
+                </ul>
+              </div>
+              
+              <div>
+                <h4 className="font-medium text-gray-900 mb-2">🛍️ アイテム情報のコツ</h4>
+                <ul className="text-sm text-gray-600 space-y-1">
+                  <li>• ブランドやカテゴリを明記</li>
+                  <li>• 購入URLで入手を手助け</li>
+                  <li>• 価格情報で参考になる投稿を</li>
                 </ul>
               </div>
             </div>

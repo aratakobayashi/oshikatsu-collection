@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Plus, Edit, Trash2, Eye } from 'lucide-react'
+import { Plus, Edit, Trash2, Eye, Link as LinkIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
@@ -188,6 +188,11 @@ export default function Episodes() {
                 </div>
                 
                 <div className="flex space-x-2 ml-4">
+                  <Link to={`/admin/episodes/${episode.id}`}>
+                    <Button variant="outline" size="sm" icon={LinkIcon} className="bg-amber-50 border-amber-200 text-amber-700 hover:bg-amber-100">
+                      紐付け管理
+                    </Button>
+                  </Link>
                   <Link to={`/episodes/${episode.id}`}>
                     <Button variant="outline" size="sm" icon={Eye}>
                       View

@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, ExternalLink, Tag, Calendar } from 'lucide-react'
 import Button from '../../components/ui/Button'
 import Card, { CardHeader, CardContent } from '../../components/ui/Card'
-import { supabase } from '../../lib/supabase'
+import { db } from '../../lib/supabase'
 
 interface ItemWithDetails {
   id: string
@@ -47,28 +47,41 @@ export default function ItemDetail() {
     try {
       console.log('🔍 Fetching item with ID:', id)
       
-      // ✅ 修正: supabaseクライアントを直接使用
-      const { data, error } = await supabase
-        .from('items')
-        .select(`
-          *,
-          episode:episodes(
-            id,
-            title,
-            date,
-            celebrity:celebrities(name, slug)
-          )
-        `)
-        .eq('id', id)
-        .single()
+      // 開発環境ではモックデータから取得
+      const item = await db.items.getById(id)
       
-      if (error) {
-        console.error('❌ Supabase error:', error)
-        throw error
+      if (!item) {
+        throw new Error('Item not found')
       }
       
-      console.log('✅ Successfully fetched item:', data)
-      setItem(data)
+      // エピソード情報も取得（モックデータでは簡略化）
+      let itemWithEpisode = item
+      if (item.episode_id) {
+        const episode = await db.episodes.getById(item.episode_id)
+        if (episode) {
+          // セレブリティ情報も取得
+          let episodeWithCelebrity = episode
+          if (episode.celebrity_id) {
+            const celebrity = await db.celebrities.getById(episode.celebrity_id)
+            if (celebrity) {
+              episodeWithCelebrity = {
+                ...episode,
+                celebrity: {
+                  name: celebrity.name,
+                  slug: celebrity.slug
+                }
+              }
+            }
+          }
+          itemWithEpisode = {
+            ...item,
+            episode: episodeWithCelebrity
+          }
+        }
+      }
+      
+      console.log('✅ Successfully fetched item:', itemWithEpisode)
+      setItem(itemWithEpisode)
     } catch (error) {
       console.error('Error fetching item:', error)
       setError('アイテムが見つかりません')

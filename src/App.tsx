@@ -9,10 +9,12 @@ import AdminDashboard from './pages/admin/Dashboard'
 import AdminWorks from './pages/admin/Works'
 import AdminCelebrities from './pages/admin/Celebrities'
 import AdminEpisodes from './pages/admin/Episodes'
+import AdminEpisodeDetail from './pages/admin/EpisodeDetail'
 import AdminItems from './pages/admin/Items'
 import AdminLocations from './pages/admin/Locations'
 import AdminUserPosts from './pages/admin/UserPosts'
 import AdminDataCollection from './pages/admin/DataCollection' // 追加
+import AuthDebug from './pages/debug/AuthDebug' // デバッグ用
 
 // Public Pages
 import Home from './pages/public/Home'
@@ -67,6 +69,13 @@ function App() {
           <AdminProtectedRoute>
             <AdminLayout>
               <AdminEpisodes />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        } />
+        <Route path="/admin/episodes/:id" element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <AdminEpisodeDetail />
             </AdminLayout>
           </AdminProtectedRoute>
         } />
@@ -125,6 +134,9 @@ function App() {
             </PublicProtectedRoute>
           </Layout>
         } />
+        
+        {/* Debug Routes */}
+        <Route path="/debug/auth" element={<Layout><AuthDebug /></Layout>} />
         
         {/* Legal Routes */}
         <Route path="/privacy-policy" element={<Layout><PrivacyPolicy /></Layout>} />

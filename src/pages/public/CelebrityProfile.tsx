@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom'
-import { Calendar, ExternalLink, MapPin, Package, Users, Award, Globe, ArrowLeft, Star, Heart, Eye, Play, Filter, Search } from 'lucide-react'
+import { useParams, Link, useNavigate } from 'react-router-dom'
+import { Calendar, ExternalLink, MapPin, Package, Users, Award, Globe, ArrowLeft, Star, Heart, Eye, Play, Filter, Search, Coffee, ShoppingBag } from 'lucide-react'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import Select from '../../components/ui/Select'
@@ -15,11 +15,42 @@ interface EpisodeWithDetails extends Episode {
   }
 }
 
+interface Location {
+  id: string
+  name: string
+  slug: string
+  description?: string
+  address?: string
+  website_url?: string
+  tags?: string[]
+  created_at: string
+}
+
+interface Item {
+  id: string
+  name: string
+  slug: string
+  description?: string
+  brand?: string
+  price?: number
+  purchase_url?: string
+  category?: string
+  tags?: string[]
+  created_at: string
+}
+
 export default function CelebrityProfile() {
   const { slug } = useParams<{ slug: string }>()
+  const navigate = useNavigate()
   const [celebrity, setCelebrity] = useState<Celebrity | null>(null)
+  
+  // デコードされたslugを取得（日本語URL対応）
+  const decodedSlug = slug ? decodeURIComponent(slug) : ''
   const [episodes, setEpisodes] = useState<EpisodeWithDetails[]>([])
   const [filteredEpisodes, setFilteredEpisodes] = useState<EpisodeWithDetails[]>([])
+  const [locations, setLocations] = useState<Location[]>([])
+  const [items, setItems] = useState<Item[]>([])
+  const [episodeLinksData, setEpisodeLinksData] = useState<{ [episodeId: string]: { locations: number, items: number } }>({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   
@@ -29,20 +60,70 @@ export default function CelebrityProfile() {
   const [yearFilter, setYearFilter] = useState('')
   
   useEffect(() => {
-    if (slug) {
-      fetchCelebrityData(slug)
+    if (decodedSlug) {
+      fetchCelebrityData(decodedSlug)
     }
-  }, [slug])
+  }, [decodedSlug])
   
   useEffect(() => {
     filterEpisodes()
   }, [episodes, episodeSearch, platformFilter, yearFilter])
   
+  useEffect(() => {
+    if (episodes.length > 0) {
+      fetchEpisodeLinksData()
+    }
+  }, [episodes])
+  
+  async function fetchEpisodeLinksData() {
+    if (!episodes || episodes.length === 0) return
+    
+    const episodeIds = episodes.map(ep => ep.id)
+    
+    try {
+      // Episode-Location リンク取得
+      const { data: locationLinks } = await supabase
+        .from('episode_locations')
+        .select('episode_id, location_id')
+        .in('episode_id', episodeIds)
+      
+      // Episode-Item リンク取得  
+      const { data: itemLinks } = await supabase
+        .from('episode_items')
+        .select('episode_id, item_id')
+        .in('episode_id', episodeIds)
+      
+      // エピソードIDごとに集計
+      const episodeLinksMap: { [episodeId: string]: { locations: number, items: number } } = {}
+      
+      episodes.forEach(episode => {
+        episodeLinksMap[episode.id] = { locations: 0, items: 0 }
+      })
+      
+      locationLinks?.forEach(link => {
+        if (episodeLinksMap[link.episode_id]) {
+          episodeLinksMap[link.episode_id].locations++
+        }
+      })
+      
+      itemLinks?.forEach(link => {
+        if (episodeLinksMap[link.episode_id]) {
+          episodeLinksMap[link.episode_id].items++
+        }
+      })
+      
+      setEpisodeLinksData(episodeLinksMap)
+      console.log('🔗 [DEBUG] Episode links data fetched:', episodeLinksMap)
+    } catch (error) {
+      console.error('❌ Episode links fetch error:', error)
+    }
+  }
+  
   async function fetchCelebrityData(slug: string) {
     try {
       console.log('🔍 [DEBUG] fetchCelebrityData called with slug:', slug)
       
-      const celebrityData = await db.celebrities.getBySlug(slug)
+      const celebrityData = await db.celebrities.getBySlug(decodedSlug)
       
       if (!celebrityData) {
         console.warn('⚠️ [DEBUG] No celebrity found for slug:', slug)
@@ -66,6 +147,18 @@ export default function CelebrityProfile() {
       }
       
       setEpisodes(episodesData)
+      
+      // 店舗・アイテム情報を取得
+      console.log('🏪 [DEBUG] Fetching locations for celebrity_id:', celebrityData.id)
+      const locationsData = await db.locations.getByCelebrityId(celebrityData.id)
+      console.log('🏪 [DEBUG] Locations data received:', locationsData?.length || 0)
+      setLocations(locationsData || [])
+      
+      console.log('🛍️ [DEBUG] Fetching items for celebrity_id:', celebrityData.id)  
+      const itemsData = await db.items.getByCelebrityId(celebrityData.id)
+      console.log('🛍️ [DEBUG] Items data received:', itemsData?.length || 0)
+      setItems(itemsData || [])
+      
     } catch (error) {
       console.error('❌ [ERROR] Error fetching celebrity data:', error)
       console.error('❌ [ERROR] Error details:', {
@@ -545,7 +638,10 @@ export default function CelebrityProfile() {
           </Card>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredEpisodes.map((episode) => (
+            {filteredEpisodes.map((episode) => {
+              const episodeLinks = episodeLinksData[episode.id] || { locations: 0, items: 0 }
+              
+              return (
               <Link key={episode.id} to={`/episodes/${episode.id}`}>
                 <Card className="hover:shadow-2xl transition-all duration-500 cursor-pointer h-full group border-0 shadow-lg overflow-hidden">
                   <CardContent className="p-0">
@@ -573,6 +669,24 @@ export default function CelebrityProfile() {
                           <span className={`px-3 py-1 text-xs font-medium rounded-full shadow-sm ${getPlatformColor(episode.platform)}`}>
                             {getPlatformIcon(episode.platform)} {getPlatformLabel(episode.platform)}
                           </span>
+                        </div>
+                      )}
+                      
+                      {/* Location/Item Indicators */}
+                      {(episodeLinks.locations > 0 || episodeLinks.items > 0) && (
+                        <div className="absolute top-3 right-3 flex items-center gap-1">
+                          {episodeLinks.locations > 0 && (
+                            <div className="bg-amber-500 text-white px-2 py-1 rounded-full text-xs font-medium shadow-lg flex items-center gap-1">
+                              <Coffee className="h-3 w-3" />
+                              {episodeLinks.locations}
+                            </div>
+                          )}
+                          {episodeLinks.items > 0 && (
+                            <div className="bg-rose-500 text-white px-2 py-1 rounded-full text-xs font-medium shadow-lg flex items-center gap-1">
+                              <ShoppingBag className="h-3 w-3" />
+                              {episodeLinks.items}
+                            </div>
+                          )}
                         </div>
                       )}
                       
@@ -624,20 +738,300 @@ export default function CelebrityProfile() {
                           )}
                         </div>
                         
-                        {episode.video_url && (
-                          <div className="flex items-center text-xs text-rose-600">
-                            <Play className="h-3 w-3 mr-1" />
-                            動画あり
-                          </div>
-                        )}
+                        {/* Links Summary */}
+                        <div className="flex items-center gap-3 text-xs">
+                          {episodeLinks.locations > 0 && (
+                            <span className="flex items-center text-amber-600">
+                              <Coffee className="h-3 w-3 mr-1" />
+                              {episodeLinks.locations}店舗
+                            </span>
+                          )}
+                          {episodeLinks.items > 0 && (
+                            <span className="flex items-center text-rose-600">
+                              <ShoppingBag className="h-3 w-3 mr-1" />
+                              {episodeLinks.items}アイテム
+                            </span>
+                          )}
+                          {episode.video_url && (
+                            <span className="flex items-center text-blue-600">
+                              <Play className="h-3 w-3 mr-1" />
+                              動画
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
               </Link>
-            ))}
+            )
+            })}
           </div>
         )}
+      </div>
+      
+      {/* Locations & Items Sections */}
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16 grid grid-cols-1 lg:grid-cols-2 gap-16">
+        
+        {/* Locations Section */}
+        <div>
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center">
+                <Coffee className="h-6 w-6 mr-3 text-amber-600" />
+                聖地・店舗情報
+              </h2>
+              <p className="text-gray-600">
+                {locations.length > 0 ? `${locations.length}件の店舗情報` : '店舗情報はまだありません'}
+              </p>
+            </div>
+          </div>
+          
+          {locations.length === 0 ? (
+            <Card className="shadow-lg border-0">
+              <CardContent className="p-12 text-center">
+                <div className="bg-amber-50 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <Coffee className="h-8 w-8 text-amber-500" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  店舗情報がありません
+                </h3>
+                <p className="text-gray-500 text-sm">
+                  この推しが訪れた店舗情報はまだ登録されていません。
+                </p>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="space-y-4">
+              {locations.slice(0, 6).map((location) => (
+                <Link key={location.id} to={`/locations/${location.id}`}>
+                  <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-0 shadow-sm">
+                    <CardContent className="p-6">
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-gray-900 mb-2 line-clamp-1">
+                            {location.name}
+                          </h3>
+                          {location.description && (
+                            <p className="text-gray-600 text-sm mb-2 line-clamp-2">
+                              {location.description}
+                            </p>
+                          )}
+                          {location.address && (
+                            <div className="flex items-center text-gray-500 text-xs mb-2">
+                              <MapPin className="h-3 w-3 mr-1" />
+                              {location.address}
+                            </div>
+                          )}
+                          {location.tags && location.tags.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mt-2">
+                              {location.tags.slice(0, 3).map((tag, index) => (
+                                <span 
+                                  key={index} 
+                                  className="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded-full"
+                                >
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        {location.website_url && (
+                          <div className="ml-4">
+                            <ExternalLink className="h-4 w-4 text-gray-400" />
+                          </div>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+              {locations.length > 6 && (
+                <div className="text-center pt-4">
+                  <Link to="/locations">
+                    <Button variant="outline" className="rounded-full">
+                      すべての店舗を見る ({locations.length}件)
+                    </Button>
+                  </Link>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+        
+        {/* 聖地巡礼マップ機能 */}
+        {locations && locations.length > 0 && (
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
+            <div className="bg-gradient-to-r from-green-500 to-blue-500 px-6 py-4">
+              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                <MapPin className="h-6 w-6" />
+                聖地巡礼マップ
+              </h2>
+              <p className="text-white/90 mt-2">
+                {celebrity.name}が訪れた場所を巡って、ファンの聖地巡礼を楽しもう！
+              </p>
+            </div>
+            
+            <div className="p-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="font-bold text-lg mb-4 text-gray-900">🗺️ おすすめ巡礼ルート</h3>
+                  <div className="space-y-3">
+                    {locations.slice(0, 4).map((location, index) => (
+                      <div key={location.id} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                        <div className="flex-shrink-0 w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                          {index + 1}
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-gray-900">{location.name}</h4>
+                          {location.address && (
+                            <p className="text-gray-600 text-sm mt-1">{location.address}</p>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+                    <h4 className="font-semibold text-blue-900 mb-2">📍 巡礼のコツ</h4>
+                    <ul className="text-blue-800 text-sm space-y-1">
+                      <li>• 営業時間を事前に確認しましょう</li>
+                      <li>• 混雑時間を避けて訪問すると良いです</li>
+                      <li>• 写真撮影は店舗のルールに従いましょう</li>
+                      <li>• SNS投稿時は位置情報にご注意を</li>
+                    </ul>
+                  </div>
+                </div>
+                
+                <div>
+                  <h3 className="font-bold text-lg mb-4 text-gray-900">💬 巡礼者の口コミ</h3>
+                  <div className="space-y-4">
+                    <div className="p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                          A
+                        </div>
+                        <span className="font-semibold text-gray-900">巡礼ファン</span>
+                        <div className="flex text-yellow-400">
+                          {[...Array(5)].map((_, i) => (
+                            <Star key={i} className="h-4 w-4 fill-current" />
+                          ))}
+                        </div>
+                      </div>
+                      <p className="text-gray-700 text-sm">
+                        よにちゃんが実際に行ったお店で、同じメニューを注文できて感動しました！
+                      </p>
+                    </div>
+                    
+                    <div className="text-center mt-4">
+                      <Button variant="outline" className="text-sm" onClick={() => navigate('/submit')}>
+                        あなたも口コミを投稿する
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        {/* Items Section */}
+        <div>
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center">
+                <ShoppingBag className="h-6 w-6 mr-3 text-rose-600" />
+                ファッション・アイテム
+              </h2>
+              <p className="text-gray-600">
+                {items.length > 0 ? `${items.length}件のアイテム情報` : 'アイテム情報はまだありません'}
+              </p>
+            </div>
+          </div>
+          
+          {items.length === 0 ? (
+            <Card className="shadow-lg border-0">
+              <CardContent className="p-12 text-center">
+                <div className="bg-rose-50 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <ShoppingBag className="h-8 w-8 text-rose-500" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  アイテム情報がありません
+                </h3>
+                <p className="text-gray-500 text-sm">
+                  この推しが着用したアイテム情報はまだ登録されていません。
+                </p>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="space-y-4">
+              {items.slice(0, 6).map((item) => (
+                <Link key={item.id} to={`/items/${item.id}`}>
+                  <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer border-0 shadow-sm">
+                    <CardContent className="p-6">
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            {item.brand && (
+                              <span className="px-2 py-1 bg-rose-100 text-rose-700 text-xs rounded-full font-medium">
+                                {item.brand}
+                              </span>
+                            )}
+                            {item.category && (
+                              <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">
+                                {item.category}
+                              </span>
+                            )}
+                          </div>
+                          <h3 className="font-semibold text-gray-900 mb-2 line-clamp-1">
+                            {item.name}
+                          </h3>
+                          {item.description && (
+                            <p className="text-gray-600 text-sm mb-2 line-clamp-2">
+                              {item.description}
+                            </p>
+                          )}
+                          {item.price && item.price > 0 && (
+                            <div className="text-green-600 font-semibold text-sm mb-2">
+                              ¥{item.price.toLocaleString()}
+                            </div>
+                          )}
+                          {item.tags && item.tags.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mt-2">
+                              {item.tags.slice(0, 3).map((tag, index) => (
+                                <span 
+                                  key={index} 
+                                  className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full"
+                                >
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        {item.purchase_url && (
+                          <div className="ml-4">
+                            <ExternalLink className="h-4 w-4 text-gray-400" />
+                          </div>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+              {items.length > 6 && (
+                <div className="text-center pt-4">
+                  <Link to="/items">
+                    <Button variant="outline" className="rounded-full">
+                      すべてのアイテムを見る ({items.length}件)
+                    </Button>
+                  </Link>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+        
       </div>
     </div>
   )

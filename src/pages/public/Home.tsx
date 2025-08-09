@@ -5,6 +5,9 @@ import Card, { CardContent } from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
 import HeroSection from '../../components/HeroSection'
 import WikipediaAPITest from '../../components/WikipediaAPITest'
+import DevDataCreator from '../../components/DevDataCreator'
+import UserJourneyTest from '../../components/UserJourneyTest'
+import DataStatusCheck from '../../components/DataStatusCheck'
 import { db, supabase } from '../../lib/supabase'
 
 // 必要な型定義を追加
@@ -127,6 +130,19 @@ export default function Home() {
     <div className="bg-white">
       {/* Hero Section */}
       <HeroSection onSearch={handleSearch} />
+
+      {/* Development Data Creator - 開発用 (開発環境でのみ表示) */}
+      {import.meta.env.DEV && (
+        <section className="py-8 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <DataStatusCheck />
+            <DevDataCreator />
+            <div className="mt-8">
+              <UserJourneyTest />
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Wikipedia API Test Section - 開発用 (開発環境でのみ表示) */}
       {import.meta.env.DEV && (

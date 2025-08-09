@@ -4,7 +4,7 @@ import { Calendar, MapPin, Package, ExternalLink, User, ShoppingBag, Camera } fr
 import Button from '../../components/ui/Button'
 import Card, { CardHeader, CardContent } from '../../components/ui/Card'
 import Disclaimer, { AffiliateDisclaimer } from '../../components/Disclaimer'
-import { db } from '../../lib/supabase'
+import { db, supabase } from '../../lib/supabase'
 
 // 型定義
 interface Celebrity {
@@ -24,26 +24,26 @@ interface Episode {
 interface Location {
   id: string
   name: string
+  slug: string
   address?: string
-  menu_example: string[]
-  image_urls: string[]
-  reservation_url?: string
-  map_url?: string
+  description?: string
+  website_url?: string
+  phone?: string
+  tags?: string[]
+  image_url?: string
 }
 
 interface Item {
   id: string
   name: string
+  slug: string
   brand?: string
   description?: string
-  color?: string
-  material?: string
   category?: string
-  subcategory?: string
-  price: number
-  affiliate_url?: string
+  price?: number
+  purchase_url?: string
   image_url?: string
-  is_available?: boolean
+  tags?: string[]
 }
 
 export default function EpisodeDetail() {
@@ -63,15 +63,57 @@ export default function EpisodeDetail() {
   
   async function fetchEpisodeData(id: string) {
     try {
-      const [episodeData, locationsData, itemsData] = await Promise.all([
-        db.episodes.getById(id),
-        db.locations.getByEpisodeId(id),
-        db.items.getByEpisodeId(id)
-      ])
+      console.log('🔍 Fetching episode data for ID:', id)
       
+      // エピソード情報取得
+      const episodeData = await db.episodes.getById(id)
       setEpisode(episodeData)
+      
+      // 関連するロケーション取得
+      const { data: locationLinks } = await supabase
+        .from('episode_locations')
+        .select(`
+          locations!inner(
+            id,
+            name,
+            slug,
+            address,
+            description,
+            website_url,
+            phone,
+            tags,
+            image_url
+          )
+        `)
+        .eq('episode_id', id)
+      
+      const locationsData = locationLinks?.map(link => link.locations) || []
+      console.log('🏪 Found locations:', locationsData.length)
       setLocations(locationsData)
+      
+      // 関連するアイテム取得
+      const { data: itemLinks } = await supabase
+        .from('episode_items')
+        .select(`
+          items!inner(
+            id,
+            name,
+            slug,
+            brand,
+            description,
+            category,
+            price,
+            purchase_url,
+            image_url,
+            tags
+          )
+        `)
+        .eq('episode_id', id)
+      
+      const itemsData = itemLinks?.map(link => link.items) || []
+      console.log('🛍️ Found items:', itemsData.length)
       setItems(itemsData)
+      
     } catch (error) {
       console.error('Error fetching episode data:', error)
       setError('Episode not found')
@@ -182,74 +224,61 @@ export default function EpisodeDetail() {
               {locations.map((location) => (
                 <Card key={location.id} className="hover:shadow-lg transition-shadow">
                   <CardContent className="p-6">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                      {location.name}
-                    </h3>
+                    <Link to={`/locations/${location.id}`}>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-2 hover:text-blue-600 transition-colors">
+                        {location.name}
+                      </h3>
+                    </Link>
                     
                     {location.address && (
-                      <p className="text-gray-600 mb-4">{location.address}</p>
+                      <div className="flex items-start space-x-2 text-gray-600 mb-3">
+                        <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                        <p>{location.address}</p>
+                      </div>
                     )}
                     
-                        {location.menu_example && location.menu_example.length > 0 && (
+                    {location.description && (
+                      <p className="text-gray-700 mb-4 leading-relaxed">
+                        {location.description}
+                      </p>
+                    )}
+                    
+                    {location.tags && location.tags.length > 0 && (
                       <div className="mb-4">
-                        <h4 className="font-medium text-gray-900 mb-2">メニューアイテム:</h4>
                         <div className="flex flex-wrap gap-2">
-                          {location.menu_example.map((item: string, index: number) => (
+                          {location.tags.slice(0, 4).map((tag: string, index: number) => (
                             <span
                               key={index}
-                              className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full"
+                              className="px-3 py-1 bg-amber-100 text-amber-800 text-sm rounded-full"
                             >
-                              {item}
+                              {tag}
                             </span>
                           ))}
                         </div>
                       </div>
                     )}
                     
-                    {location.image_urls && location.image_urls.length > 0 && (
-                      <div className="mb-4">
-                        <h4 className="font-medium text-gray-900 mb-2">写真:</h4>
-                        <div className="grid grid-cols-2 gap-2">
-                          {location.image_urls.slice(0, 4).map((url: string, index: number) => (
-                            <img
-                              key={index}
-                              src={url}
-                              alt={`${location.name} photo ${index + 1}`}
-                              className="w-full h-24 object-cover rounded-lg"
-                            />
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                    
-                    {location.reservation_url && (
-                      <div className="mt-4">
+                    <div className="flex items-center gap-3 mt-4">
+                      <Link to={`/locations/${location.id}`}>
+                        <Button variant="outline" size="sm" className="flex items-center gap-2">
+                          <MapPin className="h-4 w-4" />
+                          詳細を見る
+                        </Button>
+                      </Link>
+                      
+                      {location.website_url && (
                         <a
-                          href={location.reservation_url}
+                          href={location.website_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
                         >
-                          <ExternalLink className="h-4 w-4 mr-2" />
-                          予約・詳細を見る
+                          <Button size="sm" className="flex items-center gap-2 bg-green-600 hover:bg-green-700">
+                            <ExternalLink className="h-4 w-4" />
+                            公式サイト
+                          </Button>
                         </a>
-                      </div>
-                    )}
-                    
-                    {location.map_url && (
-                      <div className="mt-4">
-                        <h4 className="font-medium text-gray-900 mb-2">マップ:</h4>
-                        <a
-                          href={location.map_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                        >
-                          <ExternalLink className="h-4 w-4 mr-2" />
-                          マップを見る
-                        </a>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </CardContent>
                 </Card>
               ))}
@@ -336,27 +365,19 @@ export default function EpisodeDetail() {
                           </p>
                         )}
                         
-                        {/* 詳細情報 */}
-                        <div className="flex flex-wrap gap-2 mb-3">
-                          {item.color && (
-                            <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">
-                              {item.color}
-                            </span>
-                          )}
-                          {item.material && (
-                            <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">
-                              {item.material}
-                            </span>
-                          )}
-                          {item.category && (
-                            <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">
-                              {item.subcategory || item.category}
-                            </span>
-                          )}
-                        </div>
+                        {/* タグ情報 */}
+                        {item.tags && item.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mb-3">
+                            {item.tags.slice(0, 3).map((tag, tagIndex) => (
+                              <span key={tagIndex} className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
                         
                         {/* 価格 */}
-                        {item.price > 0 && (
+                        {item.price && item.price > 0 && (
                           <div className="text-2xl font-bold text-green-600 mb-3">
                             ¥{item.price.toLocaleString()}
                             <span className="text-sm text-gray-500 font-normal ml-2">税込</span>
@@ -365,9 +386,9 @@ export default function EpisodeDetail() {
                         
                         {/* 購入ボタン */}
                         <div className="flex space-x-2">
-                          {item.affiliate_url && (
+                          {item.purchase_url && (
                             <a
-                              href={item.affiliate_url}
+                              href={item.purchase_url}
                               target="_blank"
                               rel="noopener noreferrer sponsored"
                               className="inline-flex items-center bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-300 font-medium text-sm shadow-lg hover:shadow-xl"
@@ -378,23 +399,13 @@ export default function EpisodeDetail() {
                           )}
                           
                           <Link
-                            to={`/items/${item.id}`}
+                            to={`/items/${item.slug}`}
                             className="inline-flex items-center bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors font-medium text-sm"
                           >
                             詳細を見る
                           </Link>
                         </div>
                         
-                        {/* 在庫・利用可能性 */}
-                        <div className="mt-2">
-                          <span className={`text-xs px-2 py-1 rounded-full ${
-                            item.is_available 
-                              ? 'bg-green-100 text-green-700' 
-                              : 'bg-red-100 text-red-700'
-                          }`}>
-                            {item.is_available ? '在庫あり' : '在庫なし'}
-                          </span>
-                        </div>
                       </div>
                     </div>
                   </CardContent>

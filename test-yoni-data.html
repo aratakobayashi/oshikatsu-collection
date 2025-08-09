@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>よにのちゃんねるデータテスト</title>
+</head>
+<body>
+    <h1>よにのちゃんねるデータテスト</h1>
+    <div id="result"></div>
+    
+    <script type="module">
+        // Supabase設定
+        const SUPABASE_URL = 'https://awaarykghpylggygkiyp.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF3YWFyeWtnaHB5bGdneWdraXlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE3OTE0MDksImV4cCI6MjA2NzM2NzQwOX0.J1dXm0eHB8RaqT_UnOI_zY7q1UyTaV4lLJtQT6EHhOE';
+        
+        // 動的インポート
+        import('https://cdn.skypack.dev/@supabase/supabase-js').then(({ createClient }) => {
+            const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            
+            async function testData() {
+                const resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = '<p>データ取得中...</p>';
+                
+                try {
+                    // よにのちゃんねる取得
+                    const { data: celebrity, error: celebError } = await supabase
+                        .from('celebrities')
+                        .select('*')
+                        .eq('slug', 'よにのちゃんねる')
+                        .single();
+                    
+                    if (celebError) {
+                        resultDiv.innerHTML = `<p style="color: red;">❌ Celebrity取得エラー: ${celebError.message}</p>`;
+                        return;
+                    }
+                    
+                    if (!celebrity) {
+                        resultDiv.innerHTML = '<p style="color: red;">❌ よにのちゃんねるが見つかりません</p>';
+                        return;
+                    }
+                    
+                    // エピソード取得
+                    const { data: episodes, error: episodeError } = await supabase
+                        .from('episodes')
+                        .select('*')
+                        .eq('celebrity_id', celebrity.id)
+                        .limit(5);
+                    
+                    // 店舗情報取得
+                    const { data: locations, error: locError } = await supabase
+                        .from('episode_locations')
+                        .select(`
+                            episode_id,
+                            locations (*)
+                        `)
+                        .limit(5);
+                    
+                    // アイテム情報取得
+                    const { data: items, error: itemError } = await supabase
+                        .from('episode_items')
+                        .select(`
+                            episode_id,
+                            items (*)
+                        `)
+                        .limit(5);
+                    
+                    // 結果表示
+                    resultDiv.innerHTML = `
+                        <h2>✅ よにのちゃんねる データ確認</h2>
+                        <h3>Celebrity情報:</h3>
+                        <p>名前: ${celebrity.name}</p>
+                        <p>ID: ${celebrity.id}</p>
+                        
+                        <h3>エピソード:</h3>
+                        <p>件数: ${episodes?.length || 0}件</p>
+                        ${episodes?.slice(0, 3).map(ep => `<li>${ep.title}</li>`).join('') || '<p>エピソードなし</p>'}
+                        
+                        <h3>店舗リンク:</h3>
+                        <p>件数: ${locations?.length || 0}件</p>
+                        ${locations?.slice(0, 3).map(loc => `<li>${loc.locations?.name || 'N/A'}</li>`).join('') || '<p>店舗リンクなし</p>'}
+                        
+                        <h3>アイテムリンク:</h3>
+                        <p>件数: ${items?.length || 0}件</p>
+                        ${items?.slice(0, 3).map(item => `<li>${item.items?.name || 'N/A'}</li>`).join('') || '<p>アイテムリンクなし</p>'}
+                    `;
+                    
+                } catch (error) {
+                    resultDiv.innerHTML = `<p style="color: red;">❌ エラー: ${error.message}</p>`;
+                }
+            }
+            
+            testData();
+        });
+    </script>
+</body>
+</html>

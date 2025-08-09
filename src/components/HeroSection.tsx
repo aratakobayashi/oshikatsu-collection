@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Search, ArrowRight, Heart, Sparkles, Star, Users, Package, MapPin } from 'lucide-react'
+import { Search, ArrowRight, Heart, Sparkles, Star, Users, Package, MapPin, Youtube } from 'lucide-react'
 
 // アニメーション用のアイコンコンポーネント
 const FloatingIcon = ({ icon: Icon, delay = 0, size = "h-6 w-6" }: { 
@@ -176,10 +176,19 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Link to="/celebrities">
+              <button className="group bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white px-12 py-4 rounded-full text-lg font-semibold shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105">
+                <span className="flex items-center justify-center space-x-2">
+                  <Search className="h-6 w-6 group-hover:animate-pulse" />
+                  <span>アイドル・推し検索</span>
+                </span>
+              </button>
+            </Link>
+            
+            <Link to="/items">
               <button className="group bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white px-12 py-4 rounded-full text-lg font-semibold shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105">
                 <span className="flex items-center justify-center space-x-2">
-                  <Users className="h-6 w-6 group-hover:animate-bounce" />
-                  <span>推し一覧を見る</span>
+                  <Package className="h-6 w-6 group-hover:animate-bounce" />
+                  <span>推しアイテムを探す</span>
                 </span>
               </button>
             </Link>
@@ -187,7 +196,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
             <Link to="/posts">
               <button className="group border-3 border-rose-200 text-rose-600 hover:bg-rose-50 hover:border-rose-300 px-12 py-4 rounded-full text-lg font-semibold bg-white/80 backdrop-blur-sm shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
                 <span className="flex items-center justify-center space-x-2">
-                  <Search className="h-6 w-6 group-hover:animate-pulse" />
+                  <Youtube className="h-6 w-6 group-hover:animate-bounce" />
                   <span>みんなの質問を見る</span>
                 </span>
               </button>
