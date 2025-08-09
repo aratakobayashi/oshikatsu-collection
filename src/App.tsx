@@ -3,6 +3,7 @@ import Layout from './components/Layout'
 import AdminLayout from './components/AdminLayout'
 import PublicProtectedRoute from './components/PublicProtectedRoute'
 import AdminProtectedRoute from './components/AdminProtectedRoute' // 追加
+import EnvironmentGate from './components/EnvironmentGate'
 
 // Admin Pages
 import AdminDashboard from './pages/admin/Dashboard'
@@ -41,8 +42,9 @@ import { About } from './components/legal/About'
 
 function App() {
   return (
-    <Router>
-      <Routes>
+    <EnvironmentGate>
+      <Router>
+        <Routes>
         {/* Admin Routes - ProtectedRouteをAdminProtectedRouteに変更 */}
         <Route path="/admin" element={
           <AdminProtectedRoute>
@@ -144,8 +146,9 @@ function App() {
         <Route path="/contact" element={<Layout><Contact /></Layout>} />
         <Route path="/about" element={<Layout><About /></Layout>} />
         
-      </Routes>
-    </Router>
+        </Routes>
+      </Router>
+    </EnvironmentGate>
   )
 }
 
