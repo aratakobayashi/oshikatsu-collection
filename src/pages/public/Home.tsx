@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ArrowRight, Calendar, MapPin, Package, Users, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ArrowRight, Calendar, ChevronLeft, ChevronRight } from 'lucide-react'
 import Card, { CardContent } from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
 import HeroSection from '../../components/HeroSection'
@@ -360,51 +360,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              推し活をもっと楽しく
-            </h2>
-            <p className="text-xl text-gray-600">
-              ファン同士で情報を共有し、お気に入りのアイテムやスポットを発見
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div className="text-center group">
-              <div className="bg-gradient-to-br from-rose-100 to-pink-100 p-6 rounded-2xl w-20 h-20 mx-auto mb-6 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <Package className="h-10 w-10 text-rose-600" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">アイテム発見</h3>
-              <p className="text-gray-600 leading-relaxed">
-                推しの私服・アクセサリーを特定し、購入リンクで簡単ショッピング
-              </p>
-            </div>
-            
-            <div className="text-center group">
-              <div className="bg-gradient-to-br from-blue-100 to-purple-100 p-6 rounded-2xl w-20 h-20 mx-auto mb-6 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <MapPin className="h-10 w-10 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">ロケ地探訪</h3>
-              <p className="text-gray-600 leading-relaxed">
-                撮影場所・お店を特定し、実際に訪れて同じ体験を楽しもう
-              </p>
-            </div>
-            
-            <div className="text-center group">
-              <div className="bg-gradient-to-br from-green-100 to-teal-100 p-6 rounded-2xl w-20 h-20 mx-auto mb-6 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <Users className="h-10 w-10 text-green-600" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">コミュニティ</h3>
-              <p className="text-gray-600 leading-relaxed">
-                ファン同士で知識を共有し、みんなで疑問を解決
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-16">
@@ -419,7 +374,7 @@ export default function Home() {
               </div>
               <p className="text-gray-400 leading-relaxed mb-6">
                 推し活の聖地巡礼・私服特定をもっとリッチに。<br />
-                ファン同士で情報を共有し、お気に入りのアイテムやスポットを発見するプラットフォームです。
+                推しのエピソードから関連するアイテムやロケーション情報を発見できるプラットフォームです。
               </p>
               <div className="flex space-x-4">
                 <a href="#" className="text-gray-400 hover:text-white transition-colors">
