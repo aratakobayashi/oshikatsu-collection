@@ -60,35 +60,8 @@ export default function LocationDetail() {
         throw locationError
       }
       
-      // このlocationに関連するエピソード情報を取得
-      const { data: episodeLinks, error: episodeError } = await supabase
-        .from('episode_locations')
-        .select(`
-          episodes!inner(
-            id,
-            title,
-            date,
-            celebrities!inner(name, slug)
-          )
-        `)
-        .eq('location_id', id)
-      
-      // エピソード情報をlocationに統合
-      const locationWithEpisodes = {
-        ...locationData,
-        episodes: episodeLinks?.map(link => ({
-          id: link.episodes.id,
-          title: link.episodes.title,
-          date: link.episodes.date,
-          celebrity: {
-            name: link.episodes.celebrities.name,
-            slug: link.episodes.celebrities.slug
-          }
-        })) || []
-      }
-      
-      console.log('✅ Successfully fetched location:', locationWithEpisodes)
-      setLocation(locationWithEpisodes)
+      console.log('✅ Successfully fetched location:', locationData)
+      setLocation(locationData)
     } catch (error) {
       console.error('Error fetching location:', error)
       setError('ロケーションが見つかりません')

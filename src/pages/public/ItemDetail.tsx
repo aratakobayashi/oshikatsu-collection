@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, ExternalLink, Tag, Calendar } from 'lucide-react'
 import Button from '../../components/ui/Button'
 import Card, { CardHeader, CardContent } from '../../components/ui/Card'
-import { db } from '../../lib/supabase'
+import { supabase } from '../../lib/supabase'
 
 interface ItemWithDetails {
   id: string
@@ -47,41 +47,20 @@ export default function ItemDetail() {
     try {
       console.log('🔍 Fetching item with ID:', id)
       
-      // 開発環境ではモックデータから取得
-      const item = await db.items.getById(id)
+      // Supabaseから実際のデータを取得
+      const { data: itemData, error: itemError } = await supabase
+        .from('items')
+        .select('*')
+        .eq('id', id)
+        .single()
       
-      if (!item) {
-        throw new Error('Item not found')
+      if (itemError) {
+        console.error('❌ Item error:', itemError)
+        throw itemError
       }
       
-      // エピソード情報も取得（モックデータでは簡略化）
-      let itemWithEpisode = item
-      if (item.episode_id) {
-        const episode = await db.episodes.getById(item.episode_id)
-        if (episode) {
-          // セレブリティ情報も取得
-          let episodeWithCelebrity = episode
-          if (episode.celebrity_id) {
-            const celebrity = await db.celebrities.getById(episode.celebrity_id)
-            if (celebrity) {
-              episodeWithCelebrity = {
-                ...episode,
-                celebrity: {
-                  name: celebrity.name,
-                  slug: celebrity.slug
-                }
-              }
-            }
-          }
-          itemWithEpisode = {
-            ...item,
-            episode: episodeWithCelebrity
-          }
-        }
-      }
-      
-      console.log('✅ Successfully fetched item:', itemWithEpisode)
-      setItem(itemWithEpisode)
+      console.log('✅ Successfully fetched item:', itemData)
+      setItem(itemData)
     } catch (error) {
       console.error('Error fetching item:', error)
       setError('アイテムが見つかりません')
