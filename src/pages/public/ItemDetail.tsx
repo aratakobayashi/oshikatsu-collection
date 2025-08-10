@@ -47,12 +47,25 @@ export default function ItemDetail() {
     try {
       console.log('🔍 Fetching item with ID:', id)
       
-      // Supabaseから実際のデータを取得（slug or idで検索）
-      const { data: itemData, error: itemError } = await supabase
+      // まずslugで検索を試行
+      let { data: itemData, error: itemError } = await supabase
         .from('items')
         .select('*')
-        .or(`id.eq.${id},slug.eq.${id}`)
+        .eq('slug', id)
         .single()
+      
+      // slugで見つからない場合はUUIDとして検索
+      if (itemError && itemError.code === 'PGRST116') {
+        console.log('🔍 Slug not found, trying UUID search...')
+        const uuidResponse = await supabase
+          .from('items')
+          .select('*')
+          .eq('id', id)
+          .single()
+        
+        itemData = uuidResponse.data
+        itemError = uuidResponse.error
+      }
       
       if (itemError) {
         console.error('❌ Item error:', itemError)

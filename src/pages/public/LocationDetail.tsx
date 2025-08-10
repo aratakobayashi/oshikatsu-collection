@@ -48,12 +48,25 @@ export default function LocationDetail() {
     try {
       console.log('🔍 Fetching location with ID:', id)
       
-      // 基本的なlocation情報を取得
-      const { data: locationData, error: locationError } = await supabase
+      // まずslugで検索を試行
+      let { data: locationData, error: locationError } = await supabase
         .from('locations')
         .select('*')
-        .eq('id', id)
+        .eq('slug', id)
         .single()
+      
+      // slugで見つからない場合はUUIDとして検索
+      if (locationError && locationError.code === 'PGRST116') {
+        console.log('🔍 Slug not found, trying UUID search...')
+        const uuidResponse = await supabase
+          .from('locations')
+          .select('*')
+          .eq('id', id)
+          .single()
+        
+        locationData = uuidResponse.data
+        locationError = uuidResponse.error
+      }
       
       if (locationError) {
         console.error('❌ Location error:', locationError)
