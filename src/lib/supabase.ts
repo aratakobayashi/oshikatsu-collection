@@ -172,7 +172,7 @@ const supabaseDb = {
       }
       
       // 結果をタイプ別、人気度順でソート
-      searchQuery = searchQuery.order('type').order('popularity', { ascending: false, nullsLast: true })
+      searchQuery = searchQuery.order('type').order('subscriber_count', { ascending: false, nullsLast: true })
       
       const { data, error } = await searchQuery
       
@@ -199,7 +199,7 @@ const supabaseDb = {
         `)
         .eq('type', type)
         .eq('status', 'active')
-        .order('popularity', { ascending: false, nullsLast: true })
+        .order('subscriber_count', { ascending: false, nullsLast: true })
       
       if (error) {
         console.error('❌ Error fetching by type:', error)
@@ -239,8 +239,8 @@ const supabaseDb = {
         .from('celebrities')
         .select('*')
         .eq('status', 'active')
-        .order('popularity', { ascending: false, nullsLast: true })
         .order('subscriber_count', { ascending: false, nullsLast: true })
+        .order('created_at', { ascending: false, nullsLast: true })
         .limit(limit)
       
       if (error) {
