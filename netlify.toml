@@ -49,7 +49,12 @@
 
 # ステージング環境（developブランチ）
 [context."develop"]
-  environment = { APP_ENV = "staging", VITE_ENVIRONMENT = "staging" }
+  environment = { 
+    APP_ENV = "staging", 
+    VITE_ENVIRONMENT = "staging",
+    VITE_SUPABASE_URL = "https://ounloyykptsqzdpbsnpn.supabase.co",
+    VITE_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im91bmxveXlrcHRzcXpkcGJzbnBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ3MjIzODMsImV4cCI6MjA3MDI5ODM4M30.VpSq034vLWHH3n_W-ikJyho6BuwY6UahN52V9US5n0U"
+  }
   command = "npm run build"
   
   # Basic認証設定（staging環境）
