@@ -1,10 +1,5 @@
-import React from 'react'
-import SupabaseTest from '../components/SupabaseTest'
+import SimpleTest from '../components/SimpleTest'
 
 export default function TestPage() {
-  return (
-    <div>
-      <SupabaseTest />
-    </div>
-  )
+  return <SimpleTest />
 }
