@@ -5,7 +5,7 @@ import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import Select from '../../components/ui/Select'
 import Card, { CardHeader, CardContent } from '../../components/ui/Card'
-import { db, Celebrity, Episode } from '../../lib/supabase'
+import { db, Celebrity, Episode, supabase } from '../../lib/supabase'
 
 interface EpisodeWithDetails extends Episode {
   celebrity?: {
@@ -79,19 +79,26 @@ export default function CelebrityProfile() {
     if (!episodes || episodes.length === 0) return
     
     const episodeIds = episodes.map(ep => ep.id)
-    
     try {
       // Episode-Location リンク取得
-      const { data: locationLinks } = await supabase
+      const { data: locationLinks, error: locError } = await supabase
         .from('episode_locations')
         .select('episode_id, location_id')
         .in('episode_id', episodeIds)
       
+      if (locError) {
+        console.error('❌ Location links error:', locError)
+      }
+      
       // Episode-Item リンク取得  
-      const { data: itemLinks } = await supabase
+      const { data: itemLinks, error: itemError } = await supabase
         .from('episode_items')
         .select('episode_id, item_id')
         .in('episode_id', episodeIds)
+      
+      if (itemError) {
+        console.error('❌ Item links error:', itemError)
+      }
       
       // エピソードIDごとに集計
       const episodeLinksMap: { [episodeId: string]: { locations: number, items: number } } = {}
@@ -113,7 +120,6 @@ export default function CelebrityProfile() {
       })
       
       setEpisodeLinksData(episodeLinksMap)
-      console.log('🔗 [DEBUG] Episode links data fetched:', episodeLinksMap)
     } catch (error) {
       console.error('❌ Episode links fetch error:', error)
     }
@@ -121,7 +127,6 @@ export default function CelebrityProfile() {
   
   async function fetchCelebrityData(slug: string) {
     try {
-      console.log('🔍 [DEBUG] fetchCelebrityData called with slug:', slug)
       
       const celebrityData = await db.celebrities.getBySlug(decodedSlug)
       
@@ -131,32 +136,17 @@ export default function CelebrityProfile() {
         return
       }
       
-      console.log('👤 [DEBUG] Celebrity data fetched:', celebrityData)
-      console.log('🆔 [DEBUG] Celebrity ID:', celebrityData.id)
       setCelebrity(celebrityData)
       
-      console.log('📺 [DEBUG] Fetching episodes for celebrity_id:', celebrityData.id)
       const episodesData = await db.episodes.getByCelebrityId(celebrityData.id)
-      console.log('📺 [DEBUG] Episodes data received:', episodesData)
-      console.log('📊 [DEBUG] Episodes count:', episodesData?.length || 0)
-      
-      if (episodesData && episodesData.length > 0) {
-        console.log('✅ [DEBUG] First episode sample:', episodesData[0])
-      } else {
-        console.warn('⚠️ [DEBUG] No episodes found for celebrity_id:', celebrityData.id)
-      }
       
       setEpisodes(episodesData)
       
       // 店舗・アイテム情報を取得
-      console.log('🏪 [DEBUG] Fetching locations for celebrity_id:', celebrityData.id)
       const locationsData = await db.locations.getByCelebrityId(celebrityData.id)
-      console.log('🏪 [DEBUG] Locations data received:', locationsData?.length || 0)
       setLocations(locationsData || [])
       
-      console.log('🛍️ [DEBUG] Fetching items for celebrity_id:', celebrityData.id)  
       const itemsData = await db.items.getByCelebrityId(celebrityData.id)
-      console.log('🛍️ [DEBUG] Items data received:', itemsData?.length || 0)
       setItems(itemsData || [])
       
     } catch (error) {
@@ -174,9 +164,6 @@ export default function CelebrityProfile() {
   }
   
   function filterEpisodes() {
-    console.log('🔍 [DEBUG] filterEpisodes called')
-    console.log('📺 [DEBUG] Total episodes before filter:', episodes.length)
-    console.log('🔍 [DEBUG] Filter conditions:', { episodeSearch, platformFilter, yearFilter })
     
     let filtered = [...episodes]
     
@@ -187,13 +174,11 @@ export default function CelebrityProfile() {
         episode.title.toLowerCase().includes(term) ||
         episode.description?.toLowerCase().includes(term)
       )
-      console.log('🔍 [DEBUG] After search filter:', filtered.length)
     }
     
     // Platform filter
     if (platformFilter) {
       filtered = filtered.filter(episode => episode.platform === platformFilter)
-      console.log('🔍 [DEBUG] After platform filter:', filtered.length)
     }
     
     // Year filter
@@ -201,10 +186,8 @@ export default function CelebrityProfile() {
       filtered = filtered.filter(episode => 
         new Date(episode.date).getFullYear().toString() === yearFilter
       )
-      console.log('🔍 [DEBUG] After year filter:', filtered.length)
     }
     
-    console.log('✅ [DEBUG] Final filtered episodes count:', filtered.length)
     setFilteredEpisodes(filtered)
   }
   
@@ -522,10 +505,6 @@ export default function CelebrityProfile() {
             <p className="text-gray-600">
               {episodes.length > 0 ? `${episodes.length}件のエピソード (表示中: ${filteredEpisodes.length}件)` : 'エピソードはまだありません'}
             </p>
-            {/* デバッグ情報表示 */}
-            <div className="text-xs text-gray-400 mt-1">
-              DEBUG: episodes={episodes.length}, filtered={filteredEpisodes.length}, celebrity_id={celebrity?.id}
-            </div>
           </div>
           
           <div className="flex items-center space-x-4 text-sm text-gray-500">
@@ -674,17 +653,17 @@ export default function CelebrityProfile() {
                       
                       {/* Location/Item Indicators */}
                       {(episodeLinks.locations > 0 || episodeLinks.items > 0) && (
-                        <div className="absolute top-3 right-3 flex items-center gap-1">
+                        <div className="absolute bottom-3 left-3 right-3 flex flex-wrap gap-2">
                           {episodeLinks.locations > 0 && (
-                            <div className="bg-amber-500 text-white px-2 py-1 rounded-full text-xs font-medium shadow-lg flex items-center gap-1">
-                              <Coffee className="h-3 w-3" />
-                              {episodeLinks.locations}
+                            <div className="bg-white/95 backdrop-blur-sm text-amber-700 px-3 py-1.5 rounded-lg text-xs font-semibold shadow-md border border-amber-200 flex items-center gap-1.5">
+                              <MapPin className="h-3.5 w-3.5" />
+                              <span>ロケ地あり</span>
                             </div>
                           )}
                           {episodeLinks.items > 0 && (
-                            <div className="bg-rose-500 text-white px-2 py-1 rounded-full text-xs font-medium shadow-lg flex items-center gap-1">
-                              <ShoppingBag className="h-3 w-3" />
-                              {episodeLinks.items}
+                            <div className="bg-white/95 backdrop-blur-sm text-rose-700 px-3 py-1.5 rounded-lg text-xs font-semibold shadow-md border border-rose-200 flex items-center gap-1.5">
+                              <Package className="h-3.5 w-3.5" />
+                              <span>アイテムあり</span>
                             </div>
                           )}
                         </div>
