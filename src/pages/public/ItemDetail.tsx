@@ -47,11 +47,11 @@ export default function ItemDetail() {
     try {
       console.log('🔍 Fetching item with ID:', id)
       
-      // Supabaseから実際のデータを取得
+      // Supabaseから実際のデータを取得（slug or idで検索）
       const { data: itemData, error: itemError } = await supabase
         .from('items')
         .select('*')
-        .eq('id', id)
+        .or(`id.eq.${id},slug.eq.${id}`)
         .single()
       
       if (itemError) {
