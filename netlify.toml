@@ -44,7 +44,7 @@
 
 # 本番環境（mainブランチ）
 [context.production]
-  environment = { APP_ENV = "production", VITE_ENVIRONMENT = "production" }
+  environment = { APP_ENV = "production", VITE_ENVIRONMENT = "production", VITE_SUPABASE_URL = "https://awaarykghpylggygkiyp.supabase.co", VITE_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF3YWFyeWtnaHB5bGdneWdraXlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE3OTE0MDksImV4cCI6MjA2NzM2NzQwOX0.J1dXm0eHB8RaqT_UnOI_zY7q1UyTaV4lLJtQT6EHhOE" }
   command = "npm run build"
 
 # ステージング環境（developブランチ）
@@ -60,7 +60,7 @@
 
 # プレビュー環境（PRごと）  
 [context.deploy-preview]
-  environment = { APP_ENV = "preview", VITE_ENVIRONMENT = "preview" }
+  environment = { APP_ENV = "preview", VITE_ENVIRONMENT = "preview", VITE_SUPABASE_URL = "https://ounloyykptsqzdpbsnpn.supabase.co", VITE_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im91bmxveXlrcHRzcXpkcGJzbnBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ3MjIzODMsImV4cCI6MjA3MDI5ODM4M30.VpSq034vLWHH3n_W-ikJyho6BuwY6UahN52V9US5n0U" }
   command = "npm run build"
   
   # Basic認証設定（preview環境）
