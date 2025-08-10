@@ -33,7 +33,7 @@ import WorkDetail from './pages/public/WorkDetail'
 import Submit from './pages/public/Submit'
 import Login from './pages/public/Login'
 import Register from './pages/public/Register'
-import TestPage from './pages/TestPage'
+
 
 // Legal Pages
 import { PrivacyPolicy } from './components/legal/PrivacyPolicy'
@@ -140,7 +140,6 @@ function App() {
         
         {/* Debug Routes */}
         <Route path="/debug/auth" element={<Layout><AuthDebug /></Layout>} />
-        <Route path="/test" element={<TestPage />} />
         
         {/* Legal Routes */}
         <Route path="/privacy-policy" element={<Layout><PrivacyPolicy /></Layout>} />
