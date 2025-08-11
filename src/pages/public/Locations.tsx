@@ -25,6 +25,7 @@ interface LocationWithDetails {
   description: string
   episode_id: string
   created_at: string
+  tags?: string[]
   episode?: {
     id: string
     title: string
@@ -59,6 +60,7 @@ export default function Locations() {
   const [celebrities, setCelebrities] = useState<Celebrity[]>([])
   const [episodes, setEpisodes] = useState<Episode[]>([])
   const [loading, setLoading] = useState(true)
+  const [locationTags, setLocationTags] = useState<string[]>([])
   
   // Filter states
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '')
@@ -159,9 +161,15 @@ export default function Locations() {
         supabase.from('episodes').select('*')
       ])
       
-      setLocations(locationsData || [])
+      const allLocations = locationsData || []
+      setLocations(allLocations)
       setCelebrities(celebritiesData.data || [])
       setEpisodes(episodesData.data || [])
+      
+      // ロケーションタグの一覧を取得
+      const allTags = allLocations.flatMap(location => location.tags || []).filter(Boolean)
+      const uniqueTags = [...new Set(allTags)].sort()
+      setLocationTags(uniqueTags)
       
       console.log('✅ Public Locations: Data fetched successfully', { 
         locations: locationsData?.length || 0,
@@ -180,15 +188,28 @@ export default function Locations() {
   const filterAndSortLocations = useCallback(() => {
     let filtered = [...(locations.length > 0 ? locations : sampleLocations)]
     
-    // Search filter
+    // Enhanced Search filter with fuzzy matching
     if (searchTerm) {
       const term = searchTerm.toLowerCase()
-      filtered = filtered.filter(location =>
-        location.name.toLowerCase().includes(term) ||
-        location.description.toLowerCase().includes(term) ||
-        location.address.toLowerCase().includes(term) ||
-        location.episode?.celebrity?.name.toLowerCase().includes(term)
-      )
+      filtered = filtered.filter(location => {
+        const searchableText = [
+          location.name,
+          location.description,
+          location.address,
+          location.category,
+          location.episode?.celebrity?.name,
+          location.episode?.title,
+          ...(location.tags || []),
+          ...(location.menu_example || [])
+        ].filter(Boolean).join(' ').toLowerCase()
+        
+        // 基本検索
+        if (searchableText.includes(term)) return true
+        
+        // 部分マッチ検索（スペースで区切ったキーワード）
+        const keywords = term.split(/\s+/).filter(k => k.length > 0)
+        return keywords.every(keyword => searchableText.includes(keyword))
+      })
     }
     
     // Celebrity filter
@@ -198,9 +219,11 @@ export default function Locations() {
       )
     }
     
-    // Category filter
+    // Category filter (using tags)
     if (selectedCategory) {
-      filtered = filtered.filter(location => location.category === selectedCategory)
+      filtered = filtered.filter(location => 
+        location.tags?.includes(selectedCategory) || location.category === selectedCategory
+      )
     }
     
     // Episode filter
@@ -323,7 +346,7 @@ export default function Locations() {
             <div className="mb-6">
               <div className="relative">
                 <Input
-                  placeholder="店舗名、住所、推し名で検索..."
+                  placeholder="店舗名、住所、推し名、メニュー、タグで検索..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="text-lg py-4 pl-12 pr-4 rounded-xl border-2 border-gray-200 focus:border-purple-500"
@@ -348,13 +371,10 @@ export default function Locations() {
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 options={[
                   { value: '', label: '🏪 全てのカテゴリ' },
-                  { value: 'restaurant', label: '🍽️ レストラン' },
-                  { value: 'cafe', label: '☕ カフェ' },
-                  { value: 'shop', label: '🛍️ ショップ' },
-                  { value: 'hotel', label: '🏨 ホテル' },
-                  { value: 'venue', label: '🎪 会場' },
-                  { value: 'tourist_spot', label: '🗼 観光地' },
-                  { value: 'other', label: '🔖 その他' }
+                  ...locationTags.map(tag => ({ 
+                    value: tag, 
+                    label: `🏷️ ${tag}` 
+                  }))
                 ]}
               />
               

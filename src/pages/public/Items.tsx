@@ -50,10 +50,13 @@ function Items() {
   const [items, setItems] = useState<ItemWithDetails[]>([])
   const [filteredItems, setFilteredItems] = useState<ItemWithDetails[]>([])
   const [loading, setLoading] = useState(true)
+  const [categories, setCategories] = useState<string[]>([])
+  const [brands, setBrands] = useState<string[]>([])
   
   // Filter states
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '')
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '')
+  const [selectedBrand, setSelectedBrand] = useState(searchParams.get('brand') || '')
   const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'created_at')
   
   // Sample data for demonstration - wrapped in useMemo to prevent recreation
@@ -201,7 +204,16 @@ function Items() {
       
       if (itemsError) throw itemsError
       
-      setItems(itemsData || [])
+      const allItems = itemsData || []
+      setItems(allItems)
+      
+      // カテゴリとブランドの一覧を取得
+      const uniqueCategories = [...new Set(allItems.map(item => item.category).filter(Boolean))].sort()
+      const uniqueBrands = [...new Set(allItems.map(item => item.brand).filter(Boolean))].sort()
+      
+      setCategories(uniqueCategories)
+      setBrands(uniqueBrands)
+      
     } catch (error) {
       console.error('Error fetching data:', error)
       // Use sample data as fallback
@@ -214,20 +226,39 @@ function Items() {
   const filterAndSortItems = useCallback(() => {
     let filtered = [...(items.length > 0 ? items : sampleItems)]
     
-    // Search filter
+    // Enhanced Search filter with fuzzy matching
     if (searchTerm) {
       const term = searchTerm.toLowerCase()
-      filtered = filtered.filter(item =>
-        item.name.toLowerCase().includes(term) ||
-        item.description.toLowerCase().includes(term) ||
-        item.brand.toLowerCase().includes(term) ||
-        item.episode?.celebrity?.name.toLowerCase().includes(term)
-      )
+      filtered = filtered.filter(item => {
+        const searchableText = [
+          item.name,
+          item.description,
+          item.brand,
+          item.category,
+          item.subcategory,
+          item.color,
+          item.material,
+          item.episode?.celebrity?.name,
+          item.episode?.title
+        ].filter(Boolean).join(' ').toLowerCase()
+        
+        // 基本検索
+        if (searchableText.includes(term)) return true
+        
+        // 部分マッチ検索（スペースで区切ったキーワード）
+        const keywords = term.split(/\s+/).filter(k => k.length > 0)
+        return keywords.every(keyword => searchableText.includes(keyword))
+      })
     }
     
     // Category filter
     if (selectedCategory) {
       filtered = filtered.filter(item => item.category === selectedCategory)
+    }
+    
+    // Brand filter
+    if (selectedBrand) {
+      filtered = filtered.filter(item => item.brand === selectedBrand)
     }
     
     // Sort
@@ -247,7 +278,7 @@ function Items() {
     })
     
     setFilteredItems(filtered)
-  }, [items, sampleItems, searchTerm, selectedCategory, sortBy])
+  }, [items, sampleItems, searchTerm, selectedCategory, selectedBrand, sortBy])
   
   // Now use the functions in useEffect
   useEffect(() => {
@@ -263,10 +294,11 @@ function Items() {
     const params = new URLSearchParams()
     if (searchTerm) params.set('search', searchTerm)
     if (selectedCategory) params.set('category', selectedCategory)
+    if (selectedBrand) params.set('brand', selectedBrand)
     if (sortBy !== 'created_at') params.set('sort', sortBy)
     
     setSearchParams(params)
-  }, [searchTerm, selectedCategory, sortBy, setSearchParams])
+  }, [searchTerm, selectedCategory, selectedBrand, sortBy, setSearchParams])
   
   function getCategoryLabel(category: string) {
     const labels = {
@@ -285,6 +317,7 @@ function Items() {
   function clearFilters() {
     setSearchTerm('')
     setSelectedCategory('')
+    setSelectedBrand('')
     setSortBy('created_at')
   }
   
@@ -342,7 +375,7 @@ function Items() {
             <div className="mb-8">
               <div className="relative max-w-2xl mx-auto">
                 <Input
-                  placeholder="アイテム名、ブランド名、推し名で検索..."
+                  placeholder="アイテム名、ブランド名、推し名、色、素材で検索..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="text-lg py-4 pl-12 pr-4 rounded-2xl border-2 border-gray-200 focus:border-rose-400 shadow-lg"
@@ -352,20 +385,29 @@ function Items() {
             </div>
             
             {/* Filter Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
               <Select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 options={[
                   { value: '', label: '📦 全てのカテゴリ' },
-                  { value: 'clothing', label: '👕 服' },
-                  { value: 'shoes', label: '👟 靴' },
-                  { value: 'bag', label: '👜 バッグ' },
-                  { value: 'accessory', label: '💍 アクセサリー' },
-                  { value: 'jewelry', label: '💎 ジュエリー' },
-                  { value: 'watch', label: '⌚ 時計' },
-                  { value: 'cosmetics', label: '💄 コスメ' },
-                  { value: 'other', label: '🔖 その他' }
+                  ...categories.map(category => ({ 
+                    value: category, 
+                    label: `🏷️ ${category}` 
+                  }))
+                ]}
+                className="rounded-xl border-2 border-gray-200 focus:border-rose-400"
+              />
+              
+              <Select
+                value={selectedBrand}
+                onChange={(e) => setSelectedBrand(e.target.value)}
+                options={[
+                  { value: '', label: '🏪 全てのブランド' },
+                  ...brands.map(brand => ({ 
+                    value: brand, 
+                    label: brand 
+                  }))
                 ]}
                 className="rounded-xl border-2 border-gray-200 focus:border-rose-400"
               />
@@ -382,7 +424,6 @@ function Items() {
                 className="rounded-xl border-2 border-gray-200 focus:border-rose-400"
               />
               
-              <div></div>
               
               <Button
                 variant="outline"

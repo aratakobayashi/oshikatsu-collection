@@ -138,18 +138,45 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
               </div>
             </div>
             
-            {/* Popular Searches */}
-            <div className="mt-6 flex flex-wrap gap-3 justify-center">
-              <span className="text-sm text-gray-500">人気検索:</span>
-              {['二宮和也', 'GUCCI', '代官山カフェ', 'Nike'].map((term) => (
-                <button
-                  key={term}
-                  onClick={() => setSearchQuery(term)}
-                  className="px-4 py-2 bg-white/70 backdrop-blur-sm text-rose-600 text-sm rounded-full border border-rose-200 hover:bg-rose-50 hover:border-rose-300 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
-                >
-                  {term}
-                </button>
-              ))}
+            {/* Popular Searches with Categories */}
+            <div className="mt-6 space-y-3">
+              <div className="flex flex-wrap gap-2 justify-center items-center">
+                <span className="text-sm text-gray-500 mr-2">人気検索:</span>
+                <span className="text-xs text-gray-400 px-2 py-1 bg-rose-100 rounded-full">推し</span>
+                {['二宮和也', '橋本涼'].map((term) => (
+                  <button
+                    key={term}
+                    onClick={() => setSearchQuery(term)}
+                    className="px-3 py-1.5 bg-white/70 backdrop-blur-sm text-rose-600 text-sm rounded-full border border-rose-200 hover:bg-rose-50 hover:border-rose-300 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
+                  >
+                    {term}
+                  </button>
+                ))}
+              </div>
+              <div className="flex flex-wrap gap-2 justify-center items-center">
+                <span className="text-xs text-gray-400 px-2 py-1 bg-blue-100 rounded-full">アイテム</span>
+                {['GUCCI', 'Nike', 'コスメ'].map((term) => (
+                  <button
+                    key={term}
+                    onClick={() => setSearchQuery(term)}
+                    className="px-3 py-1.5 bg-white/70 backdrop-blur-sm text-blue-600 text-sm rounded-full border border-blue-200 hover:bg-blue-50 hover:border-blue-300 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
+                  >
+                    {term}
+                  </button>
+                ))}
+              </div>
+              <div className="flex flex-wrap gap-2 justify-center items-center">
+                <span className="text-xs text-gray-400 px-2 py-1 bg-green-100 rounded-full">ロケ地</span>
+                {['代官山カフェ', '渋谷レストラン'].map((term) => (
+                  <button
+                    key={term}
+                    onClick={() => setSearchQuery(term)}
+                    className="px-3 py-1.5 bg-white/70 backdrop-blur-sm text-green-600 text-sm rounded-full border border-green-200 hover:bg-green-50 hover:border-green-300 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
+                  >
+                    {term}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
