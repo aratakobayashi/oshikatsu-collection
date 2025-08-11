@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>エピソードタグテスト</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .episode { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 8px; }
+        .tag { display: inline-block; padding: 4px 8px; margin: 0 4px; border-radius: 12px; font-size: 12px; color: white; }
+        .location-tag { background-color: #f59e0b; }
+        .item-tag { background-color: #f43f5e; }
+        h1 { color: #333; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 4px; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>🏷️ エピソードタグ表示テスト</h1>
+    <div id="status"></div>
+    <div id="episodes"></div>
+
+    <script>
+        const SUPABASE_URL = 'https://ounloyykptsqzdpbsnpn.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im91bmxveXlrcHRzcXpkcGJzbnBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ3MjIzODMsImV4cCI6MjA3MDI5ODM4M30.VpSq034vLWHH3n_W-ikJyho6BuwY6UahN52V9US5n0U';
+
+        async function testEpisodeTags() {
+            const statusDiv = document.getElementById('status');
+            const episodesDiv = document.getElementById('episodes');
+            
+            try {
+                statusDiv.innerHTML = '<div class="status">📡 データ取得中...</div>';
+                
+                // エピソード取得
+                const episodesResponse = await fetch(
+                    `${SUPABASE_URL}/rest/v1/episodes?select=id,title&order=created_at.desc&limit=10`,
+                    {
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        }
+                    }
+                );
+                
+                const episodes = await episodesResponse.json();
+                console.log('Episodes:', episodes);
+                
+                // #135を探す
+                const episode135Response = await fetch(
+                    `${SUPABASE_URL}/rest/v1/episodes?title=ilike.*135*&select=id,title`,
+                    {
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        }
+                    }
+                );
+                
+                const episode135 = await episode135Response.json();
+                if (episode135 && episode135.length > 0) {
+                    episodes.push(episode135[0]);
+                }
+                
+                const episodeIds = episodes.map(ep => ep.id);
+                
+                // ロケーション関連取得
+                const locationsResponse = await fetch(
+                    `${SUPABASE_URL}/rest/v1/episode_locations?select=episode_id&in.episode_id=${episodeIds.join(',')}`,
+                    {
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        }
+                    }
+                );
+                
+                const locationLinks = await locationsResponse.json();
+                console.log('Location links:', locationLinks);
+                
+                // アイテム関連取得
+                const itemsResponse = await fetch(
+                    `${SUPABASE_URL}/rest/v1/episode_items?select=episode_id&in.episode_id=${episodeIds.join(',')}`,
+                    {
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        }
+                    }
+                );
+                
+                const itemLinks = await itemsResponse.json();
+                console.log('Item links:', itemLinks);
+                
+                // 集計
+                const episodeLinksMap = {};
+                episodeIds.forEach(id => {
+                    episodeLinksMap[id] = { locations: 0, items: 0 };
+                });
+                
+                locationLinks.forEach(link => {
+                    if (episodeLinksMap[link.episode_id]) {
+                        episodeLinksMap[link.episode_id].locations++;
+                    }
+                });
+                
+                itemLinks.forEach(link => {
+                    if (episodeLinksMap[link.episode_id]) {
+                        episodeLinksMap[link.episode_id].items++;
+                    }
+                });
+                
+                console.log('Episode links map:', episodeLinksMap);
+                
+                // 表示
+                statusDiv.innerHTML = '<div class="status success">✅ データ取得成功</div>';
+                
+                let html = '';
+                episodes.forEach(episode => {
+                    const links = episodeLinksMap[episode.id];
+                    html += `
+                        <div class="episode">
+                            <h3>${episode.title}</h3>
+                            <div>ID: ${episode.id}</div>
+                            <div style="margin-top: 10px;">
+                                ${links.locations > 0 ? `<span class="tag location-tag">📍 ${links.locations}</span>` : ''}
+                                ${links.items > 0 ? `<span class="tag item-tag">🛍️ ${links.items}</span>` : ''}
+                                ${links.locations === 0 && links.items === 0 ? '<span style="color: #999;">タグなし</span>' : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                episodesDiv.innerHTML = html;
+                
+                // #135の詳細確認
+                const episode135Id = '889b696dc7254722e960072de5b7d957';
+                if (episodeLinksMap[episode135Id]) {
+                    console.log('✨ Episode #135 links:', episodeLinksMap[episode135Id]);
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                statusDiv.innerHTML = `<div class="status error">❌ エラー: ${error.message}</div>`;
+            }
+        }
+        
+        // 実行
+        testEpisodeTags();
+    </script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Search, ArrowRight, Heart, Sparkles, Star, Users, Package, MapPin, Youtube } from 'lucide-react'
+import { Search, ArrowRight, Heart, Sparkles, Star, Package, MapPin, Youtube } from 'lucide-react'
 
 // アニメーション用のアイコンコンポーネント
 const FloatingIcon = ({ icon: Icon, delay = 0, size = "h-6 w-6" }: { 
@@ -49,8 +49,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
   
   const features = [
     { icon: Package, text: "推しの愛用アイテムを発見", color: "text-rose-500" },
-    { icon: MapPin, text: "聖地巡礼スポットを探索", color: "text-blue-500" },
-    { icon: Users, text: "ファン同士で情報共有", color: "text-purple-500" }
+    { icon: MapPin, text: "聖地巡礼スポットを探索", color: "text-blue-500" }
   ]
 
   useEffect(() => {
