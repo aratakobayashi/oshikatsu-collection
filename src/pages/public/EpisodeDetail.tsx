@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { Calendar, MapPin, Package, ExternalLink, User, ShoppingBag, Camera } from 'lucide-react'
+import { Calendar, MapPin, Package, ExternalLink, User, ShoppingBag, Camera, Play, Clock, Eye, ChevronRight } from 'lucide-react'
 import Button from '../../components/ui/Button'
 import Card, { CardHeader, CardContent } from '../../components/ui/Card'
 import Disclaimer, { AffiliateDisclaimer } from '../../components/Disclaimer'
@@ -19,6 +19,12 @@ interface Episode {
   date: string
   notes?: string
   celebrity?: Celebrity
+  video_url?: string
+  thumbnail_url?: string
+  view_count?: number
+  duration_minutes?: number
+  description?: string
+  platform?: string
 }
 
 interface Location {
@@ -52,6 +58,7 @@ export default function EpisodeDetail() {
   const [episode, setEpisode] = useState<Episode | null>(null)
   const [locations, setLocations] = useState<Location[]>([])
   const [items, setItems] = useState<Item[]>([])
+  const [relatedEpisodes, setRelatedEpisodes] = useState<Episode[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   
@@ -114,6 +121,16 @@ export default function EpisodeDetail() {
       console.log('🛍️ Found items:', itemsData.length)
       setItems(itemsData)
       
+      // 関連エピソードを取得（同じタレントの他のエピソード）
+      if (episodeData.celebrity?.id) {
+        const relatedEpisodesData = await db.episodes.getByCelebrityId(episodeData.celebrity.id)
+        // 現在のエピソードを除外して最新5件を取得
+        const filtered = relatedEpisodesData
+          .filter(ep => ep.id !== id)
+          .slice(0, 5)
+        setRelatedEpisodes(filtered)
+      }
+      
     } catch (error) {
       console.error('Error fetching episode data:', error)
       setError('Episode not found')
@@ -163,37 +180,131 @@ export default function EpisodeDetail() {
     )
   }
   
+  // YouTube動画IDを抽出する関数
+  function getYouTubeEmbedUrl(url: string): string | null {
+    if (!url) return null
+    const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/)
+    return match ? `https://www.youtube.com/embed/${match[1]}` : null
+  }
+
+  const embedUrl = episode.video_url ? getYouTubeEmbedUrl(episode.video_url) : null
+
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Episode Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg p-8 mb-8">
-        <div className="flex items-center space-x-2 mb-4">
-          <Calendar className="h-6 w-6" />
-          <span className="text-lg">{new Date(episode.date).toLocaleDateString()}</span>
-        </div>
-        
-        <h1 className="text-4xl font-bold mb-4">{episode.title}</h1>
-        
-        <div className="flex items-center space-x-4">
-          <Link
-            to={`/celebrities/${episode.celebrity?.slug}`}
-            className="inline-flex items-center bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-          >
-            <User className="h-4 w-4 mr-2" />
-            {episode.celebrity?.name}
-          </Link>
-          
-          <div className="flex items-center space-x-4 text-white opacity-90">
-            <span className="flex items-center">
-              <MapPin className="h-4 w-4 mr-1" />
-              {locations.length} ロケーション
-            </span>
-            <span className="flex items-center">
-              <Package className="h-4 w-4 mr-1" />
-              {items.length} アイテム
-            </span>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Episode Header with Video/Thumbnail */}
+      <div className="mb-8">
+        {/* Video or Thumbnail Section */}
+        {(embedUrl || episode.thumbnail_url) && (
+          <div className="mb-6">
+            {embedUrl ? (
+              <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                <iframe
+                  className="absolute top-0 left-0 w-full h-full rounded-lg shadow-2xl"
+                  src={embedUrl}
+                  title={episode.title}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+            ) : episode.thumbnail_url ? (
+              <div className="relative">
+                <img
+                  src={episode.thumbnail_url}
+                  alt={episode.title}
+                  className="w-full h-auto rounded-lg shadow-2xl"
+                />
+                {episode.video_url && (
+                  <a
+                    href={episode.video_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 rounded-lg hover:bg-opacity-50 transition-opacity"
+                  >
+                    <div className="bg-white rounded-full p-4">
+                      <Play className="h-12 w-12 text-red-600" fill="currentColor" />
+                    </div>
+                  </a>
+                )}
+              </div>
+            ) : null}
           </div>
-        </div>
+        )}
+
+        {/* Episode Info Card */}
+        <Card className="overflow-hidden">
+          <div className="bg-gradient-to-r from-rose-500 to-pink-500 p-6 text-white">
+            <div className="flex flex-wrap items-center gap-4 mb-4">
+              <div className="flex items-center gap-2">
+                <Calendar className="h-5 w-5" />
+                <span>{new Date(episode.date).toLocaleDateString('ja-JP', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}</span>
+              </div>
+              
+              {episode.duration_minutes && (
+                <div className="flex items-center gap-2">
+                  <Clock className="h-5 w-5" />
+                  <span>{episode.duration_minutes}分</span>
+                </div>
+              )}
+              
+              {episode.view_count && episode.view_count > 0 && (
+                <div className="flex items-center gap-2">
+                  <Eye className="h-5 w-5" />
+                  <span>{episode.view_count.toLocaleString()}回視聴</span>
+                </div>
+              )}
+              
+              {episode.platform && (
+                <span className="px-3 py-1 bg-white/20 rounded-full text-sm">
+                  {episode.platform === 'youtube' ? 'YouTube' : episode.platform}
+                </span>
+              )}
+            </div>
+            
+            <h1 className="text-3xl md:text-4xl font-bold mb-4">{episode.title}</h1>
+            
+            {episode.description && (
+              <p className="text-white/90 mb-4">{episode.description}</p>
+            )}
+            
+            <div className="flex flex-wrap items-center gap-4">
+              <Link
+                to={`/celebrities/${episode.celebrity?.slug}`}
+                className="inline-flex items-center bg-white text-rose-600 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+              >
+                <User className="h-4 w-4 mr-2" />
+                {episode.celebrity?.name}
+              </Link>
+              
+              <div className="flex items-center gap-4 text-white">
+                <span className="flex items-center gap-1">
+                  <MapPin className="h-4 w-4" />
+                  {locations.length} ロケーション
+                </span>
+                <span className="flex items-center gap-1">
+                  <Package className="h-4 w-4" />
+                  {items.length} アイテム
+                </span>
+              </div>
+              
+              {episode.video_url && !embedUrl && (
+                <a
+                  href={episode.video_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-colors"
+                >
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  動画を見る
+                </a>
+              )}
+            </div>
+          </div>
+        </Card>
       </div>
       
       {/* Episode Notes */}
@@ -418,6 +529,71 @@ export default function EpisodeDetail() {
           )}
         </div>
       </div>
+
+      {/* Related Episodes Section */}
+      {relatedEpisodes.length > 0 && (
+        <div className="mt-12">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+            <Play className="h-6 w-6 mr-2 text-rose-500" />
+            関連エピソード
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {relatedEpisodes.map((relatedEp) => (
+              <Link 
+                key={relatedEp.id} 
+                to={`/episodes/${relatedEp.id}`}
+                className="block"
+              >
+                <Card className="hover:shadow-xl transition-all duration-300 h-full">
+                  {relatedEp.thumbnail_url && (
+                    <div className="relative aspect-video">
+                      <img
+                        src={relatedEp.thumbnail_url}
+                        alt={relatedEp.title}
+                        className="w-full h-full object-cover rounded-t-lg"
+                      />
+                      {relatedEp.duration_minutes && (
+                        <div className="absolute bottom-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-xs">
+                          {relatedEp.duration_minutes}分
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                      <Calendar className="h-4 w-4" />
+                      <span>{new Date(relatedEp.date).toLocaleDateString('ja-JP')}</span>
+                      {relatedEp.view_count && relatedEp.view_count > 0 && (
+                        <>
+                          <Eye className="h-4 w-4 ml-2" />
+                          <span>{relatedEp.view_count.toLocaleString()}</span>
+                        </>
+                      )}
+                    </div>
+                    
+                    <h3 className="font-semibold text-gray-900 line-clamp-2 hover:text-rose-600 transition-colors">
+                      {relatedEp.title}
+                    </h3>
+                    
+                    {relatedEp.description && (
+                      <p className="text-sm text-gray-600 mt-2 line-clamp-2">
+                        {relatedEp.description}
+                      </p>
+                    )}
+                    
+                    <div className="flex items-center gap-1 text-rose-600 mt-3 text-sm font-medium">
+                      <span>詳細を見る</span>
+                      <ChevronRight className="h-4 w-4" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
