@@ -44,6 +44,8 @@ export default function Home() {
   
   useEffect(() => {
     fetchData()
+    // ページ読み込み時に必ずトップに戻す
+    window.scrollTo(0, 0)
   }, [])
   
   

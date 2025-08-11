@@ -67,7 +67,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
   }
 
   return (
-    <section className="relative min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 overflow-hidden">
+    <section className="relative h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 overflow-hidden">
       {/* Background Effects */}
       <SparkleEffect />
       

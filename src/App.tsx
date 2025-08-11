@@ -4,6 +4,7 @@ import AdminLayout from './components/AdminLayout'
 import PublicProtectedRoute from './components/PublicProtectedRoute'
 import AdminProtectedRoute from './components/AdminProtectedRoute' // 追加
 import EnvironmentGate from './components/EnvironmentGate'
+import ScrollToTop from './components/ScrollToTop'
 
 // Admin Pages
 import AdminDashboard from './pages/admin/Dashboard'
@@ -44,7 +45,8 @@ import { About } from './components/legal/About'
 function App() {
   return (
     <EnvironmentGate>
-      <Router>
+      <Router future={{ v7_startTransition: true }}>
+        <ScrollToTop />
         <Routes>
         {/* Admin Routes - ProtectedRouteをAdminProtectedRouteに変更 */}
         <Route path="/admin" element={
