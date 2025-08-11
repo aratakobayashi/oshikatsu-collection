@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { Calendar, MapPin, Package, ExternalLink, User, ShoppingBag, Camera, Play, Clock, Eye, ChevronRight } from 'lucide-react'
+import { Calendar, MapPin, Package, ExternalLink, User, ShoppingBag, Camera, Play, Clock, Eye, ChevronRight, AlertCircle } from 'lucide-react'
 import Button from '../../components/ui/Button'
 import Card, { CardHeader, CardContent } from '../../components/ui/Card'
 import Disclaimer, { AffiliateDisclaimer } from '../../components/Disclaimer'
+import VerificationButton from '../../components/VerificationButton'
 import { db, supabase } from '../../lib/supabase'
 
 // 型定義
@@ -332,14 +333,43 @@ export default function EpisodeDetail() {
             </Card>
           ) : (
             <div className="space-y-6">
+              {/* 推定ロケーション注意書き */}
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+                <div className="flex items-start space-x-3">
+                  <AlertCircle className="h-5 w-5 text-amber-600 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <h4 className="text-sm font-medium text-amber-800 mb-1">推定ロケーションについて</h4>
+                    <p className="text-sm text-amber-700">
+                      以下のロケーション情報は、動画の内容から自動で推測されたものです。
+                      正確性を保証するものではありません。ユーザーの皆様からの確認情報をお待ちしています。
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
               {locations.map((location) => (
-                <Card key={location.id} className="hover:shadow-lg transition-shadow">
+                <Card key={location.id} className="hover:shadow-lg transition-shadow border-l-4 border-l-amber-300">
                   <CardContent className="p-6">
-                    <Link to={`/locations/${location.id}`}>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-2 hover:text-blue-600 transition-colors">
-                        {location.name}
-                      </h3>
-                    </Link>
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex-1">
+                        <Link to={`/locations/${location.id}`}>
+                          <h3 className="text-xl font-semibold text-gray-900 hover:text-blue-600 transition-colors mb-2">
+                            {location.name}
+                          </h3>
+                        </Link>
+                        <VerificationButton
+                          itemId={location.id}
+                          itemType="location"
+                          itemName={location.name}
+                          currentVerifications={0}
+                          onVerify={(itemId, isCorrect) => {
+                            // TODO: 実際の確認機能を実装
+                            console.log(`Location ${itemId} verified as ${isCorrect ? 'correct' : 'incorrect'}`)
+                            alert(isCorrect ? '確認ありがとうございます！' : 'フィードバックありがとうございます。改善いたします。')
+                          }}
+                        />
+                      </div>
+                    </div>
                     
                     {location.address && (
                       <div className="flex items-start space-x-2 text-gray-600 mb-3">
@@ -438,6 +468,20 @@ export default function EpisodeDetail() {
           ) : (
             /* アイテムがある場合の表示 */
             <div className="space-y-6">
+              {/* 推定アイテム注意書き */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                <div className="flex items-start space-x-3">
+                  <AlertCircle className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <h4 className="text-sm font-medium text-blue-800 mb-1">推定着用アイテムについて</h4>
+                    <p className="text-sm text-blue-700">
+                      以下のアイテム情報は、動画の内容から自動で推測されたものです。
+                      正確性を保証するものではありません。購入前に商品詳細をご確認ください。
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
               {items.map((item) => (
                 <Card key={item.id} className="hover:shadow-xl transition-all duration-300 border-0 shadow-lg overflow-hidden">
                   <CardContent className="p-0">
