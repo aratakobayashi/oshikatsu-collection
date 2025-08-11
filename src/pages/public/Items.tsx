@@ -36,12 +36,6 @@ interface ItemWithDetails {
       slug: string
     }
   }
-  brand_info?: {
-    id: string
-    name: string
-    slug: string
-    country: string
-  }
   related_posts_count?: number
 }
 
@@ -197,8 +191,7 @@ function Items() {
             date,
             celebrity_id,
             celebrity:celebrities(id, name, slug)
-          ),
-          brand_info:brands(id, name, slug, country)
+          )
         `)
         .order('created_at', { ascending: false })
       
