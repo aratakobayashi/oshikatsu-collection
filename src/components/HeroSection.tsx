@@ -154,24 +154,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
             </div>
           </div>
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-16">
-            {[
-              { number: "1,000+", label: "推しアイテム", icon: Package, color: "from-rose-500 to-pink-500" },
-              { number: "500+", label: "聖地スポット", icon: MapPin, color: "from-blue-500 to-purple-500" },
-              { number: "10,000+", label: "ファン", icon: Users, color: "from-purple-500 to-indigo-500" }
-            ].map((stat, index) => (
-              <div key={index} className="group">
-                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-white/50">
-                  <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r ${stat.color} flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300`}>
-                    <stat.icon className="h-8 w-8 text-white" />
-                  </div>
-                  <div className="text-3xl font-bold text-gray-900 mb-2">{stat.number}</div>
-                  <div className="text-gray-600 font-medium">{stat.label}</div>
-                </div>
-              </div>
-            ))}
-          </div>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
