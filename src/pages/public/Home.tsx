@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ArrowRight, Calendar, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ArrowRight, Calendar, ChevronLeft, ChevronRight, Users } from 'lucide-react'
 import Card, { CardContent } from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
 import HeroSection from '../../components/HeroSection'
@@ -45,6 +45,7 @@ export default function Home() {
   useEffect(() => {
     fetchData()
   }, [])
+  
   
   async function handleSearch(searchQuery: string) {
     if (!searchQuery.trim()) return
