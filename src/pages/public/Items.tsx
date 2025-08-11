@@ -183,17 +183,35 @@ function Items() {
       // Fetch all items with related data
       const { data: itemsData, error: itemsError } = await supabase
         .from('items')
-        .select(`
-          *,
-          episode:episodes(
-            id,
-            title,
-            date,
-            celebrity_id,
-            celebrity:celebrities(id, name, slug)
-          )
-        `)
+        .select('*')
         .order('created_at', { ascending: false })
+
+      // Fetch episodes separately if needed
+      if (itemsData && itemsData.length > 0) {
+        const episodeIds = [...new Set(itemsData.map(item => item.episode_id).filter(Boolean))]
+        if (episodeIds.length > 0) {
+          const { data: episodesData } = await supabase
+            .from('episodes')
+            .select(`
+              id,
+              title,
+              date,
+              celebrity_id,
+              celebrity:celebrities(id, name, slug)
+            `)
+            .in('id', episodeIds)
+
+          // マニュアルでデータを結合
+          if (episodesData) {
+            itemsData.forEach(item => {
+              const episode = episodesData.find(ep => ep.id === item.episode_id)
+              if (episode) {
+                item.episode = episode
+              }
+            })
+          }
+        }
+      }
       
       if (itemsError) throw itemsError
       
