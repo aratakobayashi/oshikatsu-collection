@@ -199,4 +199,4 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
   )
 }
 
-export default HeroSection
+export default HeroSection// Force rebuild 月  8 11 13:54:52 JST 2025
