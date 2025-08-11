@@ -22,7 +22,7 @@ interface Episode {
   video_url?: string
   thumbnail_url?: string
   view_count?: number
-  duration_minutes?: number
+  duration?: number
   description?: string
   platform?: string
 }
@@ -244,10 +244,10 @@ export default function EpisodeDetail() {
                 })}</span>
               </div>
               
-              {episode.duration_minutes && (
+              {episode.duration && (
                 <div className="flex items-center gap-2">
                   <Clock className="h-5 w-5" />
-                  <span>{episode.duration_minutes}分</span>
+                  <span>{episode.duration}分</span>
                 </div>
               )}
               
@@ -553,9 +553,9 @@ export default function EpisodeDetail() {
                         alt={relatedEp.title}
                         className="w-full h-full object-cover rounded-t-lg"
                       />
-                      {relatedEp.duration_minutes && (
+                      {relatedEp.duration && (
                         <div className="absolute bottom-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-xs">
-                          {relatedEp.duration_minutes}分
+                          {relatedEp.duration}分
                         </div>
                       )}
                     </div>
