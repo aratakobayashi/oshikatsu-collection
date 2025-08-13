@@ -684,6 +684,24 @@ export default function CelebrityProfile() {
                         </div>
                       )}
                       
+                      {/* Location/Item Indicators */}
+                      {(episodeLinks.locations > 0 || episodeLinks.items > 0) && (
+                        <div className="absolute bottom-3 left-3 right-3 flex flex-wrap gap-2">
+                          {episodeLinks.locations > 0 && (
+                            <div className="bg-white/95 backdrop-blur-sm text-amber-700 px-3 py-1.5 rounded-lg text-xs font-semibold shadow-md border border-amber-200 flex items-center gap-1.5">
+                              <MapPin className="h-3.5 w-3.5" />
+                              <span>ロケ地あり</span>
+                            </div>
+                          )}
+                          {episodeLinks.items > 0 && (
+                            <div className="bg-white/95 backdrop-blur-sm text-rose-700 px-3 py-1.5 rounded-lg text-xs font-semibold shadow-md border border-rose-200 flex items-center gap-1.5">
+                              <Package className="h-3.5 w-3.5" />
+                              <span>アイテムあり</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      
                       {/* Play button overlay for videos */}
                       {episode.video_url && (
                         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">

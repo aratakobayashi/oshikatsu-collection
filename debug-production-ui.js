@@ -65,8 +65,7 @@ async function debugProductionUI() {
         locations(
           id,
           name,
-          address,
-          category
+          address
         )
       `)
       .eq('episode_id', episodes[0].id)
