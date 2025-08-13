@@ -39,6 +39,28 @@ interface Item {
   created_at: string
 }
 
+// YouTubeのサムネイルURLを取得
+function getYouTubeThumbnail(videoUrl: string | null): string | null {
+  if (!videoUrl) return null
+  
+  // YouTube URLから動画IDを抽出
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/,
+    /youtube\.com\/embed\/([^&\n?#]+)/,
+    /youtube\.com\/v\/([^&\n?#]+)/
+  ]
+  
+  for (const pattern of patterns) {
+    const match = videoUrl.match(pattern)
+    if (match && match[1]) {
+      // 高品質なサムネイルを返す
+      return `https://img.youtube.com/vi/${match[1]}/maxresdefault.jpg`
+    }
+  }
+  
+  return null
+}
+
 export default function CelebrityProfile() {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
@@ -50,7 +72,7 @@ export default function CelebrityProfile() {
   const [filteredEpisodes, setFilteredEpisodes] = useState<EpisodeWithDetails[]>([])
   const [locations, setLocations] = useState<Location[]>([])
   const [items, setItems] = useState<Item[]>([])
-  const [episodeLinksData, setEpisodeLinksData] = useState<{ [episodeId: string]: { locations: number, items: number } }>({})
+  const [episodeLinksData, setEpisodeLinksData] = useState<{ [episodeId: string]: { locations: number, items: number, locationDetails?: any[] } }>({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   
@@ -80,10 +102,19 @@ export default function CelebrityProfile() {
     
     const episodeIds = episodes.map(ep => ep.id)
     try {
-      // Episode-Location リンク取得
+      // Episode-Location リンク取得（location詳細も含む）
       const { data: locationLinks, error: locError } = await supabase
         .from('episode_locations')
-        .select('episode_id, location_id')
+        .select(`
+          episode_id,
+          location_id,
+          locations(
+            id,
+            name,
+            address,
+            category
+          )
+        `)
         .in('episode_id', episodeIds)
       
       if (locError) {
@@ -101,15 +132,18 @@ export default function CelebrityProfile() {
       }
       
       // エピソードIDごとに集計
-      const episodeLinksMap: { [episodeId: string]: { locations: number, items: number } } = {}
+      const episodeLinksMap: { [episodeId: string]: { locations: number, items: number, locationDetails?: any[] } } = {}
       
       episodes.forEach(episode => {
-        episodeLinksMap[episode.id] = { locations: 0, items: 0 }
+        episodeLinksMap[episode.id] = { locations: 0, items: 0, locationDetails: [] }
       })
       
       locationLinks?.forEach(link => {
         if (episodeLinksMap[link.episode_id]) {
           episodeLinksMap[link.episode_id].locations++
+          if (link.locations) {
+            episodeLinksMap[link.episode_id].locationDetails?.push(link.locations)
+          }
         }
       })
       
@@ -616,19 +650,19 @@ export default function CelebrityProfile() {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8">
             {filteredEpisodes.map((episode) => {
               const episodeLinks = episodeLinksData[episode.id] || { locations: 0, items: 0 }
               
               return (
               <Link key={episode.id} to={`/episodes/${episode.id}`}>
-                <Card className="hover:shadow-2xl transition-all duration-500 cursor-pointer h-full group border-0 shadow-lg overflow-hidden">
+                <Card className="hover:shadow-2xl transition-all duration-500 cursor-pointer h-full group border-0 shadow-lg overflow-hidden bg-white">
                   <CardContent className="p-0">
                     {/* Thumbnail */}
                     <div className="relative">
-                      {episode.thumbnail_url ? (
+                      {(episode.thumbnail_url || getYouTubeThumbnail(episode.video_url)) ? (
                         <img
-                          src={episode.thumbnail_url}
+                          src={episode.thumbnail_url || getYouTubeThumbnail(episode.video_url) || ''}
                           alt={episode.title}
                           className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                           onError={(e) => {
@@ -651,32 +685,15 @@ export default function CelebrityProfile() {
                         </div>
                       )}
                       
-                      {/* Location/Item Indicators */}
-                      {(episodeLinks.locations > 0 || episodeLinks.items > 0) && (
-                        <div className="absolute bottom-3 left-3 right-3 flex flex-wrap gap-2">
-                          {episodeLinks.locations > 0 && (
-                            <div className="bg-white/95 backdrop-blur-sm text-amber-700 px-3 py-1.5 rounded-lg text-xs font-semibold shadow-md border border-amber-200 flex items-center gap-1.5">
-                              <MapPin className="h-3.5 w-3.5" />
-                              <span>ロケ地あり</span>
-                            </div>
-                          )}
-                          {episodeLinks.items > 0 && (
-                            <div className="bg-white/95 backdrop-blur-sm text-rose-700 px-3 py-1.5 rounded-lg text-xs font-semibold shadow-md border border-rose-200 flex items-center gap-1.5">
-                              <Package className="h-3.5 w-3.5" />
-                              <span>アイテムあり</span>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                      
-                      {/* Video Link Overlay */}
+                      {/* Play button overlay for videos */}
                       {episode.video_url && (
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                          <div className="bg-white/90 backdrop-blur-sm rounded-full p-4">
-                            <Play className="h-8 w-8 text-gray-900" />
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                          <div className="bg-black/60 rounded-full p-3 group-hover:scale-110 transition-transform">
+                            <Play className="h-8 w-8 text-white" fill="currentColor" />
                           </div>
                         </div>
                       )}
+                      
                     </div>
                     
                     {/* Content */}
@@ -698,9 +715,37 @@ export default function CelebrityProfile() {
                       
                       {/* Description */}
                       {episode.description && (
-                        <p className="text-gray-600 line-clamp-3 text-sm">
+                        <p className="text-gray-600 line-clamp-2 text-sm">
                           {episode.description}
                         </p>
+                      )}
+                      
+                      {/* Location Details */}
+                      {episodeLinks.locationDetails && episodeLinks.locationDetails.length > 0 && (
+                        <div className="bg-gray-50 rounded-lg p-3 space-y-2">
+                          <div className="flex items-center text-xs font-semibold text-gray-700 mb-1">
+                            <MapPin className="h-3.5 w-3.5 mr-1 text-amber-600" />
+                            <span>訪問店舗 ({episodeLinks.locationDetails.length}件)</span>
+                          </div>
+                          <div className="space-y-1">
+                            {episodeLinks.locationDetails.slice(0, 3).map((location, idx) => (
+                              <div key={idx} className="flex items-start gap-2 text-xs">
+                                <span className="text-amber-600">•</span>
+                                <div className="flex-1">
+                                  <span className="font-medium text-gray-800">{location.name}</span>
+                                  {location.address && (
+                                    <span className="text-gray-500 ml-1">({location.address.split('都')[1] || location.address.split('県')[1] || location.address})</span>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                            {episodeLinks.locationDetails.length > 3 && (
+                              <div className="text-xs text-amber-600 font-medium pt-1">
+                                他{episodeLinks.locationDetails.length - 3}件の店舗 →
+                              </div>
+                            )}
+                          </div>
+                        </div>
                       )}
                       
                       {/* Duration & Views */}
