@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import { config } from 'dotenv'
-config({ path: '.env.staging' })
+config({ path: '.env.production' })
 
 const supabase = createClient(
   process.env.VITE_SUPABASE_URL,
@@ -8,7 +8,7 @@ const supabase = createClient(
 )
 
 async function checkData() {
-  console.log('🔍 Checking staging data...')
+  console.log('🔍 Checking production data...')
   
   // よにのちゃんねるのセレブリティ取得
   const { data: celebrity } = await supabase

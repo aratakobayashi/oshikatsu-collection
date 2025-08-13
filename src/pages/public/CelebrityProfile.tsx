@@ -111,8 +111,7 @@ export default function CelebrityProfile() {
           locations(
             id,
             name,
-            address,
-            category
+            address
           )
         `)
         .in('episode_id', episodeIds)
