@@ -1,0 +1,59 @@
+[
+  {
+    "episode": {
+      "id": "TEST001",
+      "title": "【テスト】開発環境用サンプルエピソード 1",
+      "description": "APIテスト用のサンプルエピソードです",
+      "date": "2025-08-09T07:46:41.653+00:00",
+      "duration": null,
+      "thumbnail_url": "",
+      "video_url": "https://example.com/test1",
+      "view_count": 0,
+      "like_count": 0,
+      "comment_count": 0,
+      "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+      "created_at": "2025-08-12T11:00:35.82892+00:00",
+      "updated_at": "2025-08-12T11:00:35.82892+00:00"
+    },
+    "locations": [],
+    "items": []
+  },
+  {
+    "episode": {
+      "id": "TEST002",
+      "title": "【テスト】開発環境用サンプルエピソード 2",
+      "description": "APIテスト用のサンプルエピソードです",
+      "date": "2025-08-09T07:46:41.653+00:00",
+      "duration": null,
+      "thumbnail_url": "",
+      "video_url": "https://example.com/test2",
+      "view_count": 0,
+      "like_count": 0,
+      "comment_count": 0,
+      "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+      "created_at": "2025-08-12T11:00:35.82892+00:00",
+      "updated_at": "2025-08-12T11:00:35.82892+00:00"
+    },
+    "locations": [],
+    "items": []
+  },
+  {
+    "episode": {
+      "id": "TEST_PERMISSION",
+      "title": "権限テスト",
+      "description": "テスト",
+      "date": "2025-08-09T00:00:00+00:00",
+      "duration": null,
+      "thumbnail_url": "",
+      "video_url": "https://test.com",
+      "view_count": 1000,
+      "like_count": 0,
+      "comment_count": 0,
+      "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+      "created_at": "2025-08-12T11:00:35.82892+00:00",
+      "updated_at": "2025-08-12T11:00:35.82892+00:00"
+    },
+    "locations": [],
+    "items": []
+  }
+]

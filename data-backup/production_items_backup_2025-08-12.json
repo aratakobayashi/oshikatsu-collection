@@ -1,0 +1,150 @@
+[
+  {
+    "id": "45ef4a24-7b2e-4393-81c1-d32d24c31f41",
+    "name": "ユニクロ ヒートテック クルーネックT（長袖）",
+    "slug": "uniqlo-heattech-crew-neck-t-long-sleeve",
+    "description": "二宮和也さんがよく着用している定番のヒートテック。シンプルで使いやすいデザイン。",
+    "price": 1500,
+    "image_url": "https://im.uniqlo.com/global-cms/spa/res/media/catalog/product/4/2/422553_item_01_400.jpg",
+    "purchase_url": "https://www.uniqlo.com/jp/ja/products/E422553-000/",
+    "brand": "UNIQLO",
+    "category": "fashion",
+    "tags": [
+      "インナー",
+      "ベーシック",
+      "防寒"
+    ],
+    "episode_id": null,
+    "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+    "created_at": "2025-08-09T02:03:46.631116+00:00",
+    "updated_at": "2025-08-09T02:03:46.631116+00:00"
+  },
+  {
+    "id": "3acef38c-65c6-40aa-aefc-6ccbfef63295",
+    "name": "Supreme Box Logo Hooded Sweatshirt",
+    "slug": "supreme-box-logo-hooded-sweatshirt",
+    "description": "山田涼介さん愛用のSupremeパーカー。ストリートファッションの定番アイテム。",
+    "price": 89000,
+    "image_url": null,
+    "purchase_url": "https://www.supremenewyork.com/",
+    "brand": "Supreme",
+    "category": "fashion",
+    "tags": [
+      "ストリート",
+      "パーカー",
+      "ハイブランド"
+    ],
+    "episode_id": null,
+    "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+    "created_at": "2025-08-09T02:03:46.631116+00:00",
+    "updated_at": "2025-08-09T02:03:46.631116+00:00"
+  },
+  {
+    "id": "64a5263c-1505-4bcc-825d-8d139298dbbf",
+    "name": "PORTER TANKER ショルダーバッグ",
+    "slug": "porter-tanker-shoulder-bag",
+    "description": "菊池風磨さんが使用していたポーターのショルダーバッグ。機能性とデザイン性を兼ね備えた逸品。",
+    "price": 24200,
+    "image_url": null,
+    "purchase_url": "https://www.yoshidakaban.com/",
+    "brand": "PORTER",
+    "category": "fashion",
+    "tags": [
+      "バッグ",
+      "機能的",
+      "日本製"
+    ],
+    "episode_id": null,
+    "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+    "created_at": "2025-08-09T02:03:46.631116+00:00",
+    "updated_at": "2025-08-09T02:03:46.631116+00:00"
+  },
+  {
+    "id": "8312b6dd-fa02-4464-9f69-90eeda19f39d",
+    "name": "New Balance 993",
+    "slug": "new-balance-993",
+    "description": "よにのちゃんねるメンバーがロケでよく履いているニューバランスのスニーカー。履き心地抜群。",
+    "price": 35200,
+    "image_url": null,
+    "purchase_url": "https://shop.newbalance.jp/",
+    "brand": "New Balance",
+    "category": "fashion",
+    "tags": [
+      "スニーカー",
+      "履きやすい",
+      "アメリカ製"
+    ],
+    "episode_id": null,
+    "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+    "created_at": "2025-08-09T02:03:46.631116+00:00",
+    "updated_at": "2025-08-09T02:03:46.631116+00:00"
+  },
+  {
+    "id": "485ff053-4155-490c-aa4c-7018384f9f49",
+    "name": "G-SHOCK DW-5600E",
+    "slug": "g-shock-dw-5600e",
+    "description": "ロケ中に着用していたG-SHOCKの定番モデル。耐久性に優れ、あらゆるシーンで活躍。",
+    "price": 13200,
+    "image_url": null,
+    "purchase_url": "https://www.casio.com/jp/",
+    "brand": "CASIO",
+    "category": "fashion",
+    "tags": [
+      "腕時計",
+      "耐久性",
+      "スポーティ"
+    ],
+    "episode_id": null,
+    "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+    "created_at": "2025-08-09T02:03:46.631116+00:00",
+    "updated_at": "2025-08-09T02:03:46.631116+00:00"
+  },
+  {
+    "id": "569366a1-a2a8-46de-b1cc-32c130f5033e",
+    "name": "修正テストアイテム",
+    "slug": "fixed-test-1754804624410",
+    "description": null,
+    "price": null,
+    "image_url": null,
+    "purchase_url": null,
+    "brand": null,
+    "category": null,
+    "tags": [],
+    "episode_id": null,
+    "celebrity_id": null,
+    "created_at": "2025-08-10T05:43:44.492154+00:00",
+    "updated_at": "2025-08-10T05:43:44.492154+00:00"
+  },
+  {
+    "id": "bf8d403f-d0d4-4371-a457-7f8548cc6c7f",
+    "name": "スニーカー（よにの着用）",
+    "slug": "-1754804709246-0",
+    "description": null,
+    "price": null,
+    "image_url": null,
+    "purchase_url": null,
+    "brand": null,
+    "category": null,
+    "tags": [],
+    "episode_id": null,
+    "celebrity_id": null,
+    "created_at": "2025-08-10T05:45:09.950607+00:00",
+    "updated_at": "2025-08-10T05:45:09.950607+00:00"
+  },
+  {
+    "id": "5c679e34-37f4-4664-8da6-c239e6c9ec63",
+    "name": "靴（よにの着用）",
+    "slug": "-1754804709246-1",
+    "description": null,
+    "price": null,
+    "image_url": null,
+    "purchase_url": null,
+    "brand": null,
+    "category": null,
+    "tags": [],
+    "episode_id": null,
+    "celebrity_id": null,
+    "created_at": "2025-08-10T05:45:10.111587+00:00",
+    "updated_at": "2025-08-10T05:45:10.111587+00:00"
+  }
+]

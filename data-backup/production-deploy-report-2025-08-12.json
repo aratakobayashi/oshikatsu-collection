@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-08-12",
+  "backup_path": "./data-backup/production-pre-deploy-2025-08-12.json",
+  "deploy_results": {
+    "addedEpisodes": 0,
+    "addedLocations": 20,
+    "addedRelations": 20
+  },
+  "verification_results": {
+    "addedLocations": 20,
+    "taggedEpisodes": 29
+  },
+  "target_locations": [
+    "OVERRIDE 神宮前",
+    "CozyStyleCOFFEE",
+    "西公園",
+    "博多元気一杯!!",
+    "LATTE ART MANIA TOKYO",
+    "熟豚三代目蔵司",
+    "洋麺屋 五右衛門 赤坂店",
+    "dancyu食堂",
+    "ル・パン・コティディアン",
+    "トーキョーアジフライ",
+    "二丁目食堂トレド",
+    "土鍋炊ごはん なかよし",
+    "おひつ膳田んぼ",
+    "東京都庁第一庁舎32階職員食堂",
+    "あん梅",
+    "伊東食堂",
+    "筋肉食堂",
+    "胡同",
+    "相撲茶屋 寺尾",
+    "秋葉原カリガリ"
+  ]
+}

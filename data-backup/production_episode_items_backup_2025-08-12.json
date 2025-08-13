@@ -1,0 +1,72 @@
+[
+  {
+    "id": "003bd397-de93-4ccf-b7a8-837221645c2e",
+    "episode_id": "ZfJ4nVdupgM",
+    "item_id": "45ef4a24-7b2e-4393-81c1-d32d24c31f41",
+    "created_at": "2025-08-09T02:03:47.091744+00:00",
+    "updated_at": "2025-08-09T02:03:47.091744+00:00"
+  },
+  {
+    "id": "e38b7e0a-072b-44be-9ad7-b9ab923e9be7",
+    "episode_id": "ZfJ4nVdupgM",
+    "item_id": "3acef38c-65c6-40aa-aefc-6ccbfef63295",
+    "created_at": "2025-08-09T02:03:47.091744+00:00",
+    "updated_at": "2025-08-09T02:03:47.091744+00:00"
+  },
+  {
+    "id": "93cccac1-0a17-4669-b543-70d0d99b1026",
+    "episode_id": "ZfJ4nVdupgM",
+    "item_id": "64a5263c-1505-4bcc-825d-8d139298dbbf",
+    "created_at": "2025-08-09T02:03:47.091744+00:00",
+    "updated_at": "2025-08-09T02:03:47.091744+00:00"
+  },
+  {
+    "id": "485b59be-f4c2-4dba-9399-7eca114e0912",
+    "episode_id": "T8i9WGaNkI8",
+    "item_id": "3acef38c-65c6-40aa-aefc-6ccbfef63295",
+    "created_at": "2025-08-09T02:03:47.091744+00:00",
+    "updated_at": "2025-08-09T02:03:47.091744+00:00"
+  },
+  {
+    "id": "adc73dce-96ac-4ef7-9a6b-36fcb9ed1188",
+    "episode_id": "T8i9WGaNkI8",
+    "item_id": "8312b6dd-fa02-4464-9f69-90eeda19f39d",
+    "created_at": "2025-08-09T02:03:47.091744+00:00",
+    "updated_at": "2025-08-09T02:03:47.091744+00:00"
+  },
+  {
+    "id": "b50e6f4b-1483-40f7-b6ad-9d684a935581",
+    "episode_id": "EzD_NFlWxUQ",
+    "item_id": "64a5263c-1505-4bcc-825d-8d139298dbbf",
+    "created_at": "2025-08-09T02:03:47.091744+00:00",
+    "updated_at": "2025-08-09T02:03:47.091744+00:00"
+  },
+  {
+    "id": "696f7494-1621-4832-8b71-73f7ffe617ef",
+    "episode_id": "EzD_NFlWxUQ",
+    "item_id": "485ff053-4155-490c-aa4c-7018384f9f49",
+    "created_at": "2025-08-09T02:03:47.091744+00:00",
+    "updated_at": "2025-08-09T02:03:47.091744+00:00"
+  },
+  {
+    "id": "379bac45-7619-41fb-9acd-c00d7a912257",
+    "episode_id": "-A1NIps9e84",
+    "item_id": "45ef4a24-7b2e-4393-81c1-d32d24c31f41",
+    "created_at": "2025-08-09T02:03:47.091744+00:00",
+    "updated_at": "2025-08-09T02:03:47.091744+00:00"
+  },
+  {
+    "id": "3bdb3aaf-3d9d-4f46-affe-27c41fd124be",
+    "episode_id": "-A1NIps9e84",
+    "item_id": "8312b6dd-fa02-4464-9f69-90eeda19f39d",
+    "created_at": "2025-08-09T02:03:47.091744+00:00",
+    "updated_at": "2025-08-09T02:03:47.091744+00:00"
+  },
+  {
+    "id": "62718af0-de10-4128-ba63-8339a1efb632",
+    "episode_id": "cXsABVYsrOc",
+    "item_id": "485ff053-4155-490c-aa4c-7018384f9f49",
+    "created_at": "2025-08-09T02:03:47.091744+00:00",
+    "updated_at": "2025-08-09T02:03:47.091744+00:00"
+  }
+]

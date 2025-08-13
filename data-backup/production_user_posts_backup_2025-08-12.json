@@ -1,0 +1,20 @@
+[
+  {
+    "id": "9dd913e2-4a2e-4889-bec5-7740e34a224d",
+    "user_id": "d23baa01-6951-48f9-b684-b107a0b99421",
+    "title": "test",
+    "content": "teste",
+    "image_urls": [
+      "https://awaarykghpylggygkiyp.supabase.co/storage/v1/object/public/user-uploads/1751809309554_4j2wv81ww.png"
+    ],
+    "celebrity_id": null,
+    "episode_id": null,
+    "status": "open",
+    "tags": [],
+    "view_count": 0,
+    "like_count": 0,
+    "created_at": "2025-07-06T13:41:51.370448+00:00",
+    "updated_at": "2025-07-14T02:51:53.950042+00:00",
+    "work_id": null
+  }
+]

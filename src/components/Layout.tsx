@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Home, Users, Search, MessageSquare, Plus, Menu, X, Heart, Star, Package, MapPin, ExternalLink } from 'lucide-react'
+import { Home, Users, Search, MessageSquare, Plus, Menu, X, Heart, Star, Package, MapPin, ExternalLink, LogIn, UserPlus } from 'lucide-react'
+import { useAuth } from '../hooks/useAuth'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -9,12 +10,14 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const location = useLocation()
+  const { user, isAuthenticated, loading } = useAuth()
 
   const navigationItems = [
     { id: 'home', path: '/', icon: Home, label: 'ホーム', color: 'text-blue-500', bgColor: 'bg-blue-50' },
-    { id: 'celebrities', path: '/celebrities', icon: Users, label: '推し一覧', color: 'text-rose-500', bgColor: 'bg-rose-50' },
+    { id: 'celebrities', path: '/celebrities', icon: Users, label: '推し検索', color: 'text-rose-500', bgColor: 'bg-rose-50' },
+    { id: 'locations', path: '/locations', icon: MapPin, label: 'ロケーション', color: 'text-purple-500', bgColor: 'bg-purple-50' },
     { id: 'items', path: '/items', icon: Package, label: 'アイテム', color: 'text-orange-500', bgColor: 'bg-orange-50' },
-    { id: 'posts', path: '/posts', icon: MessageSquare, label: '質問', color: 'text-green-500', bgColor: 'bg-green-50' }
+    { id: 'posts', path: '/posts', icon: MessageSquare, label: '質問機能', color: 'text-green-500', bgColor: 'bg-green-50' }
   ]
 
   const quickActions = [
@@ -60,13 +63,41 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               ))}
             </nav>
 
-            {/* Desktop CTA */}
-            <Link
-              to="/submit"
-              className="bg-gradient-to-r from-rose-500 to-pink-500 text-white px-6 py-2 rounded-xl font-semibold hover:from-rose-600 hover:to-pink-600 transition-all"
-            >
-              質問を投稿
-            </Link>
+            {/* Desktop CTA & Auth */}
+            <div className="flex items-center space-x-4">
+              {!loading && (
+                isAuthenticated ? (
+                  <div className="flex items-center space-x-3">
+                    <Link
+                      to="/submit"
+                      className="bg-gradient-to-r from-rose-500 to-pink-500 text-white px-6 py-2 rounded-xl font-semibold hover:from-rose-600 hover:to-pink-600 transition-all"
+                    >
+                      質問を投稿
+                    </Link>
+                    <div className="text-sm text-gray-600">
+                      {user?.email}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center space-x-3">
+                    <Link
+                      to="/login"
+                      className="flex items-center space-x-2 px-5 py-2 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors"
+                    >
+                      <LogIn className="h-4 w-4" />
+                      <span className="font-medium">ログイン</span>
+                    </Link>
+                    <Link
+                      to="/register"
+                      className="flex items-center space-x-2 bg-gradient-to-r from-rose-500 to-pink-500 text-white px-5 py-2 rounded-xl font-semibold hover:from-rose-600 hover:to-pink-600 transition-all"
+                    >
+                      <UserPlus className="h-4 w-4" />
+                      <span>会員登録</span>
+                    </Link>
+                  </div>
+                )
+              )}
+            </div>
           </div>
         </div>
       </header>
@@ -154,15 +185,43 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 </div>
               </div>
 
-              {/* Mobile CTA Button */}
-              <Link
-                to="/submit"
-                onClick={() => setIsMenuOpen(false)}
-                className="w-full bg-gradient-to-r from-rose-500 to-pink-500 text-white py-4 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center space-x-2"
-              >
-                <Plus className="h-5 w-5" />
-                <span>質問を投稿する</span>
-              </Link>
+              {/* Mobile Auth & CTA Buttons */}
+              {!loading && (
+                isAuthenticated ? (
+                  <div className="space-y-3">
+                    <Link
+                      to="/submit"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="w-full bg-gradient-to-r from-rose-500 to-pink-500 text-white py-4 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center space-x-2"
+                    >
+                      <Plus className="h-5 w-5" />
+                      <span>質問を投稿する</span>
+                    </Link>
+                    <div className="text-center text-sm text-gray-600">
+                      ログイン中: {user?.email}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <Link
+                      to="/register"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="w-full bg-gradient-to-r from-rose-500 to-pink-500 text-white py-4 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center space-x-2"
+                    >
+                      <UserPlus className="h-5 w-5" />
+                      <span>無料会員登録</span>
+                    </Link>
+                    <Link
+                      to="/login"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="w-full border-2 border-gray-300 text-gray-700 py-4 rounded-2xl font-semibold hover:bg-gray-50 transition-all flex items-center justify-center space-x-2"
+                    >
+                      <LogIn className="h-5 w-5" />
+                      <span>ログイン</span>
+                    </Link>
+                  </div>
+                )
+              )}
 
               {/* External Links */}
               <div className="border-t border-gray-100 pt-6">
@@ -194,37 +253,46 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
       {/* Mobile Bottom Navigation */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 shadow-2xl">
-        <div className="px-2 py-2">
+        <div className="px-1 py-2">
           <div className="flex justify-around">
-            {navigationItems.map((item) => (
+            {navigationItems.slice(0, 5).map((item) => (
               <Link
                 key={item.id}
                 to={item.path}
-                className={`flex flex-col items-center p-3 rounded-2xl transition-all ${
+                className={`flex flex-col items-center p-2 rounded-xl transition-all ${
                   location.pathname === item.path
-                    ? `${item.bgColor} ${item.color} scale-110`
+                    ? `${item.bgColor} ${item.color}`
                     : 'text-gray-400 hover:text-gray-600'
                 }`}
               >
-                <item.icon className={`h-6 w-6 mb-1 ${
-                  location.pathname === item.path ? 'animate-bounce' : ''
-                }`} />
-                <span className="text-xs font-medium">{item.label}</span>
+                <item.icon className={`h-5 w-5 mb-1`} />
+                <span className="text-[10px] font-medium">{item.label}</span>
                 {location.pathname === item.path && (
-                  <div className="absolute -top-1 w-2 h-2 bg-current rounded-full animate-ping" />
+                  <div className="absolute -top-1 w-2 h-2 bg-current rounded-full" />
                 )}
               </Link>
             ))}
           </div>
         </div>
 
-        {/* Floating Action Button */}
-        <Link
-          to="/submit"
-          className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-rose-500 to-pink-500 text-white p-4 rounded-full shadow-2xl hover:shadow-3xl transition-all hover:scale-110"
-        >
-          <Plus className="h-6 w-6" />
-        </Link>
+        {/* Floating Action Button - Only for logged-in users */}
+        {!loading && isAuthenticated && (
+          <Link
+            to="/submit"
+            className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-rose-500 to-pink-500 text-white p-4 rounded-full shadow-2xl hover:shadow-3xl transition-all hover:scale-110"
+          >
+            <Plus className="h-6 w-6" />
+          </Link>
+        )}
+        {/* Floating Login Button - For non-logged-in users */}
+        {!loading && !isAuthenticated && (
+          <Link
+            to="/login"
+            className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white p-4 rounded-full shadow-2xl hover:shadow-3xl transition-all hover:scale-110"
+          >
+            <LogIn className="h-6 w-6" />
+          </Link>
+        )}
       </nav>
 
       {/* Bottom padding for mobile to avoid FAB overlap */}

@@ -1,0 +1,122 @@
+{
+  "timestamp": "2025-08-12",
+  "restored_episodes": 12,
+  "added_locations": 16,
+  "added_relations": 16,
+  "final_coverage": 100,
+  "tagged_episodes": 16,
+  "locations_added": [
+    {
+      "name": "西公園",
+      "address": "福岡県福岡市中央区西公園１３−１",
+      "episodeTitle": "#412【福岡!!】お花見が気持ち良すぎた日",
+      "category": "公園",
+      "status": "pending"
+    },
+    {
+      "name": "博多元気一杯!!",
+      "address": "福岡県福岡市博多区下呉服町４−３１−１",
+      "episodeTitle": "#411 【福岡!!】替え玉！替え玉！の日",
+      "category": "ラーメン店",
+      "status": "pending"
+    },
+    {
+      "name": "熟豚三代目蔵司",
+      "address": "東京都港区赤坂４丁目２−２",
+      "episodeTitle": "#397【トンカツな朝は２人で】こりゃ大変プロジェクトですな!?",
+      "category": "とんかつ店",
+      "status": "pending"
+    },
+    {
+      "name": "洋麺屋 五右衛門 赤坂店",
+      "address": "東京都港区赤坂５丁目１−４ 赤坂いそむらビル １Ｆ",
+      "episodeTitle": "#389【朝食!!】卍が所望していたお店に行った日",
+      "category": "パスタ店",
+      "status": "pending"
+    },
+    {
+      "name": "ル・パン・コティディアン",
+      "address": "東京都港区赤坂9丁目7-1 東京ミッドタウンプラザ1F",
+      "episodeTitle": "#354【朝食!!】RIKACO(さん)に会った日",
+      "category": "ベーカリーカフェ",
+      "status": "pending"
+    },
+    {
+      "name": "トーキョーアジフライ",
+      "address": "東京都千代田区九段南３丁目８−１０ B1階",
+      "episodeTitle": "#316【遂に!!】思いっきりストレートに行った日",
+      "category": "居酒屋",
+      "status": "pending"
+    },
+    {
+      "name": "二丁目食堂トレド",
+      "address": "東京都新宿区神楽坂２丁目６",
+      "episodeTitle": "#282【洋食パラダイス♪】開口一番を探り合った日!!!",
+      "category": "洋食店",
+      "status": "pending"
+    },
+    {
+      "name": "土鍋炊ごはん なかよし",
+      "address": "東京都渋谷区恵比寿西１丁目８−２",
+      "episodeTitle": "#274【朝食シリーズ!!】自発光と卍の指輪がお揃いだと発覚した日",
+      "category": "定食屋",
+      "status": "pending"
+    },
+    {
+      "name": "おひつ膳田んぼ",
+      "address": "東京都世田谷区三軒茶屋１丁目２９−１０",
+      "episodeTitle": "#135【新シリーズ】折角だから朝飯だけ食べてみた",
+      "category": "定食屋",
+      "status": "pending"
+    },
+    {
+      "name": "東京都庁第一庁舎32階職員食堂",
+      "address": "東京都新宿区西新宿２丁目８−１",
+      "episodeTitle": "#150【朝飯】やっぱり皆で飯を食べると美味い。",
+      "category": "食堂",
+      "status": "pending"
+    },
+    {
+      "name": "あん梅",
+      "address": "東京都港区麻布十番",
+      "episodeTitle": "#320【朝食!!】本当に普通に喋って終わった日",
+      "category": "和食店",
+      "status": "pending"
+    },
+    {
+      "name": "伊東食堂",
+      "address": "東京都豊島区東池袋",
+      "episodeTitle": "#402【アワード!!】今までの朝食を振り返った日",
+      "category": "定食屋",
+      "status": "pending"
+    },
+    {
+      "name": "筋肉食堂",
+      "address": "東京都中央区銀座",
+      "episodeTitle": "#402【アワード!!】今までの朝食を振り返った日",
+      "category": "レストラン",
+      "status": "pending"
+    },
+    {
+      "name": "胡同",
+      "address": "東京都港区西麻布",
+      "episodeTitle": "#402【アワード!!】今までの朝食を振り返った日",
+      "category": "中華料理店",
+      "status": "pending"
+    },
+    {
+      "name": "相撲茶屋 寺尾",
+      "address": "東京都墨田区両国",
+      "episodeTitle": "#402【アワード!!】今までの朝食を振り返った日",
+      "category": "ちゃんこ店",
+      "status": "pending"
+    },
+    {
+      "name": "秋葉原カリガリ",
+      "address": "東京都千代田区外神田",
+      "episodeTitle": "#402【アワード!!】今までの朝食を振り返った日",
+      "category": "レストラン",
+      "status": "pending"
+    }
+  ]
+}

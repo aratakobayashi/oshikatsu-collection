@@ -1,0 +1,111 @@
+[
+  {
+    "id": "c57e0996-e886-49b2-9298-01560c508c77",
+    "name": "ポール・ボキューズ 西新宿店",
+    "slug": "paul-bocuse-nishishinjuku",
+    "description": "よにのちゃんねるの撮影で訪れたフレンチレストラン。新宿の高層階からの眺望が美しく、特別な日の食事におすすめ。",
+    "address": "東京都新宿区西新宿1-26-2 新宿野村ビル48階",
+    "latitude": null,
+    "longitude": null,
+    "image_url": null,
+    "website_url": "https://www.bocuse.jp/",
+    "phone": null,
+    "opening_hours": null,
+    "tags": [
+      "フレンチ",
+      "高級レストラン",
+      "新宿",
+      "眺望"
+    ],
+    "episode_id": null,
+    "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+    "created_at": "2025-08-09T02:03:46.514711+00:00",
+    "updated_at": "2025-08-09T02:03:46.514711+00:00"
+  },
+  {
+    "id": "a12e6e16-9100-45fe-91a4-9d29ed384d5b",
+    "name": "Blue Seal アメリカンビレッジ店",
+    "slug": "blue-seal-american-village",
+    "description": "沖縄の有名アイスクリーム店。よにのちゃんねるメンバーが沖縄ロケで訪問。紅芋やシークワーサーなど沖縄限定フレーバーが人気。",
+    "address": "沖縄県中頭郡北谷町美浜15-69",
+    "latitude": null,
+    "longitude": null,
+    "image_url": null,
+    "website_url": "https://www.blueseal.co.jp/",
+    "phone": null,
+    "opening_hours": null,
+    "tags": [
+      "アイスクリーム",
+      "沖縄",
+      "ご当地グルメ"
+    ],
+    "episode_id": null,
+    "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+    "created_at": "2025-08-09T02:03:46.514711+00:00",
+    "updated_at": "2025-08-09T02:03:46.514711+00:00"
+  },
+  {
+    "id": "4454e9ab-1357-4cc2-b5ef-95c54652642c",
+    "name": "スターバックス コーヒー 渋谷スカイ店",
+    "slug": "starbucks-shibuya-sky",
+    "description": "渋谷の絶景を眺めながらコーヒーが楽しめる店舗。よにのちゃんねるの休憩シーンで登場。",
+    "address": "東京都渋谷区渋谷2-24-12 渋谷スカイ14階",
+    "latitude": null,
+    "longitude": null,
+    "image_url": null,
+    "website_url": "https://www.starbucks.co.jp/",
+    "phone": null,
+    "opening_hours": null,
+    "tags": [
+      "コーヒー",
+      "渋谷",
+      "眺望",
+      "カフェ"
+    ],
+    "episode_id": null,
+    "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+    "created_at": "2025-08-09T02:03:46.514711+00:00",
+    "updated_at": "2025-08-09T02:03:46.514711+00:00"
+  },
+  {
+    "id": "9ca734d6-6672-4c0e-a421-146d1531cece",
+    "name": "築地本願寺カフェ Tsumugi",
+    "slug": "tsukiji-honganji-cafe-tsumugi",
+    "description": "築地本願寺内にある和カフェ。よにのちゃんねるで和菓子とお茶を楽しむシーンが印象的だった。",
+    "address": "東京都中央区築地3-15-1 築地本願寺内",
+    "latitude": null,
+    "longitude": null,
+    "image_url": null,
+    "website_url": "https://cafe-tsumugi.jp/",
+    "phone": null,
+    "opening_hours": null,
+    "tags": [
+      "和カフェ",
+      "築地",
+      "和菓子",
+      "抹茶"
+    ],
+    "episode_id": null,
+    "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+    "created_at": "2025-08-09T02:03:46.514711+00:00",
+    "updated_at": "2025-08-09T02:03:46.514711+00:00"
+  },
+  {
+    "id": "4c132be4-ffa6-4162-a0c3-5439608a7cb3",
+    "name": "場所（#277【ご報告!!】現状がわかんなすぎて皆で話し合った日関連）",
+    "slug": "-1754804709246-0",
+    "description": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "image_url": null,
+    "website_url": null,
+    "phone": null,
+    "opening_hours": null,
+    "tags": [],
+    "episode_id": null,
+    "celebrity_id": null,
+    "created_at": "2025-08-10T05:45:10.321702+00:00",
+    "updated_at": "2025-08-10T05:45:10.321702+00:00"
+  }
+]

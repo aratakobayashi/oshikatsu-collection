@@ -1,0 +1,72 @@
+{
+  "timestamp": "2025-08-12",
+  "addedLocations": [
+    {
+      "name": "OVERRIDE 神宮前",
+      "address": "東京都渋谷区神宮前6丁目18-11 明治ビルディング",
+      "episodeTitle": "#438【買い物!!】経理の帽子が悲鳴をあげていた日",
+      "category": "ショップ"
+    },
+    {
+      "name": "CozyStyleCOFFEE",
+      "address": "東京都新宿区上落合３丁目１０−３",
+      "episodeTitle": "#419【ドライブ!!】これがよにのクオリティーだっ！の日",
+      "category": "カフェ"
+    },
+    {
+      "name": "西公園",
+      "address": "福岡県福岡市中央区西公園１３−１",
+      "episodeTitle": "#412【福岡!!】お花見が気持ち良すぎた日",
+      "category": "公園"
+    },
+    {
+      "name": "博多元気一杯!!",
+      "address": "福岡県福岡市博多区下呉服町４−３１−１",
+      "episodeTitle": "#411 【福岡!!】替え玉！替え玉！の日",
+      "category": "ラーメン店"
+    },
+    {
+      "name": "LATTE ART MANIA TOKYO",
+      "address": "東京都港区北青山２丁目９−１３ 斉藤ビル1F",
+      "episodeTitle": "#405【考察!!】意外と経理がちゃんと考えていた日",
+      "category": "カフェ"
+    },
+    {
+      "name": "熟豚三代目蔵司",
+      "address": "東京都港区赤坂４丁目２−２",
+      "episodeTitle": "#397【トンカツな朝は２人で】こりゃ大変プロジェクトですな!?",
+      "category": "とんかつ店"
+    },
+    {
+      "name": "洋麺屋 五右衛門 赤坂店",
+      "address": "東京都港区赤坂５丁目１−４ 赤坂いそむらビル １Ｆ",
+      "episodeTitle": "#389【朝食!!】卍が所望していたお店に行った日",
+      "category": "パスタ店"
+    },
+    {
+      "name": "dancyu食堂",
+      "address": "東京都千代田区丸の内１丁目９−１ グランスタ八重北 1F",
+      "episodeTitle": "#369【イノッチ祭!!】とんでもない思い出が出てきた日",
+      "category": "定食屋"
+    },
+    {
+      "name": "ル・パン・コティディアン",
+      "address": "東京都港区赤坂9丁目7-1 東京ミッドタウンプラザ1F",
+      "episodeTitle": "#354【朝食!!】RIKACO(さん)に会った日",
+      "category": "ベーカリーカフェ"
+    },
+    {
+      "name": "伊東食堂",
+      "address": "東京都豊島区東池袋",
+      "episodeTitle": "#402【アワード!!】今までの朝食を振り返った日",
+      "category": "定食屋"
+    }
+  ],
+  "results": {
+    "restoredEpisodes": 10,
+    "addedLocationCount": 4,
+    "addedRelationCount": 4,
+    "addedLocations": 4,
+    "taggedEpisodes": 4
+  }
+}
