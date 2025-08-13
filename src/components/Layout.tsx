@@ -298,10 +298,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       {/* Bottom padding for mobile to avoid navigation overlap */}
       <div className="lg:hidden h-20" />
 
-      {/* Desktop Footer */}
-      <footer className="hidden lg:block bg-gray-900 text-white py-16">
+      {/* Footer - Desktop and Mobile */}
+      <footer className="bg-gray-900 text-white py-8 lg:py-16">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12">
             <div className="md:col-span-2">
               <div className="flex items-center space-x-3 mb-6">
                 <div className="text-rose-400">
@@ -309,15 +309,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 </div>
                 <span className="text-xl font-bold">推し活コレクション</span>
               </div>
-              <p className="text-gray-400 leading-relaxed mb-6">
-                推し活の聖地巡礼・私服特定をもっとリッチに。<br />
+              <p className="text-gray-400 leading-relaxed mb-6 text-sm lg:text-base">
+                推し活の聖地巡礼・私服特定をもっとリッチに。<br className="hidden lg:block" />
                 ファン同士で情報を共有し、お気に入りのアイテムやスポットを発見するプラットフォームです。
               </p>
             </div>
             
             <div>
-              <h3 className="text-lg font-semibold mb-6">サービス</h3>
-              <ul className="space-y-4">
+              <h3 className="text-base lg:text-lg font-semibold mb-4 lg:mb-6">サービス</h3>
+              <ul className="space-y-2 lg:space-y-4">
                 <li><Link to="/celebrities" className="text-gray-400 hover:text-white transition-colors">推し一覧</Link></li>
                 <li><Link to="/items" className="text-gray-400 hover:text-white transition-colors">アイテム</Link></li>
                 <li><Link to="/locations" className="text-gray-400 hover:text-white transition-colors">店舗・ロケ地</Link></li>
@@ -326,8 +326,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </div>
             
             <div>
-              <h3 className="text-lg font-semibold mb-6">サポート</h3>
-              <ul className="space-y-4">
+              <h3 className="text-base lg:text-lg font-semibold mb-4 lg:mb-6">サポート</h3>
+              <ul className="space-y-2 lg:space-y-4">
                 <li><Link to="/about" className="text-gray-400 hover:text-white transition-colors">サイト概要</Link></li>
                 <li><Link to="/contact" className="text-gray-400 hover:text-white transition-colors">お問い合わせ</Link></li>
                 <li><a href="https://oshikatsu-guide.com/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">推し活ガイドブック</a></li>
@@ -335,12 +335,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </div>
           </div>
           
-          <div className="border-t border-gray-800 mt-12 pt-8">
+          <div className="border-t border-gray-800 mt-8 lg:mt-12 pt-6 lg:pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-              <p className="text-gray-400">
+              <p className="text-gray-400 text-sm">
                 © 2024 推し活コレクション. All rights reserved.
               </p>
-              <div className="flex space-x-6 text-sm">
+              <div className="flex space-x-4 lg:space-x-6 text-sm">
                 <Link to="/privacy-policy" className="text-gray-400 hover:text-white transition-colors">
                   プライバシーポリシー
                 </Link>
