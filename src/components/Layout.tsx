@@ -14,10 +14,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const navigationItems = [
     { id: 'home', path: '/', icon: Home, label: 'ホーム', color: 'text-blue-500', bgColor: 'bg-blue-50' },
-    { id: 'celebrities', path: '/celebrities', icon: Users, label: '推し検索', color: 'text-rose-500', bgColor: 'bg-rose-50' },
-    { id: 'locations', path: '/locations', icon: MapPin, label: 'ロケーション', color: 'text-purple-500', bgColor: 'bg-purple-50' },
+    { id: 'celebrities', path: '/celebrities', icon: Users, label: '推し', color: 'text-rose-500', bgColor: 'bg-rose-50' },
+    { id: 'locations', path: '/locations', icon: MapPin, label: '場所', color: 'text-purple-500', bgColor: 'bg-purple-50' },
     { id: 'items', path: '/items', icon: Package, label: 'アイテム', color: 'text-orange-500', bgColor: 'bg-orange-50' },
-    { id: 'posts', path: '/posts', icon: MessageSquare, label: '質問機能', color: 'text-green-500', bgColor: 'bg-green-50' }
+    { id: 'posts', path: '/posts', icon: MessageSquare, label: '質問', color: 'text-green-500', bgColor: 'bg-green-50' }
   ]
 
   const quickActions = [
@@ -252,14 +252,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </main>
 
       {/* Mobile Bottom Navigation */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 shadow-2xl">
-        <div className="px-1 py-2">
-          <div className="flex justify-around">
-            {navigationItems.slice(0, 5).map((item) => (
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 shadow-2xl z-50">
+        <div className="px-2 py-2">
+          <div className="flex justify-around items-center">
+            {/* First 4 navigation items */}
+            {navigationItems.slice(0, 4).map((item) => (
               <Link
                 key={item.id}
                 to={item.path}
-                className={`flex flex-col items-center p-2 rounded-xl transition-all ${
+                className={`flex flex-col items-center px-3 py-2 rounded-xl transition-all ${
                   location.pathname === item.path
                     ? `${item.bgColor} ${item.color}`
                     : 'text-gray-400 hover:text-gray-600'
@@ -267,36 +268,35 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               >
                 <item.icon className={`h-5 w-5 mb-1`} />
                 <span className="text-[10px] font-medium">{item.label}</span>
-                {location.pathname === item.path && (
-                  <div className="absolute -top-1 w-2 h-2 bg-current rounded-full" />
-                )}
               </Link>
             ))}
+            
+            {/* Center Action Button */}
+            {!loading && (
+              isAuthenticated ? (
+                <Link
+                  to="/submit"
+                  className="flex flex-col items-center px-3 py-2 rounded-xl bg-gradient-to-r from-rose-500 to-pink-500 text-white"
+                >
+                  <Plus className="h-5 w-5 mb-1" />
+                  <span className="text-[10px] font-medium">投稿</span>
+                </Link>
+              ) : (
+                <Link
+                  to="/login"
+                  className="flex flex-col items-center px-3 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-500 text-white"
+                >
+                  <LogIn className="h-5 w-5 mb-1" />
+                  <span className="text-[10px] font-medium">ログイン</span>
+                </Link>
+              )
+            )}
           </div>
         </div>
-
-        {/* Floating Action Button - Only for logged-in users */}
-        {!loading && isAuthenticated && (
-          <Link
-            to="/submit"
-            className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-rose-500 to-pink-500 text-white p-4 rounded-full shadow-2xl hover:shadow-3xl transition-all hover:scale-110"
-          >
-            <Plus className="h-6 w-6" />
-          </Link>
-        )}
-        {/* Floating Login Button - For non-logged-in users */}
-        {!loading && !isAuthenticated && (
-          <Link
-            to="/login"
-            className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white p-4 rounded-full shadow-2xl hover:shadow-3xl transition-all hover:scale-110"
-          >
-            <LogIn className="h-6 w-6" />
-          </Link>
-        )}
       </nav>
 
-      {/* Bottom padding for mobile to avoid FAB overlap */}
-      <div className="lg:hidden h-24" />
+      {/* Bottom padding for mobile to avoid navigation overlap */}
+      <div className="lg:hidden h-20" />
 
       {/* Desktop Footer */}
       <footer className="hidden lg:block bg-gray-900 text-white py-16">
