@@ -138,17 +138,19 @@ export default function Locations() {
     try {
       console.log('🔍 Public Locations: Fetching data...')
       
-      // Fetch all locations with related data
+      // Fetch all locations with related data through episode_locations junction table
       const { data: locationsData, error: locationsError } = await supabase
         .from('locations')
         .select(`
           *,
-          episode:episodes(
-            id,
-            title,
-            date,
-            celebrity_id,
-            celebrity:celebrities(id, name, slug)
+          episode_locations(
+            episodes(
+              id,
+              title,
+              date,
+              celebrity_id,
+              celebrities(id, name, slug)
+            )
           )
         `)
         .order('created_at', { ascending: false })
@@ -161,7 +163,25 @@ export default function Locations() {
         supabase.from('episodes').select('*')
       ])
       
-      const allLocations = locationsData || []
+      // Process locations data to format it correctly
+      const allLocations = (locationsData || []).map(location => {
+        // Get the first episode from episode_locations if available
+        const episodeRelation = location.episode_locations?.[0]?.episodes
+        const episode = episodeRelation ? {
+          id: episodeRelation.id,
+          title: episodeRelation.title,
+          date: episodeRelation.date,
+          celebrity_id: episodeRelation.celebrity_id,
+          celebrity: episodeRelation.celebrities
+        } : undefined
+        
+        return {
+          ...location,
+          episode,
+          episode_id: episode?.id || location.episode_id || ''
+        }
+      })
+      
       setLocations(allLocations)
       setCelebrities(celebritiesData.data || [])
       setEpisodes(episodesData.data || [])
