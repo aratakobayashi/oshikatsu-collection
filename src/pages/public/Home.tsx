@@ -175,7 +175,7 @@ export default function Home() {
           </div>
           
           {celebrities.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6 lg:gap-8">
               {celebrities.slice(0, 6).map((celebrity) => (
                 <Link key={celebrity.id} to={`/celebrities/${celebrity.slug}`}>
                   <Card className="group hover:shadow-2xl transition-all duration-500 cursor-pointer border-0 shadow-lg overflow-hidden">
@@ -185,25 +185,25 @@ export default function Home() {
                           <img
                             src={celebrity.image_url}
                             alt={celebrity.name}
-                            className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                            className="w-full aspect-square object-cover group-hover:scale-110 transition-transform duration-500"
                             onError={(e) => {
                               const target = e.target as HTMLImageElement
                               target.src = 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg'
                             }}
                           />
                         ) : (
-                          <div className="w-full h-48 bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
-                            <Users className="h-16 w-16 text-rose-400" />
+                          <div className="w-full aspect-square bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                            <Users className="h-12 w-12 md:h-16 md:w-16 text-rose-400" />
                           </div>
                         )}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       </div>
                       
-                      <div className="p-6 text-center">
-                        <h3 className="font-bold text-gray-900 mb-2 group-hover:text-rose-600 transition-colors">
+                      <div className="p-3 md:p-4 lg:p-6 text-center">
+                        <h3 className="font-bold text-gray-900 mb-1 md:mb-2 group-hover:text-rose-600 transition-colors text-sm md:text-base">
                           {celebrity.name}
                         </h3>
-                        <p className="text-sm text-gray-500">{celebrity.group_name || '個人'}</p>
+                        <p className="text-xs md:text-sm text-gray-500">{celebrity.group_name || '個人'}</p>
                       </div>
                     </CardContent>
                   </Card>
@@ -266,7 +266,7 @@ export default function Home() {
                       <Card className="mx-4 shadow-xl border-0 overflow-hidden">
                         <CardContent className="p-0">
                           <div className="grid grid-cols-1 lg:grid-cols-2">
-                            <div className="relative h-64 lg:h-80">
+                            <div className="relative h-48 md:h-56 lg:h-80">
                               {episode.thumbnail_url ? (
                                 <img
                                   src={episode.thumbnail_url}
@@ -279,25 +279,31 @@ export default function Home() {
                                 />
                               ) : (
                                 <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                                  <Calendar className="h-16 w-16 text-gray-400" />
+                                  <Calendar className="h-12 w-12 md:h-16 md:w-16 text-gray-400" />
                                 </div>
                               )}
                             </div>
-                            <div className="p-8 lg:p-12 flex flex-col justify-center">
-                              <div className="flex items-center text-sm text-gray-500 mb-4">
-                                <Calendar className="h-4 w-4 mr-2" />
+                            <div className="p-4 md:p-6 lg:p-12 flex flex-col justify-center">
+                              <div className="flex items-center text-xs md:text-sm text-gray-500 mb-2 md:mb-4">
+                                <Calendar className="h-3 w-3 md:h-4 md:w-4 mr-2" />
                                 {new Date(episode.date).toLocaleDateString()}
                               </div>
-                              <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4">
+                              <h3 className="text-lg md:text-xl lg:text-3xl font-bold text-gray-900 mb-2 md:mb-4 leading-tight">
                                 {episode.title}
                               </h3>
-                              <p className="text-gray-600 mb-6 leading-relaxed">
-                                {episode.description || 'エピソードの詳細はありません'}
+                              <p className="text-sm md:text-base text-gray-600 mb-4 md:mb-6 leading-relaxed overflow-hidden">
+                                {episode.description ? 
+                                  (episode.description.length > 100 ? 
+                                    episode.description.substring(0, 100) + '...' : 
+                                    episode.description
+                                  ) : 
+                                  'エピソードの詳細はありません'
+                                }
                               </p>
                               <Link to={`/episodes/${episode.id}`}>
-                                <Button className="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white px-6 py-3 rounded-full">
+                                <Button className="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white px-4 md:px-6 py-2 md:py-3 rounded-full text-sm md:text-base">
                                   詳細を見る
-                                  <ArrowRight className="h-4 w-4 ml-2" />
+                                  <ArrowRight className="h-3 w-3 md:h-4 md:w-4 ml-2" />
                                 </Button>
                               </Link>
                             </div>
