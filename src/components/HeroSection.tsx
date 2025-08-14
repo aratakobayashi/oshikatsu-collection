@@ -76,7 +76,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
       <FloatingIcon icon={Star} delay={1000} size="h-6 w-6" />
       <FloatingIcon icon={Sparkles} delay={2000} size="h-7 w-7" />
       
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8 pt-20 pb-16">
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-8 pt-20 pb-24 z-10">
         <div className="text-center">
           {/* Main Headline with Animation */}
           <div className="mb-8">
@@ -123,17 +123,17 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch(e)}
-                  className="w-full px-8 py-6 text-xl border-3 border-gray-200 rounded-3xl focus:border-rose-400 focus:outline-none shadow-2xl hover:shadow-3xl transition-all duration-300 bg-white/90 backdrop-blur-sm group-hover:bg-white"
+                  className="w-full pl-16 pr-20 py-4 md:py-6 text-lg md:text-xl border-3 border-gray-200 rounded-3xl focus:border-rose-400 focus:outline-none shadow-2xl hover:shadow-3xl transition-all duration-300 bg-white/90 backdrop-blur-sm group-hover:bg-white"
                 />
-                <div className="absolute left-6 top-1/2 transform -translate-y-1/2">
-                  <Search className="h-7 w-7 text-gray-400 group-focus-within:text-rose-500 transition-colors" />
+                <div className="absolute left-4 md:left-6 top-1/2 transform -translate-y-1/2">
+                  <Search className="h-5 w-5 md:h-7 md:w-7 text-gray-400 group-focus-within:text-rose-500 transition-colors" />
                 </div>
                 <button 
                   onClick={handleSearch}
-                  className="absolute right-3 top-3 bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white px-8 py-3 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white p-2 md:p-3 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                   disabled={!searchQuery.trim()}
                 >
-                  <ArrowRight className="h-6 w-6" />
+                  <ArrowRight className="h-5 w-5 md:h-6 md:w-6" />
                 </button>
               </div>
             </div>
@@ -182,7 +182,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
 
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center max-w-4xl mx-auto">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center max-w-4xl mx-auto relative z-20 bg-gradient-to-br from-rose-50/50 via-pink-50/50 to-purple-50/50 rounded-3xl p-4 sm:p-6 backdrop-blur-sm">
             <Link to="/celebrities" className="w-full sm:w-auto">
               <button className="group w-full bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white px-8 sm:px-12 py-5 sm:py-4 rounded-full text-xl sm:text-lg font-bold sm:font-semibold shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 min-h-[60px]">
                 <span className="flex items-center justify-center space-x-3">
@@ -214,7 +214,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
       </div>
 
       {/* Bottom Wave */}
-      <div className="absolute bottom-0 left-0 right-0">
+      <div className="absolute bottom-0 left-0 right-0 z-0">
         <svg viewBox="0 0 1440 120" className="w-full h-20 text-white">
           <path
             fill="currentColor"
