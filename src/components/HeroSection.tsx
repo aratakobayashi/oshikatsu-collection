@@ -67,7 +67,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
   }
 
   return (
-    <section className="relative h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 overflow-hidden">
+    <section className="relative min-h-screen lg:h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 overflow-hidden">
       {/* Background Effects */}
       <SparkleEffect />
       
@@ -76,7 +76,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
       <FloatingIcon icon={Star} delay={1000} size="h-6 w-6" />
       <FloatingIcon icon={Sparkles} delay={2000} size="h-7 w-7" />
       
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8 pt-20 pb-40 z-10">
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-8 pt-20 pb-24 lg:pb-40 z-10">
         <div className="text-center">
           {/* Main Headline with Animation */}
           <div className="mb-8">
