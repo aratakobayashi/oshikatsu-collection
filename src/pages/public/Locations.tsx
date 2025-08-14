@@ -479,7 +479,7 @@ export default function Locations() {
                 <CardContent className="p-0">
                   {/* Image Container */}
                   <div className="relative overflow-hidden bg-gray-100">
-                    {location.image_urls.length > 0 ? (
+                    {location.image_urls && location.image_urls.length > 0 ? (
                       <img
                         src={location.image_urls[0]}
                         alt={location.name}
@@ -582,7 +582,7 @@ export default function Locations() {
                     )}
                     
                     {/* Menu Examples */}
-                    {location.menu_example.length > 0 && (
+                    {location.menu_example && location.menu_example.length > 0 && (
                       <div className="space-y-2">
                         <p className="text-sm font-medium text-gray-700">メニュー例:</p>
                         <div className="flex flex-wrap gap-1">
@@ -594,7 +594,7 @@ export default function Locations() {
                               {item}
                             </span>
                           ))}
-                          {location.menu_example.length > 3 && (
+                          {location.menu_example && location.menu_example.length > 3 && (
                             <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
                               +{location.menu_example.length - 3}
                             </span>
