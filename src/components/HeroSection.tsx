@@ -182,7 +182,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
 
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center max-w-4xl mx-auto relative z-20 bg-white/30 rounded-3xl p-4 sm:p-6 backdrop-blur-sm shadow-lg">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center max-w-4xl mx-auto relative z-20">
             <Link to="/celebrities" className="w-full sm:w-auto">
               <button className="group w-full bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white px-8 sm:px-12 py-5 sm:py-4 rounded-full text-xl sm:text-lg font-bold sm:font-semibold shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 min-h-[60px]">
                 <span className="flex items-center justify-center space-x-3">
