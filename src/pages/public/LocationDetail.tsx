@@ -48,21 +48,10 @@ export default function LocationDetail() {
     try {
       console.log('🔍 Fetching location with ID:', id)
       
-      // まずslugで検索を試行（関連エピソード情報も含める）
+      // まずslugで検索を試行（基本情報のみ）
       let { data: locationData, error: locationError } = await supabase
         .from('locations')
-        .select(`
-          *,
-          episodes:episode_id (
-            id,
-            title,
-            date,
-            celebrities:celebrity_id (
-              name,
-              slug
-            )
-          )
-        `)
+        .select('*')
         .eq('slug', id)
         .single()
       
@@ -71,18 +60,7 @@ export default function LocationDetail() {
         console.log('🔍 Slug not found, trying UUID search...')
         const uuidResponse = await supabase
           .from('locations')
-          .select(`
-            *,
-            episodes:episode_id (
-              id,
-              title,
-              date,
-              celebrities:celebrity_id (
-                name,
-                slug
-              )
-            )
-          `)
+          .select('*')
           .eq('id', id)
           .single()
         
@@ -97,9 +75,28 @@ export default function LocationDetail() {
       
       console.log('✅ Successfully fetched location:', locationData)
       
-      // エピソード情報を配列形式に変換
-      if (locationData.episodes) {
-        locationData.episodes = [locationData.episodes]
+      // 関連エピソード情報を別途取得
+      if (locationData.episode_id) {
+        const { data: episode, error: episodeError } = await supabase
+          .from('episodes')
+          .select(`
+            id,
+            title,
+            date,
+            celebrities:celebrity_id (
+              name,
+              slug
+            )
+          `)
+          .eq('id', locationData.episode_id)
+          .single()
+        
+        if (episode && !episodeError) {
+          locationData.episodes = [episode]
+          console.log('✅ Successfully fetched episode:', episode)
+        } else {
+          console.error('❌ Episode fetch error:', episodeError)
+        }
       }
       
       setLocation(locationData)
