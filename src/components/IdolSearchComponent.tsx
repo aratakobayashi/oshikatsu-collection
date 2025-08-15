@@ -57,7 +57,7 @@ export default function IdolSearchComponent() {
 
   const fetchPopularCelebrities = async () => {
     try {
-      const data = await db.celebrities.getPopular(12)
+      const data = await db.celebrities.getPopular(1000)
       setPopularCelebrities(data)
     } catch (error) {
       console.error('Error fetching popular celebrities:', error)
