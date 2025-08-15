@@ -80,6 +80,18 @@ export default function CelebrityProfile() {
   const [episodeSearch, setEpisodeSearch] = useState('')
   const [platformFilter, setPlatformFilter] = useState('')
   const [yearFilter, setYearFilter] = useState('')
+  const [debugInfo, setDebugInfo] = useState('')
+  
+  // Get platform from video_url
+  function getPlatformFromUrl(videoUrl: string | null): string {
+    if (!videoUrl) return 'other'
+    if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) return 'youtube'
+    if (videoUrl.includes('themoviedb.org')) return 'tmdb'
+    if (videoUrl.includes('twitter.com') || videoUrl.includes('x.com')) return 'twitter'
+    if (videoUrl.includes('instagram.com')) return 'instagram'
+    if (videoUrl.includes('tiktok.com')) return 'tiktok'
+    return 'other'
+  }
   
   useEffect(() => {
     if (decodedSlug) {
@@ -197,8 +209,11 @@ export default function CelebrityProfile() {
   }
   
   function filterEpisodes() {
+    const debugMsg = `🔍 [DEBUG] filterEpisodes called with filters: search="${episodeSearch}", platform="${platformFilter}", year="${yearFilter}", totalEpisodes=${episodes.length}`
+    console.log(debugMsg)
     
     let filtered = [...episodes]
+    let debugSteps = [debugMsg]
     
     // Search filter
     if (episodeSearch) {
@@ -207,11 +222,30 @@ export default function CelebrityProfile() {
         episode.title.toLowerCase().includes(term) ||
         episode.description?.toLowerCase().includes(term)
       )
+      const msg = `After search filter: ${filtered.length}`
+      console.log('🔍 [DEBUG]', msg)
+      debugSteps.push(msg)
     }
     
     // Platform filter
     if (platformFilter) {
-      filtered = filtered.filter(episode => episode.platform === platformFilter)
+      const platformCounts = {}
+      filtered.forEach(episode => {
+        const platform = getPlatformFromUrl(episode.video_url)
+        platformCounts[platform] = (platformCounts[platform] || 0) + 1
+      })
+      const distMsg = `Platform distribution before filter: ${JSON.stringify(platformCounts)}`
+      console.log('🔍 [DEBUG]', distMsg)
+      debugSteps.push(distMsg)
+      
+      filtered = filtered.filter(episode => {
+        const platform = getPlatformFromUrl(episode.video_url)
+        const matches = platform === platformFilter
+        return matches
+      })
+      const msg = `After platform filter: ${filtered.length}`
+      console.log('🔍 [DEBUG]', msg)
+      debugSteps.push(msg)
     }
     
     // Year filter
@@ -219,8 +253,16 @@ export default function CelebrityProfile() {
       filtered = filtered.filter(episode => 
         new Date(episode.date).getFullYear().toString() === yearFilter
       )
+      const msg = `After year filter: ${filtered.length}`
+      console.log('🔍 [DEBUG]', msg)
+      debugSteps.push(msg)
     }
     
+    const finalMsg = `Final filtered episodes count: ${filtered.length}`
+    console.log('🔍 [DEBUG]', finalMsg)
+    debugSteps.push(finalMsg)
+    
+    setDebugInfo(debugSteps.join('\n'))
     setFilteredEpisodes(filtered)
   }
   
@@ -242,8 +284,10 @@ export default function CelebrityProfile() {
   function getPlatformLabel(platform: string) {
     const labels = {
       youtube: 'YouTube',
+      tmdb: '映画・ドラマ',
       tv: 'テレビ',
       instagram: 'Instagram',
+      twitter: 'Twitter',
       tiktok: 'TikTok',
       other: 'その他'
     }
@@ -253,8 +297,10 @@ export default function CelebrityProfile() {
   function getPlatformColor(platform: string) {
     const colors = {
       youtube: 'bg-red-100 text-red-700',
+      tmdb: 'bg-indigo-100 text-indigo-700',
       tv: 'bg-blue-100 text-blue-700',
       instagram: 'bg-purple-100 text-purple-700',
+      twitter: 'bg-sky-100 text-sky-700',
       tiktok: 'bg-pink-100 text-pink-700',
       other: 'bg-gray-100 text-gray-700'
     }
@@ -573,8 +619,10 @@ export default function CelebrityProfile() {
                   options={[
                     { value: '', label: '🎬 全てのプラットフォーム' },
                     { value: 'youtube', label: '📺 YouTube' },
+                    { value: 'tmdb', label: '🎬 映画・ドラマ' },
                     { value: 'tv', label: '📻 テレビ' },
                     { value: 'instagram', label: '📷 Instagram' },
+                    { value: 'twitter', label: '🐦 Twitter' },
                     { value: 'tiktok', label: '🎵 TikTok' },
                     { value: 'other', label: '🔖 その他' }
                   ]}
@@ -600,6 +648,20 @@ export default function CelebrityProfile() {
                   表示中
                 </div>
               </div>
+            </CardContent>
+          </Card>
+        )}
+        
+        {/* Debug Info - 一時的なデバッグ表示 */}
+        {debugInfo && (
+          <Card className="mb-4 bg-yellow-50 border-yellow-200">
+            <CardContent className="p-4">
+              <details>
+                <summary className="cursor-pointer text-sm font-medium text-yellow-800 mb-2">
+                  🔍 フィルタ処理デバッグ情報 (クリックで表示)
+                </summary>
+                <pre className="text-xs text-yellow-700 whitespace-pre-wrap">{debugInfo}</pre>
+              </details>
             </CardContent>
           </Card>
         )}
@@ -676,10 +738,10 @@ export default function CelebrityProfile() {
                       )}
                       
                       {/* Platform Badge */}
-                      {episode.platform && (
+                      {episode.video_url && (
                         <div className="absolute top-3 left-3">
-                          <span className={`px-3 py-1 text-xs font-medium rounded-full shadow-sm ${getPlatformColor(episode.platform)}`}>
-                            {getPlatformIcon(episode.platform)} {getPlatformLabel(episode.platform)}
+                          <span className={`px-3 py-1 text-xs font-medium rounded-full shadow-sm ${getPlatformColor(getPlatformFromUrl(episode.video_url))}`}>
+                            {getPlatformIcon(getPlatformFromUrl(episode.video_url))} {getPlatformLabel(getPlatformFromUrl(episode.video_url))}
                           </span>
                         </div>
                       )}

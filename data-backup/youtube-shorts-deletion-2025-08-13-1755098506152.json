@@ -1,0 +1,515 @@
+{
+  "timestamp": "2025-08-13T15:21:46.152Z",
+  "purpose": "YouTube Shorts episodes deletion backup",
+  "totalEpisodes": 21,
+  "episodes": [
+    {
+      "id": "c1b743e226698782cc5ceaa77c1d9202",
+      "title": "1億回突破ありがとう記念 - 山田涼介ver. - #Shorts",
+      "description": "#ジャにのちゃんねる\n#禁断のダンス山田涼介ver\n#1億回突破ありがとう記念",
+      "date": "2021-06-22T12:00:33+00:00",
+      "duration": null,
+      "thumbnail_url": "https://i.ytimg.com/vi/wQLoD7vAlRI/hqdefault.jpg",
+      "video_url": "https://www.youtube.com/watch?v=wQLoD7vAlRI",
+      "view_count": 7028520,
+      "like_count": 0,
+      "comment_count": 5456,
+      "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+      "created_at": "2025-08-12T09:25:35.538109+00:00",
+      "updated_at": "2025-08-12T09:25:35.538109+00:00"
+    },
+    {
+      "id": "2c719d73-3b6f-4712-b351-98049dd11252",
+      "title": "1億回突破ありがとう記念 - 中丸雄一ver. - #Shorts",
+      "description": "#ジャにのちゃんねる\n#禁断のダンス中丸雄一ver\n#1億回突破ありがとう記念",
+      "date": "2021-06-23T10:00:17+00:00",
+      "duration": null,
+      "thumbnail_url": "https://i.ytimg.com/vi/oEicm9OQwwo/maxresdefault.jpg",
+      "video_url": "https://www.youtube.com/watch?v=oEicm9OQwwo",
+      "view_count": 2143158,
+      "like_count": 0,
+      "comment_count": 2414,
+      "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+      "created_at": "2025-08-12T09:25:35.538109+00:00",
+      "updated_at": "2025-08-12T09:25:35.538109+00:00"
+    },
+    {
+      "id": "dc7271ef-9bf1-4dde-8967-c301537e689c",
+      "title": "1億回突破ありがとう記念 - 菊池風磨ver. - #Shorts",
+      "description": "#ジャにのちゃんねる\n#禁断のダンス菊池風磨ver\n#1億回突破ありがとう記念",
+      "date": "2021-06-21T10:00:35+00:00",
+      "duration": null,
+      "thumbnail_url": "https://i.ytimg.com/vi/zXK-5WAM8aM/maxresdefault.jpg",
+      "video_url": "https://www.youtube.com/watch?v=zXK-5WAM8aM",
+      "view_count": 3588070,
+      "like_count": 0,
+      "comment_count": 3145,
+      "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+      "created_at": "2025-08-12T09:25:35.538109+00:00",
+      "updated_at": "2025-08-12T09:25:35.538109+00:00"
+    },
+    {
+      "id": "21a9ed22-82e3-42d4-a3a3-a378ede0520a",
+      "title": "ジャにのちゃんねるの夏【夏休みSP中!】誰かが切り抜く前に爆速で我々が切り抜いてみた2/3 #shorts",
+      "description": "",
+      "date": "2021-08-10T09:15:03+00:00",
+      "duration": null,
+      "thumbnail_url": "https://i.ytimg.com/vi/iS_2m94eEi0/maxresdefault.jpg",
+      "video_url": "https://www.youtube.com/watch?v=iS_2m94eEi0",
+      "view_count": 1434240,
+      "like_count": 0,
+      "comment_count": 860,
+      "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+      "created_at": "2025-08-12T09:25:35.538109+00:00",
+      "updated_at": "2025-08-12T09:25:35.538109+00:00"
+    },
+    {
+      "id": "41df529a-8e38-45b3-a9ac-3dc32b1a1287",
+      "title": "ジャにのちゃんねるの夏【祝!2000万回再生!】誰かが切り抜く前に爆速で我々が切り抜いてみた ~思い出その３~  #shorts",
+      "description": "",
+      "date": "2021-08-25T10:00:03+00:00",
+      "duration": null,
+      "thumbnail_url": "https://i.ytimg.com/vi/9u3FxziZNx4/maxresdefault.jpg",
+      "video_url": "https://www.youtube.com/watch?v=9u3FxziZNx4",
+      "view_count": 1872587,
+      "like_count": 0,
+      "comment_count": 1329,
+      "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+      "created_at": "2025-08-12T09:25:35.538109+00:00",
+      "updated_at": "2025-08-12T09:25:35.538109+00:00"
+    },
+    {
+      "id": "b4c645d0-7dec-4608-93a5-3b369b0a58b2",
+      "title": "ジャにのちゃんねるの夏【祝!2000万回再生!】誰かが切り抜く前に爆速で我々が切り抜いてみた ~思い出その２~  #shorts",
+      "description": "",
+      "date": "2021-08-25T10:00:04+00:00",
+      "duration": null,
+      "thumbnail_url": "https://i.ytimg.com/vi/3eaNI4E_tVc/maxresdefault.jpg",
+      "video_url": "https://www.youtube.com/watch?v=3eaNI4E_tVc",
+      "view_count": 932268,
+      "like_count": 0,
+      "comment_count": 949,
+      "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+      "created_at": "2025-08-12T09:25:35.538109+00:00",
+      "updated_at": "2025-08-12T09:25:35.538109+00:00"
+    },
+    {
+      "id": "820b9007-489a-4c9c-a75c-a0c7120f7a2f",
+      "title": "ジャにのちゃんねるの夏【祝!2000万回再生!】誰かが切り抜く前に爆速で我々が切り抜いてみた ~思い出その１~  #shorts",
+      "description": "",
+      "date": "2021-08-25T10:00:16+00:00",
+      "duration": null,
+      "thumbnail_url": "https://i.ytimg.com/vi/j6JZDMMg-qs/maxresdefault.jpg",
+      "video_url": "https://www.youtube.com/watch?v=j6JZDMMg-qs",
+      "view_count": 1289827,
+      "like_count": 0,
+      "comment_count": 1152,
+      "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+      "created_at": "2025-08-12T09:25:35.538109+00:00",
+      "updated_at": "2025-08-12T09:25:35.538109+00:00"
+    },
+    {
+      "id": "91e6e087-7f3b-495b-bc63-31a064388733",
+      "title": "ジャにのちゃんねるの夏【祝!2000万回再生!】誰かが切り抜く前に爆速で我々が切り抜いてみた ~思い出その４~  #shorts",
+      "description": "",
+      "date": "2021-08-25T10:00:24+00:00",
+      "duration": null,
+      "thumbnail_url": "https://i.ytimg.com/vi/Vy5GWM6SRjc/hqdefault.jpg",
+      "video_url": "https://www.youtube.com/watch?v=Vy5GWM6SRjc",
+      "view_count": 1151801,
+      "like_count": 0,
+      "comment_count": 828,
+      "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+      "created_at": "2025-08-12T09:25:35.538109+00:00",
+      "updated_at": "2025-08-12T09:25:35.538109+00:00"
+    },
+    {
+      "id": "81ca969c-d8ba-48e0-b725-eef2fbd36b57",
+      "title": "【更新頻度上げます!!】週2を目指す人達 ~二宮中丸編~ この曲なんでしょう？ #shorts",
+      "description": "",
+      "date": "2021-09-06T10:00:20+00:00",
+      "duration": null,
+      "thumbnail_url": "https://i.ytimg.com/vi/yA54g0UDdH8/maxresdefault.jpg",
+      "video_url": "https://www.youtube.com/watch?v=yA54g0UDdH8",
+      "view_count": 1707508,
+      "like_count": 0,
+      "comment_count": 2903,
+      "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+      "created_at": "2025-08-12T09:25:35.538109+00:00",
+      "updated_at": "2025-08-12T09:25:35.538109+00:00"
+    },
+    {
+      "id": "3e8de34e-1f01-4c06-b94e-db40f40deb4a",
+      "title": "【友達がいなくて一人でいるから誰かきてぇぇぇ】生配信を開始するまでの楽勝風動画...できるようになっちゃいました！#shorts #ジャにの #一人生配信",
+      "description": "今日も本編動画はお休みさせてもらいます🙇‍♂️かわりにと言ったらなんですが、こんなショート動画をどうぞ！",
+      "date": "2021-12-08T09:01:22+00:00",
+      "duration": null,
+      "thumbnail_url": "https://i.ytimg.com/vi/ek3sNvkMsGw/maxresdefault.jpg",
+      "video_url": "https://www.youtube.com/watch?v=ek3sNvkMsGw",
+      "view_count": 924779,
+      "like_count": 0,
+      "comment_count": 1237,
+      "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+      "created_at": "2025-08-12T09:25:35.538109+00:00",
+      "updated_at": "2025-08-12T09:25:35.538109+00:00"
+    },
+    {
+      "id": "87e0e1f4-f4a6-4e1b-a482-b707bca2b879",
+      "title": "ジャにのちゃんねる【経理が編集しました】1年前と同じ場所で同じ格好...違い分かります😉❗️㊗️１周年です✨ #shorts",
+      "description": "#ジャにの #経理が編集したよ #祝１周年",
+      "date": "2022-04-13T10:50:08+00:00",
+      "duration": null,
+      "thumbnail_url": "https://i.ytimg.com/vi/59r7cPHKajk/maxresdefault.jpg",
+      "video_url": "https://www.youtube.com/watch?v=59r7cPHKajk",
+      "view_count": 907015,
+      "like_count": 0,
+      "comment_count": 1578,
+      "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+      "created_at": "2025-08-12T09:25:37.978029+00:00",
+      "updated_at": "2025-08-12T09:25:37.978029+00:00"
+    },
+    {
+      "id": "9d0ce9ef-0877-4fd0-b17b-90a90881fbbc",
+      "title": "ジャにの 【緊急生配信決定！】なんと326万人突破です❗️そして私山田が29歳になります㊗️〜色々感謝を込めて自発光編〜#shorts",
+      "description": "#ジャにの #緊急生配信 #ジャニーズ一番",
+      "date": "2022-05-08T10:00:29+00:00",
+      "duration": null,
+      "thumbnail_url": "https://i.ytimg.com/vi/z0HdT1bznNg/maxresdefault.jpg",
+      "video_url": "https://www.youtube.com/watch?v=z0HdT1bznNg",
+      "view_count": 1303299,
+      "like_count": 0,
+      "comment_count": 3400,
+      "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+      "created_at": "2025-08-12T09:25:37.978029+00:00",
+      "updated_at": "2025-08-12T09:25:37.978029+00:00"
+    },
+    {
+      "id": "1f123b9f-c658-4942-bebf-86cddc6dabf6",
+      "title": "【まだまだ踊れるぜ！】Travis Japanと一緒に「JUST DANCE!」踊ってみた〜 #shorts",
+      "description": "#ジャにの #JUSTDANCE #ジャにの踊る",
+      "date": "2023-01-04T10:00:06+00:00",
+      "duration": null,
+      "thumbnail_url": "https://i.ytimg.com/vi/GhwqIv5IXyw/maxresdefault.jpg",
+      "video_url": "https://www.youtube.com/watch?v=GhwqIv5IXyw",
+      "view_count": 1877650,
+      "like_count": 0,
+      "comment_count": 739,
+      "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+      "created_at": "2025-08-12T09:25:40.10789+00:00",
+      "updated_at": "2025-08-12T09:25:40.10789+00:00"
+    },
+    {
+      "id": "a03f5c4e-162b-4538-baa1-d248ffc4e5d4",
+      "title": "#ジャにのの夏は終わらねぇぇぇ!!【明日からスタート!!】童心に帰る大人たち！山手線のビートで大喧嘩!! #shorts",
+      "description": "#ジャにの #ジャにのちゃんねる #ジャにのの夏は終わらねぇぇぇ",
+      "date": "2022-09-17T11:24:13+00:00",
+      "duration": null,
+      "thumbnail_url": "https://i.ytimg.com/vi/cvvvTOyHYU8/maxresdefault.jpg",
+      "video_url": "https://www.youtube.com/watch?v=cvvvTOyHYU8",
+      "view_count": 1402379,
+      "like_count": 0,
+      "comment_count": 916,
+      "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+      "created_at": "2025-08-12T09:25:37.978029+00:00",
+      "updated_at": "2025-08-12T09:25:37.978029+00:00"
+    },
+    {
+      "id": "fb0f9095-844b-4807-829b-e5f8867aff04",
+      "title": "#ジャにのの夏は終わらねぇぇぇ!!【明日からスタート!!】童心に帰る大人たち！大感動の花火!! #shorts",
+      "description": "#ジャにの #ジャにのちゃんねる #ジャにのの夏は終わらねぇぇぇ",
+      "date": "2022-09-17T11:30:20+00:00",
+      "duration": null,
+      "thumbnail_url": "https://i.ytimg.com/vi/pLNjxfqs_Ug/hqdefault.jpg",
+      "video_url": "https://www.youtube.com/watch?v=pLNjxfqs_Ug",
+      "view_count": 1105856,
+      "like_count": 0,
+      "comment_count": 948,
+      "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+      "created_at": "2025-08-12T09:25:37.978029+00:00",
+      "updated_at": "2025-08-12T09:25:37.978029+00:00"
+    },
+    {
+      "id": "f863763588af54cb75583600701edd8d",
+      "title": "【コラボ!!】の為に経理が考えたゲームで遊んだ日~の収録前のひと時＊＊＊編集編 #shorts",
+      "description": "",
+      "date": "2023-04-21T10:00:45+00:00",
+      "duration": null,
+      "thumbnail_url": "https://i.ytimg.com/vi/wr_G7f4jShc/hqdefault.jpg",
+      "video_url": "https://www.youtube.com/watch?v=wr_G7f4jShc",
+      "view_count": 6539066,
+      "like_count": 0,
+      "comment_count": 804,
+      "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+      "created_at": "2025-08-12T09:25:40.10789+00:00",
+      "updated_at": "2025-08-12T09:25:40.10789+00:00"
+    },
+    {
+      "id": "c90584f0-ed97-4bfa-9e24-a70784f6a1df",
+      "title": "【漫画家デビュー!!!!】中丸雄一…先生。おめでとうございます 🎉 🎉#shorts #漫画家 #デビュー",
+      "description": "",
+      "date": "2023-05-30T09:00:10+00:00",
+      "duration": null,
+      "thumbnail_url": "https://i.ytimg.com/vi/H0bSFHE6EFg/maxresdefault.jpg",
+      "video_url": "https://www.youtube.com/watch?v=H0bSFHE6EFg",
+      "view_count": 977624,
+      "like_count": 0,
+      "comment_count": 1336,
+      "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+      "created_at": "2025-08-12T09:25:42.410346+00:00",
+      "updated_at": "2025-08-12T09:25:42.410346+00:00"
+    },
+    {
+      "id": "15110fe0-35df-4cab-9947-578b67dab8e9",
+      "title": "【曲当てクイズ】実際の曲つけてみたよ🎵〜Hey! Say! JUMP編〜#ジャにの #shorts #パステル",
+      "description": "",
+      "date": "2023-06-22T08:00:09+00:00",
+      "duration": null,
+      "thumbnail_url": "https://i.ytimg.com/vi/9vL71oU39H8/maxresdefault.jpg",
+      "video_url": "https://www.youtube.com/watch?v=9vL71oU39H8",
+      "view_count": 1231195,
+      "like_count": 0,
+      "comment_count": 355,
+      "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+      "created_at": "2025-08-12T09:25:42.410346+00:00",
+      "updated_at": "2025-08-12T09:25:42.410346+00:00"
+    },
+    {
+      "id": "73816e6a-ba2c-4d4f-916f-ff2f0503f5e8",
+      "title": "【曲当てクイズ】実際の曲つけてみたよ🎵〜Sexy Zone編〜#ジャにの#shorts #恋のモード",
+      "description": "",
+      "date": "2023-06-22T08:15:00+00:00",
+      "duration": null,
+      "thumbnail_url": "https://i.ytimg.com/vi/KPiL7ZaxyC0/maxresdefault.jpg",
+      "video_url": "https://www.youtube.com/watch?v=KPiL7ZaxyC0",
+      "view_count": 1277049,
+      "like_count": 0,
+      "comment_count": 472,
+      "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+      "created_at": "2025-08-12T09:25:42.410346+00:00",
+      "updated_at": "2025-08-12T09:25:42.410346+00:00"
+    },
+    {
+      "id": "90b59046-3bbc-4f4f-a48e-1317a4c2c627",
+      "title": "【卍が撮影現場に突撃】そこにいたのは… 🤔 #ジャにの #shorts #王様に捧ぐ薬指",
+      "description": "",
+      "date": "2023-06-24T09:00:18+00:00",
+      "duration": null,
+      "thumbnail_url": "https://i.ytimg.com/vi/JZgSHtdmG74/maxresdefault.jpg",
+      "video_url": "https://www.youtube.com/watch?v=JZgSHtdmG74",
+      "view_count": 4614567,
+      "like_count": 0,
+      "comment_count": 957,
+      "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+      "created_at": "2025-08-12T09:25:42.410346+00:00",
+      "updated_at": "2025-08-12T09:25:42.410346+00:00"
+    },
+    {
+      "id": "c2a1bdb10aff13ba83eb57016bac4bc9",
+      "title": "【これが四男だ】イケ丸水産🐟よいちょ丸🛥️どうも〜!!!! #ジャにの #スシロースシロー #shorts",
+      "description": "今日は山田がずっと行きたいと言っていた回転寿司に行ってみました🍣\nただ、なんて事ない朝食動画でもありますが、お暇な時に見て頂ければと思います🦉",
+      "date": "2023-06-26T12:00:13+00:00",
+      "duration": null,
+      "thumbnail_url": "https://i.ytimg.com/vi/LPVJDTdXDuM/hqdefault.jpg",
+      "video_url": "https://www.youtube.com/watch?v=LPVJDTdXDuM",
+      "view_count": 5464290,
+      "like_count": 0,
+      "comment_count": 1208,
+      "celebrity_id": "UC2alHD2WkakOiTxCxF-uMAg",
+      "created_at": "2025-08-12T09:25:42.410346+00:00",
+      "updated_at": "2025-08-12T09:25:42.410346+00:00"
+    }
+  ],
+  "episodeLocations": [],
+  "episodeItems": [],
+  "deletionPlan": [
+    {
+      "episodeId": "c1b743e226698782cc5ceaa77c1d9202",
+      "title": "1億回突破ありがとう記念 - 山田涼介ver. - #Shorts",
+      "hasRelations": false,
+      "relationsCount": {
+        "locations": 0,
+        "items": 0
+      }
+    },
+    {
+      "episodeId": "2c719d73-3b6f-4712-b351-98049dd11252",
+      "title": "1億回突破ありがとう記念 - 中丸雄一ver. - #Shorts",
+      "hasRelations": false,
+      "relationsCount": {
+        "locations": 0,
+        "items": 0
+      }
+    },
+    {
+      "episodeId": "dc7271ef-9bf1-4dde-8967-c301537e689c",
+      "title": "1億回突破ありがとう記念 - 菊池風磨ver. - #Shorts",
+      "hasRelations": false,
+      "relationsCount": {
+        "locations": 0,
+        "items": 0
+      }
+    },
+    {
+      "episodeId": "21a9ed22-82e3-42d4-a3a3-a378ede0520a",
+      "title": "ジャにのちゃんねるの夏【夏休みSP中!】誰かが切り抜く前に爆速で我々が切り抜いてみた2/3 #shorts",
+      "hasRelations": false,
+      "relationsCount": {
+        "locations": 0,
+        "items": 0
+      }
+    },
+    {
+      "episodeId": "41df529a-8e38-45b3-a9ac-3dc32b1a1287",
+      "title": "ジャにのちゃんねるの夏【祝!2000万回再生!】誰かが切り抜く前に爆速で我々が切り抜いてみた ~思い出その３~  #shorts",
+      "hasRelations": false,
+      "relationsCount": {
+        "locations": 0,
+        "items": 0
+      }
+    },
+    {
+      "episodeId": "b4c645d0-7dec-4608-93a5-3b369b0a58b2",
+      "title": "ジャにのちゃんねるの夏【祝!2000万回再生!】誰かが切り抜く前に爆速で我々が切り抜いてみた ~思い出その２~  #shorts",
+      "hasRelations": false,
+      "relationsCount": {
+        "locations": 0,
+        "items": 0
+      }
+    },
+    {
+      "episodeId": "820b9007-489a-4c9c-a75c-a0c7120f7a2f",
+      "title": "ジャにのちゃんねるの夏【祝!2000万回再生!】誰かが切り抜く前に爆速で我々が切り抜いてみた ~思い出その１~  #shorts",
+      "hasRelations": false,
+      "relationsCount": {
+        "locations": 0,
+        "items": 0
+      }
+    },
+    {
+      "episodeId": "91e6e087-7f3b-495b-bc63-31a064388733",
+      "title": "ジャにのちゃんねるの夏【祝!2000万回再生!】誰かが切り抜く前に爆速で我々が切り抜いてみた ~思い出その４~  #shorts",
+      "hasRelations": false,
+      "relationsCount": {
+        "locations": 0,
+        "items": 0
+      }
+    },
+    {
+      "episodeId": "81ca969c-d8ba-48e0-b725-eef2fbd36b57",
+      "title": "【更新頻度上げます!!】週2を目指す人達 ~二宮中丸編~ この曲なんでしょう？ #shorts",
+      "hasRelations": false,
+      "relationsCount": {
+        "locations": 0,
+        "items": 0
+      }
+    },
+    {
+      "episodeId": "3e8de34e-1f01-4c06-b94e-db40f40deb4a",
+      "title": "【友達がいなくて一人でいるから誰かきてぇぇぇ】生配信を開始するまでの楽勝風動画...できるようになっちゃいました！#shorts #ジャにの #一人生配信",
+      "hasRelations": false,
+      "relationsCount": {
+        "locations": 0,
+        "items": 0
+      }
+    },
+    {
+      "episodeId": "87e0e1f4-f4a6-4e1b-a482-b707bca2b879",
+      "title": "ジャにのちゃんねる【経理が編集しました】1年前と同じ場所で同じ格好...違い分かります😉❗️㊗️１周年です✨ #shorts",
+      "hasRelations": false,
+      "relationsCount": {
+        "locations": 0,
+        "items": 0
+      }
+    },
+    {
+      "episodeId": "9d0ce9ef-0877-4fd0-b17b-90a90881fbbc",
+      "title": "ジャにの 【緊急生配信決定！】なんと326万人突破です❗️そして私山田が29歳になります㊗️〜色々感謝を込めて自発光編〜#shorts",
+      "hasRelations": false,
+      "relationsCount": {
+        "locations": 0,
+        "items": 0
+      }
+    },
+    {
+      "episodeId": "1f123b9f-c658-4942-bebf-86cddc6dabf6",
+      "title": "【まだまだ踊れるぜ！】Travis Japanと一緒に「JUST DANCE!」踊ってみた〜 #shorts",
+      "hasRelations": false,
+      "relationsCount": {
+        "locations": 0,
+        "items": 0
+      }
+    },
+    {
+      "episodeId": "a03f5c4e-162b-4538-baa1-d248ffc4e5d4",
+      "title": "#ジャにのの夏は終わらねぇぇぇ!!【明日からスタート!!】童心に帰る大人たち！山手線のビートで大喧嘩!! #shorts",
+      "hasRelations": false,
+      "relationsCount": {
+        "locations": 0,
+        "items": 0
+      }
+    },
+    {
+      "episodeId": "fb0f9095-844b-4807-829b-e5f8867aff04",
+      "title": "#ジャにのの夏は終わらねぇぇぇ!!【明日からスタート!!】童心に帰る大人たち！大感動の花火!! #shorts",
+      "hasRelations": false,
+      "relationsCount": {
+        "locations": 0,
+        "items": 0
+      }
+    },
+    {
+      "episodeId": "f863763588af54cb75583600701edd8d",
+      "title": "【コラボ!!】の為に経理が考えたゲームで遊んだ日~の収録前のひと時＊＊＊編集編 #shorts",
+      "hasRelations": false,
+      "relationsCount": {
+        "locations": 0,
+        "items": 0
+      }
+    },
+    {
+      "episodeId": "c90584f0-ed97-4bfa-9e24-a70784f6a1df",
+      "title": "【漫画家デビュー!!!!】中丸雄一…先生。おめでとうございます 🎉 🎉#shorts #漫画家 #デビュー",
+      "hasRelations": false,
+      "relationsCount": {
+        "locations": 0,
+        "items": 0
+      }
+    },
+    {
+      "episodeId": "15110fe0-35df-4cab-9947-578b67dab8e9",
+      "title": "【曲当てクイズ】実際の曲つけてみたよ🎵〜Hey! Say! JUMP編〜#ジャにの #shorts #パステル",
+      "hasRelations": false,
+      "relationsCount": {
+        "locations": 0,
+        "items": 0
+      }
+    },
+    {
+      "episodeId": "73816e6a-ba2c-4d4f-916f-ff2f0503f5e8",
+      "title": "【曲当てクイズ】実際の曲つけてみたよ🎵〜Sexy Zone編〜#ジャにの#shorts #恋のモード",
+      "hasRelations": false,
+      "relationsCount": {
+        "locations": 0,
+        "items": 0
+      }
+    },
+    {
+      "episodeId": "90b59046-3bbc-4f4f-a48e-1317a4c2c627",
+      "title": "【卍が撮影現場に突撃】そこにいたのは… 🤔 #ジャにの #shorts #王様に捧ぐ薬指",
+      "hasRelations": false,
+      "relationsCount": {
+        "locations": 0,
+        "items": 0
+      }
+    },
+    {
+      "episodeId": "c2a1bdb10aff13ba83eb57016bac4bc9",
+      "title": "【これが四男だ】イケ丸水産🐟よいちょ丸🛥️どうも〜!!!! #ジャにの #スシロースシロー #shorts",
+      "hasRelations": false,
+      "relationsCount": {
+        "locations": 0,
+        "items": 0
+      }
+    }
+  ]
+}
