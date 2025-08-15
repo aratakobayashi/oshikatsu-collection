@@ -25,7 +25,7 @@ interface LocationWithDetails {
     id: string
     title: string
     date: string
-    celebrity?: {
+    celebrities?: {
       name: string
       slug: string
     }
@@ -48,10 +48,21 @@ export default function LocationDetail() {
     try {
       console.log('🔍 Fetching location with ID:', id)
       
-      // まずslugで検索を試行
+      // まずslugで検索を試行（関連エピソード情報も含める）
       let { data: locationData, error: locationError } = await supabase
         .from('locations')
-        .select('*')
+        .select(`
+          *,
+          episodes:episode_id (
+            id,
+            title,
+            date,
+            celebrities:celebrity_id (
+              name,
+              slug
+            )
+          )
+        `)
         .eq('slug', id)
         .single()
       
@@ -60,7 +71,18 @@ export default function LocationDetail() {
         console.log('🔍 Slug not found, trying UUID search...')
         const uuidResponse = await supabase
           .from('locations')
-          .select('*')
+          .select(`
+            *,
+            episodes:episode_id (
+              id,
+              title,
+              date,
+              celebrities:celebrity_id (
+                name,
+                slug
+              )
+            )
+          `)
           .eq('id', id)
           .single()
         
@@ -74,6 +96,12 @@ export default function LocationDetail() {
       }
       
       console.log('✅ Successfully fetched location:', locationData)
+      
+      // エピソード情報を配列形式に変換
+      if (locationData.episodes) {
+        locationData.episodes = [locationData.episodes]
+      }
+      
       setLocation(locationData)
     } catch (error) {
       console.error('Error fetching location:', error)
@@ -207,9 +235,9 @@ export default function LocationDetail() {
                           <h3 className="font-semibold text-gray-900 hover:text-blue-600">
                             {episode.title}
                           </h3>
-                          {episode.celebrity && (
+                          {episode.celebrities && (
                             <p className="text-sm text-gray-600">
-                              {episode.celebrity.name}
+                              {episode.celebrities.name}
                             </p>
                           )}
                           <div className="flex items-center text-sm text-gray-500">
