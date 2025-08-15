@@ -77,50 +77,44 @@ export default function EpisodeDetail() {
       const episodeData = await db.episodes.getById(id)
       setEpisode(episodeData)
       
-      // 関連するロケーション取得
-      const { data: locationLinks } = await supabase
-        .from('episode_locations')
+      // 関連するロケーション取得（直接 locations テーブルから）
+      const { data: locationsData } = await supabase
+        .from('locations')
         .select(`
-          locations!inner(
-            id,
-            name,
-            slug,
-            address,
-            description,
-            website_url,
-            phone,
-            tags,
-            image_url
-          )
+          id,
+          name,
+          slug,
+          address,
+          description,
+          website_url,
+          phone,
+          tags,
+          image_url
         `)
         .eq('episode_id', id)
       
-      const locationsData = locationLinks?.map(link => link.locations) || []
-      console.log('🏪 Found locations:', locationsData.length)
-      setLocations(locationsData)
+      console.log('🏪 Found locations:', locationsData?.length || 0)
+      setLocations(locationsData || [])
       
-      // 関連するアイテム取得
-      const { data: itemLinks } = await supabase
-        .from('episode_items')
+      // 関連するアイテム取得（直接 items テーブルから）
+      const { data: itemsData } = await supabase
+        .from('items')
         .select(`
-          items!inner(
-            id,
-            name,
-            slug,
-            brand,
-            description,
-            category,
-            price,
-            purchase_url,
-            image_url,
-            tags
-          )
+          id,
+          name,
+          slug,
+          brand,
+          description,
+          category,
+          price,
+          purchase_url,
+          image_url,
+          tags
         `)
         .eq('episode_id', id)
       
-      const itemsData = itemLinks?.map(link => link.items) || []
-      console.log('🛍️ Found items:', itemsData.length)
-      setItems(itemsData)
+      console.log('🛍️ Found items:', itemsData?.length || 0)
+      setItems(itemsData || [])
       
       // 関連エピソードを取得（同じタレントの他のエピソード）
       if (episodeData.celebrity?.id) {
