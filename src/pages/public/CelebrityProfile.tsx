@@ -113,17 +113,14 @@ export default function CelebrityProfile() {
     
     const episodeIds = episodes.map(ep => ep.id)
     try {
-      // Episode-Location リンク取得（location詳細も含む）
+      // ロケーション情報を直接 locations テーブルから取得
       const { data: locationLinks, error: locError } = await supabase
-        .from('episode_locations')
+        .from('locations')
         .select(`
-          episode_id,
-          location_id,
-          locations(
-            id,
-            name,
-            address
-          )
+          id,
+          name,
+          address,
+          episode_id
         `)
         .in('episode_id', episodeIds)
       
@@ -131,10 +128,10 @@ export default function CelebrityProfile() {
         console.error('❌ Location links error:', locError)
       }
       
-      // Episode-Item リンク取得  
+      // アイテム情報を直接 items テーブルから取得
       const { data: itemLinks, error: itemError } = await supabase
-        .from('episode_items')
-        .select('episode_id, item_id')
+        .from('items')
+        .select('id, name, episode_id')
         .in('episode_id', episodeIds)
       
       if (itemError) {
@@ -148,21 +145,24 @@ export default function CelebrityProfile() {
         episodeLinksMap[episode.id] = { locations: 0, items: 0, locationDetails: [] }
       })
       
-      locationLinks?.forEach(link => {
-        if (episodeLinksMap[link.episode_id]) {
-          episodeLinksMap[link.episode_id].locations++
-          if (link.locations) {
-            episodeLinksMap[link.episode_id].locationDetails?.push(link.locations)
-          }
+      locationLinks?.forEach(location => {
+        if (episodeLinksMap[location.episode_id]) {
+          episodeLinksMap[location.episode_id].locations++
+          episodeLinksMap[location.episode_id].locationDetails?.push({
+            id: location.id,
+            name: location.name,
+            address: location.address
+          })
         }
       })
       
-      itemLinks?.forEach(link => {
-        if (episodeLinksMap[link.episode_id]) {
-          episodeLinksMap[link.episode_id].items++
+      itemLinks?.forEach(item => {
+        if (episodeLinksMap[item.episode_id]) {
+          episodeLinksMap[item.episode_id].items++
         }
       })
       
+      console.log('🔗 Episode links data:', episodeLinksMap)
       setEpisodeLinksData(episodeLinksMap)
     } catch (error) {
       console.error('❌ Episode links fetch error:', error)
