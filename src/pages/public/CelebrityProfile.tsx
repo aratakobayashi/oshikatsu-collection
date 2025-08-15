@@ -80,8 +80,7 @@ export default function CelebrityProfile() {
   const [episodeSearch, setEpisodeSearch] = useState('')
   const [platformFilter, setPlatformFilter] = useState('')
   const [yearFilter, setYearFilter] = useState('')
-  const [debugInfo, setDebugInfo] = useState('')
-  
+    
   // Get platform from video_url
   function getPlatformFromUrl(videoUrl: string | null): string {
     if (!videoUrl) return 'other'
@@ -209,11 +208,8 @@ export default function CelebrityProfile() {
   }
   
   function filterEpisodes() {
-    const debugMsg = `🔍 [DEBUG] filterEpisodes called with filters: search="${episodeSearch}", platform="${platformFilter}", year="${yearFilter}", totalEpisodes=${episodes.length}`
-    console.log(debugMsg)
     
     let filtered = [...episodes]
-    let debugSteps = [debugMsg]
     
     // Search filter
     if (episodeSearch) {
@@ -222,30 +218,15 @@ export default function CelebrityProfile() {
         episode.title.toLowerCase().includes(term) ||
         episode.description?.toLowerCase().includes(term)
       )
-      const msg = `After search filter: ${filtered.length}`
-      console.log('🔍 [DEBUG]', msg)
-      debugSteps.push(msg)
     }
     
     // Platform filter
     if (platformFilter) {
-      const platformCounts = {}
-      filtered.forEach(episode => {
-        const platform = getPlatformFromUrl(episode.video_url)
-        platformCounts[platform] = (platformCounts[platform] || 0) + 1
-      })
-      const distMsg = `Platform distribution before filter: ${JSON.stringify(platformCounts)}`
-      console.log('🔍 [DEBUG]', distMsg)
-      debugSteps.push(distMsg)
       
       filtered = filtered.filter(episode => {
         const platform = getPlatformFromUrl(episode.video_url)
-        const matches = platform === platformFilter
-        return matches
+        return platform === platformFilter
       })
-      const msg = `After platform filter: ${filtered.length}`
-      console.log('🔍 [DEBUG]', msg)
-      debugSteps.push(msg)
     }
     
     // Year filter
@@ -253,16 +234,8 @@ export default function CelebrityProfile() {
       filtered = filtered.filter(episode => 
         new Date(episode.date).getFullYear().toString() === yearFilter
       )
-      const msg = `After year filter: ${filtered.length}`
-      console.log('🔍 [DEBUG]', msg)
-      debugSteps.push(msg)
     }
     
-    const finalMsg = `Final filtered episodes count: ${filtered.length}`
-    console.log('🔍 [DEBUG]', finalMsg)
-    debugSteps.push(finalMsg)
-    
-    setDebugInfo(debugSteps.join('\n'))
     setFilteredEpisodes(filtered)
   }
   
@@ -648,20 +621,6 @@ export default function CelebrityProfile() {
                   表示中
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        )}
-        
-        {/* Debug Info - 一時的なデバッグ表示 */}
-        {debugInfo && (
-          <Card className="mb-4 bg-yellow-50 border-yellow-200">
-            <CardContent className="p-4">
-              <details>
-                <summary className="cursor-pointer text-sm font-medium text-yellow-800 mb-2">
-                  🔍 フィルタ処理デバッグ情報 (クリックで表示)
-                </summary>
-                <pre className="text-xs text-yellow-700 whitespace-pre-wrap">{debugInfo}</pre>
-              </details>
             </CardContent>
           </Card>
         )}
