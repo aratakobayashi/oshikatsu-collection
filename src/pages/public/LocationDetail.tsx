@@ -52,24 +52,33 @@ export default function LocationDetail() {
     try {
       console.log('🔍 Fetching location with ID:', id)
       
-      // まずslugで検索を試行（基本情報のみ）
-      let { data: locationData, error: locationError } = await supabase
-        .from('locations')
-        .select('*')
-        .eq('slug', id)
-        .single()
+      // UUIDパターンかslugかを判定
+      const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)
       
-      // slugで見つからない場合はUUIDとして検索
-      if (locationError && locationError.code === 'PGRST116') {
-        console.log('🔍 Slug not found, trying UUID search...')
-        const uuidResponse = await supabase
+      let locationData, locationError
+      
+      if (isUUID) {
+        // UUID形式の場合はIDで検索
+        console.log('🔍 Searching by UUID:', id)
+        const response = await supabase
           .from('locations')
           .select('*')
           .eq('id', id)
           .single()
         
-        locationData = uuidResponse.data
-        locationError = uuidResponse.error
+        locationData = response.data
+        locationError = response.error
+      } else {
+        // それ以外はslugで検索
+        console.log('🔍 Searching by slug:', id)
+        const response = await supabase
+          .from('locations')
+          .select('*')
+          .eq('slug', id)
+          .single()
+        
+        locationData = response.data
+        locationError = response.error
       }
       
       if (locationError) {
@@ -317,7 +326,7 @@ export default function LocationDetail() {
             </Card>
             
             {/* Episode Information - Timeline Style for Multiple Episodes */}
-            {location.episodes && location.episodes.length > 0 && (
+            {location.episodes && location.episodes.length > 0 ? (
               <Card>
                 <CardHeader>
                   <div className="flex items-center justify-between">
@@ -456,6 +465,25 @@ export default function LocationDetail() {
                       </div>
                     ))}
                     </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              /* No Episodes Message */
+              <Card>
+                <CardHeader>
+                  <h2 className="text-xl font-bold text-gray-900">訪問エピソード</h2>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-center py-8">
+                    <div className="bg-gray-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
+                      <Film className="h-10 w-10 text-gray-400" />
+                    </div>
+                    <p className="text-gray-600 mb-2">まだエピソード情報がありません</p>
+                    <p className="text-sm text-gray-500">
+                      このロケーションに関連するエピソードが追加されると、<br />
+                      ここに表示されます
+                    </p>
                   </div>
                 </CardContent>
               </Card>
