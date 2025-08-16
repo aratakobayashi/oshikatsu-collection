@@ -204,7 +204,7 @@ export default function LocationDetail() {
   }
 
   function formatDuration(duration: string | null): string {
-    if (!duration) return '－'
+    if (!duration || typeof duration !== 'string') return '－'
     
     // ISO 8601 duration format (PT10M30S) をパース
     const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/)
