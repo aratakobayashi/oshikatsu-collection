@@ -489,48 +489,6 @@ export default function LocationDetail() {
           
           {/* Sidebar */}
           <div className="space-y-6">
-            {/* Location Stats */}
-            {location.episodes && location.episodes.length > 0 && (
-              <Card>
-                <CardHeader>
-                  <h2 className="text-xl font-bold text-gray-900">推し活データ</h2>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {/* エピソード数 */}
-                    <div className="text-center p-4 bg-blue-50 rounded-lg">
-                      <div className="text-2xl font-bold text-blue-600">{location.episodes.length}</div>
-                      <div className="text-sm text-blue-700">訪問エピソード</div>
-                    </div>
-                    
-                    {/* 累計再生数 */}
-                    {location.episodes.some(ep => ep.view_count) && (
-                      <div className="text-center p-4 bg-green-50 rounded-lg">
-                        <div className="text-2xl font-bold text-green-600">
-                          {formatViewCount(
-                            location.episodes.reduce((sum, ep) => sum + (ep.view_count || 0), 0)
-                          )}
-                        </div>
-                        <div className="text-sm text-green-700">累計再生数</div>
-                      </div>
-                    )}
-                    
-                    {/* 最新訪問日 */}
-                    <div className="text-center p-4 bg-purple-50 rounded-lg">
-                      <div className="text-sm font-bold text-purple-600">
-                        {new Date(
-                          Math.max(...location.episodes.map(ep => 
-                            new Date(ep.date).getTime()
-                          ))
-                        ).toLocaleDateString('ja-JP')}
-                      </div>
-                      <div className="text-sm text-purple-700">最新訪問</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
             {/* Contact & Links */}
             <Card>
               <CardHeader>
