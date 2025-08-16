@@ -152,19 +152,20 @@ export default function Locations() {
     try {
       console.log('🔍 Public Locations: Fetching data...')
       
-      // Fetch all locations with related data through episode_locations junction table
+      // Fetch all locations with related episode data
       const { data: locationsData, error: locationsError } = await supabase
         .from('locations')
         .select(`
           *,
-          episode_locations(
-            episodes(
-              id,
-              title,
-              date,
-              celebrity_id,
-              celebrities(id, name, slug)
-            )
+          episodes!episode_id(
+            id,
+            title,
+            date,
+            published_at,
+            view_count,
+            duration,
+            celebrity_id,
+            celebrities(id, name, slug)
           )
         `)
         .order('created_at', { ascending: false })
@@ -179,20 +180,22 @@ export default function Locations() {
       
       // Process locations data to format it correctly
       const allLocations = (locationsData || []).map(location => {
-        // Get the first episode from episode_locations if available
-        const episodeRelation = location.episode_locations?.[0]?.episodes
-        const episode = episodeRelation ? {
-          id: episodeRelation.id,
-          title: episodeRelation.title,
-          date: episodeRelation.date,
-          celebrity_id: episodeRelation.celebrity_id,
-          celebrity: episodeRelation.celebrities
+        // Get the episode data from the foreign key relationship
+        const episode = location.episodes ? {
+          id: location.episodes.id,
+          title: location.episodes.title,
+          date: location.episodes.date || location.episodes.published_at,
+          published_at: location.episodes.published_at,
+          view_count: location.episodes.view_count,
+          duration: location.episodes.duration,
+          celebrity_id: location.episodes.celebrity_id,
+          celebrity: location.episodes.celebrities
         } : undefined
         
         return {
           ...location,
           episode,
-          episode_id: episode?.id || location.episode_id || ''
+          episode_id: location.episode_id || episode?.id || ''
         }
       })
       
