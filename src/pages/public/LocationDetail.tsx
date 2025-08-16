@@ -79,9 +79,70 @@ export default function LocationDetail() {
       
       console.log('✅ Successfully fetched location:', locationData)
       
-      // 関連エピソード情報を別途取得
-      if (locationData.episode_id) {
-        const { data: episode, error: episodeError } = await supabase
+      // 同じ名前のロケーションで関連する全エピソードを取得
+      // まず、同じ名前の全ロケーションを取得
+      const { data: allSameLocations, error: sameLocError } = await supabase
+        .from('locations')
+        .select('episode_id')
+        .eq('name', locationData.name)
+        .not('episode_id', 'is', null)
+      
+      if (allSameLocations && allSameLocations.length > 0) {
+        // 全ての関連エピソードIDを取得
+        const episodeIds = [...new Set(allSameLocations.map(loc => loc.episode_id).filter(Boolean))]
+        
+        // 全エピソード情報を取得
+        const { data: episodes, error: episodesError } = await supabase
+          .from('episodes')
+          .select(`
+            id,
+            title,
+            date,
+            published_at,
+            view_count,
+            duration,
+            thumbnail_url,
+            celebrities:celebrity_id (
+              name,
+              slug
+            )
+          `)
+          .in('id', episodeIds)
+          .order('published_at', { ascending: false })
+        
+        if (episodes && !episodesError) {
+          locationData.episodes = episodes
+          console.log(`✅ Successfully fetched ${episodes.length} episodes for this location`)
+        } else {
+          console.error('❌ Episodes fetch error:', episodesError)
+          // フォールバック: 現在のロケーションのエピソードのみ取得
+          if (locationData.episode_id) {
+            const { data: episode } = await supabase
+              .from('episodes')
+              .select(`
+                id,
+                title,
+                date,
+                published_at,
+                view_count,
+                duration,
+                thumbnail_url,
+                celebrities:celebrity_id (
+                  name,
+                  slug
+                )
+              `)
+              .eq('id', locationData.episode_id)
+              .single()
+            
+            if (episode) {
+              locationData.episodes = [episode]
+            }
+          }
+        }
+      } else if (locationData.episode_id) {
+        // 同じ名前のロケーションがない場合、現在のエピソードのみ
+        const { data: episode } = await supabase
           .from('episodes')
           .select(`
             id,
@@ -99,11 +160,8 @@ export default function LocationDetail() {
           .eq('id', locationData.episode_id)
           .single()
         
-        if (episode && !episodeError) {
+        if (episode) {
           locationData.episodes = [episode]
-          console.log('✅ Successfully fetched episode:', episode)
-        } else {
-          console.error('❌ Episode fetch error:', episodeError)
         }
       }
       
@@ -258,22 +316,48 @@ export default function LocationDetail() {
               </CardContent>
             </Card>
             
-            {/* Episode Information */}
+            {/* Episode Information - Timeline Style for Multiple Episodes */}
             {location.episodes && location.episodes.length > 0 && (
               <Card>
                 <CardHeader>
                   <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-bold text-gray-900">関連エピソード</h2>
-                    <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full font-medium">
+                    <div>
+                      <h2 className="text-xl font-bold text-gray-900">訪問エピソード</h2>
+                      <p className="text-sm text-gray-600 mt-1">
+                        {location.episodes.length > 1 
+                          ? `複数のタレントが訪れた人気スポット！` 
+                          : 'このロケーションが登場したエピソード'}
+                      </p>
+                    </div>
+                    <span className="px-3 py-1 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-sm rounded-full font-medium">
                       {location.episodes.length}件
                     </span>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-6">
-                    {location.episodes.map((episode) => (
-                      <div key={episode.id} className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-200">
-                        <div className="flex">
+                  {/* Timeline Container for Multiple Episodes */}
+                  <div className={location.episodes.length > 1 ? "relative" : "space-y-6"}>
+                    {location.episodes.length > 1 && (
+                      /* Timeline Line */
+                      <div className="absolute left-6 top-8 bottom-8 w-0.5 bg-gradient-to-b from-purple-400 to-blue-400"></div>
+                    )}
+                    
+                    <div className="space-y-6">
+                      {location.episodes.map((episode, index) => (
+                      <div key={episode.id} className="relative">
+                        {/* Timeline Dot for Multiple Episodes */}
+                        {location.episodes.length > 1 && (
+                          <div className="absolute left-0 top-12 z-10">
+                            <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full shadow-lg">
+                              <span className="text-white font-bold">{index + 1}</span>
+                            </div>
+                          </div>
+                        )}
+                        
+                        <div className={`bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-200 ${
+                          location.episodes.length > 1 ? 'ml-20' : ''
+                        }`}>
+                          <div className="flex">
                           {/* サムネイル */}
                           <div className="flex-shrink-0">
                             <img
@@ -361,15 +445,17 @@ export default function LocationDetail() {
                           </div>
                         </div>
                         
-                        {/* ロケーション固有の情報があれば表示 */}
-                        <div className="bg-blue-50 px-4 py-2 border-t border-blue-100">
-                          <p className="text-xs text-blue-700">
-                            <MapPin className="h-3 w-3 inline mr-1" />
-                            このエピソードで <strong>{location.name}</strong> を訪問
-                          </p>
+                          {/* ロケーション固有の情報があれば表示 */}
+                          <div className="bg-blue-50 px-4 py-2 border-t border-blue-100">
+                            <p className="text-xs text-blue-700">
+                              <MapPin className="h-3 w-3 inline mr-1" />
+                              このエピソードで <strong>{location.name}</strong> を訪問
+                            </p>
+                          </div>
                         </div>
                       </div>
                     ))}
+                    </div>
                   </div>
                 </CardContent>
               </Card>
