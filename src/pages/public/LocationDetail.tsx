@@ -25,7 +25,6 @@ interface LocationWithDetails {
     id: string
     title: string
     date: string
-    published_at: string
     view_count: number | null
     duration: string | null
     thumbnail_url: string | null
@@ -107,7 +106,6 @@ export default function LocationDetail() {
             id,
             title,
             date,
-            published_at,
             view_count,
             duration,
             thumbnail_url,
@@ -117,7 +115,7 @@ export default function LocationDetail() {
             )
           `)
           .in('id', episodeIds)
-          .order('published_at', { ascending: false })
+          .order('date', { ascending: false })
         
         if (episodes && !episodesError) {
           locationData.episodes = episodes
@@ -132,7 +130,6 @@ export default function LocationDetail() {
                 id,
                 title,
                 date,
-                published_at,
                 view_count,
                 duration,
                 thumbnail_url,
@@ -157,7 +154,6 @@ export default function LocationDetail() {
             id,
             title,
             date,
-            published_at,
             view_count,
             duration,
             thumbnail_url,
@@ -411,7 +407,7 @@ export default function LocationDetail() {
                                 <div className="flex items-center space-x-4 text-sm text-gray-500">
                                   <div className="flex items-center">
                                     <Calendar className="h-4 w-4 mr-1" />
-                                    {new Date(episode.published_at || episode.date).toLocaleDateString('ja-JP')}
+                                    {new Date(episode.date).toLocaleDateString('ja-JP')}
                                   </div>
                                   
                                   {episode.view_count && (
@@ -524,7 +520,7 @@ export default function LocationDetail() {
                       <div className="text-sm font-bold text-purple-600">
                         {new Date(
                           Math.max(...location.episodes.map(ep => 
-                            new Date(ep.published_at || ep.date).getTime()
+                            new Date(ep.date).getTime()
                           ))
                         ).toLocaleDateString('ja-JP')}
                       </div>

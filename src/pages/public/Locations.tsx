@@ -161,7 +161,6 @@ export default function Locations() {
             id,
             title,
             date,
-            published_at,
             view_count,
             duration,
             celebrity_id,
@@ -184,8 +183,7 @@ export default function Locations() {
         const episode = location.episodes ? {
           id: location.episodes.id,
           title: location.episodes.title,
-          date: location.episodes.date || location.episodes.published_at,
-          published_at: location.episodes.published_at,
+          date: location.episodes.date,
           view_count: location.episodes.view_count,
           duration: location.episodes.duration,
           celebrity_id: location.episodes.celebrity_id,
