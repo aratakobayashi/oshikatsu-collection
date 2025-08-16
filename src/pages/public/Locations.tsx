@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { Search, Filter, MapPin, User, Calendar, Phone, Star, TrendingUp, Eye } from 'lucide-react'
+import { Search, Filter, MapPin, User, Calendar, Phone, Star, TrendingUp, Eye, Play, Film } from 'lucide-react'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import Select from '../../components/ui/Select'
@@ -31,12 +31,26 @@ interface LocationWithDetails {
     title: string
     date: string
     celebrity_id: string
+    view_count?: number
+    duration?: string
     celebrity?: {
       id: string
       name: string
       slug: string
     }
   }
+  episodes?: Array<{
+    id: string
+    title: string
+    date: string
+    view_count?: number
+    celebrity?: {
+      id: string
+      name: string
+      slug: string
+    }
+  }>
+  episodes_count?: number
   related_posts_count?: number
 }
 
@@ -551,33 +565,71 @@ export default function Locations() {
                       </p>
                     )}
                     
-                    {/* Celebrity & Episode */}
-                    {location.episode?.celebrity && (
-                      <div className="bg-gray-50 rounded-lg p-3 space-y-2">
-                        <div className="flex items-center text-sm">
-                          <User className="h-4 w-4 mr-2 text-purple-500" />
-                          <Link 
-                            to={`/celebrities/${location.episode.celebrity.slug}`}
-                            className="font-medium text-purple-600 hover:text-purple-800"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            {location.episode.celebrity.name}
-                          </Link>
-                          <span className="text-gray-500 ml-2">が訪れた</span>
-                        </div>
-                        
-                        {location.episode.title && (
-                          <div className="flex items-center text-sm text-gray-600">
-                            <Calendar className="h-4 w-4 mr-2 text-gray-400" />
-                            <Link 
-                              to={`/episodes/${location.episode.id}`}
-                              className="truncate hover:text-purple-600"
+                    {/* Celebrity & Episode - Enhanced Display */}
+                    {location.episode ? (
+                      <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg p-3 border border-purple-200">
+                        <div className="space-y-2">
+                          {/* Episode Title with Icon */}
+                          {location.episode.title && (
+                            <div className="flex items-start space-x-2">
+                              <Film className="h-4 w-4 mt-0.5 text-purple-600 flex-shrink-0" />
+                              <div className="flex-1">
+                                <Link 
+                                  to={`/episodes/${location.episode.id}`}
+                                  className="font-medium text-purple-700 hover:text-purple-900 line-clamp-2"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  {location.episode.title}
+                                </Link>
+                              </div>
+                            </div>
+                          )}
+                          
+                          {/* Celebrity Info */}
+                          {location.episode.celebrity && (
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center text-sm">
+                                <User className="h-3.5 w-3.5 mr-1.5 text-blue-600" />
+                                <Link 
+                                  to={`/celebrities/${location.episode.celebrity.slug}`}
+                                  className="font-medium text-blue-700 hover:text-blue-900"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  {location.episode.celebrity.name}
+                                </Link>
+                              </div>
+                              
+                              {/* Date */}
+                              {location.episode.date && (
+                                <div className="flex items-center text-xs text-gray-600">
+                                  <Calendar className="h-3 w-3 mr-1" />
+                                  {new Date(location.episode.date).toLocaleDateString('ja-JP')}
+                                </div>
+                              )}
+                            </div>
+                          )}
+                          
+                          {/* YouTube Link Button */}
+                          {location.episode.id && (
+                            <a
+                              href={`https://www.youtube.com/watch?v=${location.episode.id}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center px-2 py-1 bg-red-600 hover:bg-red-700 text-white text-xs rounded-md transition-colors"
                               onClick={(e) => e.stopPropagation()}
                             >
-                              {location.episode.title}
-                            </Link>
-                          </div>
-                        )}
+                              <Play className="h-3 w-3 mr-1" />
+                              YouTubeで見る
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                        <div className="flex items-center text-sm text-gray-500">
+                          <Film className="h-4 w-4 mr-2" />
+                          <span>エピソード情報なし</span>
+                        </div>
                       </div>
                     )}
                     
