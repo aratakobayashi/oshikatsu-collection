@@ -54,6 +54,24 @@ interface LocationWithDetails {
   related_posts_count?: number
 }
 
+interface LocationGroup {
+  name: string
+  address: string
+  locations: LocationWithDetails[]
+  masterLocation: LocationWithDetails
+  episodeCount: number
+  allEpisodes: Array<{
+    id: string
+    title: string
+    date: string
+    celebrity?: {
+      id: string
+      name: string
+      slug: string
+    }
+  }>
+}
+
 interface Celebrity {
   id: string
   name: string
@@ -71,6 +89,8 @@ export default function Locations() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [locations, setLocations] = useState<LocationWithDetails[]>([])
   const [filteredLocations, setFilteredLocations] = useState<LocationWithDetails[]>([])
+  const [groupedLocations, setGroupedLocations] = useState<LocationGroup[]>([])
+  const [showGrouped, setShowGrouped] = useState(true)
   const [celebrities, setCelebrities] = useState<Celebrity[]>([])
   const [episodes, setEpisodes] = useState<Episode[]>([])
   const [loading, setLoading] = useState(true)
@@ -147,6 +167,67 @@ export default function Locations() {
     }
   ], [])
   
+  // Location grouping logic
+  const groupLocationsByIdentity = useCallback((locationList: LocationWithDetails[]): LocationGroup[] => {
+    const groups: { [key: string]: LocationWithDetails[] } = {}
+
+    locationList.forEach(location => {
+      // 名前と住所を正規化してキーとする
+      const normalizedName = location.name.trim().toLowerCase()
+      const normalizedAddress = (location.address || '').trim().toLowerCase()
+      const key = `${normalizedName}|${normalizedAddress}`
+
+      if (!groups[key]) {
+        groups[key] = []
+      }
+      groups[key].push(location)
+    })
+
+    // LocationGroupオブジェクトに変換
+    const locationGroups: LocationGroup[] = Object.entries(groups).map(([key, locs]) => {
+      // マスターロケーション選択（最も詳細な情報を持つものを選ぶ）
+      const masterLocation = locs.reduce((best, current) => {
+        let bestScore = calculateLocationScore(best)
+        let currentScore = calculateLocationScore(current)
+        return currentScore > bestScore ? current : best
+      })
+      
+      // 全エピソード情報を収集
+      const allEpisodes = locs
+        .map(l => l.episode)
+        .filter(Boolean)
+        .map(ep => ({
+          id: ep!.id,
+          title: ep!.title,
+          date: ep!.date,
+          celebrity: ep!.celebrity
+        }))
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      
+      return {
+        name: masterLocation.name,
+        address: masterLocation.address || '',
+        locations: locs,
+        masterLocation: masterLocation,
+        episodeCount: locs.length,
+        allEpisodes: allEpisodes
+      }
+    })
+
+    return locationGroups.sort((a, b) => b.episodeCount - a.episodeCount)
+  }, [])
+
+  const calculateLocationScore = useCallback((location: LocationWithDetails): number => {
+    let score = 0
+    
+    if (location.address?.length > 10) score += 3
+    if (location.description?.length > 20) score += 2
+    if (location.website || location.reservation_url) score += 1
+    if (location.tags?.length > 0) score += 1
+    
+    return score
+  }, [])
+
   // Define functions BEFORE using them in useEffect
   const fetchData = useCallback(async () => {
     try {
@@ -283,7 +364,13 @@ export default function Locations() {
     })
     
     setFilteredLocations(filtered)
-  }, [locations, sampleLocations, searchTerm, selectedCelebrity, selectedCategory, selectedEpisode, sortBy])
+    
+    // グループ化処理
+    if (showGrouped) {
+      const grouped = groupLocationsByIdentity(filtered)
+      setGroupedLocations(grouped)
+    }
+  }, [locations, sampleLocations, searchTerm, selectedCelebrity, selectedCategory, selectedEpisode, sortBy, showGrouped, groupLocationsByIdentity])
   
   // Now use the functions in useEffect
   useEffect(() => {
@@ -444,10 +531,31 @@ export default function Locations() {
             
             {/* Results Info */}
             <div className="flex items-center justify-between border-t pt-4">
-              <div className="text-sm text-gray-600 flex items-center">
-                <Filter className="h-4 w-4 mr-2" />
-                <span className="font-medium text-purple-600">{filteredLocations.length}件</span>
-                の店舗を表示中
+              <div className="flex items-center space-x-4">
+                <div className="text-sm text-gray-600 flex items-center">
+                  <Filter className="h-4 w-4 mr-2" />
+                  {showGrouped ? (
+                    <>
+                      <span className="font-medium text-purple-600">{groupedLocations.length}グループ</span>
+                      （{filteredLocations.length}件の店舗）を表示中
+                    </>
+                  ) : (
+                    <>
+                      <span className="font-medium text-purple-600">{filteredLocations.length}件</span>
+                      の店舗を表示中
+                    </>
+                  )}
+                </div>
+                
+                {/* グループ化トグルボタン */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowGrouped(!showGrouped)}
+                  className={`${showGrouped ? 'bg-purple-50 border-purple-300 text-purple-700' : 'hover:bg-gray-50'}`}
+                >
+                  {showGrouped ? '📊 グループ表示' : '📋 個別表示'}
+                </Button>
               </div>
               
               <Link to="/submit">
@@ -461,7 +569,7 @@ export default function Locations() {
         </Card>
         
         {/* Locations Grid */}
-        {filteredLocations.length === 0 ? (
+        {(showGrouped ? groupedLocations.length === 0 : filteredLocations.length === 0) ? (
           <Card className="shadow-lg">
             <CardContent className="p-16 text-center">
               <div className="bg-gray-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
@@ -487,6 +595,167 @@ export default function Locations() {
               </div>
             </CardContent>
           </Card>
+        ) : showGrouped ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {groupedLocations.map((group) => (
+              <Card key={`${group.name}-${group.address}`} className="hover:shadow-xl transition-all duration-300 cursor-pointer h-full group overflow-hidden">
+                <CardContent className="p-0">
+                  {/* Image Container */}
+                  <div className="relative overflow-hidden bg-gray-100">
+                    {group.masterLocation.image_urls && group.masterLocation.image_urls.length > 0 ? (
+                      <img
+                        src={group.masterLocation.image_urls[0]}
+                        alt={group.masterLocation.name}
+                        className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="w-full h-48 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                        <MapPin className="h-16 w-16 text-gray-400" />
+                      </div>
+                    )}
+                    
+                    {/* Overlay Badges */}
+                    <div className="absolute top-3 left-3 right-3 flex justify-between">
+                      <span className="px-3 py-1 bg-white/95 backdrop-blur-sm text-gray-800 text-xs font-medium rounded-full shadow-sm">
+                        {getCategoryLabel(group.masterLocation.category)}
+                      </span>
+                      
+                      {/* Episode Count Badge */}
+                      <span className="px-3 py-1 bg-purple-600/90 text-white text-xs font-medium rounded-full shadow-sm">
+                        {group.episodeCount}回訪問
+                      </span>
+                    </div>
+                    
+                    {/* Hover Actions */}
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      <div className="space-y-3">
+                        <Link to={`/locations/${group.masterLocation.id}`}>
+                          <Button className="bg-white text-gray-900 hover:bg-gray-100 w-full">
+                            <Eye className="h-4 w-4 mr-2" />
+                            詳細を見る
+                          </Button>
+                        </Link>
+                        {group.masterLocation.reservation_url && (
+                          <Button
+                            className="bg-green-600 hover:bg-green-700 text-white w-full"
+                            onClick={(e) => {
+                              e.preventDefault()
+                              window.open(group.masterLocation.reservation_url, '_blank')
+                            }}
+                          >
+                            <Phone className="h-4 w-4 mr-2" />
+                            予約する
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Content */}
+                  <div className="p-5 space-y-3">
+                    {/* Location Name */}
+                    <h3 className="font-bold text-gray-900 line-clamp-2 text-lg group-hover:text-purple-600 transition-colors">
+                      {group.name}
+                    </h3>
+                    
+                    {/* Address */}
+                    {group.address && (
+                      <div className="flex items-start space-x-2 text-sm text-gray-600">
+                        <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                        <span className="line-clamp-2">{group.address}</span>
+                      </div>
+                    )}
+                    
+                    {/* Description */}
+                    {group.masterLocation.description && (
+                      <p className="text-gray-600 text-sm line-clamp-2">
+                        {group.masterLocation.description}
+                      </p>
+                    )}
+                    
+                    {/* Episodes Summary */}
+                    <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg p-3 border border-purple-200">
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium text-purple-700">
+                            📺 {group.episodeCount}回訪問
+                          </span>
+                          <span className="text-xs text-gray-600">
+                            {group.allEpisodes.length > 0 && 
+                              new Date(group.allEpisodes[0].date).toLocaleDateString('ja-JP')
+                            }〜
+                          </span>
+                        </div>
+                        
+                        {/* Recent Episodes */}
+                        {group.allEpisodes.slice(0, 2).map((episode, index) => (
+                          <div key={episode.id} className="text-xs text-gray-600">
+                            <div className="flex items-center space-x-1">
+                              <span className="text-purple-600">#{index + 1}</span>
+                              <span className="line-clamp-1 flex-1">{episode.title}</span>
+                              {episode.celebrity && (
+                                <span className="text-blue-600 font-medium">
+                                  {episode.celebrity.name}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                        
+                        {group.allEpisodes.length > 2 && (
+                          <div className="text-xs text-gray-500 text-center">
+                            他{group.allEpisodes.length - 2}件のエピソード
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    
+                    {/* Quick Actions */}
+                    <div className="flex space-x-2 pt-2">
+                      <Link to={`/locations/${group.masterLocation.id}`} className="flex-1">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="w-full hover:bg-purple-50 hover:border-purple-300"
+                        >
+                          詳細
+                        </Button>
+                      </Link>
+                      
+                      {group.masterLocation.reservation_url && (
+                        <Button
+                          size="sm"
+                          className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            window.open(group.masterLocation.reservation_url, '_blank')
+                          }}
+                        >
+                          <Phone className="h-4 w-4 mr-1" />
+                          予約
+                        </Button>
+                      )}
+                      
+                      {group.masterLocation.map_url && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="flex-1"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            window.open(group.masterLocation.map_url, '_blank')
+                          }}
+                        >
+                          <MapPin className="h-4 w-4 mr-1" />
+                          地図
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredLocations.map((location) => (
@@ -705,7 +974,7 @@ export default function Locations() {
         )}
         
         {/* Load More Section */}
-        {filteredLocations.length > 0 && filteredLocations.length >= 20 && (
+        {(showGrouped ? groupedLocations.length > 0 && groupedLocations.length >= 20 : filteredLocations.length > 0 && filteredLocations.length >= 20) && (
           <div className="text-center mt-12">
             <Card className="inline-block">
               <CardContent className="p-6">

@@ -21,7 +21,16 @@
     "check:api-usage": "tsx scripts/check-api-usage.ts",
     "search:twitter": "tsx scripts/twitter-search-system.ts",
     "search:locations": "tsx scripts/search-locations.ts",
-    "search:items": "tsx scripts/search-items.ts"
+    "search:items": "tsx scripts/search-items.ts",
+    "test:youtube-extraction": "tsx src/scripts/data-collection/test-youtube-extraction.ts",
+    "test:mock-extraction": "tsx src/scripts/data-collection/mock-youtube-test.ts",
+    "cleanup:equal-love": "tsx src/scripts/data-collection/cleanup-equal-love-data.ts",
+    "process:equal-love": "tsx src/scripts/data-collection/enhanced-location-processor.ts",
+    "production:equal-love": "tsx src/scripts/data-collection/production-equal-love-processor.ts",
+    "production:mock-test": "tsx src/scripts/data-collection/production-mock-test.ts",
+    "production:full-test": "tsx src/scripts/data-collection/production-full-test.ts",
+    "merge-locations": "tsx src/scripts/data-collection/location-merger.ts",
+    "group-locations": "tsx src/scripts/data-collection/simple-location-grouper.ts"
   },
   "dependencies": {
     "@supabase/storage-js": "^2.8.0",
@@ -29,6 +38,7 @@
     "@types/react-router-dom": "^5.3.3",
     "dotenv": "^17.2.1",
     "lucide-react": "^0.344.0",
+    "openai": "^4.104.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.6.3",
