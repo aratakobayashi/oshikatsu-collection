@@ -43,12 +43,28 @@ export const PrivacyPolicy = () => {
           <p>当サイトでは、以下のアフィリエイトプログラムを利用しています。</p>
           <ul className="list-disc list-inside mt-4 space-y-2">
             <li>Amazonアソシエイト・プログラム</li>
-            <li>バリューコマース</li>
+            <li>バリューコマース（食べログ飲食店ネット予約プログラム）</li>
             <li>その他のアフィリエイトサービス</li>
           </ul>
+          
+          <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+            <h3 className="font-semibold text-gray-800 mb-2">食べログアフィリエイトについて</h3>
+            <p className="text-sm">
+              当サイトでは、バリューコマース株式会社が提供する食べログ飲食店ネット予約プログラムに参加しています。
+              当サイトの「食べログで予約する」ボタンをクリックして食べログサイトに移動し、
+              そのまま予約・来店された場合、当サイトに紹介料が支払われる仕組みとなっています。
+            </p>
+            <ul className="list-disc list-inside mt-2 text-sm space-y-1">
+              <li>プログラムID: 2147651</li>
+              <li>アフィリエイトリンクには「sponsored」属性を付与しています</li>
+              <li>クリック情報は統計的に処理され、個人を特定することはありません</li>
+            </ul>
+          </div>
+          
           <p className="mt-4">
-            これらのプログラムでは、商品購入時にアフィリエイト収益が発生する場合があります。
-            ユーザーに追加費用が発生することはありません。
+            これらのアフィリエイトプログラムを通じて発生する収益は、
+            当サイトの運営・改善に使用させていただきます。
+            なお、アフィリエイトリンクの利用により、ユーザーに追加費用が発生することはありません。
           </p>
         </section>
 
@@ -82,7 +98,7 @@ export const PrivacyPolicy = () => {
         <div className="mt-8 pt-6 border-t border-gray-300">
           <p className="text-sm text-gray-500">
             制定日：2025年7月24日<br />
-            最終更新日：2025年7月24日
+            最終更新日：2025年8月21日
           </p>
         </div>
       </div>
