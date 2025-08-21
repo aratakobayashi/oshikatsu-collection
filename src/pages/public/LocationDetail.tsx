@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { ArrowLeft, ExternalLink, MapPin, Phone, Globe, Calendar, Tag, Clock, Play, Eye, Users, Film } from 'lucide-react'
+import { ArrowLeft, ExternalLink, MapPin, Phone, Globe, Calendar, Tag, Clock, Play, Eye, Users, Film, Utensils } from 'lucide-react'
 import Button from '../../components/ui/Button'
 import Card, { CardHeader, CardContent } from '../../components/ui/Card'
 import { supabase } from '../../lib/supabase'
@@ -19,6 +19,8 @@ interface LocationWithDetails {
   image_url: string | null
   tags: string[] | null
   celebrity_id: string | null
+  tabelog_url: string | null
+  affiliate_info: any
   created_at: string
   updated_at: string
   episodes?: {
@@ -517,6 +519,36 @@ export default function LocationDetail() {
                     >
                       公式サイト
                     </a>
+                  </div>
+                )}
+                
+                {/* Tabelog Affiliate Link */}
+                {location.tabelog_url && (
+                  <div className="pt-4 border-t border-gray-200">
+                    <a
+                      href={location.tabelog_url}
+                      target="_blank"
+                      rel="noopener noreferrer sponsored"
+                      onClick={() => {
+                        // トラッキング用のイベントを送信
+                        console.log('Tabelog affiliate link clicked:', {
+                          location_id: location.id,
+                          location_name: location.name,
+                          tabelog_url: location.tabelog_url
+                        })
+                      }}
+                      className="block"
+                    >
+                      <Button 
+                        className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-3 px-4 rounded-lg shadow-lg transform transition hover:scale-105"
+                      >
+                        <Utensils className="h-5 w-5 mr-2" />
+                        食べログで予約する
+                      </Button>
+                    </a>
+                    <p className="text-xs text-gray-500 mt-2 text-center">
+                      ※食べログへ移動します
+                    </p>
                   </div>
                 )}
                 

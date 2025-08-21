@@ -30,7 +30,11 @@
     "production:mock-test": "tsx src/scripts/data-collection/production-mock-test.ts",
     "production:full-test": "tsx src/scripts/data-collection/production-full-test.ts",
     "merge-locations": "tsx src/scripts/data-collection/location-merger.ts",
-    "group-locations": "tsx src/scripts/data-collection/simple-location-grouper.ts"
+    "group-locations": "tsx src/scripts/data-collection/simple-location-grouper.ts",
+    "production:not-equal-me": "tsx src/scripts/data-collection/production-not-equal-me-processor.ts",
+    "budget:not-equal-me": "tsx src/scripts/data-collection/budget-not-equal-me-processor.ts",
+    "free:not-equal-me": "tsx src/scripts/data-collection/free-api-extractor.ts",
+    "analyze:not-equal-me": "tsx src/scripts/data-collection/analyze-not-equal-me-descriptions.ts"
   },
   "dependencies": {
     "@supabase/storage-js": "^2.8.0",
