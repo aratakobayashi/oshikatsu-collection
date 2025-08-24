@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { Calendar, MapPin, Package, ExternalLink, User, ShoppingBag, Camera, Play, Clock, Eye, ChevronRight, AlertCircle } from 'lucide-react'
+import { Calendar, MapPin, Package, ExternalLink, User, ShoppingBag, Camera, Play, Clock, Eye, ChevronRight, AlertCircle, Utensils } from 'lucide-react'
 import Button from '../../components/ui/Button'
 import Card, { CardHeader, CardContent } from '../../components/ui/Card'
 import Disclaimer, { AffiliateDisclaimer } from '../../components/Disclaimer'
@@ -38,6 +38,7 @@ interface Location {
   phone?: string
   tags?: string[]
   image_url?: string
+  tabelog_url?: string
 }
 
 interface Item {
@@ -77,21 +78,28 @@ export default function EpisodeDetail() {
       const episodeData = await db.episodes.getById(id)
       setEpisode(episodeData)
       
-      // 関連するロケーション取得（直接 locations テーブルから）
-      const { data: locationsData } = await supabase
-        .from('locations')
+      // 関連するロケーション取得（中間テーブル経由）
+      const { data: episodeLocations } = await supabase
+        .from('episode_locations')
         .select(`
-          id,
-          name,
-          slug,
-          address,
-          description,
-          website_url,
-          phone,
-          tags,
-          image_url
+          location_id,
+          locations (
+            id,
+            name,
+            slug,
+            address,
+            description,
+            website_url,
+            phone,
+            tags,
+            image_url,
+            tabelog_url
+          )
         `)
         .eq('episode_id', id)
+      
+      // locations データを展開
+      const locationsData = episodeLocations?.map(item => item.locations).filter(Boolean) || []
       
       console.log('🏪 Found locations:', locationsData?.length || 0)
       setLocations(locationsData || [])
@@ -400,6 +408,20 @@ export default function EpisodeDetail() {
                           詳細を見る
                         </Button>
                       </Link>
+                      
+                      {/* 食べログ予約CTAボタン */}
+                      {location.tabelog_url && (
+                        <a
+                          href={location.tabelog_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Button size="sm" className="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white">
+                            <Utensils className="h-4 w-4" />
+                            食べログで予約する
+                          </Button>
+                        </a>
+                      )}
                       
                       {location.website_url && (
                         <a
