@@ -119,7 +119,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="推し名・ブランドで検索"
+                  placeholder="推し名・店舗名・ブランドで検索"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch(e)}
@@ -166,8 +166,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
                 ))}
               </div>
               <div className="flex flex-wrap gap-2 justify-center items-center">
-                <span className="text-xs text-gray-400 px-2 py-1 bg-green-100 rounded-full">ロケ地</span>
-                {['代官山カフェ', '渋谷レストラン'].map((term) => (
+                <span className="text-xs text-gray-400 px-2 py-1 bg-green-100 rounded-full">店舗・ロケ地</span>
+                {['ティファニー銀座本店', '志づや', '神楽坂 てっぱんや'].map((term) => (
                   <button
                     key={term}
                     onClick={() => setSearchQuery(term)}

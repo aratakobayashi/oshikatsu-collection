@@ -19,6 +19,15 @@ type Celebrity = {
   group_name?: string | null
 }
 
+type Location = {
+  id: string
+  name: string
+  slug: string
+  address?: string | null
+  description?: string | null
+  tabelog_url?: string | null
+}
+
 type Episode = {
   id: string
   title: string
@@ -38,6 +47,7 @@ const StarLogo = ({ className = "h-8 w-8" }: { className?: string }) => (
 export default function Home() {
   const navigate = useNavigate()
   const [celebrities, setCelebrities] = useState<Celebrity[]>([])
+  const [locations, setLocations] = useState<Location[]>([])
   const [recentEpisodes, setRecentEpisodes] = useState<Episode[]>([])
   const [loading, setLoading] = useState(true)
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -55,7 +65,7 @@ export default function Home() {
     try {
       const searchTerm = searchQuery.trim().toLowerCase()
       
-      // Search celebrities
+      // 1. Search celebrities first (highest priority)
       const celebrityMatch = celebrities.find(c => 
         c.name.toLowerCase().includes(searchTerm)
       )
@@ -65,7 +75,17 @@ export default function Home() {
         return
       }
       
-      // Fallback to items page
+      // 2. Search locations second
+      const locationMatch = locations.find(l => 
+        l.name.toLowerCase().includes(searchTerm)
+      )
+      
+      if (locationMatch) {
+        navigate(`/locations/${locationMatch.id}`)
+        return
+      }
+      
+      // 3. Fallback to items page
       navigate(`/items?search=${encodeURIComponent(searchQuery)}`)
       
     } catch (error) {
@@ -83,8 +103,9 @@ export default function Home() {
       }
       
       // 必要なデータのみフェッチする
-      const [celebritiesData, episodesData] = await Promise.all([
+      const [celebritiesData, locationsData, episodesData] = await Promise.all([
         db.celebrities.getAll(),
+        db.locations.getAll(),
         db.episodes.getAll()
       ])
       
@@ -97,6 +118,7 @@ export default function Home() {
       }
       
       setCelebrities(celebritiesData)
+      setLocations(locationsData)
       setRecentEpisodes(episodesData.slice(0, 6))
     } catch (error) {
       console.error('Error fetching data:', error)
