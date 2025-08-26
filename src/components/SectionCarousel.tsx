@@ -97,7 +97,7 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
         const maxIndex = items.length - itemsPerPage
         return prev >= maxIndex ? 0 : prev + 1
       })
-    }, 5000) // 5秒間隔で自動回転
+    }, 2500) // 2.5秒間隔で自動回転
 
     return () => clearInterval(autoRotateInterval)
   }, [items.length, itemsPerPage])
@@ -328,17 +328,26 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
               <ChevronLeft className="h-5 w-5 md:h-6 md:w-6 text-gray-700" />
             </button>
             
-            {/* カード表示エリア */}
+            {/* カード表示エリア - 横スライドアニメーション */}
             <div className="flex-1 mx-4 md:mx-8 overflow-hidden">
-              <div className="transition-all duration-500 ease-in-out">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                  {items
-                    .slice(currentIndex, currentIndex + itemsPerPage)
-                    .map((item) => (
-                      <div key={item.id} className="w-full">
-                        {renderCard(item)}
-                      </div>
-                    ))}
+              <div className="relative">
+                <div 
+                  className="flex transition-transform duration-700 ease-in-out"
+                  style={{ 
+                    transform: `translateX(-${currentIndex * (100 / itemsPerPage)}%)`,
+                  }}
+                >
+                  {items.map((item, index) => (
+                    <div 
+                      key={item.id}
+                      className={`flex-shrink-0 px-2 ${
+                        itemsPerPage === 1 ? 'w-full' :
+                        itemsPerPage === 2 ? 'w-1/2' : 'w-1/3'
+                      }`}
+                    >
+                      {renderCard(item)}
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -355,12 +364,12 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
           
           {/* ページインジケーター */}
           <div className="flex justify-center mt-6 space-x-1">
-            {Array.from({ length: Math.ceil(items.length / itemsPerPage) }).map((_, pageIndex) => (
+            {Array.from({ length: Math.max(1, items.length - itemsPerPage + 1) }).map((_, pageIndex) => (
               <button
                 key={pageIndex}
-                onClick={() => setCurrentIndex(pageIndex * itemsPerPage)}
+                onClick={() => setCurrentIndex(pageIndex)}
                 className={`h-2 w-2 rounded-full transition-all duration-300 ${
-                  Math.floor(currentIndex / itemsPerPage) === pageIndex
+                  currentIndex === pageIndex
                     ? 'bg-white w-6' 
                     : 'bg-white/50 hover:bg-white/70'
                 }`}

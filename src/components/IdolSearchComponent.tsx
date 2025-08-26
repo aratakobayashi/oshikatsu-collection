@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { Search, Filter, Users, User, Youtube, Building2, Calendar, Heart } from 'lucide-react'
 import { db } from '../lib/supabase'
 import Card, { CardContent } from './ui/Card'
@@ -43,6 +44,7 @@ interface SearchFilters {
 }
 
 export default function IdolSearchComponent() {
+  const [searchParams] = useSearchParams()
   const [searchQuery, setSearchQuery] = useState('')
   const [filters, setFilters] = useState<SearchFilters>({})
   const [results, setResults] = useState<Celebrity[]>([])
@@ -50,10 +52,34 @@ export default function IdolSearchComponent() {
   const [showFilters, setShowFilters] = useState(false)
   const [popularCelebrities, setPopularCelebrities] = useState<Celebrity[]>([])
 
-  // 人気アイドル・チャンネルを初期表示
+  // URLパラメータから検索クエリを読み取り、自動検索実行
   useEffect(() => {
-    fetchPopularCelebrities()
-  }, [])
+    const searchFromUrl = searchParams.get('search')
+    if (searchFromUrl) {
+      setSearchQuery(searchFromUrl)
+      // 検索を自動実行
+      const autoSearch = async () => {
+        setLoading(true)
+        try {
+          const data = await db.celebrities.unifiedSearch(searchFromUrl, {})
+          setResults(data)
+        } catch (error) {
+          console.error('Error auto-searching celebrities:', error)
+          setResults([])
+        } finally {
+          setLoading(false)
+        }
+      }
+      autoSearch()
+    }
+  }, [searchParams])
+
+  // 人気アイドル・チャンネルを初期表示（検索がない場合のみ）
+  useEffect(() => {
+    if (!searchParams.get('search')) {
+      fetchPopularCelebrities()
+    }
+  }, [searchParams])
 
   const fetchPopularCelebrities = async () => {
     try {

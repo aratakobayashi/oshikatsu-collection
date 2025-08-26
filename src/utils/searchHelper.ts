@@ -114,8 +114,8 @@ export function getPopularSearches() {
   // 実装時はSupabaseから取得
   // 現在はモックデータを返す
   return {
-    trending: ['よにのちゃんねる', '二宮和也', 'GUCCI'],
-    celebrities: ['山田涼介', '菊池風磨', '中丸雄一'],
+    trending: ['よにのちゃんねる', '二宮和也', '中丸雄一'],
+    celebrities: ['山田涼介', '菊池風磨', '森本慎太郎'],
     locations: ['ル・パン・コティディアン', 'Bills 表参道', 'Blue Seal'],
     items: ['Nike スニーカー', 'Dior リップ', 'CHANEL 香水']
   }

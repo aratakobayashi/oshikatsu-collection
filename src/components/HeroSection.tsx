@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Search, ArrowRight, Heart, Sparkles, Star, Package, MapPin, Users, MessageCircle } from 'lucide-react'
 import { getPopularSearches, detectSearchType, getSearchTypeLabel } from '../utils/searchHelper'
@@ -46,21 +46,7 @@ interface HeroSectionProps {
 
 const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
   const [searchQuery, setSearchQuery] = useState('')
-  const [currentFeature, setCurrentFeature] = useState(0)
   const [showSearchPreview, setShowSearchPreview] = useState(false)
-  
-  const features = [
-    { icon: Users, text: "推しを検索", color: "text-purple-500" },
-    { icon: Package, text: "愛用アイテムを発見", color: "text-rose-500" },
-    { icon: MapPin, text: "聖地巡礼スポットを探索", color: "text-green-500" }
-  ]
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentFeature((prev) => (prev + 1) % features.length)
-    }, 3000)
-    return () => clearInterval(interval)
-  }, [features.length])
 
   // 検索タイプのリアルタイム検出
   const currentSearchType = searchQuery.length > 1 ? detectSearchType(searchQuery) : 'unknown'
@@ -83,41 +69,26 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
       <FloatingIcon icon={Star} delay={1000} size="h-6 w-6" />
       <FloatingIcon icon={Sparkles} delay={2000} size="h-7 w-7" />
       
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8 pt-20 pb-24 lg:pb-40 z-10">
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-8 pt-16 pb-16 lg:pb-24 z-10">
         <div className="text-center">
-          {/* Main Headline with Animation */}
-          <div className="mb-8">
-            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight tracking-tight">
-              推し活を
+          {/* Compact Main Headline */}
+          <div className="mb-6">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 leading-tight">
               <span className="relative inline-block">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 animate-pulse">
-                  もっと
+                推し活を
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500">
+                  もっと楽しく
                 </span>
-                <div className="absolute -top-4 -right-4">
-                  <Heart className="h-8 w-8 text-red-400 animate-bounce" fill="currentColor" />
+                <div className="absolute -top-2 -right-2">
+                  <Heart className="h-5 w-5 md:h-6 md:w-6 text-red-400 animate-bounce" fill="currentColor" />
                 </div>
               </span>
-              楽しく
             </h1>
             
-            {/* Dynamic Feature Display */}
-            <div className="h-16 flex items-center justify-center mb-8">
-              <div className="transition-all duration-500 ease-in-out">
-                {features.map((feature, index) => (
-                  <div
-                    key={index} 
-                    className={`flex items-center space-x-3 text-xl md:text-2xl font-medium transition-all duration-500 ${
-                      index === currentFeature 
-                        ? 'opacity-100 scale-100' 
-                        : 'opacity-0 scale-95 absolute'
-                    }`}
-                  >
-                    <feature.icon className={`h-8 w-8 ${feature.color}`} />
-                    <span className="text-gray-700">{feature.text}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            {/* Inline Feature Subtitle */}
+            <p className="text-base md:text-lg text-gray-600 mb-4">
+              推し・アイテム・聖地巡礼スポットを検索・発見
+            </p>
           </div>
 
           {/* 🔍 Enhanced Smart Search Bar */}
