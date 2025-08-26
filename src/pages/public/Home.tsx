@@ -1,11 +1,13 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Users, Play, MapPin, Package } from 'lucide-react'
 import HeroSection from '../../components/HeroSection'
-import FeaturedCarousel from '../../components/FeaturedCarousel'
+import SectionCarousel from '../../components/SectionCarousel'
 import WikipediaAPITest from '../../components/WikipediaAPITest'
 import DevDataCreator from '../../components/DevDataCreator'
 import UserJourneyTest from '../../components/UserJourneyTest'
 import DataStatusCheck from '../../components/DataStatusCheck'
+import { db } from '../../lib/supabase'
 
 
 // Star Logo Component
@@ -15,13 +17,82 @@ const StarLogo = ({ className = "h-8 w-8" }: { className?: string }) => (
   </svg>
 )
 
+// データ型定義
+interface Celebrity {
+  id: string
+  name: string
+  slug: string
+  image_url?: string | null
+  group_name?: string | null
+  episode_count?: number
+}
+
+interface Episode {
+  id: string
+  title: string
+  date: string
+  thumbnail_url?: string | null
+  view_count?: number
+  duration?: string | null
+  celebrities?: { name: string, slug: string }
+}
+
+interface Location {
+  id: string
+  name: string
+  address?: string | null
+  image_url?: string | null
+  episode_count?: number
+  tabelog_url?: string | null
+  description?: string | null
+}
+
+interface Item {
+  id: string
+  name: string
+  brand?: string | null
+  category?: string | null
+  image_url?: string | null
+  description?: string | null
+  purchase_url?: string | null
+  price?: string | null
+  episode_id?: string | null
+}
+
 export default function Home() {
   const navigate = useNavigate()
+  const [celebrities, setCelebrities] = useState<Celebrity[]>([])
+  const [episodes, setEpisodes] = useState<Episode[]>([])
+  const [locations, setLocations] = useState<Location[]>([])
+  const [items, setItems] = useState<Item[]>([])
+  const [loading, setLoading] = useState(true)
   
   useEffect(() => {
     // ページ読み込み時に必ずトップに戻す
     window.scrollTo(0, 0)
+    fetchData()
   }, [])
+  
+  async function fetchData() {
+    try {
+      // Supabaseから実データを並行取得
+      const [celebritiesData, episodesData, locationsData, itemsData] = await Promise.all([
+        db.celebrities.getAll(),
+        db.episodes.getAll(),
+        db.locations.getAll(),
+        db.items.getAll()
+      ])
+
+      setCelebrities(celebritiesData)
+      setEpisodes(episodesData)
+      setLocations(locationsData)
+      setItems(itemsData)
+    } catch (error) {
+      console.error('データ取得エラー:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
   
   async function handleSearch(searchQuery: string) {
     if (!searchQuery.trim()) return
@@ -34,14 +105,72 @@ export default function Home() {
       navigate(`/items?search=${encodeURIComponent(searchQuery)}`)
     }
   }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-rose-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">読み込み中...</p>
+        </div>
+      </div>
+    )
+  }
   
   return (
     <div className="bg-white">
       {/* Hero Section */}
       <HeroSection onSearch={handleSearch} />
 
-      {/* Featured Carousel Section */}
-      <FeaturedCarousel />
+      {/* 4つの独立したカルーセルセクション */}
+      
+      {/* 1. 人気のタレント・推し */}
+      <SectionCarousel
+        title="人気のタレント・推し"
+        subtitle="よにのちゃんねる、SixTONES、Snow Man..."
+        icon={Users}
+        color="text-purple-600"
+        bgGradient="from-purple-50 to-indigo-50"
+        items={celebrities}
+        type="celebrity"
+        linkPath="/celebrities"
+      />
+
+      {/* 2. 話題のエピソード */}
+      <SectionCarousel
+        title="話題のエピソード"
+        subtitle="最新の動画・番組をチェック"
+        icon={Play}
+        color="text-rose-600"
+        bgGradient="from-rose-50 to-pink-50"
+        items={episodes}
+        type="episode"
+        linkPath="/episodes"
+      />
+
+      {/* 3. 聖地巡礼スポット */}
+      <SectionCarousel
+        title="聖地巡礼スポット"
+        subtitle="推しが訪れたカフェ・レストラン"
+        icon={MapPin}
+        color="text-green-600"
+        bgGradient="from-green-50 to-emerald-50"
+        items={locations}
+        type="location"
+        linkPath="/locations"
+      />
+
+      {/* 4. 推しアイテム */}
+      <SectionCarousel
+        title="推しアイテム"
+        subtitle="愛用コスメ・ファッション・グッズ"
+        icon={Package}
+        color="text-orange-600"
+        bgGradient="from-orange-50 to-amber-50"
+        items={items}
+        type="item"
+        linkPath="/items"
+      />
 
       {/* Development Data Creator - 開発用 (開発環境でのみ表示) */}
       {import.meta.env.DEV && (
