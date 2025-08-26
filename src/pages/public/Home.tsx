@@ -8,6 +8,7 @@ import DevDataCreator from '../../components/DevDataCreator'
 import UserJourneyTest from '../../components/UserJourneyTest'
 import DataStatusCheck from '../../components/DataStatusCheck'
 import { db } from '../../lib/supabase'
+import { getSearchPath, detectSearchType } from '../../utils/searchHelper'
 
 
 // Star Logo Component
@@ -98,11 +99,24 @@ export default function Home() {
     if (!searchQuery.trim()) return
     
     try {
-      // 検索クエリで直接items検索ページに移動
-      navigate(`/items?search=${encodeURIComponent(searchQuery)}`)
+      // 🧠 インテリジェント検索：内容を判定して適切なページへ遷移
+      const searchPath = getSearchPath(searchQuery.trim())
+      const searchType = detectSearchType(searchQuery.trim())
+      
+      // デバッグログ（開発時のみ）
+      if (import.meta.env.DEV) {
+        console.log('🔍 Smart Search:', {
+          query: searchQuery,
+          type: searchType,
+          path: searchPath
+        })
+      }
+      
+      navigate(searchPath)
     } catch (error) {
       console.error('Search error:', error)
-      navigate(`/items?search=${encodeURIComponent(searchQuery)}`)
+      // エラー時のフォールバック
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`)
     }
   }
 

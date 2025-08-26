@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Search, ArrowRight, Heart, Sparkles, Star, Package, MapPin, Youtube } from 'lucide-react'
+import { Search, ArrowRight, Heart, Sparkles, Star, Package, MapPin, Users, MessageCircle } from 'lucide-react'
+import { getPopularSearches, detectSearchType, getSearchTypeLabel } from '../utils/searchHelper'
 
 // アニメーション用のアイコンコンポーネント
 const FloatingIcon = ({ icon: Icon, delay = 0, size = "h-6 w-6" }: { 
@@ -46,10 +47,12 @@ interface HeroSectionProps {
 const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
   const [searchQuery, setSearchQuery] = useState('')
   const [currentFeature, setCurrentFeature] = useState(0)
+  const [showSearchPreview, setShowSearchPreview] = useState(false)
   
   const features = [
-    { icon: Package, text: "推しの愛用アイテムを発見", color: "text-rose-500" },
-    { icon: MapPin, text: "聖地巡礼スポットを探索", color: "text-blue-500" }
+    { icon: Users, text: "推しを検索", color: "text-purple-500" },
+    { icon: Package, text: "愛用アイテムを発見", color: "text-rose-500" },
+    { icon: MapPin, text: "聖地巡礼スポットを探索", color: "text-green-500" }
   ]
 
   useEffect(() => {
@@ -58,6 +61,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
     }, 3000)
     return () => clearInterval(interval)
   }, [features.length])
+
+  // 検索タイプのリアルタイム検出
+  const currentSearchType = searchQuery.length > 1 ? detectSearchType(searchQuery) : 'unknown'
+  const popularSearches = getPopularSearches()
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -113,65 +120,52 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
             </div>
           </div>
 
-          {/* Enhanced Search Bar */}
-          <div className="max-w-3xl mx-auto mb-8">
+          {/* 🔍 Enhanced Smart Search Bar */}
+          <div className="max-w-4xl mx-auto mb-8">
             <div className="relative group">
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="推し名・店舗名・ブランドで検索"
+                  placeholder="推し・アイテム・場所を検索..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch(e)}
-                  className="w-full pl-14 pr-16 py-4 md:py-5 text-base md:text-lg border-3 border-gray-200 rounded-3xl focus:border-rose-400 focus:outline-none shadow-2xl hover:shadow-3xl transition-all duration-300 bg-white/90 backdrop-blur-sm group-hover:bg-white"
+                  onFocus={() => setShowSearchPreview(true)}
+                  onBlur={() => setTimeout(() => setShowSearchPreview(false), 200)}
+                  className="w-full pl-14 pr-16 py-5 md:py-6 text-base md:text-xl border-3 border-gray-200 rounded-3xl focus:border-rose-400 focus:outline-none shadow-2xl hover:shadow-3xl transition-all duration-300 bg-white/95 backdrop-blur-sm group-hover:bg-white"
                 />
-                <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
-                  <Search className="h-5 w-5 text-gray-400 group-focus-within:text-rose-500 transition-colors" />
+                <div className="absolute left-5 top-1/2 transform -translate-y-1/2">
+                  <Search className="h-6 w-6 text-gray-400 group-focus-within:text-rose-500 transition-colors" />
                 </div>
+                
+                {/* リアルタイム検索タイプ表示 */}
+                {searchQuery.length > 1 && (
+                  <div className="absolute left-16 top-1/2 transform -translate-y-1/2">
+                    <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                      {getSearchTypeLabel(currentSearchType)}
+                    </span>
+                  </div>
+                )}
+                
                 <button 
                   onClick={handleSearch}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white p-2.5 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white p-3 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                   disabled={!searchQuery.trim()}
                 >
-                  <ArrowRight className="h-4 w-4" />
+                  <ArrowRight className="h-5 w-5" />
                 </button>
               </div>
             </div>
             
-            {/* Popular Searches with Categories */}
-            <div className="mt-6 space-y-3">
+            {/* 🔥 Dynamic Popular Searches */}
+            <div className="mt-6 space-y-2">
               <div className="flex flex-wrap gap-2 justify-center items-center">
-                <span className="text-sm text-gray-500 mr-2">人気検索:</span>
-                <span className="text-xs text-gray-400 px-2 py-1 bg-rose-100 rounded-full">推し</span>
-                {['二宮和也', '橋本涼'].map((term) => (
+                <span className="text-sm text-gray-500 mr-2">人気:</span>
+                {popularSearches.trending.map((term) => (
                   <button
                     key={term}
-                    onClick={() => setSearchQuery(term)}
-                    className="px-3 py-1.5 bg-white/70 backdrop-blur-sm text-rose-600 text-sm rounded-full border border-rose-200 hover:bg-rose-50 hover:border-rose-300 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
-                  >
-                    {term}
-                  </button>
-                ))}
-              </div>
-              <div className="flex flex-wrap gap-2 justify-center items-center">
-                <span className="text-xs text-gray-400 px-2 py-1 bg-blue-100 rounded-full">アイテム</span>
-                {['GUCCI', 'Nike', 'コスメ'].map((term) => (
-                  <button
-                    key={term}
-                    onClick={() => setSearchQuery(term)}
-                    className="px-3 py-1.5 bg-white/70 backdrop-blur-sm text-blue-600 text-sm rounded-full border border-blue-200 hover:bg-blue-50 hover:border-blue-300 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
-                  >
-                    {term}
-                  </button>
-                ))}
-              </div>
-              <div className="flex flex-wrap gap-2 justify-center items-center">
-                <span className="text-xs text-gray-400 px-2 py-1 bg-green-100 rounded-full">店舗・ロケ地</span>
-                {['ティファニー銀座本店', '志づや', '神楽坂 てっぱんや'].map((term) => (
-                  <button
-                    key={term}
-                    onClick={() => setSearchQuery(term)}
-                    className="px-3 py-1.5 bg-white/70 backdrop-blur-sm text-green-600 text-sm rounded-full border border-green-200 hover:bg-green-50 hover:border-green-300 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
+                    onClick={() => {setSearchQuery(term); onSearch(term);}}
+                    className="px-3 py-1.5 bg-white/80 backdrop-blur-sm text-rose-600 text-sm rounded-full border border-rose-200 hover:bg-rose-50 hover:border-rose-300 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
                   >
                     {term}
                   </button>
@@ -181,33 +175,34 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
           </div>
 
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center max-w-4xl mx-auto relative z-20">
-            <Link to="/celebrities" className="w-full sm:w-auto">
-              <button className="group w-full bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white px-8 sm:px-12 py-5 sm:py-4 rounded-full text-xl sm:text-lg font-bold sm:font-semibold shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 min-h-[60px]">
-                <span className="flex items-center justify-center space-x-3">
-                  <Search className="h-7 w-7 sm:h-6 sm:w-6 group-hover:animate-pulse" />
-                  <span>アイドル・推し検索</span>
-                </span>
-              </button>
+          {/* 🎯 Quick Access Icons - Simplified */}
+          <div className="flex justify-center gap-6 md:gap-8 max-w-2xl mx-auto relative z-20">
+            <Link to="/celebrities" className="group flex flex-col items-center">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-2xl flex items-center justify-center shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 group-hover:rotate-3">
+                <Users className="h-8 w-8 md:h-10 md:w-10 text-white" />
+              </div>
+              <span className="text-sm md:text-base font-semibold text-gray-700 mt-2 group-hover:text-purple-600 transition-colors">推し</span>
             </Link>
             
-            <Link to="/items" className="w-full sm:w-auto">
-              <button className="group w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white px-8 sm:px-12 py-5 sm:py-4 rounded-full text-xl sm:text-lg font-bold sm:font-semibold shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 min-h-[60px]">
-                <span className="flex items-center justify-center space-x-3">
-                  <Package className="h-7 w-7 sm:h-6 sm:w-6 group-hover:animate-bounce" />
-                  <span>推しアイテムを探す</span>
-                </span>
-              </button>
+            <Link to="/items" className="group flex flex-col items-center">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-rose-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 group-hover:rotate-3">
+                <Package className="h-8 w-8 md:h-10 md:w-10 text-white" />
+              </div>
+              <span className="text-sm md:text-base font-semibold text-gray-700 mt-2 group-hover:text-rose-600 transition-colors">アイテム</span>
             </Link>
             
-            <Link to="/posts" className="w-full sm:w-auto">
-              <button className="group w-full border-3 border-rose-200 text-rose-600 hover:bg-rose-50 hover:border-rose-300 px-8 sm:px-12 py-5 sm:py-4 rounded-full text-xl sm:text-lg font-bold sm:font-semibold bg-white/80 backdrop-blur-sm shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 min-h-[60px]">
-                <span className="flex items-center justify-center space-x-3">
-                  <Youtube className="h-7 w-7 sm:h-6 sm:w-6 group-hover:animate-bounce" />
-                  <span>みんなの質問を見る</span>
-                </span>
-              </button>
+            <Link to="/locations" className="group flex flex-col items-center">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 group-hover:rotate-3">
+                <MapPin className="h-8 w-8 md:h-10 md:w-10 text-white" />
+              </div>
+              <span className="text-sm md:text-base font-semibold text-gray-700 mt-2 group-hover:text-green-600 transition-colors">場所</span>
+            </Link>
+            
+            <Link to="/posts" className="group flex flex-col items-center">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 group-hover:rotate-3">
+                <MessageCircle className="h-8 w-8 md:h-10 md:w-10 text-white" />
+              </div>
+              <span className="text-sm md:text-base font-semibold text-gray-700 mt-2 group-hover:text-blue-600 transition-colors">質問</span>
             </Link>
           </div>
         </div>
