@@ -88,6 +88,20 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
     return () => window.removeEventListener('resize', updateItemsPerPage)
   }, [])
 
+  // 自動回転機能
+  useEffect(() => {
+    if (items.length <= itemsPerPage) return // アイテムが少ない場合は自動回転しない
+    
+    const autoRotateInterval = setInterval(() => {
+      setCurrentIndex(prev => {
+        const maxIndex = items.length - itemsPerPage
+        return prev >= maxIndex ? 0 : prev + 1
+      })
+    }, 5000) // 5秒間隔で自動回転
+
+    return () => clearInterval(autoRotateInterval)
+  }, [items.length, itemsPerPage])
+
   const nextItem = () => {
     if (currentIndex >= items.length - itemsPerPage) return
     setCurrentIndex(prev => prev + 1)
@@ -154,70 +168,104 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
     </Link>
   )
 
-  const renderLocationCard = (location: Location) => (
-    <Link to={`/locations/${location.id}`} key={location.id}>
-      <div className="relative group cursor-pointer">
-        <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden">
-          <div className="relative">
-            <img 
-              src={location.image_url || 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop'} 
-              alt={location.name}
-              className="w-full h-48 object-cover"
-            />
-            <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-gray-700">
-              {location.episode_count || 0}回登場
-            </div>
-            {location.tabelog_url && (
-              <div className="absolute bottom-2 right-2">
-                <div className="bg-orange-500 text-white px-2 py-1 rounded text-xs font-medium flex items-center">
-                  <ExternalLink className="h-3 w-3 mr-1" />
-                  予約
-                </div>
-              </div>
-            )}
-          </div>
-          <div className="p-4">
-            <h3 className="font-bold text-lg text-gray-900 mb-1">{location.name}</h3>
-            <p className="text-sm text-gray-600 mb-2">{location.address}</p>
-            <p className="text-xs text-gray-500 line-clamp-2">{location.description}</p>
-          </div>
-        </div>
-      </div>
-    </Link>
-  )
+  const renderLocationCard = (location: Location) => {
+    // 聖地巡礼スポット用の高品質プレースホルダー画像（レストラン・カフェ系）
+    const getLocationPlaceholder = (index: number) => {
+      const placeholders = [
+        'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=250&fit=crop', // レストラン内装
+        'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=250&fit=crop', // カフェテーブル
+        'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop', // 料理
+        'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=400&h=250&fit=crop', // カフェ外観
+        'https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=400&h=250&fit=crop', // レストラン雰囲気
+        'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=250&fit=crop', // レストランテーブル
+        'https://images.unsplash.com/photo-1567521464027-f127ff144326?w=400&h=250&fit=crop', // カフェラテ
+        'https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=400&h=250&fit=crop'  // カフェ内装
+      ]
+      return placeholders[index % placeholders.length]
+    }
 
-  const renderItemCard = (item: Item) => (
-    <Link to={`/items/${item.id}`} key={item.id}>
-      <div className="relative group cursor-pointer">
-        <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden">
-          <div className="relative">
-            <img 
-              src={item.image_url || 'https://images.unsplash.com/photo-1556740727-e2df77cd753b?w=300&h=200&fit=crop'} 
-              alt={item.name}
-              className="w-full h-48 object-cover"
-            />
-            {item.brand && (
-              <div className="absolute top-2 left-2 bg-black/70 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-white">
-                {item.brand}
+    return (
+      <Link to={`/locations/${location.id}`} key={location.id}>
+        <div className="relative group cursor-pointer">
+          <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden">
+            <div className="relative">
+              <img 
+                src={location.image_url || getLocationPlaceholder(parseInt(location.id))} 
+                alt={location.name}
+                className="w-full h-48 object-cover"
+              />
+              <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-gray-700">
+                {location.episode_count || 0}回登場
               </div>
-            )}
-            {item.price && (
-              <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
-                {item.price}
-              </div>
-            )}
-          </div>
-          <div className="p-4">
-            <h3 className="font-bold text-lg text-gray-900 mb-1">{item.name}</h3>
-            <p className="text-sm text-gray-600 mb-2">{item.category || 'アイテム'}</p>
-            <p className="text-xs text-gray-500 line-clamp-2">
-              {item.description || '推しが愛用するこだわりのアイテム'}
-            </p>
+              {location.tabelog_url && (
+                <div className="absolute bottom-2 right-2">
+                  <div className="bg-orange-500 text-white px-2 py-1 rounded text-xs font-medium flex items-center">
+                    <ExternalLink className="h-3 w-3 mr-1" />
+                    予約
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="p-4">
+              <h3 className="font-bold text-lg text-gray-900 mb-1">{location.name}</h3>
+              <p className="text-sm text-gray-600 mb-2">{location.address}</p>
+              <p className="text-xs text-gray-500 line-clamp-2">{location.description}</p>
+            </div>
           </div>
         </div>
-      </div>
-    </Link>
-  )
+      </Link>
+    )
+  }
+
+  const renderItemCard = (item: Item) => {
+    // 推しアイテム用の高品質プレースホルダー画像（コスメ・ファッション・グッズ系）
+    const getItemPlaceholder = (index: number) => {
+      const placeholders = [
+        'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=300&h=200&fit=crop', // コスメ
+        'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=300&h=200&fit=crop', // ファッション
+        'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=300&h=200&fit=crop', // アクセサリー
+        'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=300&h=200&fit=crop', // ファッション小物
+        'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=200&fit=crop', // コスメセット
+        'https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?w=300&h=200&fit=crop', // バッグ
+        'https://images.unsplash.com/photo-1541643600914-78b084683601?w=300&h=200&fit=crop', // リップ・コスメ
+        'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=300&h=200&fit=crop'  // ジュエリー
+      ]
+      return placeholders[index % placeholders.length]
+    }
+
+    return (
+      <Link to={`/items/${item.id}`} key={item.id}>
+        <div className="relative group cursor-pointer">
+          <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden">
+            <div className="relative">
+              <img 
+                src={item.image_url || getItemPlaceholder(parseInt(item.id))} 
+                alt={item.name}
+                className="w-full h-48 object-cover"
+              />
+              {item.brand && (
+                <div className="absolute top-2 left-2 bg-black/70 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-white">
+                  {item.brand}
+                </div>
+              )}
+              {item.price && (
+                <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+                  {item.price}
+                </div>
+              )}
+            </div>
+            <div className="p-4">
+              <h3 className="font-bold text-lg text-gray-900 mb-1">{item.name}</h3>
+              <p className="text-sm text-gray-600 mb-2">{item.category || 'アイテム'}</p>
+              <p className="text-xs text-gray-500 line-clamp-2">
+                {item.description || '推しが愛用するこだわりのアイテム'}
+              </p>
+            </div>
+          </div>
+        </div>
+      </Link>
+    )
+  }
 
   const renderCard = (item: Celebrity | Episode | Location | Item) => {
     switch (type) {
