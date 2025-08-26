@@ -5,7 +5,8 @@
 
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ChevronLeft, ChevronRight, Users, MapPin, Play, Calendar, Star, ExternalLink } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Users, MapPin, Play, Calendar, Star, ExternalLink, Package } from 'lucide-react'
+import { db } from '../lib/supabase'
 
 interface Celebrity {
   id: string
@@ -36,24 +37,36 @@ interface Location {
   description?: string | null
 }
 
+interface Item {
+  id: string
+  name: string
+  brand?: string | null
+  category?: string | null
+  image_url?: string | null
+  description?: string | null
+  purchase_url?: string | null
+  price?: string | null
+  episode_id?: string | null
+}
+
 interface CarouselSection {
   title: string
   subtitle: string
   icon: React.ElementType
   color: string
   bgGradient: string
-  items: (Celebrity | Episode | Location)[]
-  type: 'celebrity' | 'episode' | 'location'
+  items: (Celebrity | Episode | Location | Item)[]
+  type: 'celebrity' | 'episode' | 'location' | 'item'
 }
 
 const FeaturedCarousel: React.FC = () => {
   const [currentSection, setCurrentSection] = useState(0)
-  const [currentItems, setCurrentItems] = useState<{ [key: string]: number }>({ 0: 0, 1: 0, 2: 0 })
+  const [currentItems, setCurrentItems] = useState<{ [key: string]: number }>({ 0: 0, 1: 0, 2: 0, 3: 0 })
   const [data, setData] = useState<CarouselSection[]>([])
   const [loading, setLoading] = useState(true)
   const [itemsPerPage, setItemsPerPage] = useState(1)
 
-  // カルーセルセクション定義
+  // カルーセルセクション定義（4セクション）
   const sections: Omit<CarouselSection, 'items'>[] = [
     {
       title: "人気のタレント・推し",
@@ -78,6 +91,14 @@ const FeaturedCarousel: React.FC = () => {
       color: "text-green-600",
       bgGradient: "from-green-50 to-emerald-50", 
       type: 'location'
+    },
+    {
+      title: "推しアイテム",
+      subtitle: "愛用コスメ・ファッション・グッズ",
+      icon: Package,
+      color: "text-orange-600",
+      bgGradient: "from-orange-50 to-amber-50",
+      type: 'item'
     }
   ]
 
@@ -96,47 +117,39 @@ const FeaturedCarousel: React.FC = () => {
     return () => window.removeEventListener('resize', updateItemsPerPage)
   }, [])
 
-  // データ取得（実装時にSupabaseから取得）
+  // Supabaseからリアルデータを取得
   useEffect(() => {
     const loadData = async () => {
       try {
-        // モックデータ（実装時はSupabaseから取得）
-        const mockData: CarouselSection[] = [
+        // Supabaseから実データを並行取得（4種類）
+        const [celebritiesData, episodesData, locationsData, itemsData] = await Promise.all([
+          db.celebrities.getAll(),
+          db.episodes.getAll(), 
+          db.locations.getAll(),
+          db.items.getAll()
+        ])
+
+        // 実データでCarouselSectionを構築（4セクション）
+        const realData: CarouselSection[] = [
           {
             ...sections[0],
-            items: [
-              { id: '1', name: 'よにのちゃんねる', slug: 'yonino', image_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face', group_name: 'ジャニーズ', episode_count: 150 },
-              { id: '2', name: '二宮和也', slug: 'ninomiya', image_url: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face', group_name: '嵐', episode_count: 89 },
-              { id: '3', name: '中丸雄一', slug: 'nakamaru', image_url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face', group_name: 'KAT-TUN', episode_count: 78 },
-              { id: '4', name: '山田涼介', slug: 'yamada', image_url: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=200&fit=crop&crop=face', group_name: 'Hey! Say! JUMP', episode_count: 65 },
-              { id: '5', name: '菊池風磨', slug: 'kikuchi', image_url: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&h=200&fit=crop&crop=face', group_name: 'timelesz', episode_count: 52 },
-              { id: '6', name: '森本慎太郎', slug: 'morimoto', image_url: 'https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=200&h=200&fit=crop&crop=face', group_name: 'SixTONES', episode_count: 43 }
-            ] as Celebrity[]
+            items: celebritiesData.slice(0, 9) as Celebrity[] // 上位9名を表示
           },
           {
-            ...sections[1],
-            items: [
-              { id: '1', title: 'よにの朝ごはん #112', date: '2024-08-20', thumbnail_url: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop', view_count: 250000, duration: '15:30', celebrities: { name: 'よにのちゃんねる', slug: 'yonino' } },
-              { id: '2', title: '聖地巡礼 in 渋谷', date: '2024-08-18', thumbnail_url: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400&h=250&fit=crop', view_count: 180000, duration: '12:45', celebrities: { name: '二宮和也', slug: 'ninomiya' } },
-              { id: '3', title: 'カフェ巡り企画', date: '2024-08-15', thumbnail_url: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=250&fit=crop', view_count: 320000, duration: '18:20', celebrities: { name: '山田涼介', slug: 'yamada' } },
-              { id: '4', title: '推し活グルメツアー', date: '2024-08-12', thumbnail_url: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=250&fit=crop', view_count: 195000, duration: '20:15', celebrities: { name: '菊池風磨', slug: 'kikuchi' } },
-              { id: '5', title: '東京スイーツ散策', date: '2024-08-10', thumbnail_url: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&h=250&fit=crop', view_count: 275000, duration: '14:55', celebrities: { name: '森本慎太郎', slug: 'morimoto' } }
-            ] as Episode[]
+            ...sections[1], 
+            items: episodesData.slice(0, 6) as Episode[] // 最新6エピソード
           },
           {
             ...sections[2],
-            items: [
-              { id: '1', name: '挽肉と米', address: '東京都渋谷区道玄坂', image_url: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop', episode_count: 5, tabelog_url: 'https://tabelog.com/example', description: 'よにのちゃんねるで話題のハンバーグ店' },
-              { id: '2', name: 'Paul Bassett 新宿店', address: '東京都新宿区', image_url: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=250&fit=crop', episode_count: 3, description: '人気のコーヒーショップ' },
-              { id: '3', name: 'ル・パン・コティディアン', address: '東京都港区', image_url: 'https://images.unsplash.com/photo-1519996529931-28324d5a630e?w=400&h=250&fit=crop', episode_count: 4, tabelog_url: 'https://tabelog.com/example2', description: 'おしゃれなベーカリーカフェ' },
-              { id: '4', name: 'Bills 表参道', address: '東京都港区', image_url: 'https://images.unsplash.com/photo-1464305795204-6f5bbfc7fb81?w=400&h=250&fit=crop', episode_count: 2, tabelog_url: 'https://tabelog.com/example3', description: '有名パンケーキ専門店' },
-              { id: '5', name: '青山フラワーマーケット カフェ', address: '東京都港区', image_url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop', episode_count: 3, description: '花と緑に囲まれたカフェ' },
-              { id: '6', name: 'スターバックス 渋谷店', address: '東京都渋谷区', image_url: 'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=400&h=250&fit=crop', episode_count: 6, tabelog_url: 'https://tabelog.com/example4', description: '渋谷の人気カフェスポット' }
-            ] as Location[]
+            items: locationsData.slice(0, 9) as Location[] // 人気9店舗
+          },
+          {
+            ...sections[3],
+            items: itemsData.slice(0, 9) as Item[] // 人気9アイテム
           }
         ]
 
-        setData(mockData)
+        setData(realData)
         setLoading(false)
       } catch (error) {
         console.error('データ取得エラー:', error)
@@ -280,6 +293,39 @@ const FeaturedCarousel: React.FC = () => {
     </Link>
   )
 
+  const renderItemCard = (item: Item) => (
+    <Link to={`/items/${item.id}`} key={item.id}>
+      <div className="relative group cursor-pointer">
+        <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden">
+          <div className="relative">
+            <img 
+              src={item.image_url || 'https://images.unsplash.com/photo-1556740727-e2df77cd753b?w=300&h=200&fit=crop'} 
+              alt={item.name}
+              className="w-full h-48 object-cover"
+            />
+            {item.brand && (
+              <div className="absolute top-2 left-2 bg-black/70 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-white">
+                {item.brand}
+              </div>
+            )}
+            {item.price && (
+              <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+                {item.price}
+              </div>
+            )}
+          </div>
+          <div className="p-4">
+            <h3 className="font-bold text-lg text-gray-900 mb-1">{item.name}</h3>
+            <p className="text-sm text-gray-600 mb-2">{item.category || 'アイテム'}</p>
+            <p className="text-xs text-gray-500 line-clamp-2">
+              {item.description || '推しが愛用するこだわりのアイテム'}
+            </p>
+          </div>
+        </div>
+      </div>
+    </Link>
+  )
+
   if (loading) {
     return (
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
@@ -348,6 +394,7 @@ const FeaturedCarousel: React.FC = () => {
                       {currentSectionData.type === 'celebrity' && renderCelebrityCard(item as Celebrity)}
                       {currentSectionData.type === 'episode' && renderEpisodeCard(item as Episode)}
                       {currentSectionData.type === 'location' && renderLocationCard(item as Location)}
+                      {currentSectionData.type === 'item' && renderItemCard(item as Item)}
                     </div>
                   ))}
               </div>
@@ -382,7 +429,7 @@ const FeaturedCarousel: React.FC = () => {
 
       {/* 「もっと見る」ボタン */}
       <div className="text-center">
-        <Link to={currentSectionData.type === 'celebrity' ? '/celebrities' : currentSectionData.type === 'episode' ? '/episodes' : '/locations'}>
+        <Link to={currentSectionData.type === 'celebrity' ? '/celebrities' : currentSectionData.type === 'episode' ? '/episodes' : currentSectionData.type === 'location' ? '/locations' : '/items'}>
           <button className={`inline-flex items-center px-8 py-4 bg-white border-2 border-gray-200 hover:border-gray-300 rounded-full text-gray-700 hover:text-gray-900 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105`}>
             {currentSectionData.title}をもっと見る
             <ChevronRight className="h-5 w-5 ml-2" />
