@@ -705,6 +705,15 @@ export default function CelebrityProfile() {
                         </div>
                       )}
                       
+                      {/* Location Badge */}
+                      {episodeLinks.locations > 0 && (
+                        <div className="absolute top-3 right-3">
+                          <span className="px-3 py-1 text-xs font-bold rounded-full shadow-sm bg-orange-500 text-white">
+                            📍 ロケ地あり
+                          </span>
+                        </div>
+                      )}
+                      
                       {/* Location/Item Indicators */}
                       {(episodeLinks.locations > 0 || episodeLinks.items > 0) && (
                         <div className="absolute bottom-3 left-3 right-3 flex flex-wrap gap-2">
