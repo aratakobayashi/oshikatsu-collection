@@ -4,6 +4,7 @@ import { ArrowRight, Calendar, ChevronLeft, ChevronRight, Users } from 'lucide-r
 import Card, { CardContent } from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
 import HeroSection from '../../components/HeroSection'
+import FeaturedCarousel from '../../components/FeaturedCarousel'
 import WikipediaAPITest from '../../components/WikipediaAPITest'
 import DevDataCreator from '../../components/DevDataCreator'
 import UserJourneyTest from '../../components/UserJourneyTest'
@@ -155,6 +156,9 @@ export default function Home() {
     <div className="bg-white">
       {/* Hero Section */}
       <HeroSection onSearch={handleSearch} />
+
+      {/* Featured Carousel Section */}
+      <FeaturedCarousel />
 
       {/* Development Data Creator - 開発用 (開発環境でのみ表示) */}
       {import.meta.env.DEV && (

@@ -34,7 +34,9 @@
     "production:not-equal-me": "tsx src/scripts/data-collection/production-not-equal-me-processor.ts",
     "budget:not-equal-me": "tsx src/scripts/data-collection/budget-not-equal-me-processor.ts",
     "free:not-equal-me": "tsx src/scripts/data-collection/free-api-extractor.ts",
-    "analyze:not-equal-me": "tsx src/scripts/data-collection/analyze-not-equal-me-descriptions.ts"
+    "analyze:not-equal-me": "tsx src/scripts/data-collection/analyze-not-equal-me-descriptions.ts",
+    "generate-sitemap": "tsx src/scripts/generate-sitemap.ts",
+    "submit-sitemap": "tsx src/scripts/submit-sitemap.ts"
   },
   "dependencies": {
     "@supabase/storage-js": "^2.8.0",

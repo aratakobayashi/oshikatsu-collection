@@ -29,6 +29,12 @@
   to = "/.netlify/functions/robots"
   status = 200
 
+# sitemap.xml の動的生成
+[[redirects]]
+  from = "/sitemap.xml"
+  to = "/.netlify/functions/sitemap"
+  status = 200
+
 # ヘッダー設定
 [[headers]]
   for = "/*"

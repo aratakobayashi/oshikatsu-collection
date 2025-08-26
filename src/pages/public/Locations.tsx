@@ -192,10 +192,9 @@ export default function Locations() {
         return currentScore > bestScore ? current : best
       })
       
-      // 全エピソード情報を収集
+      // 全エピソード情報を収集（新しい構造対応）
       const allEpisodes = locs
-        .map(l => l.episode)
-        .filter(Boolean)
+        .flatMap(l => l.episodes || [l.episode].filter(Boolean))
         .map(ep => ({
           id: ep!.id,
           title: ep!.title,
@@ -233,21 +232,26 @@ export default function Locations() {
     try {
       console.log('🔍 Public Locations: Fetching data...')
       
-      // Fetch all locations with related episode data
+      // Fetch all locations with related episode data via episode_locations junction table
       const { data: locationsData, error: locationsError } = await supabase
         .from('locations')
         .select(`
           *,
-          episodes!episode_id(
+          episode_locations(
             id,
-            title,
-            date,
-            view_count,
-            duration,
-            celebrity_id,
-            celebrities(id, name, slug)
+            episode_id,
+            episodes(
+              id,
+              title,
+              date,
+              view_count,
+              duration,
+              celebrity_id,
+              celebrities(id, name, slug)
+            )
           )
         `)
+        .not('episode_locations', 'is', null)
         .order('created_at', { ascending: false })
       
       if (locationsError) throw locationsError
@@ -260,20 +264,33 @@ export default function Locations() {
       
       // Process locations data to format it correctly
       const allLocations = (locationsData || []).map(location => {
-        // Get the episode data from the foreign key relationship
-        const episode = location.episodes ? {
-          id: location.episodes.id,
-          title: location.episodes.title,
-          date: location.episodes.date,
-          view_count: location.episodes.view_count,
-          duration: location.episodes.duration,
-          celebrity_id: location.episodes.celebrity_id,
-          celebrity: location.episodes.celebrities
+        // Get episode data from episode_locations junction table
+        // For backward compatibility, use the first episode if multiple exist
+        const firstEpisodeLink = location.episode_locations?.[0]
+        const episode = firstEpisodeLink?.episodes ? {
+          id: firstEpisodeLink.episodes.id,
+          title: firstEpisodeLink.episodes.title,
+          date: firstEpisodeLink.episodes.date,
+          view_count: firstEpisodeLink.episodes.view_count,
+          duration: firstEpisodeLink.episodes.duration,
+          celebrity_id: firstEpisodeLink.episodes.celebrity_id,
+          celebrity: firstEpisodeLink.episodes.celebrities
         } : undefined
+        
+        // Create episodes array for multiple episode support
+        const episodes = location.episode_locations?.map(link => ({
+          id: link.episodes.id,
+          title: link.episodes.title,
+          date: link.episodes.date,
+          view_count: link.episodes.view_count,
+          celebrity: link.episodes.celebrities
+        })) || []
         
         return {
           ...location,
-          episode,
+          episode, // Primary episode for compatibility
+          episodes, // All episodes for enhanced display
+          episodes_count: episodes.length,
           episode_id: location.episode_id || episode?.id || ''
         }
       })

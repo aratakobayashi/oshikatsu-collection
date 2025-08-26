@@ -89,87 +89,41 @@ export default function LocationDetail() {
       
       console.log('✅ Successfully fetched location:', locationData)
       
-      // 同じ名前のロケーションで関連する全エピソードを取得
-      // まず、同じ名前の全ロケーションを取得
-      const { data: allSameLocations, error: sameLocError } = await supabase
-        .from('locations')
-        .select('episode_id')
-        .eq('name', locationData.name)
-        .not('episode_id', 'is', null)
+      // 新しい中間テーブル構造でエピソード情報を取得
+      const { data: episodes, error: episodesError } = await supabase
+        .from('episode_locations')
+        .select(`
+          id,
+          episode_id,
+          episodes(
+            id,
+            title,
+            date,
+            view_count,
+            duration,
+            thumbnail_url,
+            celebrity_id,
+            celebrities(name, slug)
+          )
+        `)
+        .eq('location_id', locationData.id)
+        .order('episodes(date)', { ascending: false })
       
-      if (allSameLocations && allSameLocations.length > 0) {
-        // 全ての関連エピソードIDを取得
-        const episodeIds = [...new Set(allSameLocations.map(loc => loc.episode_id).filter(Boolean))]
-        
-        // 全エピソード情報を取得
-        const { data: episodes, error: episodesError } = await supabase
-          .from('episodes')
-          .select(`
-            id,
-            title,
-            date,
-            view_count,
-            duration,
-            thumbnail_url,
-            celebrities:celebrity_id (
-              name,
-              slug
-            )
-          `)
-          .in('id', episodeIds)
-          .order('date', { ascending: false })
-        
-        if (episodes && !episodesError) {
-          locationData.episodes = episodes
-          console.log(`✅ Successfully fetched ${episodes.length} episodes for this location`)
-        } else {
-          console.error('❌ Episodes fetch error:', episodesError)
-          // フォールバック: 現在のロケーションのエピソードのみ取得
-          if (locationData.episode_id) {
-            const { data: episode } = await supabase
-              .from('episodes')
-              .select(`
-                id,
-                title,
-                date,
-                view_count,
-                duration,
-                thumbnail_url,
-                celebrities:celebrity_id (
-                  name,
-                  slug
-                )
-              `)
-              .eq('id', locationData.episode_id)
-              .single()
-            
-            if (episode) {
-              locationData.episodes = [episode]
-            }
-          }
-        }
-      } else if (locationData.episode_id) {
-        // 同じ名前のロケーションがない場合、現在のエピソードのみ
-        const { data: episode } = await supabase
-          .from('episodes')
-          .select(`
-            id,
-            title,
-            date,
-            view_count,
-            duration,
-            thumbnail_url,
-            celebrities:celebrity_id (
-              name,
-              slug
-            )
-          `)
-          .eq('id', locationData.episode_id)
-          .single()
-        
-        if (episode) {
-          locationData.episodes = [episode]
-        }
+      if (episodes && !episodesError) {
+        // エピソードデータを整形
+        locationData.episodes = episodes.map(link => ({
+          id: link.episodes.id,
+          title: link.episodes.title,
+          date: link.episodes.date,
+          view_count: link.episodes.view_count,
+          duration: link.episodes.duration,
+          thumbnail_url: link.episodes.thumbnail_url,
+          celebrities: link.episodes.celebrities
+        }))
+        console.log(`✅ Successfully fetched ${episodes.length} episodes for this location`)
+      } else {
+        console.error('❌ Episodes fetch error:', episodesError)
+        locationData.episodes = []
       }
       
       setLocation(locationData)
