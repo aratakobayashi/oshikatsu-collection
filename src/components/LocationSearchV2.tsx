@@ -82,6 +82,12 @@ export default function LocationSearchV2() {
 
         setPopularLocations(processedLocations)
         setCelebrities(celebritiesData || [])
+        
+        // デバッグ用：全店舗数と一部の店舗名を表示
+        console.log('📊 Total locations loaded:', processedLocations.length)
+        if (processedLocations.length > 0) {
+          console.log('📍 Sample locations:', processedLocations.slice(0, 10).map(l => l.name).join(', '))
+        }
 
         // URLパラメータからの検索クエリを読み取り
         const searchFromUrl = searchParams.get('search')
@@ -187,6 +193,11 @@ export default function LocationSearchV2() {
           count: data?.length || 0,
           error: error?.message 
         })
+        
+        // デバッグ用：店舗名の一部を表示
+        if (data && data.length > 0) {
+          console.log('📍 Found locations:', data.slice(0, 5).map(l => l.name).join(', '))
+        }
       }
       
       if (error) {
@@ -268,13 +279,30 @@ export default function LocationSearchV2() {
   const getCategoryKeywords = (category: string) => {
     switch (category) {
       case 'restaurant':
-        return ['レストラン', 'restaurant', 'dining', '食事', '料理', 'グリル', 'ビストロ', 'イタリアン', '中華', '和食', 'フレンチ']
+        return [
+          'レストラン', 'restaurant', 'dining', '食事', '料理', 
+          'グリル', 'ビストロ', 'イタリアン', '中華', '和食', 'フレンチ',
+          '焼肉', 'ラーメン', 'うどん', 'そば', '寿司', '天ぷら',
+          '定食', '居酒屋', 'バル', 'tavern', '酒場', '食堂',
+          'kitchen', 'diner', 'grill', 'bar', 'pub', 'bistro'
+        ]
       case 'cafe':
-        return ['カフェ', 'cafe', 'coffee', 'コーヒー', '喫茶', 'スタバ', 'starbucks', 'タリーズ', 'ドトール']
+        return [
+          'カフェ', 'cafe', 'coffee', 'コーヒー', '喫茶', 
+          'スタバ', 'starbucks', 'タリーズ', 'ドトール', 'tully', 'doutor',
+          '珈琲', 'tea', 'ティー', 'latte', 'ラテ', 'cappuccino',
+          'espresso', 'mocha', 'モカ', 'frappuccino', 'フラペチーノ'
+        ]
       case 'shop':
-        return ['ショップ', 'shop', 'store', '店舗', '専門店', 'boutique', 'ブティック', '雑貨', 'セレクト']
+        return [
+          'ショップ', 'shop', 'store', '店舗', '専門店', 
+          'boutique', 'ブティック', '雑貨', 'セレクト',
+          'マート', 'mart', 'market', 'デパート', '百貨店',
+          'アパレル', 'fashion', 'ファッション', 'clothes', '服',
+          'コンビニ', 'convenience', 'drugstore', 'pharmacy', '薬局'
+        ]
       case 'hotel':
-        return ['ホテル', 'hotel', 'inn', '宿泊', 'リゾート', 'resort']
+        return ['ホテル', 'hotel', 'inn', '宿泊', 'リゾート', 'resort', '旅館', 'ryokan']
       case 'venue':
         return ['会場', 'venue', 'hall', 'ホール', '劇場', 'theater', 'スタジオ', 'studio']
       default:
