@@ -157,11 +157,32 @@ export const preloadResource = (href: string, as: string = 'script', crossorigin
 
 // 重要なリソースのプリロード
 export const preloadCriticalResources = () => {
-  // 重要なフォントをプリロード
-  preloadResource('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap', 'style')
-  
-  // 重要な画像をプリロード
-  preloadResource('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&q=80', 'image')
+  // より厳格な使用チェックを実装
+  if (typeof document !== 'undefined') {
+    // 実際にNoto Sans JPが使用されているかより厳密にチェック
+    const bodyStyles = getComputedStyle(document.body)
+    const usesNotoSansJP = bodyStyles.fontFamily.includes('Noto Sans JP')
+    
+    // 実際にフォントが適用されている要素があるかチェック
+    const fontElements = document.querySelectorAll('h1, h2, h3, .font-bold, .font-medium')
+    const hasActiveFont = Array.from(fontElements).some(el => 
+      getComputedStyle(el).fontFamily.includes('Noto Sans JP')
+    )
+    
+    if (usesNotoSansJP && hasActiveFont) {
+      preloadResource('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap', 'style')
+    }
+    
+    // 実際にヒーロー画像が存在し、特定のURLを使用している場合のみプリロード
+    const heroImages = document.querySelectorAll('.hero-section img, [class*="hero"] img')
+    const hasSpecificImage = Array.from(heroImages).some(img => 
+      (img as HTMLImageElement).src.includes('images.unsplash.com/photo-1507003211169-0a1dd7228f2d')
+    )
+    
+    if (hasSpecificImage) {
+      preloadResource('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&q=80', 'image')
+    }
+  }
 }
 
 // 画像遅延読み込み
@@ -229,11 +250,15 @@ export const registerServiceWorker = async (): Promise<ServiceWorkerRegistration
   }
 
   try {
+    // Service Workerファイルが存在するかチェック
+    const response = await fetch('/sw.js', { method: 'HEAD' })
+    if (!response.ok) {
+      return null
+    }
+
     const registration = await navigator.serviceWorker.register('/sw.js')
-    console.log('✅ Service Worker registered:', registration.scope)
     return registration
   } catch (error) {
-    console.error('❌ Service Worker registration failed:', error)
     return null
   }
 }
@@ -246,8 +271,10 @@ export const initializePerformanceOptimizations = () => {
   const monitor = PerformanceMonitor.getInstance()
   monitor.measureWebVitals()
 
-  // 重要リソースのプリロード
-  preloadCriticalResources()
+  // DOMが完全に読み込まれてからリソースプリロードを実行
+  setTimeout(() => {
+    preloadCriticalResources()
+  }, 1000)
 
   // バンドルサイズ分析（開発環境のみ）
   if (process.env.NODE_ENV === 'development') {
@@ -256,7 +283,9 @@ export const initializePerformanceOptimizations = () => {
 
   // Service Worker登録（本番環境のみ）
   if (process.env.NODE_ENV === 'production') {
-    registerServiceWorker()
+    setTimeout(() => {
+      registerServiceWorker()
+    }, 500)
   }
 }
 

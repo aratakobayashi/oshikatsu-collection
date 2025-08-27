@@ -1,0 +1,24 @@
+{
+  "siteUrl": "https://collection.oshikatsu-guide.com",
+  "sitemapUrls": [
+    "https://collection.oshikatsu-guide.com/sitemap.xml",
+    "https://collection.oshikatsu-guide.com/sitemap-images.xml",
+    "https://collection.oshikatsu-guide.com/robots.txt"
+  ],
+  "lastCheck": "2025-08-27T05:57:09.281Z",
+  "monitoring": {
+    "enabled": true,
+    "frequency": "weekly",
+    "alerts": {
+      "indexingIssues": true,
+      "performanceDrops": true,
+      "errorIncrease": true
+    }
+  },
+  "targets": {
+    "indexedPages": "95%",
+    "avgPosition": "<20",
+    "coreWebVitals": "all-green",
+    "mobileUsability": "100%"
+  }
+}
