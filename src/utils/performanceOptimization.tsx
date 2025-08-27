@@ -155,34 +155,10 @@ export const preloadResource = (href: string, as: string = 'script', crossorigin
   document.head.appendChild(link)
 }
 
-// 重要なリソースのプリロード
+// 重要なリソースのプリロード（現在無効化）
 export const preloadCriticalResources = () => {
-  // より厳格な使用チェックを実装
-  if (typeof document !== 'undefined') {
-    // 実際にNoto Sans JPが使用されているかより厳密にチェック
-    const bodyStyles = getComputedStyle(document.body)
-    const usesNotoSansJP = bodyStyles.fontFamily.includes('Noto Sans JP')
-    
-    // 実際にフォントが適用されている要素があるかチェック
-    const fontElements = document.querySelectorAll('h1, h2, h3, .font-bold, .font-medium')
-    const hasActiveFont = Array.from(fontElements).some(el => 
-      getComputedStyle(el).fontFamily.includes('Noto Sans JP')
-    )
-    
-    if (usesNotoSansJP && hasActiveFont) {
-      preloadResource('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap', 'style')
-    }
-    
-    // 実際にヒーロー画像が存在し、特定のURLを使用している場合のみプリロード
-    const heroImages = document.querySelectorAll('.hero-section img, [class*="hero"] img')
-    const hasSpecificImage = Array.from(heroImages).some(img => 
-      (img as HTMLImageElement).src.includes('images.unsplash.com/photo-1507003211169-0a1dd7228f2d')
-    )
-    
-    if (hasSpecificImage) {
-      preloadResource('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&q=80', 'image')
-    }
-  }
+  // 不要なプリロード警告を防ぐため、現在は無効化
+  return
 }
 
 // 画像遅延読み込み
@@ -243,24 +219,10 @@ export const calculateBundleSize = () => {
   }
 }
 
-// Service Worker登録
+// Service Worker登録（現在無効化）
 export const registerServiceWorker = async (): Promise<ServiceWorkerRegistration | null> => {
-  if (typeof navigator === 'undefined' || !('serviceWorker' in navigator)) {
-    return null
-  }
-
-  try {
-    // Service Workerファイルが存在するかチェック
-    const response = await fetch('/sw.js', { method: 'HEAD' })
-    if (!response.ok) {
-      return null
-    }
-
-    const registration = await navigator.serviceWorker.register('/sw.js')
-    return registration
-  } catch (error) {
-    return null
-  }
+  // Service Workerファイルが存在しないため、登録を完全に無効化
+  return null
 }
 
 // パフォーマンス最適化のメインエントリーポイント
