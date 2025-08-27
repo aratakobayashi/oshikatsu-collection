@@ -137,9 +137,11 @@ export default function LocationSearchV2() {
       let { data, error } = await supabaseQuery.limit(100)
       
       // categoryカラムが存在しない場合のフォールバック検索
-      if (error && error.code === '42703' && categoryFilter !== 'all') {
-        console.log('🔄 Category column not found, fallback to name-only search')
-        supabaseQuery = supabase
+      if (error && error.code === '42703') {
+        console.log('🔄 Category column not found, fallback to name-only search', { categoryFilter })
+        
+        // 新しいクエリを作成
+        let fallbackQuery = supabase
           .from('locations')
           .select(`
             *,
@@ -154,19 +156,33 @@ export default function LocationSearchV2() {
             )
           `)
         
-        // テキスト検索（再適用）
+        // テキスト検索とカテゴリ検索を組み合わせ
+        const conditions = []
+        
         if (query.trim()) {
-          supabaseQuery = supabaseQuery.or(`name.ilike.%${query}%,address.ilike.%${query}%,description.ilike.%${query}%`)
+          conditions.push(`name.ilike.%${query}%`)
+          conditions.push(`address.ilike.%${query}%`) 
+          conditions.push(`description.ilike.%${query}%`)
         }
         
-        // カテゴリは店舗名での部分マッチのみ
         if (categoryFilter !== 'all') {
-          supabaseQuery = supabaseQuery.ilike('name', `%${categoryFilter}%`)
+          conditions.push(`name.ilike.%${categoryFilter}%`)
         }
         
-        const fallbackResult = await supabaseQuery.limit(100)
+        if (conditions.length > 0) {
+          fallbackQuery = fallbackQuery.or(conditions.join(','))
+        }
+        
+        console.log('🔄 Fallback query conditions:', conditions)
+        const fallbackResult = await fallbackQuery.limit(100)
         data = fallbackResult.data
         error = fallbackResult.error
+        
+        console.log('🔄 Fallback search result:', { 
+          success: !error, 
+          count: data?.length || 0,
+          error: error?.message 
+        })
       }
       
       if (error) {
