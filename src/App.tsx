@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { Suspense, useEffect } from 'react'
+import { initializePerformanceOptimizations, PerformanceLoadingFallback } from './utils/performanceOptimization'
 import Layout from './components/Layout'
 import AdminLayout from './components/AdminLayout'
 import PublicProtectedRoute from './components/PublicProtectedRoute'
@@ -43,6 +45,11 @@ import { Contact } from './components/legal/Contact'
 import { About } from './components/legal/About'
 
 function App() {
+  useEffect(() => {
+    // パフォーマンス最適化の初期化
+    initializePerformanceOptimizations()
+  }, [])
+
   return (
     <EnvironmentGate>
       <Router future={{ v7_startTransition: true }}>

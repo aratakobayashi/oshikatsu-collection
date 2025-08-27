@@ -4,6 +4,7 @@ import { Calendar, ExternalLink, MapPin, Package, Users, Award, Globe, ArrowLeft
 import { MetaTags, generateSEO } from '../../components/SEO/MetaTags'
 import { StructuredData, generateStructuredData } from '../../components/SEO/StructuredData'
 import { generateImageProps } from '../../utils/imageOptimization'
+import { RelatedContent } from '../../components/SEO/RelatedContent'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import Select from '../../components/ui/Select'
@@ -1153,6 +1154,17 @@ export default function CelebrityProfile() {
               )}
             </div>
           )}
+        </div>
+
+        {/* Related Content Section */}
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-16">
+          <RelatedContent
+            currentId={celebrity.id}
+            currentType="celebrity"
+            currentTitle={celebrity.name}
+            limit={6}
+            className="mt-16"
+          />
         </div>
         
       </div>
