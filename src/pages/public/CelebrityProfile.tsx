@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import { Calendar, ExternalLink, MapPin, Package, Users, Award, Globe, ArrowLeft, Star, Heart, Eye, Play, Filter, Search, Coffee, ShoppingBag } from 'lucide-react'
 import { MetaTags, generateSEO } from '../../components/SEO/MetaTags'
 import { StructuredData, generateStructuredData } from '../../components/SEO/StructuredData'
+import { generateImageProps } from '../../utils/imageOptimization'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import Select from '../../components/ui/Select'
@@ -423,13 +424,13 @@ export default function CelebrityProfile() {
               <div className="relative">
                 {celebrity.image_url ? (
                   <img
-                    src={celebrity.image_url}
-                    alt={celebrity.name}
+                    {...generateImageProps('celebrity', celebrity.name, celebrity.image_url, {
+                      context: 'プロフィール',
+                      groupName: celebrity.group_name,
+                      profession: celebrity.known_for_department,
+                      isAboveFold: true
+                    })}
                     className="w-full max-w-sm mx-auto rounded-2xl shadow-2xl object-cover aspect-[3/4]"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement
-                      target.src = 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg'
-                    }}
                   />
                 ) : (
                   <div className="w-full max-w-sm mx-auto aspect-[3/4] rounded-2xl shadow-2xl bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center">
@@ -732,13 +733,14 @@ export default function CelebrityProfile() {
                     <div className="relative">
                       {(episode.thumbnail_url || getYouTubeThumbnail(episode.video_url)) ? (
                         <img
-                          src={episode.thumbnail_url || getYouTubeThumbnail(episode.video_url) || ''}
-                          alt={episode.title}
+                          {...generateImageProps('episode', episode.title, episode.thumbnail_url || getYouTubeThumbnail(episode.video_url), {
+                            celebrityName: celebrity.name,
+                            date: episode.date,
+                            platform: getPlatformLabel(getPlatformFromUrl(episode.video_url)) as any,
+                            hasLocations: episodeLinks.locations > 0,
+                            hasItems: episodeLinks.items > 0
+                          })}
                           className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement
-                            target.src = 'https://images.pexels.com/photos/1040903/pexels-photo-1040903.jpeg'
-                          }}
                         />
                       ) : (
                         <div className="w-full h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">

@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, ExternalLink, MapPin, Phone, Globe, Calendar, Tag, Clock, Play, Eye, Users, Film, Utensils } from 'lucide-react'
 import { MetaTags, generateSEO } from '../../components/SEO/MetaTags'
 import { StructuredData, generateStructuredData } from '../../components/SEO/StructuredData'
+import { generateImageProps } from '../../utils/imageOptimization'
 import Button from '../../components/ui/Button'
 import Card, { CardHeader, CardContent } from '../../components/ui/Card'
 import { supabase } from '../../lib/supabase'
@@ -374,12 +375,12 @@ export default function LocationDetail() {
                           {/* サムネイル */}
                           <div className="flex-shrink-0">
                             <img
-                              src={episode.thumbnail_url || getYouTubeThumbnail(episode.id)}
-                              alt={episode.title}
+                              {...generateImageProps('episode', episode.title, episode.thumbnail_url || getYouTubeThumbnail(episode.id), {
+                                celebrityName: episode.celebrities?.name,
+                                date: episode.date,
+                                context: 'ロケ地'
+                              })}
                               className="w-40 h-24 object-cover"
-                              onError={(e) => {
-                                e.currentTarget.src = getYouTubeThumbnail(episode.id)
-                              }}
                             />
                           </div>
                           
