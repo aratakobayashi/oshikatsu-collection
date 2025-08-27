@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { Search, Users, User, Youtube, Sparkles, TrendingUp, Heart } from 'lucide-react'
+import { Search, Users, User, Youtube, Sparkles, Heart } from 'lucide-react'
 import { db } from '../lib/supabase'
 import { Link } from 'react-router-dom'
 import { debounce } from 'lodash'
@@ -172,13 +172,6 @@ export default function IdolSearchComponentV2() {
     }))
   }
 
-  // 登録者数フォーマット
-  const formatCount = (count?: number) => {
-    if (!count) return null
-    if (count >= 1000000) return `${(count / 1000000).toFixed(1)}M`
-    if (count >= 1000) return `${(count / 1000).toFixed(0)}K`
-    return count.toString()
-  }
 
   // シンプル化されたカードコンポーネント
   const CelebrityCard = ({ celebrity }: { celebrity: Celebrity }) => (
@@ -216,15 +209,6 @@ export default function IdolSearchComponentV2() {
             ))}
           </div>
 
-          {/* 人気バッジ（左上） - 登録者数が多い場合 */}
-          {celebrity.subscriber_count && celebrity.subscriber_count > 100000 && (
-            <div className="absolute top-2 left-2">
-              <span className="px-2 py-1 text-xs font-medium bg-yellow-400/90 text-yellow-900 rounded-full backdrop-blur-sm flex items-center">
-                <TrendingUp size={12} className="mr-1" />
-                {formatCount(celebrity.subscriber_count)}
-              </span>
-            </div>
-          )}
         </div>
 
         {/* 情報エリア（シンプル化） */}
