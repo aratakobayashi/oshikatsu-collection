@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { Search, Filter, Package, User, Calendar, ShoppingBag, Star, TrendingUp, Eye } from 'lucide-react'
+import { Search, Filter, Package, User, Calendar, ShoppingBag, Star, TrendingUp, Eye, ExternalLink } from 'lucide-react'
 import { MetaTags, generateSEO } from '../../components/SEO/MetaTags'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
@@ -368,9 +368,25 @@ function Items() {
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
               推し愛用アイテム
             </h1>
-            <p className="text-xl text-gray-600 mb-8">
+            <p className="text-xl text-gray-600 mb-4">
               お気に入りの推しが着用している服・アクセサリーを発見しよう
             </p>
+            
+            {/* 私服特定ガイドリンク */}
+            <div className="mb-8">
+              <p className="text-sm text-gray-500 mb-3">
+                私服特定のテクニックを身につけたい方へ
+              </p>
+              <a
+                href="https://oshikatsu-guide.com/fashion-guide"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-5 py-2 bg-pink-100 hover:bg-pink-200 text-pink-700 font-medium rounded-full text-sm transition-all duration-200 border border-pink-200 hover:border-pink-300"
+              >
+                👗 私服特定テクニックガイド
+                <ExternalLink className="h-4 w-4 ml-2" />
+              </a>
+            </div>
             <div className="flex items-center justify-center space-x-8 text-sm text-gray-500">
               <div className="flex items-center">
                 <TrendingUp className="h-5 w-5 mr-2 text-rose-500" />

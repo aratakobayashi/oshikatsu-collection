@@ -86,9 +86,25 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
             </h1>
             
             {/* Inline Feature Subtitle */}
-            <p className="text-base md:text-lg text-gray-600 mb-4">
+            <p className="text-base md:text-lg text-gray-600 mb-2">
               推し・アイテム・聖地巡礼スポットを検索・発見
             </p>
+            
+            {/* 推し活ガイドへの自然なリンク */}
+            <div className="text-center mb-2">
+              <p className="text-sm text-gray-500">
+                推し活初心者の方は
+                <a 
+                  href="https://oshikatsu-guide.com/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-rose-600 hover:text-rose-800 font-medium ml-1 mr-1 underline decoration-rose-300 hover:decoration-rose-500 transition-all duration-200"
+                >
+                  推し活ガイド
+                </a>
+                で基本をマスター！
+              </p>
+            </div>
           </div>
 
           {/* 🔍 Enhanced Smart Search Bar */}

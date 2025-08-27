@@ -604,9 +604,25 @@ export default function LocationSearchV2() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           {/* タイトル */}
           <div className="text-center mb-4">
-            <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
+            <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
               聖地巡礼スポット
             </h1>
+            
+            {/* 聖地巡礼ガイドへのリンク */}
+            <div className="mb-4">
+              <p className="text-sm text-gray-600 mb-3">
+                聖地巡礼が初めての方におすすめ
+              </p>
+              <a
+                href="https://oshikatsu-guide.com/pilgrimage-guide"
+                target="_blank"
+                rel="noopener noreferrer"  
+                className="inline-flex items-center px-4 py-2 bg-rose-100 hover:bg-rose-200 text-rose-700 font-medium rounded-full text-sm transition-all duration-200 border border-rose-200 hover:border-rose-300"
+              >
+                📖 聖地巡礼のコツ・マナーガイド
+                <ExternalLink className="h-4 w-4 ml-1" />
+              </a>
+            </div>
           </div>
 
           {/* 統合検索バー */}

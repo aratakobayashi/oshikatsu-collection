@@ -326,11 +326,43 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </div>
             
             <div>
-              <h3 className="text-base lg:text-lg font-semibold mb-4 lg:mb-6">サポート</h3>
+              <h3 className="text-base lg:text-lg font-semibold mb-4 lg:mb-6">推し活ガイド</h3>
               <ul className="space-y-2 lg:space-y-4">
+                <li>
+                  <a 
+                    href="https://oshikatsu-guide.com/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-gray-400 hover:text-rose-400 transition-colors flex items-center"
+                  >
+                    🏠 推し活ガイド・ホーム
+                    <ExternalLink className="h-3 w-3 ml-1" />
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="https://oshikatsu-guide.com/pilgrimage-guide" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-gray-400 hover:text-rose-400 transition-colors flex items-center"
+                  >
+                    📍 聖地巡礼ガイド
+                    <ExternalLink className="h-3 w-3 ml-1" />
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="https://oshikatsu-guide.com/fashion-guide" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-gray-400 hover:text-rose-400 transition-colors flex items-center"
+                  >
+                    👗 私服特定ガイド
+                    <ExternalLink className="h-3 w-3 ml-1" />
+                  </a>
+                </li>
                 <li><Link to="/about" className="text-gray-400 hover:text-white transition-colors">サイト概要</Link></li>
                 <li><Link to="/contact" className="text-gray-400 hover:text-white transition-colors">お問い合わせ</Link></li>
-                <li><a href="https://oshikatsu-guide.com/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">推し活ガイドブック</a></li>
               </ul>
             </div>
           </div>
