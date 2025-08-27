@@ -10,6 +10,8 @@ interface Celebrity {
   name: string
   slug: string
   type: 'individual' | 'group' | 'youtube_channel'
+  // 複数タイプ対応のため、セカンダリタイプを追加
+  secondary_types?: ('individual' | 'group' | 'youtube_channel')[]
   agency?: string
   image_url?: string
   subscriber_count?: number
@@ -32,7 +34,26 @@ export default function IdolSearchComponentV2() {
       setInitialLoading(true)
       try {
         const data = await db.celebrities.getPopular(100)
-        setPopularCelebrities(data)
+        // 複数タイプのデモ用に一時的にデータを加工（本来はDBで管理）
+        const enhancedData = data.map(celebrity => {
+          // 例：SixTONES、Snow Man等はグループ＋YouTubeチャンネルとして扱う
+          if (['SixTONES', 'Snow Man', 'なにわ男子'].includes(celebrity.name)) {
+            return {
+              ...celebrity,
+              secondary_types: ['youtube_channel'] as ('individual' | 'group' | 'youtube_channel')[]
+            }
+          }
+          // 例：二宮和也等はソロ＋YouTubeチャンネルとして扱う
+          if (['二宮和也', '中丸雄一'].includes(celebrity.name)) {
+            return {
+              ...celebrity,
+              type: 'individual' as const,
+              secondary_types: ['youtube_channel'] as ('individual' | 'group' | 'youtube_channel')[]
+            }
+          }
+          return celebrity
+        })
+        setPopularCelebrities(enhancedData)
         
         // URLパラメータから検索クエリを読み取り
         const searchFromUrl = searchParams.get('search')
@@ -66,7 +87,26 @@ export default function IdolSearchComponentV2() {
       } else {
         data = popularCelebrities
       }
-      setResults(data || [])
+      
+      // 検索結果にも同様のデータ加工を適用
+      const enhancedResults = (data || []).map(celebrity => {
+        if (['SixTONES', 'Snow Man', 'なにわ男子'].includes(celebrity.name)) {
+          return {
+            ...celebrity,
+            secondary_types: ['youtube_channel'] as ('individual' | 'group' | 'youtube_channel')[]
+          }
+        }
+        if (['二宮和也', '中丸雄一'].includes(celebrity.name)) {
+          return {
+            ...celebrity,
+            type: 'individual' as const,
+            secondary_types: ['youtube_channel'] as ('individual' | 'group' | 'youtube_channel')[]
+          }
+        }
+        return celebrity
+      })
+      
+      setResults(enhancedResults)
     } catch (error) {
       console.error('Search error:', error)
       setResults([])
@@ -111,6 +151,27 @@ export default function IdolSearchComponentV2() {
     }
   }
 
+  // 複数タイプを持つセレブリティのすべてのタイプを取得
+  const getAllTypes = (celebrity: Celebrity) => {
+    const types = [celebrity.type]
+    if (celebrity.secondary_types) {
+      types.push(...celebrity.secondary_types)
+    }
+    return [...new Set(types)] // 重複削除
+  }
+
+  // 複数タイプのバッジを生成
+  const getTypeBadges = (celebrity: Celebrity) => {
+    const allTypes = getAllTypes(celebrity)
+    return allTypes.map(type => ({
+      type,
+      label: getTypeLabel(type),
+      color: type === 'group' ? 'bg-purple-500/90 text-white' :
+             type === 'youtube_channel' ? 'bg-red-500/90 text-white' :
+             'bg-blue-500/90 text-white'
+    }))
+  }
+
   // 登録者数フォーマット
   const formatCount = (count?: number) => {
     if (!count) return null
@@ -146,14 +207,13 @@ export default function IdolSearchComponentV2() {
             </div>
           )}
           
-          {/* タイプバッジ（右上） */}
-          <div className="absolute top-2 right-2">
-            <span className={`px-2 py-1 text-xs font-medium rounded-full backdrop-blur-sm
-              ${celebrity.type === 'group' ? 'bg-purple-500/90 text-white' :
-                celebrity.type === 'youtube_channel' ? 'bg-red-500/90 text-white' :
-                'bg-blue-500/90 text-white'}`}>
-              {getTypeLabel(celebrity.type)}
-            </span>
+          {/* 複数タイプバッジ（右上） */}
+          <div className="absolute top-2 right-2 flex flex-col space-y-1">
+            {getTypeBadges(celebrity).map((badge, index) => (
+              <span key={badge.type} className={`px-2 py-1 text-xs font-medium rounded-full backdrop-blur-sm ${badge.color}`}>
+                {badge.label}
+              </span>
+            ))}
           </div>
 
           {/* 人気バッジ（左上） - 登録者数が多い場合 */}
@@ -218,7 +278,7 @@ export default function IdolSearchComponentV2() {
               />
               
               {/* インラインフィルター */}
-              <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
+              <div className="absolute right-2 top-1/2 transform -translate-y-1/2 hidden md:flex items-center space-x-1">
                 <button
                   onClick={() => handleFilterChange('all')}
                   className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
@@ -251,7 +311,7 @@ export default function IdolSearchComponentV2() {
                 </button>
                 <button
                   onClick={() => handleFilterChange('youtube_channel')}
-                  className={`hidden sm:inline-block px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
+                  className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
                     activeFilter === 'youtube_channel' 
                       ? 'bg-red-500 text-white' 
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -260,6 +320,50 @@ export default function IdolSearchComponentV2() {
                   YouTube
                 </button>
               </div>
+            </div>
+
+            {/* モバイル用フィルター */}
+            <div className="md:hidden mt-3 flex justify-center space-x-2">
+              <button
+                onClick={() => handleFilterChange('all')}
+                className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
+                  activeFilter === 'all' 
+                    ? 'bg-gray-900 text-white' 
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                すべて
+              </button>
+              <button
+                onClick={() => handleFilterChange('group')}
+                className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
+                  activeFilter === 'group' 
+                    ? 'bg-purple-500 text-white' 
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                グループ
+              </button>
+              <button
+                onClick={() => handleFilterChange('individual')}
+                className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
+                  activeFilter === 'individual' 
+                    ? 'bg-blue-500 text-white' 
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                ソロ
+              </button>
+              <button
+                onClick={() => handleFilterChange('youtube_channel')}
+                className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
+                  activeFilter === 'youtube_channel' 
+                    ? 'bg-red-500 text-white' 
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                YouTube
+              </button>
             </div>
 
             {/* 検索状態の表示 */}
