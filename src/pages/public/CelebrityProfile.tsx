@@ -820,32 +820,42 @@ export default function CelebrityProfile() {
                         </p>
                       )}
                       
-                      {/* Location Details */}
+                      {/* Location Tag & Details */}
                       {episodeLinks.locationDetails && episodeLinks.locationDetails.length > 0 && (
-                        <div className="bg-gray-50 rounded-lg p-3 space-y-2">
-                          <div className="flex items-center text-xs font-semibold text-gray-700 mb-1">
-                            <MapPin className="h-3.5 w-3.5 mr-1 text-amber-600" />
-                            <span>訪問店舗 ({episodeLinks.locationDetails.length}件)</span>
+                        <>
+                          {/* ロケ地ありタグ */}
+                          <div className="flex items-center justify-start mb-2">
+                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800 border border-amber-200">
+                              <MapPin className="h-3 w-3 mr-1" />
+                              ロケ地あり
+                            </span>
                           </div>
-                          <div className="space-y-1">
-                            {episodeLinks.locationDetails.slice(0, 3).map((location, idx) => (
-                              <div key={idx} className="flex items-start gap-2 text-xs">
-                                <span className="text-amber-600">•</span>
-                                <div className="flex-1">
-                                  <span className="font-medium text-gray-800">{location.name}</span>
-                                  {location.address && (
-                                    <span className="text-gray-500 ml-1">({location.address.split('都')[1] || location.address.split('県')[1] || location.address})</span>
-                                  )}
+                          
+                          <div className="bg-gray-50 rounded-lg p-3 space-y-2">
+                            <div className="flex items-center text-xs font-semibold text-gray-700 mb-1">
+                              <MapPin className="h-3.5 w-3.5 mr-1 text-amber-600" />
+                              <span>訪問店舗 ({episodeLinks.locationDetails.length}件)</span>
+                            </div>
+                            <div className="space-y-1">
+                              {episodeLinks.locationDetails.slice(0, 3).map((location, idx) => (
+                                <div key={idx} className="flex items-start gap-2 text-xs">
+                                  <span className="text-amber-600">•</span>
+                                  <div className="flex-1">
+                                    <span className="font-medium text-gray-800">{location.name}</span>
+                                    {location.address && (
+                                      <span className="text-gray-500 ml-1">({location.address.split('都')[1] || location.address.split('県')[1] || location.address})</span>
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                            ))}
-                            {episodeLinks.locationDetails.length > 3 && (
-                              <div className="text-xs text-amber-600 font-medium pt-1">
-                                他{episodeLinks.locationDetails.length - 3}件の店舗 →
-                              </div>
-                            )}
+                              ))}
+                              {episodeLinks.locationDetails.length > 3 && (
+                                <div className="text-xs text-amber-600 font-medium pt-1">
+                                  他{episodeLinks.locationDetails.length - 3}件の店舗 →
+                                </div>
+                              )}
+                            </div>
                           </div>
-                        </div>
+                        </>
                       )}
                       
                       {/* Duration & Views */}

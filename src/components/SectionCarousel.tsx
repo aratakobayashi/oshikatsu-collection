@@ -183,6 +183,17 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
           <div className="p-4">
             <h3 className="font-bold text-lg text-gray-900 mb-1">{episode.title}</h3>
             <p className="text-sm text-gray-600 mb-2">{new Date(episode.date).toLocaleDateString()}</p>
+            
+            {/* ロケ地タグ */}
+            {episode.location_count && episode.location_count > 0 && (
+              <div className="mb-2">
+                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                  <MapPin className="h-3 w-3 mr-1" />
+                  ロケ地あり
+                </span>
+              </div>
+            )}
+            
             <p className="text-xs text-gray-500 line-clamp-2">
               {episode.celebrities?.name && `出演: ${episode.celebrities.name}`}
             </p>

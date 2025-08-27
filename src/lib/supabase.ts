@@ -263,7 +263,8 @@ const supabaseDb = {
         .from('episodes')
         .select(`
           *,
-          celebrity:celebrities(id, name, slug, image_url)
+          celebrity:celebrities(id, name, slug, image_url),
+          location_count:episode_locations(count)
         `)
       if (error) {
         console.error('❌ Error fetching episodes:', error)
@@ -279,7 +280,8 @@ const supabaseDb = {
         .from('episodes')
         .select(`
           *,
-          celebrity:celebrities(id, name, slug, image_url)
+          celebrity:celebrities(id, name, slug, image_url),
+          location_count:episode_locations(count)
         `)
         .eq('id', id)
         .single()
@@ -357,7 +359,8 @@ const supabaseDb = {
         .from('episodes')
         .select(`
           *,
-          celebrity:celebrities(id, name, slug, image_url)
+          celebrity:celebrities(id, name, slug, image_url),
+          location_count:episode_locations(count)
         `)
         .eq('celebrity_id', celebrityId)
         .order('date', { ascending: false })
