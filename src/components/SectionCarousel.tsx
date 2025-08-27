@@ -136,15 +136,39 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
     </Link>
   )
 
-  const renderEpisodeCard = (episode: Episode) => (
+  const renderEpisodeCard = (episode: Episode) => {
+    // YouTubeサムネイルURLのバリデーション
+    const getThumbnailUrl = () => {
+      if (!episode.thumbnail_url) {
+        return 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&h=250&fit=crop'
+      }
+      
+      // 明らかに無効なYouTube IDをフィルタリング
+      const invalidPatterns = ['sample', 'pending', 'EP\\d+_', 'test', 'dummy']
+      const isInvalid = invalidPatterns.some(pattern => 
+        new RegExp(pattern, 'i').test(episode.thumbnail_url || '')
+      )
+      
+      if (isInvalid) {
+        return 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&h=250&fit=crop'
+      }
+      
+      return episode.thumbnail_url
+    }
+    
+    return (
     <Link to={`/episodes/${episode.id}`} key={episode.id}>
       <div className="relative group cursor-pointer">
         <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden">
           <div className="relative">
             <img 
-              src={episode.thumbnail_url || 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop'} 
+              src={getThumbnailUrl()} 
               alt={episode.title}
               className="w-full h-48 object-cover"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement
+                target.src = 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&h=250&fit=crop'
+              }}
             />
             <div className="absolute top-2 left-2 bg-black/70 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-white flex items-center">
               <Play className="h-3 w-3 mr-1" />
@@ -166,7 +190,8 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
         </div>
       </div>
     </Link>
-  )
+    )
+  }
 
   const renderLocationCard = (location: Location) => {
     // 聖地巡礼スポット用の高品質プレースホルダー画像（レストラン・カフェ系）
