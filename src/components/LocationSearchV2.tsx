@@ -301,7 +301,10 @@ export default function LocationSearchV2() {
       // 店舗名の末尾パターン
       '屋', '亭', '処', '軒', '家', '庵', 'や', 'ボキューズ', 'ぼきゅーず',
       // 料理ジャンル
-      'ごはん', 'めし', '玄', 'うし', '牛', 'ビーフ', 'beef', 'ステーキ', 'steak'
+      'ごはん', 'めし', '玄', 'うし', '牛', 'ビーフ', 'beef', 'ステーキ', 'steak',
+      // 有名店・チェーン店
+      'ushihachi', 'うしはち', '今半', 'いまはん', '風香', 'ふうか', 
+      'cocktail', 'カクテル', 'works', 'ワークス', 'すき焼き', 'しゃぶしゃぶ'
     ]
     
     // Cafe keywords (アイス・甘味処も含む)
@@ -319,7 +322,9 @@ export default function LocationSearchV2() {
       'マート', 'mart', 'market', 'デパート', '百貨店', 'アパレル', 'fashion', 'ファッション', 'clothes', '服',
       'コンビニ', 'convenience', 'drugstore', 'pharmacy', '薬局',
       // 和菓子・伝統的な店
-      '堂', 'どう', '本舗', 'ほんぽ', '商店', '商会', '呉服', '骨董', '古美術'
+      '堂', 'どう', '本舗', 'ほんぽ', '商店', '商会', '呉服', '骨董', '古美術',
+      // 有名デパート・百貨店
+      '三越', 'みつこし', 'mitsukoshi', '伊勢丹', '高島屋', '大丸', '西武', '東急', 'そごう'
     ]
     
     // Hotel keywords
@@ -348,7 +353,9 @@ export default function LocationSearchV2() {
           '定食', '居酒屋', 'バル', 'tavern', '酒場', '食堂',
           'kitchen', 'diner', 'grill', 'bar', 'pub', 'bistro',
           '屋', '亭', '処', '軒', '家', '庵', 'や', 'ボキューズ',
-          'ごはん', 'めし', '玄', 'うし', '牛', 'ビーフ', 'beef', 'ステーキ', 'steak'
+          'ごはん', 'めし', '玄', 'うし', '牛', 'ビーフ', 'beef', 'ステーキ', 'steak',
+          'ushihachi', 'うしはち', '今半', 'いまはん', '風香', 'ふうか', 
+          'cocktail', 'カクテル', 'works', 'すき焼き', 'しゃぶしゃぶ'
         ]
       case 'cafe':
         return [
@@ -366,7 +373,8 @@ export default function LocationSearchV2() {
           'マート', 'mart', 'market', 'デパート', '百貨店',
           'アパレル', 'fashion', 'ファッション', 'clothes', '服',
           'コンビニ', 'convenience', 'drugstore', 'pharmacy', '薬局',
-          '堂', 'どう', '本舗', 'ほんぽ', '商店', '商会'
+          '堂', 'どう', '本舗', 'ほんぽ', '商店', '商会',
+          '三越', 'みつこし', 'mitsukoshi', '伊勢丹', '高島屋', '大丸', '西武', '東急'
         ]
       case 'hotel':
         return ['ホテル', 'hotel', 'inn', '宿泊', 'リゾート', 'resort', '旅館', 'ryokan']
