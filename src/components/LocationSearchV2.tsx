@@ -38,7 +38,7 @@ interface Celebrity {
 export default function LocationSearchV2() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [searchQuery, setSearchQuery] = useState('')
-  const [activeFilter, setActiveFilter] = useState<'all' | 'restaurant' | 'cafe' | 'shop'>('all')
+  const [activeFilter, setActiveFilter] = useState<'all' | 'restaurant' | 'cafe' | 'shop' | 'tourist'>('all')
   const [activeCelebrity, setActiveCelebrity] = useState<string>('all')
   const [results, setResults] = useState<LocationWithDetails[]>([])
   const [popularLocations, setPopularLocations] = useState<LocationWithDetails[]>([])
@@ -333,11 +333,21 @@ export default function LocationSearchV2() {
     // Venue keywords
     const venueKeywords = ['会場', 'venue', 'hall', 'ホール', '劇場', 'theater', 'スタジオ', 'studio']
     
+    // Tourist/Entertainment keywords
+    const touristKeywords = [
+      '水族館', 'aquarium', '動物園', 'zoo', '博物館', 'museum', '美術館', 'gallery',
+      '公園', 'park', 'パーク', '庭園', 'garden', '植物園', 'タワー', 'tower',
+      'ビーチ', 'beach', '海岸', '海水浴場', '展望台', 'wall', 'ウォール',
+      '城', 'castle', '神社', 'shrine', '寺', 'temple', '稲荷', '別院',
+      '迎賓館', '記念館', 'memorial', 'スカイツリー', 'tokyo tower', '東京タワー'
+    ]
+    
     if (restaurantKeywords.some(keyword => lowerName.includes(keyword))) return 'restaurant'
     if (cafeKeywords.some(keyword => lowerName.includes(keyword))) return 'cafe'
     if (shopKeywords.some(keyword => lowerName.includes(keyword))) return 'shop'
     if (hotelKeywords.some(keyword => lowerName.includes(keyword))) return 'hotel'
     if (venueKeywords.some(keyword => lowerName.includes(keyword))) return 'venue'
+    if (touristKeywords.some(keyword => lowerName.includes(keyword))) return 'tourist'
     
     return 'other'
   }
@@ -380,6 +390,14 @@ export default function LocationSearchV2() {
         return ['ホテル', 'hotel', 'inn', '宿泊', 'リゾート', 'resort', '旅館', 'ryokan']
       case 'venue':
         return ['会場', 'venue', 'hall', 'ホール', '劇場', 'theater', 'スタジオ', 'studio']
+      case 'tourist':
+        return [
+          '水族館', 'aquarium', '動物園', 'zoo', '博物館', 'museum', '美術館', 'gallery',
+          '公園', 'park', 'パーク', '庭園', 'garden', '植物園', 'タワー', 'tower',
+          'ビーチ', 'beach', '海岸', '海水浴場', '展望台', 'wall', 'ウォール',
+          '城', 'castle', '神社', 'shrine', '寺', 'temple', '稲荷', '別院',
+          '迎賓館', '記念館', 'memorial', 'スカイツリー', 'tokyo tower'
+        ]
       default:
         return [category]
     }
@@ -392,6 +410,7 @@ export default function LocationSearchV2() {
       case 'cafe': return 'カフェ'
       case 'shop': return 'ショップ'
       case 'hotel': return 'ホテル'
+      case 'tourist': return '観光・娯楽'
       default: return 'その他'
     }
   }
@@ -403,6 +422,7 @@ export default function LocationSearchV2() {
       case 'cafe': return 'bg-amber-500/90'  
       case 'shop': return 'bg-purple-500/90'
       case 'hotel': return 'bg-blue-500/90'
+      case 'tourist': return 'bg-green-500/90'
       default: return 'bg-gray-500/90'
     }
   }
@@ -438,6 +458,14 @@ export default function LocationSearchV2() {
       'https://images.unsplash.com/photo-1587985064135-0366536eab42?w=400&h=250&fit=crop', // 高級ホテル
       'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&h=250&fit=crop', // ホテル外観
     ]
+    
+    const touristImages = [
+      'https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=400&h=250&fit=crop', // 水族館
+      'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=250&fit=crop', // 公園
+      'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=250&fit=crop', // 美術館
+      'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1f?w=400&h=250&fit=crop', // 神社
+      'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=400&h=250&fit=crop', // ビーチ
+    ]
 
     const getImageArray = (cat: string) => {
       switch (cat?.toLowerCase()) {
@@ -445,6 +473,7 @@ export default function LocationSearchV2() {
         case 'cafe': return cafeImages  
         case 'shop': return shopImages
         case 'hotel': return hotelImages
+        case 'tourist': return touristImages
         default: return restaurantImages // デフォルト
       }
     }
@@ -627,6 +656,16 @@ export default function LocationSearchV2() {
                   }`}
                 >
                   ショップ
+                </button>
+                <button
+                  onClick={() => handleFilterChange('tourist')}
+                  className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
+                    activeFilter === 'tourist' 
+                      ? 'bg-green-500 text-white' 
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+                >
+                  観光・娯楽
                 </button>
               </div>
 
