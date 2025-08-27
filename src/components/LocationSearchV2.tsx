@@ -87,6 +87,23 @@ export default function LocationSearchV2() {
         console.log('📊 Total locations loaded:', processedLocations.length)
         if (processedLocations.length > 0) {
           console.log('📍 Sample locations:', processedLocations.slice(0, 10).map(l => l.name).join(', '))
+          
+          // カテゴリ分析：各店舗がどのカテゴリに該当するかを表示
+          const categoryAnalysis = {}
+          const uncategorized = []
+          
+          processedLocations.forEach(location => {
+            const inferredCategory = inferCategoryFromName(location.name)
+            if (inferredCategory === 'other') {
+              uncategorized.push(location.name)
+            }
+            categoryAnalysis[inferredCategory] = (categoryAnalysis[inferredCategory] || 0) + 1
+          })
+          
+          console.log('📊 Category analysis:', categoryAnalysis)
+          if (uncategorized.length > 0) {
+            console.log('❓ Uncategorized locations:', uncategorized.slice(0, 10).join(', '))
+          }
         }
 
         // URLパラメータからの検索クエリを読み取り
@@ -256,6 +273,14 @@ export default function LocationSearchV2() {
   // フィルター変更処理
   const handleFilterChange = (filter: typeof activeFilter) => {
     setActiveFilter(filter)
+    
+    // 「すべて」の場合は検索をスキップして全データを表示
+    if (filter === 'all' && !searchQuery.trim() && activeCelebrity === 'all') {
+      console.log('📋 Showing all locations:', popularLocations.length)
+      setResults(popularLocations)
+      return
+    }
+    
     performSearch(searchQuery, filter, activeCelebrity)
   }
 
@@ -264,14 +289,42 @@ export default function LocationSearchV2() {
     performSearch(searchQuery, activeFilter, celebrityId)
   }
 
-  // 店舗名からカテゴリを推測する関数
+  // 店舗名からカテゴリを推測する関数（強化版）
   const inferCategoryFromName = (name: string) => {
     const lowerName = name.toLowerCase()
-    if (lowerName.includes('レストラン') || lowerName.includes('restaurant') || lowerName.includes('dining')) return 'restaurant'
-    if (lowerName.includes('カフェ') || lowerName.includes('cafe') || lowerName.includes('coffee')) return 'cafe'
-    if (lowerName.includes('ショップ') || lowerName.includes('shop') || lowerName.includes('store')) return 'shop'
-    if (lowerName.includes('ホテル') || lowerName.includes('hotel')) return 'hotel'
-    if (lowerName.includes('会場') || lowerName.includes('venue') || lowerName.includes('hall')) return 'venue'
+    
+    // Restaurant keywords
+    const restaurantKeywords = [
+      'レストラン', 'restaurant', 'dining', '食事', '料理', 'グリル', 'ビストロ', 'イタリアン', '中華', '和食', 'フレンチ',
+      '焼肉', 'ラーメン', 'うどん', 'そば', '寿司', '天ぷら', '定食', '居酒屋', 'バル', 'tavern', '酒場', '食堂',
+      'kitchen', 'diner', 'grill', 'bar', 'pub', 'bistro'
+    ]
+    
+    // Cafe keywords  
+    const cafeKeywords = [
+      'カフェ', 'cafe', 'coffee', 'コーヒー', '喫茶', 'スタバ', 'starbucks', 'タリーズ', 'ドトール', 'tully', 'doutor',
+      '珈琲', 'tea', 'ティー', 'latte', 'ラテ', 'cappuccino', 'espresso', 'mocha', 'モカ', 'frappuccino', 'フラペチーノ'
+    ]
+    
+    // Shop keywords
+    const shopKeywords = [
+      'ショップ', 'shop', 'store', '店舗', '専門店', 'boutique', 'ブティック', '雑貨', 'セレクト',
+      'マート', 'mart', 'market', 'デパート', '百貨店', 'アパレル', 'fashion', 'ファッション', 'clothes', '服',
+      'コンビニ', 'convenience', 'drugstore', 'pharmacy', '薬局'
+    ]
+    
+    // Hotel keywords
+    const hotelKeywords = ['ホテル', 'hotel', 'inn', '宿泊', 'リゾート', 'resort', '旅館', 'ryokan']
+    
+    // Venue keywords
+    const venueKeywords = ['会場', 'venue', 'hall', 'ホール', '劇場', 'theater', 'スタジオ', 'studio']
+    
+    if (restaurantKeywords.some(keyword => lowerName.includes(keyword))) return 'restaurant'
+    if (cafeKeywords.some(keyword => lowerName.includes(keyword))) return 'cafe'
+    if (shopKeywords.some(keyword => lowerName.includes(keyword))) return 'shop'
+    if (hotelKeywords.some(keyword => lowerName.includes(keyword))) return 'hotel'
+    if (venueKeywords.some(keyword => lowerName.includes(keyword))) return 'venue'
+    
     return 'other'
   }
 
