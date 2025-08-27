@@ -166,7 +166,11 @@ export default function LocationSearchV2() {
         }
         
         if (categoryFilter !== 'all') {
-          conditions.push(`name.ilike.%${categoryFilter}%`)
+          // 英語と日本語の両方でカテゴリ検索
+          const categoryKeywords = getCategoryKeywords(categoryFilter)
+          categoryKeywords.forEach(keyword => {
+            conditions.push(`name.ilike.%${keyword}%`)
+          })
         }
         
         if (conditions.length > 0) {
@@ -258,6 +262,24 @@ export default function LocationSearchV2() {
     if (lowerName.includes('ホテル') || lowerName.includes('hotel')) return 'hotel'
     if (lowerName.includes('会場') || lowerName.includes('venue') || lowerName.includes('hall')) return 'venue'
     return 'other'
+  }
+
+  // カテゴリ別検索キーワードを取得
+  const getCategoryKeywords = (category: string) => {
+    switch (category) {
+      case 'restaurant':
+        return ['レストラン', 'restaurant', 'dining', '食事', '料理', 'グリル', 'ビストロ', 'イタリアン', '中華', '和食', 'フレンチ']
+      case 'cafe':
+        return ['カフェ', 'cafe', 'coffee', 'コーヒー', '喫茶', 'スタバ', 'starbucks', 'タリーズ', 'ドトール']
+      case 'shop':
+        return ['ショップ', 'shop', 'store', '店舗', '専門店', 'boutique', 'ブティック', '雑貨', 'セレクト']
+      case 'hotel':
+        return ['ホテル', 'hotel', 'inn', '宿泊', 'リゾート', 'resort']
+      case 'venue':
+        return ['会場', 'venue', 'hall', 'ホール', '劇場', 'theater', 'スタジオ', 'studio']
+      default:
+        return [category]
+    }
   }
 
   // カテゴリラベル
