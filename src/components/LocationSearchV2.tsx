@@ -127,14 +127,47 @@ export default function LocationSearchV2() {
         supabaseQuery = supabaseQuery.or(`name.ilike.%${query}%,address.ilike.%${query}%,description.ilike.%${query}%`)
       }
 
-      // カテゴリフィルター（より柔軟な検索）
+      // カテゴリフィルター（categoryカラムが存在しない場合のフォールバック対応）
       if (categoryFilter !== 'all') {
-        // カテゴリ名でも検索（部分一致）
+        // まずcategoryカラムを使用した検索を試行
         supabaseQuery = supabaseQuery.or(`category.ilike.%${categoryFilter}%,name.ilike.%${categoryFilter}%`)
       }
 
       console.log('🔍 LocationSearchV2: Performing search', { query, categoryFilter, celebrityFilter })
-      const { data, error } = await supabaseQuery.limit(100)
+      let { data, error } = await supabaseQuery.limit(100)
+      
+      // categoryカラムが存在しない場合のフォールバック検索
+      if (error && error.code === '42703' && categoryFilter !== 'all') {
+        console.log('🔄 Category column not found, fallback to name-only search')
+        supabaseQuery = supabase
+          .from('locations')
+          .select(`
+            *,
+            episode_locations(
+              episodes(
+                id,
+                title,
+                date,
+                celebrity_id,
+                celebrities(id, name, slug)
+              )
+            )
+          `)
+        
+        // テキスト検索（再適用）
+        if (query.trim()) {
+          supabaseQuery = supabaseQuery.or(`name.ilike.%${query}%,address.ilike.%${query}%,description.ilike.%${query}%`)
+        }
+        
+        // カテゴリは店舗名での部分マッチのみ
+        if (categoryFilter !== 'all') {
+          supabaseQuery = supabaseQuery.ilike('name', `%${categoryFilter}%`)
+        }
+        
+        const fallbackResult = await supabaseQuery.limit(100)
+        data = fallbackResult.data
+        error = fallbackResult.error
+      }
       
       if (error) {
         console.error('Search error:', error)
@@ -144,7 +177,9 @@ export default function LocationSearchV2() {
       
       let processedData = (data || []).map(location => ({
         ...location,
-        episodes_count: location.episode_locations?.length || 0
+        episodes_count: location.episode_locations?.length || 0,
+        // categoryが存在しない場合は店舗名から推測
+        category: location.category || inferCategoryFromName(location.name)
       }))
 
       // 推しフィルター（クライアント側で実行）
@@ -196,6 +231,17 @@ export default function LocationSearchV2() {
   const handleCelebrityChange = (celebrityId: string) => {
     setActiveCelebrity(celebrityId)
     performSearch(searchQuery, activeFilter, celebrityId)
+  }
+
+  // 店舗名からカテゴリを推測する関数
+  const inferCategoryFromName = (name: string) => {
+    const lowerName = name.toLowerCase()
+    if (lowerName.includes('レストラン') || lowerName.includes('restaurant') || lowerName.includes('dining')) return 'restaurant'
+    if (lowerName.includes('カフェ') || lowerName.includes('cafe') || lowerName.includes('coffee')) return 'cafe'
+    if (lowerName.includes('ショップ') || lowerName.includes('shop') || lowerName.includes('store')) return 'shop'
+    if (lowerName.includes('ホテル') || lowerName.includes('hotel')) return 'hotel'
+    if (lowerName.includes('会場') || lowerName.includes('venue') || lowerName.includes('hall')) return 'venue'
+    return 'other'
   }
 
   // カテゴリラベル
