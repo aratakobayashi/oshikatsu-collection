@@ -304,7 +304,9 @@ export default function LocationSearchV2() {
       'ごはん', 'めし', '玄', 'うし', '牛', 'ビーフ', 'beef', 'ステーキ', 'steak',
       // 有名店・チェーン店
       'ushihachi', 'うしはち', '今半', 'いまはん', '風香', 'ふうか', 
-      'cocktail', 'カクテル', 'works', 'ワークス', 'すき焼き', 'しゃぶしゃぶ'
+      'cocktail', 'カクテル', 'works', 'ワークス', 'すき焼き', 'しゃぶしゃぶ',
+      // 追加の飲食店
+      '鉄板', 'てっぱん', 'teppan', '鉄板マン', '丸武', 'まるたけ'
     ]
     
     // Cafe keywords (アイス・甘味処も含む)
@@ -324,7 +326,9 @@ export default function LocationSearchV2() {
       // 和菓子・伝統的な店
       '堂', 'どう', '本舗', 'ほんぽ', '商店', '商会', '呉服', '骨董', '古美術',
       // 有名デパート・百貨店
-      '三越', 'みつこし', 'mitsukoshi', '伊勢丹', '高島屋', '大丸', '西武', '東急', 'そごう'
+      '三越', 'みつこし', 'mitsukoshi', '伊勢丹', '高島屋', '大丸', '西武', '東急', 'そごう',
+      // 高級ブランド店
+      'ティファニー', 'tiffany', 'tiffany&co', 'ジュエリー', 'jewelry', '宝石'
     ]
     
     // Hotel keywords
@@ -339,7 +343,9 @@ export default function LocationSearchV2() {
       '公園', 'park', 'パーク', '庭園', 'garden', '植物園', 'タワー', 'tower',
       'ビーチ', 'beach', '海岸', '海水浴場', '展望台', 'wall', 'ウォール',
       '城', 'castle', '神社', 'shrine', '寺', 'temple', '稲荷', '別院',
-      '迎賓館', '記念館', 'memorial', 'スカイツリー', 'tokyo tower', '東京タワー'
+      '迎賓館', '記念館', 'memorial', 'スカイツリー', 'tokyo tower', '東京タワー',
+      // スポーツ・エンターテイメント施設
+      'ドーム', 'dome', 'スタジアム', 'stadium', 'アリーナ', 'arena', 'コロシアム'
     ]
     
     if (restaurantKeywords.some(keyword => lowerName.includes(keyword))) return 'restaurant'
@@ -365,7 +371,8 @@ export default function LocationSearchV2() {
           '屋', '亭', '処', '軒', '家', '庵', 'や', 'ボキューズ',
           'ごはん', 'めし', '玄', 'うし', '牛', 'ビーフ', 'beef', 'ステーキ', 'steak',
           'ushihachi', 'うしはち', '今半', 'いまはん', '風香', 'ふうか', 
-          'cocktail', 'カクテル', 'works', 'すき焼き', 'しゃぶしゃぶ'
+          'cocktail', 'カクテル', 'works', 'すき焼き', 'しゃぶしゃぶ',
+          '鉄板', 'てっぱん', 'teppan', '鉄板マン', '丸武', 'まるたけ'
         ]
       case 'cafe':
         return [
@@ -384,7 +391,8 @@ export default function LocationSearchV2() {
           'アパレル', 'fashion', 'ファッション', 'clothes', '服',
           'コンビニ', 'convenience', 'drugstore', 'pharmacy', '薬局',
           '堂', 'どう', '本舗', 'ほんぽ', '商店', '商会',
-          '三越', 'みつこし', 'mitsukoshi', '伊勢丹', '高島屋', '大丸', '西武', '東急'
+          '三越', 'みつこし', 'mitsukoshi', '伊勢丹', '高島屋', '大丸', '西武', '東急',
+          'ティファニー', 'tiffany', 'tiffany&co', 'ジュエリー', 'jewelry', '宝石'
         ]
       case 'hotel':
         return ['ホテル', 'hotel', 'inn', '宿泊', 'リゾート', 'resort', '旅館', 'ryokan']
@@ -396,7 +404,8 @@ export default function LocationSearchV2() {
           '公園', 'park', 'パーク', '庭園', 'garden', '植物園', 'タワー', 'tower',
           'ビーチ', 'beach', '海岸', '海水浴場', '展望台', 'wall', 'ウォール',
           '城', 'castle', '神社', 'shrine', '寺', 'temple', '稲荷', '別院',
-          '迎賓館', '記念館', 'memorial', 'スカイツリー', 'tokyo tower'
+          '迎賓館', '記念館', 'memorial', 'スカイツリー', 'tokyo tower',
+          'ドーム', 'dome', 'スタジアム', 'stadium', 'アリーナ', 'arena', 'コロシアム'
         ]
       default:
         return [category]
