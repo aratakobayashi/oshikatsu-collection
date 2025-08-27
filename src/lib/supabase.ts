@@ -141,23 +141,12 @@ const supabaseDb = {
       
       let searchQuery = supabase
         .from('celebrities')
-        .select(`
-          *,
-          parent_group:parent_group_id(id, name, slug, type),
-          group_members:celebrity_groups!group_id(
-            celebrity:celebrity_id(id, name, slug, image_url, type)
-          )
-        `)
+        .select('*')
       
       // テキスト検索（名前、経歴、事務所で検索）
       if (query && query.trim()) {
         const searchTerm = query.trim()
-        searchQuery = searchQuery.or(`
-          name.ilike.%${searchTerm}%,
-          bio.ilike.%${searchTerm}%,
-          agency.ilike.%${searchTerm}%,
-          fandom_name.ilike.%${searchTerm}%
-        `)
+        searchQuery = searchQuery.or(`name.ilike.%${searchTerm}%,bio.ilike.%${searchTerm}%,agency.ilike.%${searchTerm}%,fandom_name.ilike.%${searchTerm}%`)
       }
       
       // フィルター適用
@@ -190,13 +179,7 @@ const supabaseDb = {
       console.log('🔍 Fetching celebrities by type:', type)
       const { data, error } = await supabase
         .from('celebrities')
-        .select(`
-          *,
-          parent_group:parent_group_id(id, name, slug, type),
-          group_members:celebrity_groups!group_id(
-            celebrity:celebrity_id(id, name, slug, image_url)
-          )
-        `)
+        .select('*')
         .eq('type', type)
         .eq('status', 'active')
         .order('subscriber_count', { ascending: false, nullsLast: true })
