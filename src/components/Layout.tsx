@@ -326,7 +326,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </div>
             
             <div>
-              <h3 className="text-base lg:text-lg font-semibold mb-4 lg:mb-6">推し活ガイド</h3>
+              <h3 className="text-base lg:text-lg font-semibold mb-4 lg:mb-6">サポート</h3>
               <ul className="space-y-2 lg:space-y-4">
                 <li>
                   <a 
@@ -335,29 +335,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     rel="noopener noreferrer" 
                     className="text-gray-400 hover:text-rose-400 transition-colors flex items-center"
                   >
-                    🏠 推し活ガイド・ホーム
-                    <ExternalLink className="h-3 w-3 ml-1" />
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="https://oshikatsu-guide.com/pilgrimage-guide" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="text-gray-400 hover:text-rose-400 transition-colors flex items-center"
-                  >
-                    📍 聖地巡礼ガイド
-                    <ExternalLink className="h-3 w-3 ml-1" />
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="https://oshikatsu-guide.com/fashion-guide" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="text-gray-400 hover:text-rose-400 transition-colors flex items-center"
-                  >
-                    👗 私服特定ガイド
+                    📚 推し活ガイド
                     <ExternalLink className="h-3 w-3 ml-1" />
                   </a>
                 </li>

@@ -1164,24 +1164,17 @@ export default function CelebrityProfile() {
                 🎯 {celebrity.name}をもっと深く推す方法
               </h3>
               <p className="text-gray-600 mb-4">
-                聖地巡礼のコツや私服特定テクニックをマスターして、推し活を充実させましょう！
+                推し活のコツやテクニックをマスターして、推し活を充実させましょう！
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex justify-center">
                 <a
-                  href="https://oshikatsu-guide.com/pilgrimage-guide"
+                  href="https://oshikatsu-guide.com/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center px-6 py-3 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                  className="inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
                 >
-                  📍 聖地巡礼ガイドを見る
-                </a>
-                <a
-                  href="https://oshikatsu-guide.com/fashion-guide"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center px-6 py-3 bg-pink-600 hover:bg-pink-700 text-white font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
-                >
-                  👗 私服特定ガイドを見る
+                  📚 推し活ガイドで学ぶ
+                  <ExternalLink className="h-4 w-4 ml-2" />
                 </a>
               </div>
             </div>
