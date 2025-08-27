@@ -127,12 +127,20 @@ export default function LocationSearchV2() {
         supabaseQuery = supabaseQuery.or(`name.ilike.%${query}%,address.ilike.%${query}%,description.ilike.%${query}%`)
       }
 
-      // カテゴリフィルター
+      // カテゴリフィルター（より柔軟な検索）
       if (categoryFilter !== 'all') {
-        supabaseQuery = supabaseQuery.eq('category', categoryFilter)
+        // カテゴリ名でも検索（部分一致）
+        supabaseQuery = supabaseQuery.or(`category.ilike.%${categoryFilter}%,name.ilike.%${categoryFilter}%`)
       }
 
-      const { data } = await supabaseQuery.limit(100)
+      console.log('🔍 LocationSearchV2: Performing search', { query, categoryFilter, celebrityFilter })
+      const { data, error } = await supabaseQuery.limit(100)
+      
+      if (error) {
+        console.error('Search error:', error)
+        setResults([])
+        return
+      }
       
       let processedData = (data || []).map(location => ({
         ...location,
@@ -212,6 +220,53 @@ export default function LocationSearchV2() {
     }
   }
 
+  // カテゴリ別高品質プレースホルダー画像
+  const getCategoryImage = (category: string, locationId: string) => {
+    const restaurantImages = [
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop', // レストラン内装
+      'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=250&fit=crop', // エレガントなレストラン
+      'https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=400&h=250&fit=crop', // 高級レストラン
+      'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop', // 日本料理
+      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop', // 料理プレート
+    ]
+    
+    const cafeImages = [
+      'https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=400&h=250&fit=crop', // カフェラテ
+      'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=250&fit=crop', // カフェテーブル
+      'https://images.unsplash.com/photo-1567521464027-f127ff144326?w=400&h=250&fit=crop', // コーヒーとケーキ
+      'https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=400&h=250&fit=crop', // モダンカフェ
+      'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=400&h=250&fit=crop', // カフェ外観
+    ]
+    
+    const shopImages = [
+      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop', // ショッピング
+      'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=400&h=250&fit=crop', // ブティック
+      'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=250&fit=crop', // 店舗インテリア
+      'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=400&h=250&fit=crop', // ファッション店
+      'https://images.unsplash.com/photo-1555529902-1974e9dd9e97?w=400&h=250&fit=crop', // アクセサリー店
+    ]
+    
+    const hotelImages = [
+      'https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=400&h=250&fit=crop', // ホテルロビー
+      'https://images.unsplash.com/photo-1587985064135-0366536eab42?w=400&h=250&fit=crop', // 高級ホテル
+      'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&h=250&fit=crop', // ホテル外観
+    ]
+
+    const getImageArray = (cat: string) => {
+      switch (cat?.toLowerCase()) {
+        case 'restaurant': return restaurantImages
+        case 'cafe': return cafeImages  
+        case 'shop': return shopImages
+        case 'hotel': return hotelImages
+        default: return restaurantImages // デフォルト
+      }
+    }
+
+    const images = getImageArray(category)
+    const index = parseInt(locationId.replace(/[^0-9]/g, '') || '0') % images.length
+    return images[index]
+  }
+
   // 最新の推しを取得
   const getLatestCelebrity = (location: LocationWithDetails) => {
     if (!location.episode_locations || location.episode_locations.length === 0) return null
@@ -240,14 +295,7 @@ export default function LocationSearchV2() {
                 loading="lazy"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement
-                  // 高品質なレストラン・カフェのプレースホルダー
-                  const placeholders = [
-                    'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=250&fit=crop',
-                    'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=250&fit=crop',
-                    'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=400&h=250&fit=crop'
-                  ]
-                  const randomIndex = parseInt(location.id) % placeholders.length
-                  target.src = placeholders[randomIndex]
+                  target.src = getCategoryImage(location.category, location.id)
                 }}
               />
             ) : (
