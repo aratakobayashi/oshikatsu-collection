@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, ExternalLink, Tag, Calendar } from 'lucide-react'
+import { MetaTags, generateSEO } from '../../components/SEO/MetaTags'
+import { StructuredData, generateStructuredData } from '../../components/SEO/StructuredData'
 import Button from '../../components/ui/Button'
 import Card, { CardHeader, CardContent } from '../../components/ui/Card'
 import { supabase } from '../../lib/supabase'
@@ -108,8 +110,58 @@ export default function ItemDetail() {
     )
   }
   
+  // Generate SEO data
+  const itemSEO = item ? generateSEO.item(
+    item.name,
+    item.brand || '',
+    item.episode?.celebrity?.name || ''
+  ) : { title: '', description: '', keywords: '' }
+
+  // Generate structured data
+  const productStructuredData = item ? generateStructuredData.product(
+    item.name,
+    {
+      description: item.description || undefined,
+      brand: item.brand || undefined,
+      category: item.category || undefined,
+      color: item.color || undefined,
+      material: item.material || undefined,
+      size: item.size || undefined,
+      images: item.image_url ? [item.image_url] : undefined,
+      price: item.price > 0 ? item.price : undefined,
+      currency: item.currency || 'JPY',
+      availability: item.is_available ? 'InStock' : 'OutOfStock',
+      purchaseUrl: item.affiliate_url || undefined
+    }
+  ) : null
+
+  // Breadcrumb structured data
+  const breadcrumbData = item ? generateStructuredData.breadcrumb([
+    { name: 'ホーム', url: 'https://collection.oshikatsu-guide.com' },
+    { name: 'アイテム一覧', url: 'https://collection.oshikatsu-guide.com/items' },
+    { name: item.name }
+  ]) : null
+
   return (
     <div className="min-h-screen bg-gray-50">
+      {item && (
+        <>
+          <MetaTags 
+            title={itemSEO.title}
+            description={itemSEO.description}
+            keywords={itemSEO.keywords}
+            canonicalUrl={`https://collection.oshikatsu-guide.com/items/${item.id}`}
+            ogUrl={`https://collection.oshikatsu-guide.com/items/${item.id}`}
+            ogImage={item.image_url || undefined}
+          />
+          
+          <StructuredData data={[
+            ...(productStructuredData ? [productStructuredData] : []),
+            ...(breadcrumbData ? [breadcrumbData] : [])
+          ]} />
+        </>
+      )}
+      
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back Button */}
         <div className="mb-6">

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { Calendar, ExternalLink, MapPin, Package, Users, Award, Globe, ArrowLeft, Star, Heart, Eye, Play, Filter, Search, Coffee, ShoppingBag } from 'lucide-react'
 import { MetaTags, generateSEO } from '../../components/SEO/MetaTags'
+import { StructuredData, generateStructuredData } from '../../components/SEO/StructuredData'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import Select from '../../components/ui/Select'
@@ -362,17 +363,47 @@ export default function CelebrityProfile() {
     locations.length
   ) : { title: '', description: '', keywords: '' }
 
+  // Generate structured data
+  const personStructuredData = celebrity ? generateStructuredData.person(
+    celebrity.name,
+    {
+      birthDate: celebrity.birthday || undefined,
+      birthPlace: celebrity.place_of_birth || undefined,
+      jobTitle: celebrity.known_for_department || '俳優・タレント',
+      gender: celebrity.gender === 1 ? 'Female' : celebrity.gender === 2 ? 'Male' : undefined,
+      description: celebrity.bio || `${celebrity.name}の出演作品・ロケ地情報。聖地巡礼スポットや愛用アイテムをまとめています。`,
+      image: celebrity.image_url || undefined,
+      homepage: celebrity.homepage || undefined,
+      groupName: celebrity.group_name || undefined,
+      knownFor: [celebrity.known_for_department || '芸能活動', '推し活', 'エンターテインメント'].filter(Boolean)
+    }
+  ) : null
+
+  // Breadcrumb structured data
+  const breadcrumbData = celebrity ? generateStructuredData.breadcrumb([
+    { name: 'ホーム', url: 'https://collection.oshikatsu-guide.com' },
+    { name: '推し一覧', url: 'https://collection.oshikatsu-guide.com/celebrities' },
+    { name: celebrity.name }
+  ]) : null
+
   return (
     <div className="min-h-screen bg-white">
       {celebrity && (
-        <MetaTags 
-          title={celebritySEO.title}
-          description={celebritySEO.description}
-          keywords={celebritySEO.keywords}
-          canonicalUrl={`https://collection.oshikatsu-guide.com/celebrities/${encodeURIComponent(celebrity.slug)}`}
-          ogUrl={`https://collection.oshikatsu-guide.com/celebrities/${encodeURIComponent(celebrity.slug)}`}
-          ogImage={celebrity.image_url || undefined}
-        />
+        <>
+          <MetaTags 
+            title={celebritySEO.title}
+            description={celebritySEO.description}
+            keywords={celebritySEO.keywords}
+            canonicalUrl={`https://collection.oshikatsu-guide.com/celebrities/${encodeURIComponent(celebrity.slug)}`}
+            ogUrl={`https://collection.oshikatsu-guide.com/celebrities/${encodeURIComponent(celebrity.slug)}`}
+            ogImage={celebrity.image_url || undefined}
+          />
+          
+          <StructuredData data={[
+            ...(personStructuredData ? [personStructuredData] : []),
+            ...(breadcrumbData ? [breadcrumbData] : [])
+          ]} />
+        </>
       )}
       
       {/* Back Button */}

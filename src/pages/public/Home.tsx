@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Users, Play, MapPin, Package } from 'lucide-react'
 import { MetaTags, generateSEO } from '../../components/SEO/MetaTags'
+import { StructuredData, generateStructuredData } from '../../components/SEO/StructuredData'
 import HeroSection from '../../components/HeroSection'
 import SectionCarousel from '../../components/SectionCarousel'
 import WikipediaAPITest from '../../components/WikipediaAPITest'
@@ -133,6 +134,7 @@ export default function Home() {
   }
   
   const homeSEO = generateSEO.home()
+  const websiteStructuredData = generateStructuredData.website()
 
   return (
     <div className="bg-white">
@@ -143,6 +145,8 @@ export default function Home() {
         canonicalUrl="https://collection.oshikatsu-guide.com/"
         ogUrl="https://collection.oshikatsu-guide.com/"
       />
+      
+      <StructuredData data={websiteStructuredData} />
       
       {/* Hero Section */}
       <HeroSection onSearch={handleSearch} />

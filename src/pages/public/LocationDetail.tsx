@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, ExternalLink, MapPin, Phone, Globe, Calendar, Tag, Clock, Play, Eye, Users, Film, Utensils } from 'lucide-react'
+import { MetaTags, generateSEO } from '../../components/SEO/MetaTags'
+import { StructuredData, generateStructuredData } from '../../components/SEO/StructuredData'
 import Button from '../../components/ui/Button'
 import Card, { CardHeader, CardContent } from '../../components/ui/Card'
 import { supabase } from '../../lib/supabase'
@@ -210,8 +212,58 @@ export default function LocationDetail() {
     )
   }
   
+  // Generate SEO data
+  const locationSEO = location ? generateSEO.location(
+    location.name,
+    location.address || '',
+    location.episodes?.[0]?.celebrities?.name || ''
+  ) : { title: '', description: '', keywords: '' }
+
+  // Generate structured data
+  const placeStructuredData = location ? generateStructuredData.place(
+    location.name,
+    {
+      type: location.tabelog_url ? 'Restaurant' : 'TouristAttraction',
+      description: location.description || undefined,
+      address: location.address || undefined,
+      latitude: location.latitude || undefined,
+      longitude: location.longitude || undefined,
+      images: location.image_url ? [location.image_url] : undefined,
+      website: location.website_url || undefined,
+      phone: location.phone || undefined,
+      cuisine: location.tags?.filter(tag => 
+        ['和食', '洋食', '中華', 'イタリアン', 'フレンチ', 'カフェ', 'デザート'].includes(tag)
+      )
+    }
+  ) : null
+
+  // Breadcrumb structured data
+  const breadcrumbData = location ? generateStructuredData.breadcrumb([
+    { name: 'ホーム', url: 'https://collection.oshikatsu-guide.com' },
+    { name: 'ロケ地一覧', url: 'https://collection.oshikatsu-guide.com/locations' },
+    { name: location.name }
+  ]) : null
+
   return (
     <div className="min-h-screen bg-gray-50">
+      {location && (
+        <>
+          <MetaTags 
+            title={locationSEO.title}
+            description={locationSEO.description}
+            keywords={locationSEO.keywords}
+            canonicalUrl={`https://collection.oshikatsu-guide.com/locations/${location.id}`}
+            ogUrl={`https://collection.oshikatsu-guide.com/locations/${location.id}`}
+            ogImage={location.image_url || undefined}
+          />
+          
+          <StructuredData data={[
+            ...(placeStructuredData ? [placeStructuredData] : []),
+            ...(breadcrumbData ? [breadcrumbData] : [])
+          ]} />
+        </>
+      )}
+      
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back Button */}
         <div className="mb-6">
