@@ -1,0 +1,12 @@
+# oshikatsu-collection.com robots.txt
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://collection.oshikatsu-guide.com/sitemap.xml
+Sitemap: https://collection.oshikatsu-guide.com/sitemap-images.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Generated: 2025-08-27T06:27:32.047Z
