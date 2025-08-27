@@ -80,6 +80,7 @@ interface Episode {
   duration_minutes?: number   // 動画長（分）
   view_count?: number         // 再生数
   notes?: string             // 追加メモ
+  tags?: string[]            // エピソードタグ（配列）
 }
 ```
 
@@ -100,26 +101,97 @@ interface Episode {
    - アイテム情報の抽出
    - タイムスタンプ情報の解析
 
+4. **タグ自動生成**
+   - タイトルから地域情報を抽出（区、市、町）
+   - 料理・グルメキーワードの識別
+   - シーズン情報の抽出
+   - カテゴリ別分類（グルメ、旅行、音楽、バラエティ等）
+
+### 2.4 タグシステム要件
+
+#### 2.4.1 タグ分類
+```typescript
+// エピソードタグの種類
+interface EpisodeTagTypes {
+  location: string[]     // ['東京', '渋谷区', '原宿']
+  genre: string[]        // ['グルメ', 'バラエティ', '音楽']
+  content: string[]      // ['ラーメン', 'カレー', 'やきとり']  
+  season: string[]       // ['Season1', 'Season2']
+  feature: string[]      // ['聖地巡礼', '初回限定', 'コラボ']
+}
+```
+
+#### 2.4.2 自動タグ生成ロジック
+```typescript
+const generateTagsFromTitle = (title: string): string[] => {
+  const tags: string[] = []
+  
+  // 地域タグ
+  if (title.match(/(.+?)(区|市|町|県)/)) {
+    tags.push('聖地巡礼', '地域情報')
+  }
+  
+  // グルメタグ  
+  const foodKeywords = ['ラーメン', 'カレー', 'やきとり', 'すし', '定食']
+  for (const keyword of foodKeywords) {
+    if (title.includes(keyword)) {
+      tags.push('グルメ', keyword)
+      break
+    }
+  }
+  
+  // シーズンタグ
+  const seasonMatch = title.match(/Season(\d+)/)
+  if (seasonMatch) tags.push(`Season${seasonMatch[1]}`)
+  
+  return [...new Set(tags)] // 重複除去
+}
+```
+
+#### 2.4.3 手動タグ追加要件
+- **必須条件**: 具体的な店名が特定できている場合のみロケーションタグを追加
+- **禁止事項**: 推測・仮想のロケーション情報はタグ化しない
+- **品質基準**: 実在性が確認できる情報のみタグ化対象
+
 ---
 
 ## 3. Locationsデータ作成・管理要件
 
-### 3.1 データ項目
+### 3.1 ⚠️ 重要な品質基準
+
+**🚨 ロケーション登録の絶対条件:**
+1. **具体的な店名が特定できている場合のみ登録可能**
+2. **推測・仮想の店舗は一切登録禁止**
+3. **実在性が100%確認できる場合のみ登録対象**
+
+**❌ 登録禁止例:**
+- 「やきとり門前仲町店」→ 具体的な店名不明
+- 「池袋ラーメン 汁なし担々麺屋」→ 仮想的な店舗名
+- 「和食その他 下北沢店」→ 推測による曖昧な名称
+
+**✅ 登録可能例:**  
+- 「鳥貴族 門前仲町店」→ 具体的な店名確定
+- 「すき家 池袋東口店」→ チェーン店の具体的支店名
+- 「神楽坂 和らく」→ 実在する個人店名
+
+### 3.2 データ項目
 ```typescript
 interface Location {
   id: string                   // UUID
-  name: string                // 店舗・施設名
+  name: string                // 【必須】実在する具体的な店舗・施設名
   address?: string            // 住所
   category: string            // カテゴリ（下記参照）
   description?: string        // 説明
   image_urls: string[]        // 画像URL配列
-  reservation_url?: string    // 予約・詳細URL
+  reservation_url?: string    // 予約・詳細URL（食べログ等）
   phone?: string             // 電話番号
   website?: string           // 公式サイト
   opening_hours?: object     // 営業時間（JSON）
   price_range?: string       // 価格帯
   latitude?: number          // 緯度
   longitude?: number         // 経度
+  verification_status: 'verified' | 'pending' | 'unverified' // 検証状況
+  source: string             // 情報ソース（エピソード確認、公式発表等）
 }
 ```
 

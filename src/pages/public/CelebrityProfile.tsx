@@ -104,38 +104,57 @@ export default function CelebrityProfile() {
   
   useEffect(() => {
     filterEpisodes()
-  }, [episodes, episodeSearch, platformFilter, yearFilter])
+  }, [episodes, episodeSearch, platformFilter, yearFilter, episodeLinksData])
   
   useEffect(() => {
     if (episodes.length > 0) {
       fetchEpisodeLinksData()
     }
-  }, [episodes])
+  }, [episodes.length]) // episodes.length のみを依存関係にして無限ループを防ぐ
   
   async function fetchEpisodeLinksData() {
-    if (!episodes || episodes.length === 0) return
+    if (!episodes || episodes.length === 0) {
+      console.log('⚠️ No episodes to fetch links for')
+      return
+    }
     
     const episodeIds = episodes.map(ep => ep.id)
+    console.log('🔍 Fetching links for episodes:', episodeIds.length, 'episodes')
+    console.log('🔍 First few episode IDs:', episodeIds.slice(0, 3))
+    
     try {
-      // ロケーション情報を直接 locations テーブルから取得
+      // ロケーション情報を episode_locations テーブルから取得
       const { data: locationLinks, error: locError } = await supabase
-        .from('locations')
+        .from('episode_locations')
         .select(`
-          id,
-          name,
-          address,
-          episode_id
+          episode_id,
+          location:locations!inner (
+            id,
+            name,
+            address
+          )
         `)
         .in('episode_id', episodeIds)
+      
+      console.log('📍 Location links fetched:', locationLinks?.length || 0, 'links')
+      if (locationLinks && locationLinks.length > 0) {
+        console.log('📍 Sample location link:', locationLinks[0])
+      }
       
       if (locError) {
         console.error('❌ Location links error:', locError)
       }
       
-      // アイテム情報を直接 items テーブルから取得
+      // アイテム情報を episode_items テーブルから取得
       const { data: itemLinks, error: itemError } = await supabase
-        .from('items')
-        .select('id, name, episode_id')
+        .from('episode_items')
+        .select(`
+          episode_id,
+          item:items!inner (
+            id,
+            name
+          )
+        `)
         .in('episode_id', episodeIds)
       
       if (itemError) {
@@ -149,24 +168,30 @@ export default function CelebrityProfile() {
         episodeLinksMap[episode.id] = { locations: 0, items: 0, locationDetails: [] }
       })
       
-      locationLinks?.forEach(location => {
-        if (episodeLinksMap[location.episode_id]) {
-          episodeLinksMap[location.episode_id].locations++
-          episodeLinksMap[location.episode_id].locationDetails?.push({
-            id: location.id,
-            name: location.name,
-            address: location.address
+      console.log('🗺️ Processing location links...')
+      locationLinks?.forEach((link, index) => {
+        console.log(`  Processing link ${index}:`, link.episode_id, link.location?.name)
+        if (episodeLinksMap[link.episode_id] && link.location) {
+          episodeLinksMap[link.episode_id].locations++
+          episodeLinksMap[link.episode_id].locationDetails?.push({
+            id: link.location.id,
+            name: link.location.name,
+            address: link.location.address
           })
+          console.log(`  ✅ Added to episode ${link.episode_id}`)
+        } else {
+          console.log(`  ⚠️ Skipped - episode not found or no location`)
         }
       })
       
-      itemLinks?.forEach(item => {
-        if (episodeLinksMap[item.episode_id]) {
-          episodeLinksMap[item.episode_id].items++
+      itemLinks?.forEach(link => {
+        if (episodeLinksMap[link.episode_id] && link.item) {
+          episodeLinksMap[link.episode_id].items++
         }
       })
       
-      console.log('🔗 Episode links data:', episodeLinksMap)
+      console.log('🔗 Final Episode links data:', episodeLinksMap)
+      console.log('🔗 Episodes with locations:', Object.values(episodeLinksMap).filter(e => e.locations > 0).length)
       setEpisodeLinksData(episodeLinksMap)
     } catch (error) {
       console.error('❌ Episode links fetch error:', error)
@@ -238,6 +263,21 @@ export default function CelebrityProfile() {
       filtered = filtered.filter(episode => 
         new Date(episode.date).getFullYear().toString() === yearFilter
       )
+    }
+    
+    // 孤独のグルメの場合、ロケーションありのエピソードを優先表示
+    if (celebrity?.slug === 'matsushige-yutaka' && Object.keys(episodeLinksData).length > 0) {
+      filtered.sort((a, b) => {
+        const aHasLocation = (episodeLinksData[a.id]?.locations || 0) > 0
+        const bHasLocation = (episodeLinksData[b.id]?.locations || 0) > 0
+        
+        // ロケーションありのエピソードを先に
+        if (aHasLocation && !bHasLocation) return -1
+        if (!aHasLocation && bHasLocation) return 1
+        
+        // 同じ条件なら日付順（新しい順）
+        return new Date(b.date).getTime() - new Date(a.date).getTime()
+      })
     }
     
     setFilteredEpisodes(filtered)
@@ -607,7 +647,16 @@ export default function CelebrityProfile() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 mb-2">エピソード</h2>
             <p className="text-gray-600">
-              {episodes.length > 0 ? `${episodes.length}件のエピソード (表示中: ${filteredEpisodes.length}件)` : 'エピソードはまだありません'}
+              {episodes.length > 0 ? (
+                <>
+                  {episodes.length}件のエピソード (表示中: {filteredEpisodes.length}件)
+                  {celebrity?.slug === 'matsushige-yutaka' && Object.values(episodeLinksData).filter(e => e.locations > 0).length > 0 && (
+                    <span className="ml-2 text-amber-600 font-semibold">
+                      📍 {Object.values(episodeLinksData).filter(e => e.locations > 0).length}件にロケ地あり
+                    </span>
+                  )}
+                </>
+              ) : 'エピソードはまだありません'}
             </p>
           </div>
           
