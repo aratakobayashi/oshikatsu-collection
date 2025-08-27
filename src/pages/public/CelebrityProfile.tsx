@@ -113,14 +113,9 @@ export default function CelebrityProfile() {
   }, [episodes.length]) // episodes.length のみを依存関係にして無限ループを防ぐ
   
   async function fetchEpisodeLinksData() {
-    if (!episodes || episodes.length === 0) {
-      console.log('⚠️ No episodes to fetch links for')
-      return
-    }
+    if (!episodes || episodes.length === 0) return
     
     const episodeIds = episodes.map(ep => ep.id)
-    console.log('🔍 Fetching links for episodes:', episodeIds.length, 'episodes')
-    console.log('🔍 First few episode IDs:', episodeIds.slice(0, 3))
     
     try {
       // ロケーション情報を episode_locations テーブルから取得
@@ -136,13 +131,8 @@ export default function CelebrityProfile() {
         `)
         .in('episode_id', episodeIds)
       
-      console.log('📍 Location links fetched:', locationLinks?.length || 0, 'links')
-      if (locationLinks && locationLinks.length > 0) {
-        console.log('📍 Sample location link:', locationLinks[0])
-      }
-      
       if (locError) {
-        console.error('❌ Location links error:', locError)
+        console.error('Location links error:', locError)
       }
       
       // アイテム情報を episode_items テーブルから取得
@@ -158,7 +148,7 @@ export default function CelebrityProfile() {
         .in('episode_id', episodeIds)
       
       if (itemError) {
-        console.error('❌ Item links error:', itemError)
+        console.error('Item links error:', itemError)
       }
       
       // エピソードIDごとに集計
@@ -168,9 +158,7 @@ export default function CelebrityProfile() {
         episodeLinksMap[episode.id] = { locations: 0, items: 0, locationDetails: [] }
       })
       
-      console.log('🗺️ Processing location links...')
-      locationLinks?.forEach((link, index) => {
-        console.log(`  Processing link ${index}:`, link.episode_id, link.location?.name)
+      locationLinks?.forEach(link => {
         if (episodeLinksMap[link.episode_id] && link.location) {
           episodeLinksMap[link.episode_id].locations++
           episodeLinksMap[link.episode_id].locationDetails?.push({
@@ -178,9 +166,6 @@ export default function CelebrityProfile() {
             name: link.location.name,
             address: link.location.address
           })
-          console.log(`  ✅ Added to episode ${link.episode_id}`)
-        } else {
-          console.log(`  ⚠️ Skipped - episode not found or no location`)
         }
       })
       
@@ -190,8 +175,6 @@ export default function CelebrityProfile() {
         }
       })
       
-      console.log('🔗 Final Episode links data:', episodeLinksMap)
-      console.log('🔗 Episodes with locations:', Object.values(episodeLinksMap).filter(e => e.locations > 0).length)
       setEpisodeLinksData(episodeLinksMap)
     } catch (error) {
       console.error('❌ Episode links fetch error:', error)
@@ -204,7 +187,7 @@ export default function CelebrityProfile() {
       const celebrityData = await db.celebrities.getBySlug(decodedSlug)
       
       if (!celebrityData) {
-        console.warn('⚠️ [DEBUG] No celebrity found for slug:', slug)
+        console.warn('No celebrity found for slug:', slug)
         setError('該当する推しが見つかりません')
         return
       }
@@ -223,12 +206,7 @@ export default function CelebrityProfile() {
       setItems(itemsData || [])
       
     } catch (error) {
-      console.error('❌ [ERROR] Error fetching celebrity data:', error)
-      console.error('❌ [ERROR] Error details:', {
-        message: error instanceof Error ? error.message : 'Unknown error',
-        stack: error instanceof Error ? error.stack : undefined,
-        slug: slug
-      })
+      console.error('Error fetching celebrity data:', error)
       const errorMessage = error instanceof Error ? error.message : '推しが見つかりません'
       setError(errorMessage)
     } finally {
