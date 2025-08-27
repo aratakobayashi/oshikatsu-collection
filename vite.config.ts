@@ -14,5 +14,8 @@ export default defineConfig(({ mode }) => {
     // 開発時は本番環境の設定を使用
     envDir: '.',
     envPrefix: ['VITE_'],
+    // Public assets configuration for correct MIME types
+    publicDir: 'public',
+    assetsInclude: ['**/*.xml'],
   };
 });

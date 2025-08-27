@@ -36,7 +36,22 @@
     "free:not-equal-me": "tsx src/scripts/data-collection/free-api-extractor.ts",
     "analyze:not-equal-me": "tsx src/scripts/data-collection/analyze-not-equal-me-descriptions.ts",
     "generate-sitemap": "tsx src/scripts/generate-sitemap.ts",
-    "submit-sitemap": "tsx src/scripts/submit-sitemap.ts"
+    "submit-sitemap": "tsx src/scripts/submit-sitemap.ts",
+    "images:add-batch": "tsx scripts/batch-add-location-images.ts",
+    "images:add-priority1": "tsx scripts/add-priority-location-images.ts",
+    "images:add-priority2": "tsx scripts/add-priority2-location-images.ts",
+    "images:add-priority3": "tsx scripts/add-priority3-location-images.ts",
+    "images:find-missing": "tsx scripts/find-locations-without-images.ts",
+    "images:add-missing": "tsx scripts/add-missing-location-images.ts",
+    "images:add-more": "tsx scripts/add-more-location-images.ts",
+    "images:add-mega": "tsx scripts/add-mega-location-images.ts",
+    "images:add-ultra": "tsx scripts/add-ultra-location-images.ts",
+    "test:enhanced-processor": "tsx src/scripts/data-collection/test-enhanced-processor.ts",
+    "test:enhanced-processor:full": "tsx src/scripts/data-collection/test-enhanced-processor.ts comprehensive",
+    "generate-sitemap:enhanced": "tsx src/scripts/enhanced-sitemap-generator.ts",
+    "submit-sitemap:enhanced": "tsx src/scripts/search-console-integration.ts",
+    "seo:full-setup": "npm run generate-sitemap:enhanced && npm run submit-sitemap:enhanced",
+    "deploy:seo": "bash scripts/deploy-with-seo.sh"
   },
   "dependencies": {
     "@supabase/storage-js": "^2.8.0",

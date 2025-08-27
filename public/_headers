@@ -1,0 +1,48 @@
+# Netlify Headers Configuration for SEO Optimization
+
+# Sitemap XML files with correct MIME type
+/sitemap.xml
+  Content-Type: application/xml
+
+/sitemap-images.xml
+  Content-Type: application/xml
+
+# robots.txt with correct MIME type
+/robots.txt
+  Content-Type: text/plain
+
+# General security headers
+/*
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  
+# Cache control for static assets
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.jpg
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.jpeg
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.webp
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.svg
+  Cache-Control: public, max-age=31536000, immutable
+
+# Cache control for sitemaps (shorter cache for frequent updates)
+/sitemap*.xml
+  Cache-Control: public, max-age=3600
+
+/robots.txt
+  Cache-Control: public, max-age=86400

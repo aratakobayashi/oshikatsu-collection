@@ -1,0 +1,8 @@
+# Netlify Redirects Configuration
+
+# SEO-friendly redirects
+/sitemap  /sitemap.xml  301
+/robots   /robots.txt   301
+
+# SPA fallback (React Router)
+/*    /index.html   200
