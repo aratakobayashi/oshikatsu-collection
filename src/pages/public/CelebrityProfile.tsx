@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { Calendar, ExternalLink, MapPin, Package, Users, Award, Globe, ArrowLeft, Star, Heart, Eye, Play, Filter, Search, Coffee, ShoppingBag } from 'lucide-react'
+import { MetaTags, generateSEO } from '../../components/SEO/MetaTags'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import Select from '../../components/ui/Select'
@@ -354,8 +355,26 @@ export default function CelebrityProfile() {
     )
   }
   
+  // Generate SEO data
+  const celebritySEO = celebrity ? generateSEO.celebrity(
+    celebrity.name,
+    episodes.length,
+    locations.length
+  ) : { title: '', description: '', keywords: '' }
+
   return (
     <div className="min-h-screen bg-white">
+      {celebrity && (
+        <MetaTags 
+          title={celebritySEO.title}
+          description={celebritySEO.description}
+          keywords={celebritySEO.keywords}
+          canonicalUrl={`https://collection.oshikatsu-guide.com/celebrities/${encodeURIComponent(celebrity.slug)}`}
+          ogUrl={`https://collection.oshikatsu-guide.com/celebrities/${encodeURIComponent(celebrity.slug)}`}
+          ogImage={celebrity.image_url || undefined}
+        />
+      )}
+      
       {/* Back Button */}
       <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-8">
         <Link to="/celebrities" className="inline-flex items-center text-rose-600 hover:text-rose-800 transition-colors">

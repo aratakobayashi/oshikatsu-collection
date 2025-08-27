@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Users, Play, MapPin, Package } from 'lucide-react'
+import { MetaTags, generateSEO } from '../../components/SEO/MetaTags'
 import HeroSection from '../../components/HeroSection'
 import SectionCarousel from '../../components/SectionCarousel'
 import WikipediaAPITest from '../../components/WikipediaAPITest'
@@ -131,8 +132,18 @@ export default function Home() {
     )
   }
   
+  const homeSEO = generateSEO.home()
+
   return (
     <div className="bg-white">
+      <MetaTags 
+        title={homeSEO.title}
+        description={homeSEO.description}
+        keywords={homeSEO.keywords}
+        canonicalUrl="https://collection.oshikatsu-guide.com/"
+        ogUrl="https://collection.oshikatsu-guide.com/"
+      />
+      
       {/* Hero Section */}
       <HeroSection onSearch={handleSearch} />
 

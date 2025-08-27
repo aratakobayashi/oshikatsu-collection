@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { Search, Filter, Package, User, Calendar, ShoppingBag, Star, TrendingUp, Eye } from 'lucide-react'
+import { MetaTags, generateSEO } from '../../components/SEO/MetaTags'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import Select from '../../components/ui/Select'
@@ -343,8 +344,18 @@ function Items() {
     )
   }
   
+  const itemsSEO = generateSEO.items(filteredItems.length)
+
   return (
     <div className="min-h-screen bg-white">
+      <MetaTags 
+        title={itemsSEO.title}
+        description={itemsSEO.description}
+        keywords={itemsSEO.keywords}
+        canonicalUrl="https://collection.oshikatsu-guide.com/items"
+        ogUrl="https://collection.oshikatsu-guide.com/items"
+      />
+      
       {/* Hero Header */}
       <div className="bg-gradient-to-br from-rose-50 via-white to-pink-50 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16 lg:py-20">
