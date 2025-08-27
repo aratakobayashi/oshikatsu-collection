@@ -293,24 +293,33 @@ export default function LocationSearchV2() {
   const inferCategoryFromName = (name: string) => {
     const lowerName = name.toLowerCase()
     
-    // Restaurant keywords
+    // Restaurant keywords (大幅拡張)
     const restaurantKeywords = [
       'レストラン', 'restaurant', 'dining', '食事', '料理', 'グリル', 'ビストロ', 'イタリアン', '中華', '和食', 'フレンチ',
       '焼肉', 'ラーメン', 'うどん', 'そば', '寿司', '天ぷら', '定食', '居酒屋', 'バル', 'tavern', '酒場', '食堂',
-      'kitchen', 'diner', 'grill', 'bar', 'pub', 'bistro'
+      'kitchen', 'diner', 'grill', 'bar', 'pub', 'bistro',
+      // 店舗名の末尾パターン
+      '屋', '亭', '処', '軒', '家', '庵', 'や', 'ボキューズ', 'ぼきゅーず',
+      // 料理ジャンル
+      'ごはん', 'めし', '玄', 'うし', '牛', 'ビーフ', 'beef', 'ステーキ', 'steak'
     ]
     
-    // Cafe keywords  
+    // Cafe keywords (アイス・甘味処も含む)
     const cafeKeywords = [
       'カフェ', 'cafe', 'coffee', 'コーヒー', '喫茶', 'スタバ', 'starbucks', 'タリーズ', 'ドトール', 'tully', 'doutor',
-      '珈琲', 'tea', 'ティー', 'latte', 'ラテ', 'cappuccino', 'espresso', 'mocha', 'モカ', 'frappuccino', 'フラペチーノ'
+      '珈琲', 'tea', 'ティー', 'latte', 'ラテ', 'cappuccino', 'espresso', 'mocha', 'モカ', 'frappuccino', 'フラペチーノ',
+      // アイスクリーム・甘味
+      'blue seal', 'ブルーシール', 'ice', 'アイス', 'cream', 'クリーム', 'gelato', 'ジェラート',
+      'パフェ', 'パンケーキ', 'pancake', 'ワッフル', 'waffle'
     ]
     
-    // Shop keywords
+    // Shop keywords (和菓子屋・伝統的な店も含む)
     const shopKeywords = [
       'ショップ', 'shop', 'store', '店舗', '専門店', 'boutique', 'ブティック', '雑貨', 'セレクト',
       'マート', 'mart', 'market', 'デパート', '百貨店', 'アパレル', 'fashion', 'ファッション', 'clothes', '服',
-      'コンビニ', 'convenience', 'drugstore', 'pharmacy', '薬局'
+      'コンビニ', 'convenience', 'drugstore', 'pharmacy', '薬局',
+      // 和菓子・伝統的な店
+      '堂', 'どう', '本舗', 'ほんぽ', '商店', '商会', '呉服', '骨董', '古美術'
     ]
     
     // Hotel keywords
@@ -337,14 +346,18 @@ export default function LocationSearchV2() {
           'グリル', 'ビストロ', 'イタリアン', '中華', '和食', 'フレンチ',
           '焼肉', 'ラーメン', 'うどん', 'そば', '寿司', '天ぷら',
           '定食', '居酒屋', 'バル', 'tavern', '酒場', '食堂',
-          'kitchen', 'diner', 'grill', 'bar', 'pub', 'bistro'
+          'kitchen', 'diner', 'grill', 'bar', 'pub', 'bistro',
+          '屋', '亭', '処', '軒', '家', '庵', 'や', 'ボキューズ',
+          'ごはん', 'めし', '玄', 'うし', '牛', 'ビーフ', 'beef', 'ステーキ', 'steak'
         ]
       case 'cafe':
         return [
           'カフェ', 'cafe', 'coffee', 'コーヒー', '喫茶', 
           'スタバ', 'starbucks', 'タリーズ', 'ドトール', 'tully', 'doutor',
           '珈琲', 'tea', 'ティー', 'latte', 'ラテ', 'cappuccino',
-          'espresso', 'mocha', 'モカ', 'frappuccino', 'フラペチーノ'
+          'espresso', 'mocha', 'モカ', 'frappuccino', 'フラペチーノ',
+          'blue seal', 'ブルーシール', 'ice', 'アイス', 'cream', 'ジェラート',
+          'パフェ', 'パンケーキ', 'pancake', 'ワッフル', 'waffle'
         ]
       case 'shop':
         return [
@@ -352,7 +365,8 @@ export default function LocationSearchV2() {
           'boutique', 'ブティック', '雑貨', 'セレクト',
           'マート', 'mart', 'market', 'デパート', '百貨店',
           'アパレル', 'fashion', 'ファッション', 'clothes', '服',
-          'コンビニ', 'convenience', 'drugstore', 'pharmacy', '薬局'
+          'コンビニ', 'convenience', 'drugstore', 'pharmacy', '薬局',
+          '堂', 'どう', '本舗', 'ほんぽ', '商店', '商会'
         ]
       case 'hotel':
         return ['ホテル', 'hotel', 'inn', '宿泊', 'リゾート', 'resort', '旅館', 'ryokan']
