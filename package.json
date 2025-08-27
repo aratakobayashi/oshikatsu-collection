@@ -41,8 +41,10 @@
   "dependencies": {
     "@supabase/storage-js": "^2.8.0",
     "@supabase/supabase-js": "^2.50.4",
+    "@types/lodash": "^4.17.20",
     "@types/react-router-dom": "^5.3.3",
     "dotenv": "^17.2.1",
+    "lodash": "^4.17.21",
     "lucide-react": "^0.344.0",
     "openai": "^4.104.0",
     "react": "^18.3.1",
