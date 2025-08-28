@@ -29,7 +29,8 @@ interface EnhancedSitemapUrl {
   loc: string
   lastmod: string
   changefreq: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never'
-  priority: string
+  priority: string | number
+  category?: string
   images?: ImageInfo[]
   alternates?: AlternateInfo[]
 }
@@ -41,6 +42,13 @@ interface ImageInfo {
   license?: string
 }
 
+interface SitemapImage {
+  src: string
+  title?: string
+  caption?: string
+  license?: string
+}
+
 interface AlternateInfo {
   hreflang: string
   href: string
@@ -49,6 +57,7 @@ interface AlternateInfo {
 interface SitemapStats {
   totalUrls: number
   byType: { [key: string]: number }
+  categoryCounts: { [key: string]: number }
   withImages: number
   totalImages: number
   lastGenerated: string
@@ -57,11 +66,14 @@ interface SitemapStats {
 
 export class EnhancedSitemapGenerator {
   private stats: SitemapStats
+  private supabase: any
   
   constructor() {
+    this.supabase = supabase
     this.stats = {
       totalUrls: 0,
       byType: {},
+      categoryCounts: {},
       withImages: 0,
       totalImages: 0,
       lastGenerated: new Date().toISOString(),
@@ -115,89 +127,34 @@ export class EnhancedSitemapGenerator {
   /**
    * 静的ページ追加（SEO最適化）
    */
-  private async addStaticPages(urls: EnhancedSitemapUrl[]): Promise<void> {
+  private addStaticPages(urls: EnhancedSitemapUrl[]) {
     console.log('📄 Adding static pages...')
     
     const staticPages = [
-      { 
-        path: '', 
-        priority: '1.0', 
-        changefreq: 'daily' as const,
-        type: 'homepage'
-      },
-      { 
-        path: '/celebrities', 
-        priority: '0.9', 
-        changefreq: 'daily' as const,
-        type: 'listing'
-      },
-      { 
-        path: '/episodes', 
-        priority: '0.9', 
-        changefreq: 'daily' as const,
-        type: 'listing'
-      },
-      { 
-        path: '/locations', 
-        priority: '0.9', 
-        changefreq: 'daily' as const,
-        type: 'listing'
-      },
-      { 
-        path: '/items', 
-        priority: '0.8', 
-        changefreq: 'weekly' as const,
-        type: 'listing'
-      },
-      { 
-        path: '/categories', 
-        priority: '0.8', 
-        changefreq: 'weekly' as const,
-        type: 'navigation'
-      },
-      { 
-        path: '/search', 
-        priority: '0.7', 
-        changefreq: 'weekly' as const,
-        type: 'utility'
-      },
-      { 
-        path: '/about', 
-        priority: '0.4', 
-        changefreq: 'monthly' as const,
-        type: 'info'
-      },
-      { 
-        path: '/contact', 
-        priority: '0.3', 
-        changefreq: 'monthly' as const,
-        type: 'info'
-      },
-      { 
-        path: '/privacy', 
-        priority: '0.2', 
-        changefreq: 'yearly' as const,
-        type: 'legal'
-      },
-      { 
-        path: '/terms', 
-        priority: '0.2', 
-        changefreq: 'yearly' as const,
-        type: 'legal'
-      }
-    ]
+      { path: '', priority: 1.0, changefreq: 'daily', category: 'homepage' },
+      { path: '/celebrities', priority: 0.9, changefreq: 'daily', category: 'listing' },
+      { path: '/episodes', priority: 0.9, changefreq: 'daily', category: 'listing' },
+      { path: '/locations', priority: 0.9, changefreq: 'daily', category: 'listing' },
+      { path: '/items', priority: 0.8, changefreq: 'weekly', category: 'listing' },
+      { path: '/map', priority: 0.7, changefreq: 'weekly', category: 'navigation' },
+      { path: '/search', priority: 0.7, changefreq: 'monthly', category: 'utility' },
+      { path: '/about', priority: 0.6, changefreq: 'monthly', category: 'info' },
+      { path: '/contact', priority: 0.6, changefreq: 'monthly', category: 'info' },
+      { path: '/privacy', priority: 0.5, changefreq: 'yearly', category: 'legal' },
+      { path: '/terms', priority: 0.5, changefreq: 'yearly', category: 'legal' },
+    ] as const
 
     staticPages.forEach(page => {
       urls.push({
         loc: `${SITE_URL}${page.path}`,
-        lastmod: new Date().toISOString().split('T')[0],
+        lastmod: this.formatSitemapDate(new Date().toISOString()),
         changefreq: page.changefreq,
-        priority: page.priority
+        priority: page.priority,
+        category: page.category,
       })
-      
-      this.stats.byType[page.type] = (this.stats.byType[page.type] || 0) + 1
+      this.stats.categoryCounts[page.category]++
     })
-
+    
     console.log(`  ✅ Added ${staticPages.length} static pages`)
   }
 
@@ -207,28 +164,28 @@ export class EnhancedSitemapGenerator {
   private async addCelebrityPages(urls: EnhancedSitemapUrl[]): Promise<void> {
     console.log('👨‍🎤 Adding celebrity pages...')
     
-    const { data: celebrities, error } = await supabase
+    const { data: celebrities, error } = await this.supabase
       .from('celebrities')
-      .select('slug, updated_at, name')
-      .order('updated_at', { ascending: false })
+      .select('id, name, slug, updated_at')
+      .order('name')
 
     if (error) {
-      throw new Error(`Failed to fetch celebrities: ${error.message}`)
+      console.error('Error fetching celebrities:', error)
+      return
     }
 
-    if (celebrities) {
-      celebrities.forEach(celebrity => {
-        urls.push({
-          loc: `${SITE_URL}/celebrities/${celebrity.slug}`,
-          lastmod: celebrity.updated_at?.split('T')[0] || new Date().toISOString().split('T')[0],
-          changefreq: this.calculateChangeFreq(celebrity.updated_at),
-          priority: '0.8'
-        })
+    celebrities?.forEach(celebrity => {
+      urls.push({
+        loc: `${SITE_URL}/celebrities/${celebrity.slug || celebrity.id}`,
+        lastmod: this.formatSitemapDate(celebrity.updated_at),
+        changefreq: 'weekly',
+        priority: 0.8,
+        category: 'celebrity',
       })
-      
-      this.stats.byType.celebrity = celebrities.length
-      console.log(`  ✅ Added ${celebrities.length} celebrity pages`)
-    }
+      this.stats.categoryCounts.celebrity++
+    })
+    
+    console.log(`  ✅ Added ${celebrities?.length || 0} celebrity pages`)
   }
 
   /**
@@ -237,28 +194,29 @@ export class EnhancedSitemapGenerator {
   private async addEpisodePages(urls: EnhancedSitemapUrl[]): Promise<void> {
     console.log('🎬 Adding episode pages...')
     
-    const { data: episodes, error } = await supabase
+    const { data: episodes, error } = await this.supabase
       .from('episodes')
-      .select('id, updated_at, title')
+      .select('id, title, youtube_id, updated_at')
+      .limit(1000) // パフォーマンス最適化
       .order('updated_at', { ascending: false })
 
     if (error) {
-      throw new Error(`Failed to fetch episodes: ${error.message}`)
+      console.error('Error fetching episodes:', error)
+      return
     }
 
-    if (episodes) {
-      episodes.forEach(episode => {
-        urls.push({
-          loc: `${SITE_URL}/episodes/${episode.id}`,
-          lastmod: episode.updated_at?.split('T')[0] || new Date().toISOString().split('T')[0],
-          changefreq: 'monthly',
-          priority: this.calculateEpisodePriority(episode.updated_at)
-        })
+    episodes?.forEach(episode => {
+      urls.push({
+        loc: `${SITE_URL}/episodes/${episode.youtube_id || episode.id}`,
+        lastmod: this.formatSitemapDate(episode.updated_at),
+        changefreq: 'monthly',
+        priority: 0.8,
+        category: 'episode',
       })
-      
-      this.stats.byType.episode = episodes.length
-      console.log(`  ✅ Added ${episodes.length} episode pages`)
-    }
+      this.stats.categoryCounts.episode++
+    })
+    
+    console.log(`  ✅ Added ${episodes?.length || 0} episode pages`)
   }
 
   /**
@@ -267,46 +225,54 @@ export class EnhancedSitemapGenerator {
   private async addLocationPages(urls: EnhancedSitemapUrl[]): Promise<void> {
     console.log('📍 Adding location pages with images...')
     
-    const { data: locations, error } = await supabase
-      .from('locations')
-      .select('id, updated_at, name, image_urls, address')
+    const { data: locations, error } = await this.supabase
+      .from('filming_locations')
+      .select(`
+        id, name, address, updated_at,
+        location_images!inner(image_url, alt_text, caption)
+      `)
       .order('updated_at', { ascending: false })
 
     if (error) {
-      throw new Error(`Failed to fetch locations: ${error.message}`)
+      console.error('Error fetching locations:', error)
+      return
     }
 
-    if (locations) {
-      locations.forEach(location => {
-        const images: ImageInfo[] = []
-        
-        if (location.image_urls && location.image_urls.length > 0) {
-          location.image_urls.forEach((imageUrl: string, index: number) => {
+    let locationsWithImages = 0
+
+    locations?.forEach(location => {
+      // 画像情報の処理
+      const images: SitemapImage[] = []
+      if (location.location_images && location.location_images.length > 0) {
+        location.location_images.forEach((img: any, index: number) => {
+          if (img.image_url) {
             images.push({
-              src: imageUrl,
+              src: img.image_url,
               title: `${location.name} - 画像 ${index + 1}`,
-              caption: `${location.name}（${location.address || '住所不明'}）の写真`,
-              license: 'https://unsplash.com/license'
+              caption: img.caption || `${location.name}（${location.address}）の写真`,
             })
-          })
-        }
-
-        urls.push({
-          loc: `${SITE_URL}/locations/${location.id}`,
-          lastmod: location.updated_at?.split('T')[0] || new Date().toISOString().split('T')[0],
-          changefreq: 'weekly',
-          priority: this.calculateLocationPriority(undefined, location.image_urls),
-          images: images.length > 0 ? images : undefined
+          }
         })
+        
+        if (images.length > 0) {
+          locationsWithImages++
+          this.stats.totalImages += images.length
+        }
+      }
+
+      urls.push({
+        loc: `${SITE_URL}/locations/${location.id}`,
+        lastmod: this.formatSitemapDate(location.updated_at),
+        changefreq: 'weekly',
+        priority: 0.6,
+        category: 'location',
+        images: images.length > 0 ? images : undefined,
       })
-      
-      this.stats.byType.location = locations.length
-      this.stats.withImages += locations.filter(l => l.image_urls && l.image_urls.length > 0).length
-      this.stats.totalImages += locations.reduce((total: number, l: any) => 
-        total + (l.image_urls ? l.image_urls.length : 0), 0)
-      console.log(`  ✅ Added ${locations.length} location pages`)
-      console.log(`  🖼️  With images: ${locations.filter(l => l.image_urls && l.image_urls.length > 0).length}`)
-    }
+      this.stats.categoryCounts.location++
+    })
+    
+    console.log(`  ✅ Added ${locations?.length || 0} location pages`)
+    console.log(`  🖼️  With images: ${locationsWithImages}`)
   }
 
   /**
@@ -315,28 +281,28 @@ export class EnhancedSitemapGenerator {
   private async addItemPages(urls: EnhancedSitemapUrl[]): Promise<void> {
     console.log('👕 Adding item pages...')
     
-    const { data: items, error } = await supabase
+    const { data: items, error } = await this.supabase
       .from('items')
-      .select('id, updated_at, name')
+      .select('id, name, updated_at')
       .order('updated_at', { ascending: false })
 
     if (error) {
-      throw new Error(`Failed to fetch items: ${error.message}`)
+      console.error('Error fetching items:', error)
+      return
     }
 
-    if (items) {
-      items.forEach(item => {
-        urls.push({
-          loc: `${SITE_URL}/items/${item.id}`,
-          lastmod: item.updated_at?.split('T')[0] || new Date().toISOString().split('T')[0],
-          changefreq: 'monthly',
-          priority: '0.6'
-        })
+    items?.forEach(item => {
+      urls.push({
+        loc: `${SITE_URL}/items/${item.id}`,
+        lastmod: this.formatSitemapDate(item.updated_at),
+        changefreq: 'weekly',
+        priority: 0.7,
+        category: 'item',
       })
-      
-      this.stats.byType.item = items.length
-      console.log(`  ✅ Added ${items.length} item pages`)
-    }
+      this.stats.categoryCounts.item++
+    })
+    
+    console.log(`  ✅ Added ${items?.length || 0} item pages`)
   }
 
   /**
@@ -345,26 +311,27 @@ export class EnhancedSitemapGenerator {
   private async addCategoryPages(urls: EnhancedSitemapUrl[]): Promise<void> {
     console.log('🏷️  Adding category pages...')
     
-    const categories = [
-      { slug: 'restaurants', name: 'レストラン', priority: '0.8' },
-      { slug: 'cafes', name: 'カフェ', priority: '0.8' },
-      { slug: 'shops', name: 'ショップ', priority: '0.7' },
-      { slug: 'tourist-spots', name: '観光地', priority: '0.7' },
-      { slug: 'entertainment', name: 'エンターテイメント', priority: '0.6' },
-      { slug: 'hotels', name: 'ホテル', priority: '0.6' }
+    const categoryPages = [
+      { path: '/categories/restaurants', name: 'レストラン', priority: 0.8 },
+      { path: '/categories/fashion', name: 'ファッション', priority: 0.8 },
+      { path: '/categories/entertainment', name: 'エンターテイメント', priority: 0.8 },
+      { path: '/categories/travel', name: '旅行・観光', priority: 0.8 },
+      { path: '/categories/lifestyle', name: 'ライフスタイル', priority: 0.7 },
+      { path: '/categories/culture', name: 'カルチャー', priority: 0.7 },
     ]
 
-    categories.forEach(category => {
+    categoryPages.forEach(category => {
       urls.push({
-        loc: `${SITE_URL}/categories/${category.slug}`,
-        lastmod: new Date().toISOString().split('T')[0],
+        loc: `${SITE_URL}${category.path}`,
+        lastmod: this.formatSitemapDate(new Date().toISOString()),
         changefreq: 'weekly',
-        priority: category.priority
+        priority: category.priority,
+        category: 'category',
       })
+      this.stats.categoryCounts.category++
     })
     
-    this.stats.byType.category = categories.length
-    console.log(`  ✅ Added ${categories.length} category pages`)
+    console.log(`  ✅ Added ${categoryPages.length} category pages`)
   }
 
   /**
@@ -598,6 +565,23 @@ Crawl-delay: 1
   }
 
   /**
+   * Format date to W3C Datetime format for sitemaps
+   * @param date - ISO string or date string
+   * @returns Formatted date string (YYYY-MM-DDTHH:MM:SS+00:00)
+   */
+  private formatSitemapDate(date?: string): string {
+    if (!date) {
+      return new Date().toISOString()
+    }
+    // If already includes time, return as-is
+    if (date.includes('T')) {
+      return new Date(date).toISOString()
+    }
+    // If only date (YYYY-MM-DD), add time component
+    return new Date(date + 'T00:00:00Z').toISOString()
+  }
+
+  /**
    * インデックス推定時間計算
    */
   private calculateEstimatedIndexTime(): string {
@@ -621,11 +605,12 @@ Crawl-delay: 1
     console.log(`  • Generation date: ${this.stats.lastGenerated.split('T')[0]}`)
     
     console.log('\n📋 Content Breakdown:')
-    Object.entries(this.stats.byType).forEach(([type, count]) => {
+    Object.entries(this.stats.categoryCounts).forEach(([type, count]) => {
       console.log(`  • ${type}: ${count} pages`)
     })
     
     console.log('\n🖼️  Image Statistics:')
+    const urlsWithImages = Object.values(this.stats.categoryCounts).reduce((sum, count) => sum + count, 0)
     console.log(`  • URLs with images: ${this.stats.withImages}/${this.stats.totalUrls} (${Math.round(this.stats.withImages/this.stats.totalUrls*100)}%)`)
     console.log(`  • Total images: ${this.stats.totalImages}`)
     console.log(`  • Average images per page: ${(this.stats.totalImages / this.stats.withImages || 0).toFixed(1)}`)
