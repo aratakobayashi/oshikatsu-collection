@@ -487,36 +487,15 @@ export class EnhancedSitemapGenerator {
    */
   private generateMainSitemapXML(urls: EnhancedSitemapUrl[]): string {
     let xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 `
 
     urls.forEach(url => {
       xml += `  <url>
-    <loc>${url.loc}</loc>
+    <loc>${this.escapeXml(url.loc)}</loc>
     <lastmod>${url.lastmod}</lastmod>
     <changefreq>${url.changefreq}</changefreq>
-    <priority>${url.priority}</priority>`
-      
-      if (url.images && url.images.length > 0) {
-        url.images.forEach(image => {
-          xml += `
-    <image:image>
-      <image:loc>${image.src}</image:loc>`
-          if (image.title) {
-            xml += `
-      <image:title>${this.escapeXml(image.title)}</image:title>`
-          }
-          if (image.caption) {
-            xml += `
-      <image:caption>${this.escapeXml(image.caption)}</image:caption>`
-          }
-          xml += `
-    </image:image>`
-        })
-      }
-      
-      xml += `
+    <priority>${url.priority}</priority>
   </url>
 `
     })
@@ -537,13 +516,13 @@ export class EnhancedSitemapGenerator {
     urls.forEach(url => {
       if (url.images && url.images.length > 0) {
         xml += `  <url>
-    <loc>${url.loc}</loc>
+    <loc>${this.escapeXml(url.loc)}</loc>
     <lastmod>${url.lastmod}</lastmod>`
         
         url.images.forEach(image => {
           xml += `
     <image:image>
-      <image:loc>${image.src}</image:loc>`
+      <image:loc>${this.escapeXml(image.src)}</image:loc>`
           if (image.title) {
             xml += `
       <image:title>${this.escapeXml(image.title)}</image:title>`
@@ -554,7 +533,7 @@ export class EnhancedSitemapGenerator {
           }
           if (image.license) {
             xml += `
-      <image:license>${image.license}</image:license>`
+      <image:license>${this.escapeXml(image.license)}</image:license>`
           }
           xml += `
     </image:image>`
