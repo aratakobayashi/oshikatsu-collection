@@ -7,6 +7,18 @@
 /sitemap-images.xml
   Content-Type: application/xml
 
+/sitemap-locations.xml
+  Content-Type: application/xml
+
+/sitemap-celebrities.xml
+  Content-Type: application/xml
+
+/sitemap-episodes.xml
+  Content-Type: application/xml
+
+/sitemap-index.xml
+  Content-Type: application/xml
+
 # robots.txt with correct MIME type
 /robots.txt
   Content-Type: text/plain
