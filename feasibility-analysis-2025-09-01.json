@@ -1,0 +1,144 @@
+{
+  "technical_constraints": {
+    "api_limitations": {
+      "google_custom_search": {
+        "daily_limit": 100,
+        "cost_per_1000_queries": 5,
+        "estimated_monthly_cost": 1050
+      },
+      "google_places": {
+        "requests_needed": 1558,
+        "estimated_cost": 34
+      },
+      "tabelog_scraping": {
+        "legal_risks": [
+          "タベログの利用規約違反の可能性",
+          "スクレイピング禁止条項への抵触",
+          "レート制限違反によるIP制限"
+        ],
+        "technical_challenges": [
+          "動的コンテンツの読み込み遅延",
+          "頻繁なHTML構造変更への対応",
+          "Cloudflare等の保護システム"
+        ],
+        "alternatives": [
+          "タベログAPIの公式利用（法人向け）",
+          "提携サービス経由でのデータ取得",
+          "手動調査の効率化"
+        ]
+      }
+    },
+    "development_effort": {
+      "auto_tabelog_finder": {
+        "complexity": "High",
+        "estimated_hours": 40,
+        "required_skills": [
+          "Google API連携",
+          "Rate limiting",
+          "エラーハンドリング"
+        ]
+      },
+      "batch_management_ui": {
+        "complexity": "Medium",
+        "estimated_hours": 20,
+        "required_skills": [
+          "React",
+          "TypeScript",
+          "データベース操作"
+        ]
+      },
+      "longtail_page_generation": {
+        "complexity": "Medium",
+        "estimated_hours": 30,
+        "required_skills": [
+          "動的ルーティング",
+          "SEO最適化",
+          "テンプレート作成"
+        ]
+      }
+    }
+  },
+  "resource_constraints": {
+    "manual_effort": {
+      "tabelog_url_research": {
+        "locations_per_hour": 15,
+        "total_hours_needed": 42,
+        "cost_if_outsourced": 63000
+      },
+      "store_info_verification": {
+        "locations_per_hour": 20,
+        "total_hours_needed": 78
+      }
+    },
+    "infrastructure": {
+      "database_changes_needed": false,
+      "additional_storage_required": 100,
+      "performance_impact": "Low"
+    }
+  },
+  "legal_compliance": {
+    "web_scraping": {
+      "tabelog_terms_compliance": false,
+      "robots_txt_compliance": true,
+      "rate_limiting_requirements": [
+        "1リクエスト/秒以下",
+        "User-Agent設定必須"
+      ]
+    },
+    "affiliate_links": {
+      "disclosure_requirements": true,
+      "tracking_compliance": true
+    }
+  },
+  "realistic_approaches": {
+    "immediate_wins": [
+      {
+        "action": "高トラフィック上位50箇所のタベログURL手動調査",
+        "effort": "Low",
+        "impact": "High",
+        "timeframe": "1週間",
+        "success_probability": 95
+      },
+      {
+        "action": "管理画面にタベログURL一括登録機能追加",
+        "effort": "Low",
+        "impact": "Medium",
+        "timeframe": "3日",
+        "success_probability": 90
+      },
+      {
+        "action": "Google Places APIで電話番号・営業時間取得",
+        "effort": "Medium",
+        "impact": "High",
+        "timeframe": "1週間",
+        "success_probability": 80
+      }
+    ],
+    "gradual_improvements": [
+      {
+        "action": "セミオートマチックなタベログURL発見システム",
+        "prerequisites": [
+          "Google Custom Search API設定",
+          "予算確保"
+        ],
+        "estimated_timeline": "2-3週間",
+        "risk_factors": [
+          "API制限",
+          "コスト増加"
+        ]
+      },
+      {
+        "action": "ロングテールページの段階的生成",
+        "prerequisites": [
+          "テンプレート作成",
+          "SEO効果測定"
+        ],
+        "estimated_timeline": "4-6週間",
+        "risk_factors": [
+          "コンテンツ品質",
+          "重複コンテンツリスク"
+        ]
+      }
+    ]
+  }
+}

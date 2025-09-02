@@ -1,0 +1,99 @@
+{
+  "timestamp": "2025-09-01T14:48:19.008Z",
+  "phase": "refined-third-phase-cleanup",
+  "total_before": 335,
+  "total_deleted": 13,
+  "deleted_locations": [
+    {
+      "id": "df1d85e1-fbff-4954-8992-67b17f195749",
+      "name": "髙松瞳Hitomi Takamatsu",
+      "address": "東京都内",
+      "reason": "definite_person_pattern",
+      "episode_count": 1
+    },
+    {
+      "id": "086c8d07-af50-4a23-b826-d820704b0787",
+      "name": "諸橋 沙夏 Sana Morohashi",
+      "address": "東京都内",
+      "reason": "definite_person_pattern",
+      "episode_count": 1
+    },
+    {
+      "id": "b68e3bfa-9ed4-441c-9a4c-a8b16a88967d",
+      "name": "諸橋 沙夏 Sana Morohashi",
+      "address": "東京都内",
+      "reason": "definite_person_pattern",
+      "episode_count": 1
+    },
+    {
+      "id": "c941ef82-ca1e-4cc5-9941-2eb1b7444509",
+      "name": "髙松瞳Hitomi Takamatsu",
+      "address": "東京都内",
+      "reason": "definite_person_pattern",
+      "episode_count": 1
+    },
+    {
+      "id": "e2b98fbf-9778-4832-ab62-98c20a24370e",
+      "name": "ティファニー丸の内店",
+      "address": "〒100-0005 東京都千代田区丸の内2-1-1 丸ノ内MY PLAZA",
+      "reason": "other_problem",
+      "episode_count": 1
+    },
+    {
+      "id": "c214c0a2-00cd-48f9-9172-bf7b9e46580f",
+      "name": "400°C 神楽坂",
+      "address": "東京都新宿区神楽坂3-2 Kagurazaka Terrace B1F",
+      "reason": "other_problem",
+      "episode_count": 1
+    },
+    {
+      "id": "eff51431-0104-4041-8985-1327132c9925",
+      "name": "COCKTAIL WORKS 神保町",
+      "address": "〒101-0052 東京都千代田区神田小川町3-7-13 ヴァンサンクビル1F",
+      "reason": "other_problem",
+      "episode_count": 1
+    },
+    {
+      "id": "76c1a5d1-7220-4673-9cf5-a0b94168f861",
+      "name": "じゃんがら ラーメン",
+      "address": "東京都渋谷区神宮前4-30-3 東急プラザ表参道原宿 B1F",
+      "reason": "other_problem",
+      "episode_count": 1
+    },
+    {
+      "id": "3989377b-b2c2-4ef9-b228-48ae823aa299",
+      "name": "2:40 シナモロールカフェ",
+      "address": "東京都内",
+      "reason": "other_problem",
+      "episode_count": 1
+    },
+    {
+      "id": "318592e2-5dff-473f-91a1-c147ebc87d68",
+      "name": "博多もつ鍋 やま中 銀座店",
+      "address": "東京都中央区銀座3-2-15 ギンザ・グラッセ B1F・1F",
+      "reason": "other_problem",
+      "episode_count": 1
+    },
+    {
+      "id": "215367f1-cf37-4d26-bc8f-bd5165c0c53c",
+      "name": "グリフィス天文台",
+      "address": "2800 E Observatory Rd, Los Angeles, CA 90027, USA",
+      "reason": "other_problem",
+      "episode_count": 1
+    },
+    {
+      "id": "fdf80eb1-9436-465f-b5fc-06182e9bfec6",
+      "name": "休日の竹下通りで食べまくる！原宿ロケ#3",
+      "address": "東京都原宿周辺",
+      "reason": "other_problem",
+      "episode_count": 1
+    },
+    {
+      "id": "e2343c69-1c34-4f49-a8bc-4a915b792427",
+      "name": "YO-HO's cafe Lanai",
+      "address": "東京都杉並区阿佐ヶ谷南2-20-4 ハウスポート阿佐ヶ谷ビル 1F",
+      "reason": "other_problem",
+      "episode_count": 1
+    }
+  ]
+}

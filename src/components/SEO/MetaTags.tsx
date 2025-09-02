@@ -199,25 +199,35 @@ export const generateEnhancedCelebrityDescription = (
 ): string => {
   const { worksCount = 0, locationsCount = 0, items = 0, recentVisits = [], popularTags = [] } = stats
   
+  // ロングテールキーワード戦略: 高検索ボリューム×低競合キーワード
+  const longtailKeywords = {
+    locations: [`${name} 行きつけの店`, `${name} ロケ地`, `${name} グルメ`, `${name} 聖地巡礼`],
+    fashion: [`${name} 私服`, `${name} 衣装`, `${name} ファッション`, `${name} コーデ`],
+    spots: [`${name} デート`, `${name} 推し活`, `${name} スポット`, `${name} 撮影場所`]
+  }
+  
   // High-volume keyword templates for strategic SEO
   const templates = [
-    `${name}が出演した番組・映画のロケ地巡り完全ガイド。`,
-    `推し活ファン必見！${name}の聖地巡礼スポット${locationsCount}箇所を詳しく紹介。`,
-    `${name}の行きつけグルメスポット情報まとめ。実際に訪問したファンの口コミも掲載。`,
-    `【${name} 私服特定】着用アイテム${items}件をブランド・価格付きで解説。`
+    `${longtailKeywords.locations[0]}から${longtailKeywords.locations[1]}まで、${name}が出演した番組・映画の撮影場所を完全ガイド。`,
+    `推し活ファン必見！${longtailKeywords.spots[2]} ${locationsCount}箇所を詳しく紹介。実際に訪問できる${longtailKeywords.locations[2]}情報が満載。`,
+    `${longtailKeywords.locations[0]}情報まとめ。実際に訪問した推し活ファンの口コミ・写真・アクセス方法も掲載。`,
+    `【${longtailKeywords.fashion[0]}特定】着用アイテム${items}件をブランド・価格付きで解説。${longtailKeywords.fashion[2]}の参考にどうぞ。`
   ]
 
   let description = templates.join(' ')
   
-  // Add recent visits if available
+  // Add recent visits with longtail keywords
   if (recentVisits.length > 0) {
-    description += ` 最近の訪問店舗：${recentVisits.slice(0, 2).join('、')}など。`
+    description += ` 最近の${longtailKeywords.locations[0]}：${recentVisits.slice(0, 2).join('、')}など。${longtailKeywords.spots[1]}におすすめ。`
   }
   
   // Add trending tags for longtail keyword coverage
   if (popularTags.length > 0) {
-    description += ` ${popularTags.slice(0, 3).join('・')}で話題のスポット情報も充実。`
+    description += ` ${popularTags.slice(0, 3).join('・')}で話題の${longtailKeywords.spots[2]}情報も充実。`
   }
+  
+  // 地域キーワード追加（東京、渋谷等の人気検索語）
+  description += ` 東京・神奈川を中心とした${longtailKeywords.spots[1]}スポット情報を随時更新中。`
   
   return description
 }
@@ -235,23 +245,42 @@ export const generateEnhancedLocationDescription = (
 ): string => {
   const { celebrity, visitType = 'ロケ地', category = 'グルメスポット', area, features = [], priceRange } = options
   
+  // ロングテールキーワード戦略: 地域×店舗×セレブリティ
+  const locationKeywords = {
+    pilgrimage: [`${name} 聖地巡礼`, `${name} ロケ地`, `${name} 推し活`, `${name} 撮影場所`],
+    gourmet: [`${name} グルメ`, `${name} 料理`, `${name} メニュー`, `${name} 食事`],
+    access: [`${name} アクセス`, `${name} 行き方`, `${name} 最寄り駅`, `${name} 営業時間`],
+    experience: [`${name} 口コミ`, `${name} レビュー`, `${name} 体験談`, `${name} おすすめ`]
+  }
+  
   const templates = [
-    `${name}は${celebrity ? `${celebrity}の` : ''}${visitType}として人気の${category}。`,
-    `推し活ファンが実際に訪れた体験談・写真・アクセス情報をまとめました。`,
-    `営業時間・予約方法・周辺の推し活スポットも併せて紹介。`
+    `${locationKeywords.pilgrimage[0]}スポット${name}は${celebrity ? `${celebrity}の` : ''}${visitType}として人気の${category}。`,
+    `推し活ファンが実際に訪れた${locationKeywords.experience[2]}・写真・${locationKeywords.access[0]}情報をまとめました。`,
+    `${locationKeywords.access[3]}・予約方法・周辺の推し活スポットも併せて紹介。`
   ]
   
+  // 地域キーワードの強化
   if (area) {
-    templates.splice(1, 0, `${area}エリアで話題の聖地巡礼スポット。`)
+    templates.splice(1, 0, `${area}エリアで話題の${locationKeywords.pilgrimage[0]}スポット。${area} 推し活デートにもおすすめ。`)
   }
   
+  // セレブリティ関連キーワード追加
+  if (celebrity) {
+    templates.push(`${celebrity} ファン必見の${locationKeywords.pilgrimage[1]}として多くの推し活ファンが訪問。`)
+  }
+  
+  // 特徴キーワード
   if (features.length > 0) {
-    templates.push(`${features.slice(0, 2).join('・')}が特徴の名店です。`)
+    templates.push(`${features.slice(0, 2).join('・')}が特徴の名店で、${locationKeywords.gourmet[0]}情報も詳しく解説。`)
   }
   
+  // 価格帯キーワード
   if (priceRange) {
-    templates.push(`予算${priceRange}で楽しめる推し活デートにもおすすめ。`)
+    templates.push(`予算${priceRange}で楽しめる推し活デートにもおすすめ。${locationKeywords.experience[0]}でも高評価。`)
   }
+  
+  // デート・グルメキーワード追加
+  templates.push(`推し活デートや聖地巡礼の際の${locationKeywords.gourmet[0]}選びの参考にもどうぞ。`)
   
   return templates.join(' ')
 }

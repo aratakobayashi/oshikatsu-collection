@@ -49,31 +49,39 @@ export const RelatedContent: React.FC<RelatedContentProps> = ({
     try {
       setLoading(true)
       
-      // 簡単なモックデータでテスト
-      const mockItems: RelatedItem[] = [
-        {
-          id: '1',
-          title: '関連する推し',
-          type: 'celebrity',
-          image_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&q=80'
-        },
-        {
-          id: '2', 
-          title: '関連するスポット',
-          type: 'location',
-          image_url: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop&q=80'
-        },
-        {
-          id: '3',
-          title: '関連するアイテム', 
-          type: 'item',
-          image_url: 'https://images.unsplash.com/photo-1523170335258-f5c6c6bd44bd?w=400&h=400&fit=crop&q=80'
-        }
-      ]
-
-      setRelatedItems(mockItems.slice(0, limit))
+      let items: RelatedItem[] = []
+      
+      // タイプ別に実際のデータを取得
+      switch (currentType) {
+        case 'celebrity':
+          items = await getRelatedToCelebrity(currentId)
+          break
+        case 'location':
+          items = await getRelatedToLocation(currentId)
+          break
+        case 'item':
+          items = await getRelatedToItem(currentId)
+          break
+        case 'episode':
+          items = await getRelatedToEpisode(currentId)
+          break
+        default:
+          // フォールバック：人気コンテンツを表示
+          items = await getPopularContent()
+      }
+      
+      // 重複除去とシャッフル
+      const uniqueItems = items
+        .filter((item, index, arr) => 
+          arr.findIndex(i => i.id === item.id && i.type === item.type) === index
+        )
+        .slice(0, limit)
+      
+      setRelatedItems(uniqueItems)
     } catch (error) {
       console.error('Error fetching related content:', error)
+      // エラー時のフォールバック
+      await getFallbackContent()
     } finally {
       setLoading(false)
     }
@@ -327,6 +335,81 @@ export const RelatedContent: React.FC<RelatedContentProps> = ({
     return items
   }
 
+  // 人気コンテンツを取得（フォールバック用）
+  const getPopularContent = async (): Promise<RelatedItem[]> => {
+    const items: RelatedItem[] = []
+
+    try {
+      // 人気のセレブリティ
+      const { data: popularCelebs } = await db.supabase
+        .from('celebrities')
+        .select('id, name, slug, image_url, popularity')
+        .order('popularity', { ascending: false })
+        .limit(2)
+
+      if (popularCelebs) {
+        items.push(...popularCelebs.map(celeb => ({
+          id: celeb.id,
+          title: celeb.name,
+          slug: celeb.slug,
+          image_url: celeb.image_url,
+          type: 'celebrity' as const
+        })))
+      }
+
+      // 最近のエピソード
+      const { data: recentEpisodes } = await db.supabase
+        .from('episodes')
+        .select('id, title, thumbnail_url, view_count, date, celebrities(name)')
+        .order('date', { ascending: false })
+        .limit(2)
+
+      if (recentEpisodes) {
+        items.push(...recentEpisodes.map(ep => ({
+          id: ep.id,
+          title: ep.title,
+          image_url: ep.thumbnail_url,
+          type: 'episode' as const,
+          metadata: {
+            celebrity_name: ep.celebrities?.name,
+            view_count: ep.view_count
+          }
+        })))
+      }
+    } catch (error) {
+      console.error('Error fetching popular content:', error)
+    }
+
+    return items
+  }
+
+  // エラー時のフォールバック
+  const getFallbackContent = async () => {
+    const fallbackItems: RelatedItem[] = [
+      {
+        id: 'popular',
+        title: '人気のタレント・推し一覧',
+        type: 'celebrity',
+        image_url: '/placeholder-celebrity.jpg',
+        slug: ''
+      },
+      {
+        id: 'locations',
+        title: '聖地巡礼スポット一覧',
+        type: 'location',
+        image_url: '/placeholder-location.jpg'
+      },
+      {
+        id: 'items',
+        title: '私服特定アイテム一覧',
+        type: 'item', 
+        image_url: '/placeholder-item.jpg'
+      }
+    ]
+
+    setRelatedItems(fallbackItems.slice(0, limit))
+  }
+
   const getItemLink = (item: RelatedItem): string => {
     const basePath = {
       celebrity: '/celebrities',
@@ -352,17 +435,19 @@ export const RelatedContent: React.FC<RelatedContentProps> = ({
   const formatItemSubtitle = (item: RelatedItem): string => {
     switch (item.type) {
       case 'celebrity':
-        return 'タレント・推し'
+        return '🌟 他の人気タレント'
       case 'location':
-        return item.metadata?.address ? `📍 ${item.metadata.address.split('区')[0]}区` : 'ロケ地・スポット'
+        return item.metadata?.address 
+          ? `📍 ${item.metadata.address.split('区')[0]}区の聖地` 
+          : '🗺️ 聖地巡礼スポット'
       case 'item':
         return item.metadata?.brand 
-          ? `${item.metadata.brand} ${item.metadata?.price ? `¥${item.metadata.price.toLocaleString()}` : ''}` 
-          : 'アイテム・私服'
+          ? `👕 ${item.metadata.brand}${item.metadata?.price ? ` ¥${item.metadata.price.toLocaleString()}` : ''}` 
+          : '🛍️ 私服特定アイテム'
       case 'episode':
         return item.metadata?.celebrity_name 
-          ? `${item.metadata.celebrity_name}の動画`
-          : 'エピソード・動画'
+          ? `🎬 ${item.metadata.celebrity_name}の動画`
+          : '📺 関連エピソード'
       default:
         return ''
     }

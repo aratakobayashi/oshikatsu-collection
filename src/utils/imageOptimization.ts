@@ -264,10 +264,10 @@ export const imageOptimization = {
   // 画像エラー時のフォールバック
   getErrorFallback: (type: 'celebrity' | 'location' | 'item' | 'episode'): string => {
     const fallbacks = {
-      celebrity: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&q=80',
-      location: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop&q=80',
-      item: 'https://images.unsplash.com/photo-1523170335258-f5c6c6bd44bd?w=400&h=400&fit=crop&q=80',
-      episode: 'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=400&h=225&fit=crop&q=80'
+      celebrity: '/placeholder-celebrity.jpg',
+      location: '/placeholder-location.jpg',
+      item: '/placeholder-item.jpg',
+      episode: '/placeholder-episode.jpg'
     }
     
     return fallbacks[type]

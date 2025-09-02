@@ -3,7 +3,9 @@ import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, ExternalLink, MapPin, Phone, Globe, Calendar, Tag, Clock, Play, Eye, Users, Film, Utensils } from 'lucide-react'
 import { MetaTags, generateSEO } from '../../components/SEO/MetaTags'
 import { StructuredData, generateStructuredData } from '../../components/SEO/StructuredData'
+import { RelatedContent } from '../../components/SEO/RelatedContent'
 import { generateImageProps } from '../../utils/imageOptimization'
+import { generateLocationFAQ, generateFAQStructuredData } from '../../utils/faqGenerator'
 import Button from '../../components/ui/Button'
 import Card, { CardHeader, CardContent } from '../../components/ui/Card'
 import { supabase } from '../../lib/supabase'
@@ -213,11 +215,18 @@ export default function LocationDetail() {
     )
   }
   
-  // Generate SEO data
+  // Generate SEO data with enhanced content generation
   const locationSEO = location ? generateSEO.location(
     location.name,
     location.address || '',
-    location.episodes?.[0]?.celebrities?.name || ''
+    location.episodes?.[0]?.celebrities?.name || '',
+    {
+      visitType: location.tabelog_url ? '行きつけの店' : 'ロケ地',
+      category: location.tabelog_url ? 'グルメスポット' : '撮影場所',
+      area: location.address ? location.address.split(' ')[0] : undefined,
+      features: location.tags || [],
+      priceRange: location.tabelog_url ? '中価格帯' : undefined
+    }
   ) : { title: '', description: '', keywords: '' }
 
   // Generate structured data
@@ -245,6 +254,30 @@ export default function LocationDetail() {
     { name: location.name }
   ]) : null
 
+  // Generate enhanced FAQ using database data
+  const celebrities = location?.episodes
+    ?.map(ep => ep.celebrities?.name)
+    .filter((name): name is string => !!name) || []
+  
+  const broadcastDates = location?.episodes
+    ?.map(ep => ep.date)
+    .filter((date): date is string => !!date) || []
+  
+  const faqItems = location
+    ? generateLocationFAQ(location.name, {
+        celebrities: [...new Set(celebrities)], // 重複を除去
+        broadcastDates: broadcastDates.slice(0, 3), // 最新3件
+        address: location.address || undefined,
+        category: location.tabelog_url ? 'restaurant' : undefined,
+        nearbySpots: 0 // 将来的に周辺スポット数を計算可能
+      })
+    : []
+
+  // FAQ structured data for rich snippets
+  const faqData = faqItems.length > 0
+    ? generateFAQStructuredData(faqItems)
+    : null
+
   return (
     <div className="min-h-screen bg-gray-50">
       {location && (
@@ -260,7 +293,8 @@ export default function LocationDetail() {
           
           <StructuredData data={[
             ...(placeStructuredData ? [placeStructuredData] : []),
-            ...(breadcrumbData ? [breadcrumbData] : [])
+            ...(breadcrumbData ? [breadcrumbData] : []),
+            ...(faqData ? [faqData] : [])
           ]} />
         </>
       )}
@@ -593,6 +627,18 @@ export default function LocationDetail() {
             </Card>
           </div>
         </div>
+
+        {/* Related Content Section */}
+        {location && (
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 pb-16">
+            <RelatedContent
+              currentId={location.id}
+              currentType="location"
+              currentTitle={location.name}
+              limit={6}
+            />
+          </div>
+        )}
       </div>
     </div>
   )

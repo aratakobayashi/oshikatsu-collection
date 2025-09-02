@@ -1,0 +1,36 @@
+{
+  "timestamp": "2025-09-01T15:42:04.141Z",
+  "totalPages": 1283,
+  "sitemaps": [
+    {
+      "name": "sitemap.xml",
+      "pages": 1283,
+      "description": "メインサイトマップ（全ページ統合）"
+    },
+    {
+      "name": "sitemap-locations.xml",
+      "pages": 255,
+      "description": "ロケーションページ専用"
+    },
+    {
+      "name": "sitemap-celebrities.xml",
+      "pages": 28,
+      "description": "セレブリティページ専用"
+    },
+    {
+      "name": "sitemap-episodes.xml",
+      "pages": 1000,
+      "description": "エピソードページ専用"
+    },
+    {
+      "name": "sitemap-index.xml",
+      "pages": 0,
+      "description": "サイトマップインデックス（大規模サイト用）"
+    }
+  ],
+  "highPriorityPages": 188,
+  "contentUpdateInfo": {
+    "locationsWithContent": 249,
+    "averagePagePriority": 0.65
+  }
+}

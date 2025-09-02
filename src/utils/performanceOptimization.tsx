@@ -194,17 +194,22 @@ export const preloadCriticalResources = () => {
 
 // 7. パフォーマンス監視
 export const measureWebVitals = () => {
-  // LCP (Largest Contentful Paint)
-  if ('web-vital' in window) {
-    // @ts-ignore
-    import('web-vitals').then(({ getLCP, getFID, getCLS, getINP, getTTFB }) => {
-      getLCP(console.log)
-      getFID(console.log)
-      getCLS(console.log)
-      getINP(console.log)
-      getTTFB(console.log)
-    })
-  }
+  // Web Vitals の測定
+  import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+    const onPerfEntry = (entry: any) => {
+      if (import.meta.env.DEV) {
+        console.log('Web Vital:', entry)
+      }
+    }
+    
+    getCLS(onPerfEntry)
+    getFID(onPerfEntry)  
+    getFCP(onPerfEntry)
+    getLCP(onPerfEntry)
+    getTTFB(onPerfEntry)
+  }).catch(() => {
+    console.warn('Failed to load web-vitals')
+  })
 
   // Custom Performance Marks
   performance.mark('app-init-start')
@@ -245,6 +250,14 @@ export const useDebouncedSearch = (searchTerm: string, delay: number = 300) => {
 
 // 10. パフォーマンス最適化の初期化
 export const initializePerformanceOptimizations = () => {
+  // Resource hints and preloading
+  import('./resourceHints').then(({ initializeSmartPreloading }) => {
+    initializeSmartPreloading()
+  }).catch(() => {
+    // Gracefully handle import failure
+    console.warn('Failed to load resource hints')
+  })
+  
   // Critical resources のプリロード（存在するリソースのみ）
   // preloadCriticalResources() // 一時的に無効化
   

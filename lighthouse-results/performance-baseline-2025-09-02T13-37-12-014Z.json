@@ -1,0 +1,57 @@
+[
+  {
+    "page": "home",
+    "url": "https://collection.oshikatsu-guide.com/",
+    "performance": 0,
+    "fcp": "Error",
+    "lcp": "Error",
+    "cls": "Error",
+    "tbt": "Error",
+    "si": "Error",
+    "tti": "Error"
+  },
+  {
+    "page": "celebrities",
+    "url": "https://collection.oshikatsu-guide.com/celebrities",
+    "performance": 0,
+    "fcp": "Error",
+    "lcp": "Error",
+    "cls": "Error",
+    "tbt": "Error",
+    "si": "Error",
+    "tti": "Error"
+  },
+  {
+    "page": "celebrity-profile",
+    "url": "https://collection.oshikatsu-guide.com/celebrities/matsushige-yutaka",
+    "performance": 0,
+    "fcp": "Error",
+    "lcp": "Error",
+    "cls": "Error",
+    "tbt": "Error",
+    "si": "Error",
+    "tti": "Error"
+  },
+  {
+    "page": "locations",
+    "url": "https://collection.oshikatsu-guide.com/locations",
+    "performance": 0,
+    "fcp": "Error",
+    "lcp": "Error",
+    "cls": "Error",
+    "tbt": "Error",
+    "si": "Error",
+    "tti": "Error"
+  },
+  {
+    "page": "items",
+    "url": "https://collection.oshikatsu-guide.com/items",
+    "performance": 0,
+    "fcp": "Error",
+    "lcp": "Error",
+    "cls": "Error",
+    "tbt": "Error",
+    "si": "Error",
+    "tti": "Error"
+  }
+]

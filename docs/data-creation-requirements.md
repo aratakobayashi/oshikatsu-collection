@@ -299,24 +299,83 @@ const getCategoryImage = (category: string, locationId: string) => {
 - **画質基準**: 400x250px以上、鮮明で魅力的な画像
 - **権利関係**: 使用許可済み、または権利フリー画像のみ
 
-### 3.4 収益化要件（食べログアフィリエイト）
+### 3.4 収益化要件（LinkSwitch必須対応）
 
-#### 3.4.1 アフィリエイトリンク管理
+#### 3.4.1 LinkSwitch活用によるアフィリエイト管理
+
+**🚨 重要**: 2025年以降、すべてのロケーションデータでLinkSwitchの活用を必須とします。
+
 ```typescript
-interface AffiliateLink {
+interface LocationWithLinkSwitch {
   location_id: string         // locations.id
-  tabelog_url: string        // 食べログURL
-  affiliate_url: string      // アフィリエイト変換後URL
-  commission_rate?: number   // 手数料率
-  last_updated: string       // 最終更新日
+  tabelog_url: string        // 食べログ直接URL（LinkSwitchで自動変換）
+  affiliate_info: {
+    linkswitch: {
+      status: 'active' | 'pending' | 'unavailable'
+      last_verified: string
+      original_url: string     // 元の食べログURL
+    }
+  }
 }
 ```
 
-#### 3.4.2 実装要件
-- 食べログURLの自動検出・収集
-- バリューコマース等のアフィリエイトサービス連携
-- 予約ボタンでのアフィリエイトリンク表示
-- クリック率・収益のトラッキング
+#### 3.4.2 LinkSwitch実装要件
+
+**必須設定**:
+- `index.html`にLinkSwitch JSタグ設置済み（`vc_pid: "891908080"`）
+- 食べログプログラム（PID: 2147651）との提携承認済み
+
+**URL設定ルール**:
+```typescript
+// ✅ 正しい設定（LinkSwitch対応）
+tabelog_url: "https://tabelog.com/tokyo/A1313/A131303/13065350/"
+
+// ❌ 禁止（複雑なアフィリエイトURL）
+tabelog_url: "https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=..."
+
+// ❌ 禁止（MyLink形式）
+tabelog_url: "https://dal.valuecommerce.com/..."
+```
+
+**自動変換の仕組み**:
+- ユーザーがリンクをクリック
+- LinkSwitchが自動でアフィリエイトリンクに変換
+- 収益が発生（手動設定不要）
+
+#### 3.4.3 データ登録・更新時の必須チェック
+
+**新規ロケーション登録時**:
+1. 食べログで店舗検索
+2. **直接URL**を`tabelog_url`に設定
+3. MyLinkやservlet/referral形式は使用禁止
+
+**既存データ更新時**:
+```bash
+# 複雑なアフィリエイトURLを直接URLに変換
+npx tsx scripts/convert-complex-urls-to-direct.ts
+
+# LinkSwitch活用状況の分析
+npx tsx scripts/analyze-linkswitch-compatibility.ts
+```
+
+#### 3.4.4 運用上のメリット
+
+**従来方式との比較**:
+- **従来**: 186店舗 × 5分/店舗 = 15.5時間
+- **LinkSwitch**: 初期設定30分 + 186店舗 × 1分/店舗 = 3.6時間
+- **削減効果**: 約12時間（77%削減）
+
+**保守性の向上**:
+- データベース構造の簡素化
+- リンク切れリスクの軽減
+- 新規店舗追加時の作業効率化
+
+#### 3.4.5 トラッキングと成果測定
+
+**クリック確認方法**:
+1. リンクにマウスオーバー → URLが`aml.valuecommerce.com`に変換されることを確認
+2. 開発者ツール → Networkタブ → `vcdal.js`の読み込み確認
+3. バリューコマース管理画面 → リアルタイムレポートでクリック数確認
 
 ---
 

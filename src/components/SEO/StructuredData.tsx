@@ -121,12 +121,46 @@ interface BreadcrumbStructuredData extends BaseStructuredData {
   }>
 }
 
+interface FAQStructuredData extends BaseStructuredData {
+  "@type": "FAQPage"
+  mainEntity: Array<{
+    "@type": "Question"
+    name: string
+    acceptedAnswer: {
+      "@type": "Answer"
+      text: string
+    }
+  }>
+}
+
+interface ReviewStructuredData extends BaseStructuredData {
+  "@type": "Review"
+  itemReviewed: {
+    "@type": "Place" | "Person" | "Product"
+    name: string
+  }
+  author: {
+    "@type": "Person"
+    name: string
+  }
+  reviewRating: {
+    "@type": "Rating"
+    ratingValue: number
+    bestRating?: number
+    worstRating?: number
+  }
+  reviewBody: string
+  datePublished: string
+}
+
 type StructuredDataType = 
   | PersonStructuredData 
   | PlaceStructuredData 
   | ProductStructuredData 
   | WebSiteStructuredData 
   | BreadcrumbStructuredData
+  | FAQStructuredData
+  | ReviewStructuredData
 
 interface StructuredDataProps {
   data: StructuredDataType | StructuredDataType[]
@@ -397,5 +431,96 @@ export const generateStructuredData = {
       name: item.name,
       ...(item.url && { item: item.url })
     }))
-  })
+  }),
+
+  // FAQ structured data for rich snippets
+  faq: (
+    questions: Array<{ question: string; answer: string }>
+  ): FAQStructuredData => ({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: questions.map(qa => ({
+      "@type": "Question",
+      name: qa.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: qa.answer
+      }
+    }))
+  }),
+
+  // Review structured data
+  review: (
+    options: {
+      itemType: 'Place' | 'Person' | 'Product'
+      itemName: string
+      reviewerName: string
+      rating: number
+      reviewText: string
+      publishDate: string
+      maxRating?: number
+    }
+  ): ReviewStructuredData => ({
+    "@context": "https://schema.org",
+    "@type": "Review",
+    itemReviewed: {
+      "@type": options.itemType,
+      name: options.itemName
+    },
+    author: {
+      "@type": "Person",
+      name: options.reviewerName
+    },
+    reviewRating: {
+      "@type": "Rating",
+      ratingValue: options.rating,
+      bestRating: options.maxRating || 5,
+      worstRating: 1
+    },
+    reviewBody: options.reviewText,
+    datePublished: options.publishDate
+  }),
+
+  // Generate celebrity-specific FAQ data
+  celebrityFAQ: (celebrityName: string, stats: { locations: number; items: number }) => {
+    const questions = [
+      {
+        question: `${celebrityName}が実際に行ったお店はどこですか？`,
+        answer: `${celebrityName}が番組で訪れたお店や行きつけのお店など、${stats.locations}箇所の詳細情報を掲載しています。アクセス方法や営業時間、実際に訪問したファンの体験談も含めて紹介しています。`
+      },
+      {
+        question: `${celebrityName}の私服はどこで買えますか？`,
+        answer: `${celebrityName}が着用したアイテム${stats.items}件について、ブランド情報と購入リンクを掲載しています。価格帯やコーディネートのポイントも詳しく解説しています。`
+      },
+      {
+        question: `${celebrityName}の聖地巡礼におすすめのルートはありますか？`,
+        answer: `${celebrityName}関連のスポットを効率よく回れるモデルルートを提案しています。公共交通機関でのアクセス方法や、周辺の観光スポット情報も併せて紹介しています。`
+      }
+    ]
+    
+    return generateStructuredData.faq(questions)
+  },
+
+  // Generate location-specific FAQ data
+  locationFAQ: (locationName: string, celebrityName?: string) => {
+    const questions = [
+      {
+        question: `${locationName}の営業時間は何時ですか？`,
+        answer: `${locationName}の営業時間や定休日、予約の可否など、訪問前に知っておくべき基本情報をまとめています。季節による営業時間の変更がある場合も掲載しています。`
+      },
+      {
+        question: `${locationName}へのアクセス方法を教えてください。`,
+        answer: `${locationName}への電車・バス・車でのアクセス方法を詳しく説明しています。最寄り駅からの徒歩ルートや駐車場情報も含めて案内しています。`
+      }
+    ]
+    
+    if (celebrityName) {
+      questions.push({
+        question: `${celebrityName}が${locationName}を訪れたのはいつですか？`,
+        answer: `${celebrityName}が${locationName}を訪問した番組情報や時期について詳しく紹介しています。その時の様子や注文したメニューなどの情報も掲載しています。`
+      })
+    }
+    
+    return generateStructuredData.faq(questions)
+  }
 }

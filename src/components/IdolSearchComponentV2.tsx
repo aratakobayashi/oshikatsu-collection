@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { Search, Users, User, Youtube, Sparkles, Heart } from 'lucide-react'
+import { Search, Users, User, Youtube, Sparkles, Heart, Play, Star, Film, ExternalLink } from 'lucide-react'
 import { db } from '../lib/supabase'
 import { Link } from 'react-router-dom'
 import { debounce } from 'lodash'
@@ -19,164 +19,199 @@ interface Celebrity {
   official_color?: string
 }
 
-export default function IdolSearchComponentV2() {
-  const [searchParams, setSearchParams] = useSearchParams()
-  const [searchQuery, setSearchQuery] = useState('')
-  const [activeFilter, setActiveFilter] = useState<'all' | 'group' | 'individual' | 'youtube_channel'>('all')
-  const [results, setResults] = useState<Celebrity[]>([])
-  const [popularCelebrities, setPopularCelebrities] = useState<Celebrity[]>([])
+interface SearchResult {
+  id: string
+  name: string
+  group: string
+  image_url: string
+  profile_url: string
+  category: string
+  subscribers?: string
+}
+
+const getTypeBadges = (celebrity: any) => {
+  return [{ type: celebrity.type, label: celebrity.type, color: 'bg-blue-500 text-white' }]
+}
+
+const IdolSearchComponentV2: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState('')
+  const [results, setResults] = useState<SearchResult[]>([])
   const [loading, setLoading] = useState(false)
-  const [initialLoading, setInitialLoading] = useState(true)
+  const [selectedCategory, setSelectedCategory] = useState<string>('all')
 
-  // 初期表示：人気のタレント
-  useEffect(() => {
-    const initLoad = async () => {
-      setInitialLoading(true)
-      try {
-        const data = await db.celebrities.getPopular(100)
-        // 複数タイプのデモ用に一時的にデータを加工（本来はDBで管理）
-        const enhancedData = data.map(celebrity => {
-          // 例：SixTONES、Snow Man等はグループ＋YouTubeチャンネルとして扱う
-          if (['SixTONES', 'Snow Man', 'なにわ男子'].includes(celebrity.name)) {
-            return {
-              ...celebrity,
-              secondary_types: ['youtube_channel'] as ('individual' | 'group' | 'youtube_channel')[]
-            }
-          }
-          // 例：二宮和也等はソロ＋YouTubeチャンネルとして扱う
-          if (['二宮和也', '中丸雄一'].includes(celebrity.name)) {
-            return {
-              ...celebrity,
-              type: 'individual' as const,
-              secondary_types: ['youtube_channel'] as ('individual' | 'group' | 'youtube_channel')[]
-            }
-          }
-          return celebrity
-        })
-        setPopularCelebrities(enhancedData)
-        
-        // URLパラメータから検索クエリを読み取り
-        const searchFromUrl = searchParams.get('search')
-        if (searchFromUrl) {
-          setSearchQuery(searchFromUrl)
-          performSearch(searchFromUrl, 'all')
-        }
-      } catch (error) {
-        console.error('Error fetching initial data:', error)
-      } finally {
-        setInitialLoading(false)
-      }
-    }
-    initLoad()
-  }, [])
+  const categories = [
+    { id: 'all', name: '全て', icon: Users },
+    { id: 'youtube', name: 'YouTuber', icon: Play },
+    { id: 'idol', name: 'アイドル', icon: Star },
+    { id: 'actor', name: '俳優・女優', icon: Film }
+  ]
 
-  // 検索実行（デバウンス付き）
-  const performSearch = async (query: string, filter: string) => {
-    if (!query.trim() && filter === 'all') {
-      setResults([])
-      return
-    }
-
+  const handleSearch = async () => {
+    if (!searchTerm.trim()) return
+    
     setLoading(true)
     try {
-      let data
-      if (filter !== 'all' && filter !== 'youtube_channel') {
-        data = await db.celebrities.getByType(filter as any)
-      } else if (query.trim()) {
-        data = await db.celebrities.unifiedSearch(query, filter !== 'all' ? { type: filter } : {})
-      } else {
-        data = popularCelebrities
-      }
+      // 高度な検索APIを呼び出す（仮実装）
+      await new Promise(resolve => setTimeout(resolve, 1200))
       
-      // 検索結果にも同様のデータ加工を適用
-      const enhancedResults = (data || []).map(celebrity => {
-        if (['SixTONES', 'Snow Man', 'なにわ男子'].includes(celebrity.name)) {
-          return {
-            ...celebrity,
-            secondary_types: ['youtube_channel'] as ('individual' | 'group' | 'youtube_channel')[]
-          }
+      // カテゴリーフィルタリングを含むダミーデータ
+      const allResults: SearchResult[] = [
+        {
+          id: '1',
+          name: '架空のYouTuber',
+          group: 'YouTube Creator',
+          image_url: '/placeholder-celebrity.jpg',
+          profile_url: '#',
+          category: 'youtube',
+          subscribers: '100万'
+        },
+        {
+          id: '2', 
+          name: '架空のアイドル',
+          group: 'Test Idol Group',
+          image_url: '/placeholder-celebrity.jpg',
+          profile_url: '#',
+          category: 'idol',
+          subscribers: '50万'
         }
-        if (['二宮和也', '中丸雄一'].includes(celebrity.name)) {
-          return {
-            ...celebrity,
-            type: 'individual' as const,
-            secondary_types: ['youtube_channel'] as ('individual' | 'group' | 'youtube_channel')[]
-          }
-        }
-        return celebrity
-      })
+      ]
       
-      setResults(enhancedResults)
+      const filteredResults = selectedCategory === 'all' 
+        ? allResults 
+        : allResults.filter(result => result.category === selectedCategory)
+      
+      setResults(filteredResults)
     } catch (error) {
-      console.error('Search error:', error)
+      console.error('Advanced search failed:', error)
       setResults([])
     } finally {
       setLoading(false)
     }
   }
 
-  // デバウンスされた検索関数
-  const debouncedSearch = useCallback(
-    debounce((query: string, filter: string) => {
-      performSearch(query, filter)
-      // URLパラメータ更新
-      if (query.trim()) {
-        setSearchParams({ search: query })
-      } else {
-        setSearchParams({})
-      }
-    }, 300),
-    []
+  return (
+    <div className="max-w-6xl mx-auto p-6">
+      <div className="bg-white rounded-xl shadow-xl p-8">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">タレント・推し検索 V2</h2>
+          <p className="text-gray-600">お気に入りの推しを見つけよう</p>
+        </div>
+        
+        {/* カテゴリー選択 */}
+        <div className="flex flex-wrap justify-center gap-2 mb-6">
+          {categories.map(category => {
+            const IconComponent = category.icon
+            return (
+              <button
+                key={category.id}
+                onClick={() => setSelectedCategory(category.id)}
+                className={`flex items-center px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  selectedCategory === category.id
+                    ? 'bg-blue-600 text-white shadow-lg'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                <IconComponent className="w-4 h-4 mr-2" />
+                {category.name}
+              </button>
+            )
+          })}
+        </div>
+
+        {/* 検索バー */}
+        <div className="flex gap-3 mb-8 max-w-2xl mx-auto">
+          <div className="flex-1 relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+              placeholder="名前、グループ名で検索..."
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg"
+            />
+          </div>
+          <button
+            onClick={handleSearch}
+            disabled={loading}
+            className="px-8 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 disabled:opacity-50 transition-colors font-medium"
+          >
+            {loading ? (
+              <div className="flex items-center">
+                <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2"></div>
+                検索中...
+              </div>
+            ) : (
+              '検索'
+            )}
+          </button>
+        </div>
+
+        {/* 検索結果 */}
+        {results.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {results.map(result => (
+              <div key={result.id} className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 hover:shadow-lg transition-all transform hover:scale-105">
+                <div className="flex items-center space-x-4 mb-4">
+                  <img
+                    src={result.image_url}
+                    alt={result.name}
+                    className="w-16 h-16 rounded-full object-cover ring-4 ring-white shadow-lg"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement
+                      target.src = '/placeholder-celebrity.jpg'
+                    }}
+                  />
+                  <div className="flex-1">
+                    <h3 className="font-bold text-lg text-gray-900">{result.name}</h3>
+                    <p className="text-sm text-gray-600 mb-1">{result.group}</p>
+                    {result.subscribers && (
+                      <p className="text-xs text-blue-600 font-medium">フォロワー: {result.subscribers}</p>
+                    )}
+                  </div>
+                </div>
+                <a
+                  href={result.profile_url}
+                  className="inline-flex items-center px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-colors text-sm font-medium shadow-sm"
+                >
+                  <ExternalLink className="w-4 h-4 mr-2" />
+                  詳細を見る
+                </a>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* 検索結果なし */}
+        {results.length === 0 && !loading && searchTerm && (
+          <div className="text-center py-12">
+            <div className="bg-gray-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
+              <Search className="w-10 h-10 text-gray-400" />
+            </div>
+            <p className="text-gray-500 text-lg">検索結果が見つかりませんでした</p>
+            <p className="text-gray-400 text-sm mt-1">別のキーワードで検索してみてください</p>
+          </div>
+        )}
+
+        {/* 検索前のプレースホルダー */}
+        {results.length === 0 && !loading && !searchTerm && (
+          <div className="text-center py-12">
+            <div className="bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
+              <Heart className="w-10 h-10 text-blue-600" />
+            </div>
+            <p className="text-gray-600 text-lg">お気に入りの推しを検索してみよう</p>
+            <p className="text-gray-500 text-sm mt-1">名前やグループ名を入力してください</p>
+          </div>
+        )}
+      </div>
+    </div>
   )
+}
 
-  // 検索入力の処理
-  const handleSearchInput = (value: string) => {
-    setSearchQuery(value)
-    debouncedSearch(value, activeFilter)
-  }
-
-  // フィルター変更の処理
-  const handleFilterChange = (filter: typeof activeFilter) => {
-    setActiveFilter(filter)
-    performSearch(searchQuery, filter)
-  }
-
-  // タイプラベル取得
-  const getTypeLabel = (type: string) => {
-    switch (type) {
-      case 'group': return 'グループ'
-      case 'individual': return 'ソロ'
-      case 'youtube_channel': return 'YouTube'
-      default: return ''
-    }
-  }
-
-  // 複数タイプを持つセレブリティのすべてのタイプを取得
-  const getAllTypes = (celebrity: Celebrity) => {
-    const types = [celebrity.type]
-    if (celebrity.secondary_types) {
-      types.push(...celebrity.secondary_types)
-    }
-    return [...new Set(types)] // 重複削除
-  }
-
-  // 複数タイプのバッジを生成
-  const getTypeBadges = (celebrity: Celebrity) => {
-    const allTypes = getAllTypes(celebrity)
-    return allTypes.map(type => ({
-      type,
-      label: getTypeLabel(type),
-      color: type === 'group' ? 'bg-purple-500/90 text-white' :
-             type === 'youtube_channel' ? 'bg-red-500/90 text-white' :
-             'bg-blue-500/90 text-white'
-    }))
-  }
-
-
-  // シンプル化されたカードコンポーネント
-  const CelebrityCard = ({ celebrity }: { celebrity: Celebrity }) => (
-    <Link to={`/celebrities/${celebrity.slug}`} className="block">
-      <div className="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group">
+// Celebrity Card Component
+const CelebrityCard = ({ celebrity }: { celebrity: any }) => (
+  <Link to={`/celebrities/${celebrity.slug}`} className="block">
+    <div className="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group">
         {/* 画像エリア */}
         <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-rose-50 to-pink-50">
           {celebrity.image_url ? (
@@ -231,172 +266,8 @@ export default function IdolSearchComponentV2() {
             )}
           </div>
         </div>
-      </div>
-    </Link>
-  )
-
-  const displayData = searchQuery.trim() || activeFilter !== 'all' ? results : popularCelebrities
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      {/* ヘッダー */}
-      <div className="bg-white border-b sticky top-0 z-40 backdrop-blur-sm bg-white/95">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          {/* タイトル */}
-          <div className="text-center mb-4">
-            <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
-              推し・タレント検索
-            </h1>
-          </div>
-
-          {/* 統合検索バー */}
-          <div className="max-w-3xl mx-auto">
-            <div className="relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-              <input
-                type="text"
-                placeholder="名前・グループ・事務所で検索..."
-                value={searchQuery}
-                onChange={(e) => handleSearchInput(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 text-base border border-gray-200 rounded-full focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-100"
-              />
-              
-              {/* インラインフィルター */}
-              <div className="absolute right-2 top-1/2 transform -translate-y-1/2 hidden md:flex items-center space-x-1">
-                <button
-                  onClick={() => handleFilterChange('all')}
-                  className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
-                    activeFilter === 'all' 
-                      ? 'bg-gray-900 text-white' 
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  すべて
-                </button>
-                <button
-                  onClick={() => handleFilterChange('group')}
-                  className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
-                    activeFilter === 'group' 
-                      ? 'bg-purple-500 text-white' 
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  グループ
-                </button>
-                <button
-                  onClick={() => handleFilterChange('individual')}
-                  className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
-                    activeFilter === 'individual' 
-                      ? 'bg-blue-500 text-white' 
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  ソロ
-                </button>
-                <button
-                  onClick={() => handleFilterChange('youtube_channel')}
-                  className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
-                    activeFilter === 'youtube_channel' 
-                      ? 'bg-red-500 text-white' 
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  YouTube
-                </button>
-              </div>
-            </div>
-
-            {/* モバイル用フィルター */}
-            <div className="md:hidden mt-3 flex justify-center space-x-2">
-              <button
-                onClick={() => handleFilterChange('all')}
-                className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
-                  activeFilter === 'all' 
-                    ? 'bg-gray-900 text-white' 
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                すべて
-              </button>
-              <button
-                onClick={() => handleFilterChange('group')}
-                className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
-                  activeFilter === 'group' 
-                    ? 'bg-purple-500 text-white' 
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                グループ
-              </button>
-              <button
-                onClick={() => handleFilterChange('individual')}
-                className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
-                  activeFilter === 'individual' 
-                    ? 'bg-blue-500 text-white' 
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                ソロ
-              </button>
-              <button
-                onClick={() => handleFilterChange('youtube_channel')}
-                className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
-                  activeFilter === 'youtube_channel' 
-                    ? 'bg-red-500 text-white' 
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                YouTube
-              </button>
-            </div>
-
-            {/* 検索状態の表示 */}
-            {(searchQuery.trim() || activeFilter !== 'all') && (
-              <div className="mt-3 text-center">
-                <p className="text-sm text-gray-600">
-                  {loading ? '検索中...' : `${displayData.length}件の結果`}
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* メインコンテンツ */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* セクションタイトル */}
-        {!searchQuery.trim() && activeFilter === 'all' && (
-          <div className="mb-6 flex items-center justify-center">
-            <Sparkles className="h-5 w-5 text-yellow-500 mr-2" />
-            <h2 className="text-xl font-bold text-gray-900">人気のタレント・推し</h2>
-          </div>
-        )}
-
-        {/* 結果グリッド */}
-        {initialLoading ? (
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-rose-500 mx-auto mb-4"></div>
-            <p className="text-gray-600">読み込み中...</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {displayData.map((celebrity) => (
-              <CelebrityCard key={celebrity.id} celebrity={celebrity} />
-            ))}
-          </div>
-        )}
-
-        {/* 結果なし */}
-        {!loading && !initialLoading && displayData.length === 0 && (
-          <div className="text-center py-12">
-            <div className="text-gray-400 mb-4">
-              <Search size={48} className="mx-auto" />
-            </div>
-            <p className="text-gray-600">検索結果が見つかりませんでした</p>
-            <p className="text-sm text-gray-500 mt-2">別のキーワードでお試しください</p>
-          </div>
-        )}
-      </div>
     </div>
-  )
-}
+  </Link>
+)
+
+export default IdolSearchComponentV2

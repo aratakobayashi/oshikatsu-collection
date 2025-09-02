@@ -1,0 +1,269 @@
+{
+  "timestamp": "2025-09-01T14:51:44.977Z",
+  "phase": "comprehensive-final-cleanup",
+  "total_before": 322,
+  "person_names_deleted": 26,
+  "duplicates_consolidated": 28,
+  "total_deleted": 54,
+  "final_count": 268,
+  "deleted_items": {
+    "person_names": [
+      {
+        "id": "d6748ff6-0a39-426a-8b63-0f91bc4b22b0",
+        "name": "・他",
+        "reason": "person_name"
+      },
+      {
+        "id": "1a34575c-6c4a-4881-95be-ae39858b55bf",
+        "name": "・他",
+        "reason": "person_name"
+      },
+      {
+        "id": "d100a125-a133-4384-8208-f021865b56a5",
+        "name": "ユニバーサル",
+        "reason": "person_name"
+      },
+      {
+        "id": "24024091-d64f-464e-9913-68600f5f607d",
+        "name": "ユニバーサル",
+        "reason": "person_name"
+      },
+      {
+        "id": "2e07d542-8a72-414f-96b3-47f03b30879f",
+        "name": "佐々木 舞香 Maika Sasaki",
+        "reason": "person_name"
+      },
+      {
+        "id": "a5236caf-fead-4387-85b4-11f699dd38df",
+        "name": "佐々木 舞香 Maika Sasaki",
+        "reason": "person_name"
+      },
+      {
+        "id": "b51564c5-8af6-4b19-b862-7b3aaabd84e7",
+        "name": "大場 花菜 Hana Oba",
+        "reason": "person_name"
+      },
+      {
+        "id": "3f0a7755-69fb-464d-8768-a4f475c1a735",
+        "name": "大場 花菜 Hana Oba",
+        "reason": "person_name"
+      },
+      {
+        "id": "bfb8d12f-8e2b-459e-a625-68cc937c1de9",
+        "name": "山本 杏奈 Anna Yamamoto",
+        "reason": "person_name"
+      },
+      {
+        "id": "3d7d0515-c300-4da8-b3b5-b9345b8aaeb3",
+        "name": "山本 杏奈 Anna Yamamoto",
+        "reason": "person_name"
+      },
+      {
+        "id": "847286f3-9381-413a-9df0-1538723f1837",
+        "name": "瀧脇 笙古 Shoko Takiwaki",
+        "reason": "person_name"
+      },
+      {
+        "id": "a34cd709-6148-4be4-813d-7daf14798e3f",
+        "name": "瀧脇 笙古 Shoko Takiwaki",
+        "reason": "person_name"
+      },
+      {
+        "id": "3fd49ed5-7992-40aa-8366-3001af6f42ad",
+        "name": "瀧脇 笙古 Shoko Takiwaki",
+        "reason": "person_name"
+      },
+      {
+        "id": "e5bff626-73c6-4793-8d32-ff02191258c9",
+        "name": "菅波 美玲 Mirei Suganami",
+        "reason": "person_name"
+      },
+      {
+        "id": "8cd4d48f-f728-4a69-936f-83f174eb15db",
+        "name": "菅波 美玲 Mirei Suganami",
+        "reason": "person_name"
+      },
+      {
+        "id": "1805b7b0-5be9-4342-bf87-55beea3e24d2",
+        "name": "菅波 美玲 Mirei Suganami",
+        "reason": "person_name"
+      },
+      {
+        "id": "6ea0ef23-76e1-48fd-a4d0-76bc7e161c26",
+        "name": "落合 希来里 Kirari Ochiai",
+        "reason": "person_name"
+      },
+      {
+        "id": "280debdc-6eac-4122-97a7-33fe0d436641",
+        "name": "落合 希来里 Kirari Ochiai",
+        "reason": "person_name"
+      },
+      {
+        "id": "464fd5be-f1da-419d-ad8d-271a0163ed17",
+        "name": "蟹沢 萌子 Moeko Kanisawa",
+        "reason": "person_name"
+      },
+      {
+        "id": "6df6d105-c03a-414f-bc55-2c028c6f5be0",
+        "name": "蟹沢 萌子 Moeko Kanisawa",
+        "reason": "person_name"
+      },
+      {
+        "id": "411067ce-4381-4608-995c-98b9ce8028b0",
+        "name": "鈴木 瞳美 Hitomi Suzuki",
+        "reason": "person_name"
+      },
+      {
+        "id": "e967ee53-afc0-4536-8aaa-cf9281d661dd",
+        "name": "鈴木 瞳美 Hitomi Suzuki",
+        "reason": "person_name"
+      },
+      {
+        "id": "c86aa42a-cb8d-4160-96f8-e6ef14869b4f",
+        "name": "鈴木 瞳美 Hitomi Suzuki",
+        "reason": "person_name"
+      },
+      {
+        "id": "20878533-47b1-455f-90e4-78fc7cbf5c42",
+        "name": "鈴木 瞳美 Hitomi Suzuki",
+        "reason": "person_name"
+      },
+      {
+        "id": "b39d12c3-a577-40f3-b1ed-ab57dca5f297",
+        "name": "齋藤 樹愛羅 Kiara Saito",
+        "reason": "person_name"
+      },
+      {
+        "id": "68b53727-ce71-41d4-ac9a-eeea3cd1d83d",
+        "name": "齋藤 樹愛羅 Kiara Saito",
+        "reason": "person_name"
+      }
+    ],
+    "duplicates": [
+      {
+        "name": "ボートレース浜名湖",
+        "keep": "be37f45c-5a83-476d-b631-df6dde7ea8fb",
+        "delete": [
+          "e8ad5124-359f-407c-b6a8-0558bd394c55",
+          "d055f2c3-500f-4bd8-aa14-0b40285ae003",
+          "dbec65ce-a57d-4391-8343-dc417eba2a31",
+          "ab80963c-9582-4c1f-b454-3c9b8340706b",
+          "9e842533-1f34-45fa-9568-aeab199e2e4a",
+          "d69be670-af8f-4cd2-b794-e61c7a579f8d",
+          "063fb769-f352-4893-9bb8-2a1603ac8fc2",
+          "cca5f911-fdee-4711-a7ee-c7f542fc869d"
+        ]
+      },
+      {
+        "name": "サンリオピューロランド",
+        "keep": "c9c0deb1-6a9f-4d0a-91a9-22d4c86ece1b",
+        "delete": [
+          "b78b6d23-c621-4837-a255-18062e501473",
+          "fc59e40a-f6d9-48b9-b58f-8f1f9e3284e8",
+          "72d6c947-80fd-4a7e-9840-b8d861c86603"
+        ]
+      },
+      {
+        "name": "フレッシュネスバーガー 渋谷センター街店",
+        "keep": "b87e1262-58b3-4cd1-ae94-6860d2051f8e",
+        "delete": [
+          "97b42b86-68ae-4bc6-8840-526bcf4cf525",
+          "88881729-e9ff-4fe4-a40c-6ee87f5b3618",
+          "06d638bf-bcbd-47d9-bd29-88cafa76cbc1"
+        ]
+      },
+      {
+        "name": "築地場外市場",
+        "keep": "c31fa043-aadd-408f-96c0-53b378e51c4a",
+        "delete": [
+          "13f34bbf-e4eb-4cfd-8525-751f591ad89b",
+          "7daa34f4-5a5b-41dc-a030-421a33c6ded8"
+        ]
+      },
+      {
+        "name": "109渋谷",
+        "keep": "b07fbdb3-1260-45db-b7e3-3811f16622b8",
+        "delete": [
+          "e9e655c8-28bb-4811-863e-5df45f4fd75f"
+        ]
+      },
+      {
+        "name": "お台場海浜公園BBQエリア",
+        "keep": "b4c1537c-52af-495e-bdd0-f1123df8d3a4",
+        "delete": [
+          "02c3797f-6f1d-4a02-9461-c70c2000dfcf"
+        ]
+      },
+      {
+        "name": "キセキ食堂 上尾店",
+        "keep": "07cd42ff-c202-4246-9930-7eaa30f40b5b",
+        "delete": [
+          "19e13bd1-9a74-4fbf-9da4-1b3cc9ce71c1"
+        ]
+      },
+      {
+        "name": "ギリシャ料理 タベルナ ミリュウ",
+        "keep": "c4884eff-bb76-4748-a910-93e80f295bf7",
+        "delete": [
+          "19e30509-5fa5-49b9-a4ac-b903e604e563"
+        ]
+      },
+      {
+        "name": "スイーツパラダイス",
+        "keep": "2825ad7c-2b80-4692-90fa-c9a58b2e3a74",
+        "delete": [
+          "f794a4ee-8d0e-4ebe-a4e8-824dd3747843"
+        ]
+      },
+      {
+        "name": "とんかつ しお田",
+        "keep": "51373d50-6b30-4020-99c8-ac147cae8a6b",
+        "delete": [
+          "4709f5e4-c2d5-4faa-b4ef-648566e15ae4"
+        ]
+      },
+      {
+        "name": "伊勢屋食堂",
+        "keep": "9dba22c4-45a4-4c46-b6e5-e7728a8b3117",
+        "delete": [
+          "dd4d38a1-beee-4a4b-be16-69adc5a19bc6"
+        ]
+      },
+      {
+        "name": "土鍋ご飯いくしか 中目黒店",
+        "keep": "cd2b22a0-6941-411f-a762-9eb87192261c",
+        "delete": [
+          "8efc7fd3-e54e-4ba0-b669-5fb6390577f5"
+        ]
+      },
+      {
+        "name": "庄助",
+        "keep": "97bed98e-24cd-4c62-8d28-bc2dd3d31e63",
+        "delete": [
+          "01859570-bdbe-40e1-9e53-08a7b53941b5"
+        ]
+      },
+      {
+        "name": "新横浜ラーメン博物館",
+        "keep": "986a9665-48e5-41ff-bf17-235016d6753e",
+        "delete": [
+          "5c42415b-40ef-4cb8-ab17-423dbe4549e3"
+        ]
+      },
+      {
+        "name": "総本家 更科堀井 麻布十番本店",
+        "keep": "5c6e0b80-7e41-4f7f-830e-02d5f7c746e7",
+        "delete": [
+          "d44827d4-0589-46fe-92f1-0f172f08d847"
+        ]
+      },
+      {
+        "name": "羽田市場 GINZA SEVEN",
+        "keep": "4dc05277-86c3-4fd9-a3b6-ef299bbf5b01",
+        "delete": [
+          "706de7f7-870e-4b49-a0eb-bebd33d56b94"
+        ]
+      }
+    ]
+  }
+}

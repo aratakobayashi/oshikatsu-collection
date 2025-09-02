@@ -1,46 +1,146 @@
-// Service Worker - 推し活コレクション
-// 現在は基本的な実装のみ
+// Service Worker for Performance Optimization - 推し活コレクション
+const CACHE_NAME = 'oshikatsu-collection-v2';
+const STATIC_CACHE_NAME = 'static-v2';
+const API_CACHE_NAME = 'api-v2';
+const IMAGE_CACHE_NAME = 'images-v2';
 
-const CACHE_NAME = 'oshikatsu-v1';
-const urlsToCache = [
+// キャッシュするリソース
+const STATIC_ASSETS = [
   '/',
-  '/index.html'
+  '/index.html',
+  '/manifest.json'
 ];
 
-// インストール時
-self.addEventListener('install', event => {
+// インストールイベント
+self.addEventListener('install', (event) => {
+  console.log('[SW] Installing optimized service worker...');
+  
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('Opened cache');
-        return cache.addAll(urlsToCache);
+    caches.open(STATIC_CACHE_NAME)
+      .then((cache) => {
+        console.log('[SW] Caching static assets');
+        return cache.addAll(STATIC_ASSETS);
+      })
+      .then(() => {
+        console.log('[SW] Static assets cached');
+        return self.skipWaiting();
       })
   );
 });
 
-// フェッチ時
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        // キャッシュがあればそれを返す、なければネットワークから取得
-        return response || fetch(event.request);
+// アクティベートイベント
+self.addEventListener('activate', (event) => {
+  console.log('[SW] Activating optimized service worker...');
+  
+  event.waitUntil(
+    caches.keys()
+      .then((cacheNames) => {
+        return Promise.all(
+          cacheNames.map((cacheName) => {
+            if (!cacheName.includes('v2')) {
+              console.log('[SW] Deleting old cache:', cacheName);
+              return caches.delete(cacheName);
+            }
+          })
+        );
+      })
+      .then(() => {
+        console.log('[SW] Service Worker activated');
+        return self.clients.claim();
       })
   );
 });
 
-// アクティベート時（古いキャッシュの削除）
-self.addEventListener('activate', event => {
-  const cacheWhitelist = [CACHE_NAME];
-  event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
+// フェッチイベント（最適化されたキャッシュ戦略）
+self.addEventListener('fetch', (event) => {
+  const { request } = event;
+  const url = new URL(request.url);
+
+  // HTMLページ: Network First
+  if (request.mode === 'navigate') {
+    event.respondWith(networkFirst(request));
+    return;
+  }
+
+  // 静的アセット: Cache First
+  if (request.destination === 'script' || 
+      request.destination === 'style' ||
+      request.destination === 'font') {
+    event.respondWith(cacheFirst(request, STATIC_CACHE_NAME));
+    return;
+  }
+
+  // 画像: Cache First with Network Fallback
+  if (request.destination === 'image') {
+    event.respondWith(cacheFirst(request, IMAGE_CACHE_NAME));
+    return;
+  }
+
+  // API: Stale While Revalidate
+  if (url.hostname.includes('supabase.co')) {
+    event.respondWith(staleWhileRevalidate(request, API_CACHE_NAME));
+    return;
+  }
+
+  // YouTube画像: Cache First (長期キャッシュ)
+  if (url.hostname.includes('img.youtube.com')) {
+    event.respondWith(cacheFirst(request, IMAGE_CACHE_NAME));
+    return;
+  }
+
+  // その他: Network First
+  event.respondWith(networkFirst(request));
+});
+
+// Network First戦略
+async function networkFirst(request) {
+  try {
+    const networkResponse = await fetch(request);
+    if (networkResponse.ok) {
+      const cache = await caches.open(CACHE_NAME);
+      cache.put(request, networkResponse.clone());
+    }
+    return networkResponse;
+  } catch (error) {
+    const cachedResponse = await caches.match(request);
+    return cachedResponse || new Response('Offline', { status: 503 });
+  }
+}
+
+// Cache First戦略
+async function cacheFirst(request, cacheName = CACHE_NAME) {
+  const cachedResponse = await caches.match(request);
+  if (cachedResponse) {
+    return cachedResponse;
+  }
+
+  try {
+    const networkResponse = await fetch(request);
+    if (networkResponse.ok) {
+      const cache = await caches.open(cacheName);
+      cache.put(request, networkResponse.clone());
+    }
+    return networkResponse;
+  } catch (error) {
+    return new Response('Resource not available', { status: 503 });
+  }
+}
+
+// Stale While Revalidate戦略
+async function staleWhileRevalidate(request, cacheName = CACHE_NAME) {
+  const cachedResponse = await caches.match(request);
+  
+  const networkResponsePromise = fetch(request)
+    .then((networkResponse) => {
+      if (networkResponse.ok) {
+        caches.open(cacheName).then(cache => 
+          cache.put(request, networkResponse.clone())
+        );
+      }
+      return networkResponse;
     })
-  );
-});
+    .catch(() => null);
+
+  return cachedResponse || networkResponsePromise || 
+         new Response('Data not available', { status: 503 });
+}

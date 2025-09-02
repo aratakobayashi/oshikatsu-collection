@@ -1,0 +1,2899 @@
+{
+  "timestamp": "2025-09-01T14:25:33.713Z",
+  "phase": "second-phase-cleanup",
+  "total_before": 748,
+  "total_deleted": 413,
+  "deleted_locations": [
+    {
+      "id": "720c2b3f-4e21-42b8-9fef-706a2382e3ce",
+      "name": "秩父方面",
+      "address": "埼玉県秩父市",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "05371c56-9af0-4869-98ec-9858a18f8c2d",
+      "name": "谷崎 早耶 Saya Tanizaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "81c7c76c-e80c-4ebe-aa5e-da201eff1f55",
+      "name": "BLUE SIX COFFEE",
+      "address": "東京都新宿区霞ヶ丘町5-7 都立明治公園D棟",
+      "score": 3,
+      "episode_count": 1
+    },
+    {
+      "id": "40ca1532-ce3c-43e1-9903-71f77ecb5950",
+      "name": "ドッグ ポートレート リオン",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "e9936ef2-7b71-45be-a419-bc32872d7961",
+      "name": "ベニスビーチ",
+      "address": "Venice Beach, Los Angeles, CA 90291, USA",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "202fbb77-5aa0-4e92-a1e6-f9bdf0a368a0",
+      "name": "Travis Japan Wall（トラジャ壁）",
+      "address": "東京都渋谷区八幡町14-10",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "ae5b2019-a9eb-45ac-b45d-f51069ae5796",
+      "name": "豊川稲荷東京別院",
+      "address": "東京都港区元赤坂1-4-7",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "3d017328-c06a-40f1-b91a-c536ea1a5254",
+      "name": "関東近郊ドライブスポット",
+      "address": "神奈川県",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "ab6e2f82-dcd6-4796-bd91-16bbfe0cd5e4",
+      "name": "ジャニーズ事務所",
+      "address": "東京都港区赤坂",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "9cce8705-339c-4ba9-970f-32259e300fd7",
+      "name": "スポーツジム",
+      "address": "東京都港区",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "5466ec9e-aadb-4761-bc4d-3ff163756125",
+      "name": "レコーディングスタジオ",
+      "address": "東京都渋谷区",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "74d24ea9-6388-4358-abb5-713127af2ff1",
+      "name": "PLAZA",
+      "address": "東京都内各店舗",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "58edfe1d-28a1-4636-9046-1025d8957b5e",
+      "name": "横浜アリーナ",
+      "address": "神奈川県横浜市港北区新横浜3-10",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "07e05178-3999-45b1-95d3-010cdce57edd",
+      "name": "関東圏内サービスエリア",
+      "address": "関東地方の高速道路",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "c2790220-8a00-42b6-8b80-4334f05173c5",
+      "name": "都内体育館",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "62d88503-8942-4cd8-a46f-85b1bb98754f",
+      "name": "ボートレース浜名湖",
+      "address": "静岡県湖西市新居町中之郷3727-7",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "47a406b0-19cd-4279-aa41-f973edad4319",
+      "name": "ジャニーズスタジオ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "a703515c-2571-4ad5-8fb1-31a4bed798e5",
+      "name": "MV撮影スタジオ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "69b99eec-94a5-477d-b7db-0c87d8fa693c",
+      "name": "ゲームセンター",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "beb7c154-b3f0-4a16-b984-934ca8257259",
+      "name": "サンリオピューロランド",
+      "address": "東京都多摩市落合1-31",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "6035bd94-69f9-4713-9a49-7760d66f8d4a",
+      "name": "奥多摩",
+      "address": "東京都西多摩郡奥多摩町",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "ea008fd4-823f-47ce-8f59-b49490d9f058",
+      "name": "アスレチック施設",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "878c9513-f485-4619-a772-cf2c54758f54",
+      "name": "カラオケBOX",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "d63521be-c40d-45a3-bb32-1f9e00793d74",
+      "name": "SixTONESキッチンスタジオ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "3108fd4c-3717-412e-b81b-8e7d1dd32546",
+      "name": "109渋谷",
+      "address": "東京都渋谷区道玄坂2-29-1",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "91cabe9d-0b1b-430a-81e4-7a15171ec10e",
+      "name": "築地場外市場",
+      "address": "東京都中央区築地4-16-2",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "efa608a3-6315-4a85-a45d-63c0ceab9d51",
+      "name": "109渋谷",
+      "address": "東京都渋谷区道玄坂2-29-1",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "cb450c4b-444a-4694-8410-cbcd6f380fbd",
+      "name": "109渋谷",
+      "address": "東京都渋谷区道玄坂2-29-1",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "9c5078bd-43ea-40ba-8e90-e43beda205bf",
+      "name": "109渋谷",
+      "address": "東京都渋谷区道玄坂2-29-1",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "ce4f2ddc-d88b-473f-9f60-e81951017e4c",
+      "name": "スタジオ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "782be520-4c94-47ad-b18e-72c981d16a92",
+      "name": "109渋谷",
+      "address": "東京都渋谷区道玄坂2-29-1",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "51606113-44f8-4227-aceb-b9e3c1ac0163",
+      "name": "ダンススタジオ（BOYZ）",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "bee60cb5-a57b-4bb6-9a05-cf68874fd930",
+      "name": "MTV Unpluggedスタジオ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "1d466949-ae38-469f-a354-907f2cdd0b95",
+      "name": "ABCラジオ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "78c9c5ba-8adf-4544-8ed0-0a1a8974e636",
+      "name": "JUST DANCE! MV撮影スタジオ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "6006a4f8-3b2f-4c2e-849f-fb4c5f4b0420",
+      "name": "ダンススタジオ（JUST DANCE）",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "9ffd77fb-0988-4e9b-8e1f-fa615eb17367",
+      "name": "Moving Pieces 撮影スタジオ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "3b1cf103-2cd8-425e-ab46-f0f259fa7c49",
+      "name": "Candy Kiss 撮影スタジオ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "034c1c51-626c-4c0c-ac34-8d3844b75675",
+      "name": "H&M",
+      "address": "東京都内各店舗",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "96143424-331f-45fb-a1fc-b2afd8db3fcf",
+      "name": "H&M購入品",
+      "address": "東京都内（詳細不明）",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "3234b4e2-6919-466c-9d52-d9774a35f53d",
+      "name": "GU購入品",
+      "address": "東京都内（詳細不明）",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "bdb19f31-6d06-44c6-b25b-c81e77aef72f",
+      "name": "購入品紹介",
+      "address": "東京都内（詳細不明）",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "ea675902-f137-4c5d-841a-8e20c754c350",
+      "name": "サンリオピューロランド",
+      "address": "東京都多摩市落合1-31",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "89af107e-2e90-41a3-98b0-c16dba7d8abe",
+      "name": "スタジオ",
+      "address": "東京都内",
+      "score": 3,
+      "episode_count": 1
+    },
+    {
+      "id": "dcd0309c-5350-4327-9511-65704aebbd3b",
+      "name": "購入品紹介",
+      "address": "東京都内（詳細不明）",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "c6697b3a-e617-4f9c-9ec0-ae79d262868f",
+      "name": "USJ",
+      "address": "住所不明",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "cab423b5-1c01-4ee1-aaec-82b4a447f7b4",
+      "name": "購入品紹介",
+      "address": "東京都内（詳細不明）",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "44a235c3-07e2-4244-bf62-82aba95cb7ff",
+      "name": "サンリオピューロランド",
+      "address": "東京都多摩市落合1-31",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "c33928f9-d652-4916-8af8-09d2c9ec38bc",
+      "name": "Sweetest Tune 撮影スタジオ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "c90c2955-3a78-45c7-8af9-901771aa288f",
+      "name": "T.G.I. Friday Night 撮影スタジオ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "472ca163-d2a1-4f8b-9685-dee500b756ea",
+      "name": "Crazy Crazy 撮影スタジオ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "f0fb2e61-3190-49a8-aa22-37a3a8e8ce6d",
+      "name": "Tokyo Crazy Night 撮影スタジオ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "1126ba2f-0a1f-4cec-8ce3-d9728ce765bd",
+      "name": "Travis Japan デビューコンサート会場",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "59290c5a-fe6c-40c0-a9b0-07ccb78ef60f",
+      "name": "サンリオピューロランド",
+      "address": "東京都多摩市落合1-31",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "7696e490-53e9-42bf-b056-410946b7ffb4",
+      "name": "ピューロランド",
+      "address": "住所不明",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "3f46f239-0923-4091-9cba-3986792eb2ad",
+      "name": "購入品紹介",
+      "address": "東京都内（詳細不明）",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "913cbe1b-d18d-4467-9df8-50f40aeda88d",
+      "name": "浅草",
+      "address": "東京都台東区浅草",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "83c690b1-7ac6-4d71-8b34-a029c175f9b4",
+      "name": "もう撮影できません",
+      "address": "東京都内（詳細不明）",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "f30a313a-eb92-4976-a88a-f1cda86a6a4e",
+      "name": "僕たちのイマージュ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "95cb441b-1251-4588-a4d0-e9cae7fe32d1",
+      "name": "サマーチョコレート",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "175b0277-f72c-49d9-bb36-5b93736a5275",
+      "name": "ボートレース多摩川",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "94c50782-0852-458f-8c0d-ce09b927c310",
+      "name": "フジテレビTWO ドラマ・アニメ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "d64e138c-59df-4244-b33f-e059beb784ef",
+      "name": "＠cosme TOKYOアットコスメトーキョー",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "c68a13ed-7cf7-4c5b-b1a3-496f34663173",
+      "name": "ABCテレビ9月23日金・祝深夜0時24分〜放送",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "40d2d9b2-e041-4fea-964a-c39c567e5f81",
+      "name": "鈴木愛理 Airi Suzuki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "bb19befb-57e4-4dbb-8442-becf5b528cba",
+      "name": "Cle de Peau Beaute ヴォワールルミヌ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "721b1be8-83ae-4c56-a514-5218cfe1a382",
+      "name": "Cle de Peau Beaute タンフリュイドエクラ マット",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "5a46e7f0-27a1-49c2-a7f8-a97d68f79339",
+      "name": "CANMAKE シルキースフレアイズ 02 ローズセピア",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "625c3c78-8d3a-4294-9d62-5b6050cfa0d2",
+      "name": "=LOVE全国ツアー",
+      "address": "北海道公演の翌日、",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "b3b86e98-80d5-43b2-86bb-2f386c91308b",
+      "name": "#大谷映美里 と #佐々木舞香 の２人で",
+      "address": "北海道女子旅📷💕",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "4c8806f5-dc8c-4916-88e0-85a17baa64c9",
+      "name": "チケットぴあ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "6387f743-fbc1-4c6f-9173-3eb50cbdc31c",
+      "name": "ローソンチケット",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "22dd242c-1a1b-4a50-85db-0ea9fe7328d5",
+      "name": "e+イープラス",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "3c60a64d-5ed1-41d2-8b86-6b23e5ac90fb",
+      "name": "4月3日に開催された全国ツアー2022",
+      "address": "北海道公演のメイキング映像を公開🎥",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "4aaaf9aa-6ee2-4a51-8d2c-5f0614e932b8",
+      "name": "蟹沢 萌子 Moeko Kanisawa",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "f0633e17-8763-4929-aa1b-97beb91660ca",
+      "name": "永田 詩央里 Shiori Nagata",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "9c4cbe36-34a2-4701-a16c-1071c6faf7c7",
+      "name": "髙松瞳Hitomi Takamatsu",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "470fa54b-4285-465d-bfc8-bad541c5a661",
+      "name": "瀧脇 笙古 Shoko Takiwaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "a69772c2-030b-4927-8edc-81355432e2f8",
+      "name": "諸橋 沙夏 Sana Morohashi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "a9c09a25-8c1d-4976-87be-1a99a3a95f30",
+      "name": "・他",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "b22ee0f3-2c1c-4ee6-b120-00c477471404",
+      "name": "尾木 波菜 Hana Ogi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "5941f785-f958-4a95-9974-181630c37650",
+      "name": "菅波 美玲 Mirei Suganami",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "d22224ff-0780-4fef-ba27-24720088435b",
+      "name": "谷崎 早耶 Saya Tanizaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "407839fe-87f8-4f1a-b80a-1a4687182db3",
+      "name": "大場 花菜 Hana Oba",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "12312431-95e6-403a-852a-ed855cb2764f",
+      "name": "髙松瞳Hitomi Takamatsu",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "5a0c6ead-a1f4-4b24-90be-2e8783f44522",
+      "name": "山本 杏奈 Anna Yamamoto",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "caf83366-6d08-4f98-ac60-d3c67f233f97",
+      "name": "蟹沢 萌子 Moeko Kanisawa",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "e4a52bca-c097-4cc7-ad96-4d7b3f8c1157",
+      "name": "冨田 菜々風 Nanaka Tomita",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "a080fabb-befc-4029-b04b-e60d5630c7a0",
+      "name": "本田 珠由記 Miyuki Honda",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "b6bdb124-437d-42d1-9698-282b58b7660a",
+      "name": "髙松王",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "06239905-492f-48fd-8c18-761ff637a3ab",
+      "name": "音嶋王",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "737114d4-e512-4f54-8c13-a6e8b9aee01c",
+      "name": "有明アリーナ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "dcf4f216-f250-40e1-810e-6f1626f86bc3",
+      "name": "2月3日土に神戸ワールド記念ホール",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "e90d41f0-8721-4958-a32e-2a5917d91464",
+      "name": "湘南藤沢フィルム",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "2747d558-62bf-4afd-a97e-335a5b2f3436",
+      "name": "抽選先行：1月22日月17:00～2月12日祝・月23:59",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "f43a9400-338b-4357-80aa-1352d6574a40",
+      "name": "会場",
+      "address": "東京都・有明アリーナ",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "16201df7-2595-4967-8965-a05049adf08d",
+      "name": "下記のポストに #髙松瞳 #瀧脇笙古 #諸橋沙夏 のどれかをつけて引用リポスト",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "bca040d2-b806-40bb-8bf2-d66279ebb8a3",
+      "name": "コミッション",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "159ab17b-f158-412f-a913-5d2aaa92b6ea",
+      "name": "通常版",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "1431cba2-3b18-4660-b123-2c0770df194a",
+      "name": "リボン付録付き限定版",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "582bd000-0ead-467b-9108-aa4cd54399af",
+      "name": "ビッグエコー五反田東口駅前店",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "3dfe8303-a04a-4ca4-aa16-3e576558ae9e",
+      "name": "※各会場",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "c3deade0-07d6-408e-b33b-061a625bcd2f",
+      "name": "ボートレース戸田",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "0cfd779e-6f90-422c-bbdb-f0e4a4763f5a",
+      "name": "本田王",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "ccb659ce-0b14-414d-9dfd-3d0842abd5e4",
+      "name": "永田王",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "5893fe9e-e1b7-4562-a936-a2a291619d5e",
+      "name": "ボートレース福岡",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "cf7666a2-9630-45fc-8ee9-3b40ea6c9fc3",
+      "name": "＠cosme TOKYOアットコスメトーキョー",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "82123b04-4ebe-46a6-919e-af3196ee6a09",
+      "name": "桃色デイブレイク",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "ee30b113-84a9-41ba-838b-9799589d6e52",
+      "name": "ピオニーズ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "666e19d9-f4db-4a6b-afc8-fa47c1b6e79c",
+      "name": "ウルトラレアキッス",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "7a351364-6a56-41fe-b314-4656dce4d7fe",
+      "name": "⇓HP",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "628291e7-26b4-47e9-b062-4e1696b7723d",
+      "name": "GiGO池袋3号館",
+      "address": "東京都池袋周辺",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "6ffa897c-3fef-45d5-ad66-34ffdf0a9944",
+      "name": "周郷すごう農園直売所ピアッツァ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "1ae078b8-cc38-492f-b5ca-57c73ef141c4",
+      "name": "大場 花菜 Hana Oba",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "bf4db8bd-4d75-4369-a100-056eaf3d53a9",
+      "name": "齋藤 樹愛羅 Kiara Saito",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "382b3863-ff2c-4f1e-9c3c-4190e2278145",
+      "name": "佐々木 舞香 Maika Sasaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "6ffe20d0-ff8b-4b0e-b46b-7aa917940a3d",
+      "name": "髙松瞳Hitomi Takamatsu",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "138f325a-a744-4f88-9a01-b69f92c90019",
+      "name": "・他",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "a3cabe50-7dd3-48c8-a68c-431c7c4073c8",
+      "name": "大谷 映美里 Emiri Otani",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "d3277059-53aa-41aa-b9cb-02366c39c0b8",
+      "name": "大場 花菜 Hana Oba",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "d393ea42-e66b-4bb1-8d1c-768556945a78",
+      "name": "音嶋 莉沙 Risa Otoshima",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "00509215-55cd-4702-936e-de69d8a97d82",
+      "name": "齋藤 樹愛羅 Kiara Saito",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "682e75ce-fe0b-49cf-8035-386fc79e3808",
+      "name": "齊藤 なぎさ Nagisa Saito",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "d6fb5643-644c-47fb-9e5c-215bc8aaea07",
+      "name": "佐々木 舞香 Maika Sasaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "7e6838a3-eb77-4500-b99f-66a811f24023",
+      "name": "髙松瞳Hitomi Takamatsu",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "7f120166-e7b3-47cf-842d-93d19d699666",
+      "name": "瀧脇 笙古 Shoko Takiwaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "1d83ae11-893c-4fee-818a-de0f1122f1ea",
+      "name": "野口 衣織 Iori Noguchi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "b9a72162-0c15-4485-a085-043001ce9295",
+      "name": "諸橋 沙夏 Sana Morohashi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "35459af6-9bf4-431b-9306-471755b65c60",
+      "name": "山本 杏奈 Anna Yamamoto",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "d832c3b9-3ab8-4947-8bfc-7a28381d98c5",
+      "name": "野口 衣織 Iori Noguchi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "b3366ef5-f9a9-421e-a2d4-a4ccf5c6243b",
+      "name": "諸橋 沙夏 Sana Morohashi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "f250d7fb-f2cf-44cd-89fa-99e4706b932f",
+      "name": "・他",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "31220f8a-d5f8-4c55-aa29-52a795a14be2",
+      "name": "川中子 奈月心 Natsumi Kawanago",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "70425207-521e-45e4-b648-5f592a282dbb",
+      "name": "櫻井 もも Momo Sakurai",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "2ccd47b8-f681-418d-8c6e-29b311bfecde",
+      "name": "冨田 菜々風 Nanaka Tomita",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "dcab30af-bd27-4789-8e06-0ba96e9e5baf",
+      "name": "大場 花菜 Hana Oba",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "a2e328e5-18a2-41ec-8720-ef6e5ad3e61e",
+      "name": "齋藤 樹愛羅 Kiara Saito",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "4b1c9005-0222-4070-9ac9-5fb5b17d75c3",
+      "name": "野口 衣織 Iori Noguchi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "71e5cc29-73ba-4348-aab7-01ea18475486",
+      "name": "山本 杏奈 Anna Yamamoto",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "e0960653-d086-4271-9d2b-16767ebfab95",
+      "name": "・他",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "44ed4737-3674-4be0-b734-10faeeb04359",
+      "name": "音源原曲：君と夏フェス SHISHAMO",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "3867b992-035e-46a2-a2e4-4dc35f24b07e",
+      "name": "使用音源：000/おれそ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "ff4aa955-3784-4099-989e-55029f09d0ad",
+      "name": "尾木 波菜 Hana Ogi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "0aaed21c-9ab3-4ba2-87d1-7f5fc1e1eeea",
+      "name": "菅波 美玲 Mirei Suganami",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "24128ece-1f21-4376-b936-dec6458b66f6",
+      "name": "谷崎 早耶 Saya Tanizaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "be8f13d1-71e6-423d-a09e-39f6fb460446",
+      "name": "永田 詩央里 Shiori Nagata",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "04ae44c7-e2c9-470a-85ec-893d178b9a4b",
+      "name": "尾木 波菜 Hana Ogi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "1475b511-548d-4773-88ae-3c3c78cc2708",
+      "name": "落合 希来里 Kirari Ochiai",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "dc5fa024-2768-4f32-95cb-e349f6c2d19d",
+      "name": "蟹沢 萌子 Moeko Kanisawa",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "0af4163a-4dd7-4601-bfc3-b29484f095b6",
+      "name": "河口 夏音 Natsune Kawaguchi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "f7ac4f86-7d8e-4c31-b2b8-ee946a1df572",
+      "name": "川中子 奈月心 Natsumi Kawanago",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "b00648fc-b4bd-48c6-ab2c-06c07c8d280f",
+      "name": "櫻井 もも Momo Sakurai",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "7d99412e-eace-4feb-a42b-9eb6260f8670",
+      "name": "菅波 美玲 Mirei Suganami",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "0e54b458-48a4-42b3-920c-9e567d45be29",
+      "name": "鈴木 瞳美 Hitomi Suzuki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "8987fdee-627c-41aa-ae18-41288ed3edab",
+      "name": "谷崎 早耶 Saya Tanizaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "97b05d49-cda0-4ce8-8f37-6219f977527f",
+      "name": "冨田 菜々風 Nanaka Tomita",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "e20d262c-e690-4a32-842b-ce493612cf1a",
+      "name": "永田 詩央里 Shiori Nagata",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "7b4dd924-d35b-4aee-9007-611e32cad205",
+      "name": "本田 珠由記 Miyuki Honda",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "fa765494-5c8d-4382-a894-1b9bd688143f",
+      "name": "大谷 映美里 Emiri Otani",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "77920f49-bca0-409b-bbf3-cb2b0d5450e5",
+      "name": "大場 花菜 Hana Oba",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "715a6aa1-c103-4265-9a9d-3bd9b2f38aac",
+      "name": "音嶋 莉沙 Risa Otoshima",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "a29da2aa-7ed2-40e9-949a-2abedfdcb1e9",
+      "name": "齋藤 樹愛羅 Kiara Saito",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "c06b7509-cb96-4d97-b0c0-ef422bd8a51d",
+      "name": "齊藤 なぎさ Nagisa Saito",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "8e48b378-3976-4f9f-8aec-0263ae122980",
+      "name": "髙松瞳Hitomi Takamatsu",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "77b984b0-dd51-4040-856c-52e781f06f49",
+      "name": "野口 衣織 Iori Noguchi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "90c6f280-09e0-4c8d-8af3-603614f58ec2",
+      "name": "山本 杏奈 Anna Yamamoto",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "b3a87688-141e-409e-b1bd-689c30cb65d0",
+      "name": "・他",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "4bdc38c1-9ba5-45ae-9126-f0c18a3d2216",
+      "name": "大谷 映美里 Emiri Otani",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "14ce4d09-a987-485a-86ce-92406bc9aff1",
+      "name": "佐々木 舞香 Maika Sasaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "8757d593-dfc4-4dd8-aec2-386831f16ef6",
+      "name": "・他",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "3abf3443-0097-4088-9ce8-91e69f33f60e",
+      "name": "菅波 美玲 Mirei Suganami",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "be035f8d-12cd-4cd8-b798-acae34795be7",
+      "name": "鈴木 瞳美 Hitomi Suzuki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "457299fe-4f8b-40a2-a657-f3b9d8c93fbf",
+      "name": "蟹沢 萌子 Moeko Kanisawa",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "9853ea41-7445-4bd9-89bd-0bedbcfb27d6",
+      "name": "菅波 美玲 Mirei Suganami",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "2b17dd68-9652-41c9-a793-b3dac7dfcaff",
+      "name": "永田 詩央里 Shiori Nagata",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "dfc57c8d-91ac-4d19-a253-15c31785b339",
+      "name": "本田 珠由記 Miyuki Honda",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "ea5335c9-0332-4d91-94f9-c7ac8db5fa64",
+      "name": "音嶋 莉沙 Risa Otoshima",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "c39d4001-0352-4f44-82a9-1b63a4b83801",
+      "name": "佐々木 舞香 Maika Sasaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "15ce1a6e-418b-46e5-bcbc-e88beb59467d",
+      "name": "・他",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "b5904e9b-07b2-4ea8-8f57-066e8bc447bb",
+      "name": "株式会社バンダイナムコエンターテインメント様 Nintendo Switchファミリートレーナー",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "bdc9d8a7-365a-4603-bd09-8b11fd2c2942",
+      "name": "音嶋 莉沙 Risa Otoshima",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "19289291-f861-430a-a2ce-914dd404f4d1",
+      "name": "齋藤 樹愛羅 Kiara Saito",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "e8500359-c1ed-4b3a-a356-06f1a361d445",
+      "name": "瀧脇 笙古 Shoko Takiwaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "e2820bdf-ade6-494f-b0b5-12f9fb636417",
+      "name": "野口 衣織 Iori Noguchi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "3679544a-4be8-4bcd-99a2-9124f92fe438",
+      "name": "・他",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "2272ff11-8ebe-48bd-82fe-3ddf5cd467ca",
+      "name": "蟹沢 萌子 Moeko Kanisawa",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "b793b19b-bbd7-4975-879e-0f3bdfd84028",
+      "name": "河口 夏音 Natsune Kawaguchi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "3df63367-3fcf-451d-a55b-b6fbae9082b9",
+      "name": "大場 花菜 Hana Oba",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "536d8b77-200a-43fe-b7b5-3eafa50e2a75",
+      "name": "音嶋 莉沙 Risa Otoshima",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "81f697c9-d8ad-49ff-b8c9-099da6ffc9b7",
+      "name": "齋藤 樹愛羅 Kiara Saito",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "cfc69e01-e80d-44be-ade2-573fbfcb79de",
+      "name": "瀧脇 笙古 Shoko Takiwaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "41fbbe24-b20d-4552-aa3c-47ccebe5d059",
+      "name": "野口 衣織 Iori Noguchi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "6dad72db-2805-4c46-af84-951abb87d953",
+      "name": "・他",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "581f4d40-bc45-481f-9ca1-95b9d9ce05d3",
+      "name": "菅波 美玲 Mirei Suganami",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "6833110a-b790-48d4-914b-89935d632733",
+      "name": "鈴木 瞳美 Hitomi Suzuki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "4a304da6-7927-450f-8abe-01446d5a5189",
+      "name": "大谷 映美里 Emiri Otani",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "d8abd416-ecfc-4bc4-a796-0596521a913e",
+      "name": "佐々木 舞香 Maika Sasaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "c5b7b1bd-7de1-4694-8199-917ce11f782a",
+      "name": "髙松瞳Hitomi Takamatsu",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "08a5e895-09d2-4073-81c9-3ec6b7158971",
+      "name": "鈴木 瞳美 Hitomi Suzuki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "b8555241-0e0b-4b94-80f2-013735cfdefe",
+      "name": "齋藤 樹愛羅 Kiara Saito",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "e3ed777c-b9c3-44b1-ab77-b9b80131e601",
+      "name": "瀧脇 笙古 Shoko Takiwaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "def2a70e-589b-41d2-935b-c1b81a90151d",
+      "name": "野口 衣織 Iori Noguchi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "a445d399-bc3e-42f9-b457-c6f5e5d007ec",
+      "name": "山本 杏奈 Anna Yamamoto",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "45ff37d6-8c58-46e6-baae-7f5c8253bc46",
+      "name": "・他",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "14858ff0-8518-43f1-8326-56d251f5f0ce",
+      "name": "大谷 映美里 Emiri Otani",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "3a9e3143-3bd0-4a2c-80a3-cc5d337fb2ba",
+      "name": "大場 花菜 Hana Oba",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "8448d833-bd3d-4e70-8fa5-55faf3a18dd2",
+      "name": "音嶋 莉沙 Risa Otoshima",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "c09aa14d-3672-4774-8c9c-1791ed2eb54f",
+      "name": "佐々木 舞香 Maika Sasaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "9d164688-59ba-4d0d-aefd-6850f2d1a58a",
+      "name": "野口 衣織 Iori Noguchi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "5af72bd1-d623-4281-b2e8-902e1c6ece52",
+      "name": "山本 杏奈 Anna Yamamoto",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "18fce7d7-c799-4b3d-80a4-200c3104375a",
+      "name": "・他",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "355eab54-c525-48f5-9e27-8424074207ff",
+      "name": "大場 花菜 Hana Oba",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "d36057c9-3903-4964-8a85-0b477880b0a1",
+      "name": "音嶋 莉沙 Risa Otoshima",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "6afcf757-0c4b-47dd-b5d4-8242eb195d00",
+      "name": "佐々木 舞香 Maika Sasaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "986a058a-7d7a-4bdd-8293-15ea45bc51bb",
+      "name": "瀧脇 笙古 Shoko Takiwaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "a4e29138-5aa6-4ba2-bf99-c859780bff9f",
+      "name": "・他",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "74881703-05a2-46f3-887f-ad75a29caccb",
+      "name": "佐々木 舞香 Maika Sasaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "5d9c22ae-1928-495a-92be-f9ff91d7ccd6",
+      "name": "瀧脇 笙古 Shoko Takiwaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "2aec6518-7b96-49ba-b018-6881996cdd7c",
+      "name": "・他",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "7ff3c4e8-5a34-4958-a9f1-0dd8dfa32960",
+      "name": "尾木 波菜 Hana Ogi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "0ec119e0-0b52-4e5c-af45-429243f93389",
+      "name": "鈴木 瞳美 Hitomi Suzuki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "00772977-608e-450a-9809-933d913ad13e",
+      "name": "冨田 菜々風 Nanaka Tomita",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "38e8e188-5b44-4e41-b36d-7a17d3152cc3",
+      "name": "永田 詩央里 Shiori Nagata",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "31e7f2ca-613b-47a9-a9a6-29b14a50a9c6",
+      "name": "蟹沢 萌子 Moeko Kanisawa",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "a4619454-7f8d-401e-af1b-513e45e79d29",
+      "name": "冨田 菜々風 Nanaka Tomita",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "e1a6173b-3d3f-40df-aff8-f77ae798438e",
+      "name": "髙松瞳Hitomi Takamatsu",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "e4b15c9b-c76d-4003-afbd-fdbe86d9f3c9",
+      "name": "瀧脇 笙古 Shoko Takiwaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "6a4b8c92-6cf2-4859-a4d8-c08667d9b5e3",
+      "name": "野口 衣織 Iori Noguchi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "76f9d752-e1b8-487a-ba79-cedda1907c1f",
+      "name": "山本 杏奈 Anna Yamamoto",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "90b53860-ae33-47a7-b1d1-42c9ca892146",
+      "name": "大谷 映美里 Emiri Otani",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "3b3afdb7-254f-4519-9082-37e8256919f8",
+      "name": "大場 花菜 Hana Oba",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "04899734-3b84-4fdd-ad1b-0a1ddc1ab956",
+      "name": "音嶋 莉沙 Risa Otoshima",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "707fad0f-2295-4e0b-94df-f7d17b353578",
+      "name": "齋藤 樹愛羅 Kiara Saito",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "8c8d2197-a2f1-4732-a08e-4859b536af8c",
+      "name": "齊藤 なぎさ Nagisa Saito",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "2be268da-7ff1-4a66-a968-243da825c66d",
+      "name": "佐々木 舞香 Maika Sasaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "e0345a8a-6b74-46b2-b5b0-a630b7139678",
+      "name": "佐竹 のん乃 Nonno Satake",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "de71246d-54d1-40a8-a816-2601a2bfc374",
+      "name": "髙松瞳Hitomi Takamatsu",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "0abae7e7-f2ac-40d8-9432-1bc22db03c4d",
+      "name": "瀧脇 笙古 Shoko Takiwaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "8064391e-2fc1-4627-a0ed-52ebaf88a5fb",
+      "name": "野口 衣織 Iori Noguchi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "486b0b7e-bdd7-4b08-983d-d8d4f3d03d15",
+      "name": "諸橋 沙夏 Sana Morohashi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "247be1fe-6d2a-4fa0-b8ba-a4c475b5e89a",
+      "name": "山本 杏奈 Anna Yamamoto",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "5ab8a096-3060-4acc-9c32-f451608a4af8",
+      "name": "尾木 波菜 Hana Ogi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "6458cf71-ed36-4fbf-89ff-042664734d5c",
+      "name": "川中子 奈月心 Natsumi Kawanago",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "d3c88dd6-786b-4e85-b85f-bc22584f44eb",
+      "name": "いつどこ45秒web",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "53f482a3-3351-47cb-a7fe-36202f08d071",
+      "name": "鈴木 瞳美 Hitomi Suzuki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "98c1b48d-fd8f-43b7-b4cf-1eb8c045faf5",
+      "name": "谷崎 早耶 Saya Tanizaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "caf34b69-738e-4903-a164-fc6f871ab4ad",
+      "name": "音嶋 莉沙 Risa Otoshima",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "062b3d5e-537e-48b5-affd-b4057db08313",
+      "name": "佐竹 のん乃 Nonno Satake",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "edd66dad-e723-4071-ac42-52715e78ae8a",
+      "name": "野口 衣織 Iori Noguchi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "3434cf24-b318-4638-8568-056d65e0f68e",
+      "name": "諸橋 沙夏 Sana Morohashi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "347ae77b-267b-48cd-a5d2-384bbf9849ce",
+      "name": "音嶋 莉沙 Risa Otoshima",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "3fb0531b-1101-49f5-af8d-c7e0e66d5c16",
+      "name": "佐竹 のん乃 Nonno Satake",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "271c324f-8bc5-4c29-9abc-102ebe004b67",
+      "name": "野口 衣織 Iori Noguchi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "274c9fb1-f785-46a4-bba4-87aa25e07ee0",
+      "name": "諸橋 沙夏 Sana Morohashi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "18eb7c42-0df6-435f-8d5c-7570b7babb17",
+      "name": "蟹沢 萌子 Moeko Kanisawa",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "50e6f0f6-4149-4540-8962-ebb0b19ff729",
+      "name": "菅波 美玲 Mirei Suganami",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "421a0f68-b612-4ca0-9565-e35c0f4a250d",
+      "name": "谷崎 早耶 Saya Tanizaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "36b91dba-ebd5-4062-bd88-76fca0107b2c",
+      "name": "本田 珠由記 Miyuki Honda",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "0d5e6935-13a1-4cce-bbde-e673bbe0a415",
+      "name": "齊藤 なぎさ Nagisa Saito",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "a8d5e4b5-c1e0-40e0-842e-c946612f2118",
+      "name": "蟹沢 萌子 Moeko Kanisawa",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "07352a57-1155-496f-bbcb-d07a5ed8c6ec",
+      "name": "菅波 美玲 Mirei Suganami",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "4e5d0a0c-2776-4ff2-bb61-6ff476e3638d",
+      "name": "谷崎 早耶 Saya Tanizaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "c2a277d5-6a25-460e-8ec9-9102d3aedb50",
+      "name": "本田 珠由記 Miyuki Honda",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "f975024a-765f-402e-a7ea-db609839ebc0",
+      "name": "鈴木 瞳美 Hitomi Suzuki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "8701a432-8385-470c-a0c7-0e39f487eaaa",
+      "name": "菅波 美玲 Mirei Suganami",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "8629d4a2-a1fb-4aa6-ba09-ac2d75e7b71b",
+      "name": "谷崎 早耶 Saya Tanizaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "5ce9a0b8-89ec-4c2d-8ed9-b3af0d1fb358",
+      "name": "野口 衣織 Iori Noguchi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "c0850df6-d667-46c8-965a-ace0747f311f",
+      "name": "山本 杏奈 Anna Yamamoto",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "489aeef1-cecf-4f4d-aa2c-cc2d39c90aa5",
+      "name": "使用音源",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "4fefd368-15b6-4ee3-ba2b-aaedf6a76557",
+      "name": "齋藤 樹愛羅 Kiara Saito",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "fd01e7c3-0285-44fb-8bf2-b0606190e32a",
+      "name": "佐々木 舞香 Maika Sasaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "a670b9ed-27da-45bb-a603-f7c77ee20a61",
+      "name": "野口 衣織 Iori Noguchi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "d4a372cc-22de-48d3-9ea4-e15b777212c6",
+      "name": "尾木",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "ec685044-1584-4f3c-93c7-a368918854bf",
+      "name": "鈴木",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "5b653398-4f9e-4196-8d06-580307d5aae5",
+      "name": "谷崎",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "7058feec-bdaf-4d82-9304-b39ac379142f",
+      "name": "Aマッソ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "e6d8751a-4f9c-405e-87f3-55bf93a3cc5c",
+      "name": "大谷 映美里 Emiri Otani",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "3b069172-33ba-4808-b97b-95b0f20b09e2",
+      "name": "大場 花菜 Hana Oba",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "58d139cf-4eec-4871-9663-86cf2e13ab1c",
+      "name": "音嶋 莉沙 Risa Otoshima",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "5aefbda3-d9e8-45b4-9a81-53cbbe08316f",
+      "name": "齋藤 樹愛羅 Kiara Saito",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "e5016c54-4bb0-4bc5-9cd7-60f2d0dd26aa",
+      "name": "齊藤 なぎさ Nagisa Saito",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "dfb6e3ce-b247-458f-b92d-020279793976",
+      "name": "佐々木 舞香 Maika Sasaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "50e88aaf-01c6-4b33-a421-8d32f8a72bca",
+      "name": "佐竹 のん乃 Nonno Satake",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "69503ecf-20f3-44e0-b239-6bced03334f6",
+      "name": "髙松瞳Hitomi Takamatsu",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "9f480173-b695-40f9-b16b-e2ebc5b11f00",
+      "name": "瀧脇 笙古 Shoko Takiwaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "63900f5e-024b-4197-8852-984387f03986",
+      "name": "野口 衣織 Iori Noguchi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "bb4d1cbb-86be-4a9a-bf24-67a286f323ec",
+      "name": "諸橋 沙夏 Sana Morohashi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "9b3fdc86-f962-4d09-9a33-a1874346062b",
+      "name": "山本 杏奈 Anna Yamamoto",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "4e7299c1-04a6-4dad-8e75-40fecc64a307",
+      "name": "蟹沢 萌子 Moeko Kanisawa",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "21137099-2ce1-44ca-a7d3-2dab50a7d758",
+      "name": "冨田 菜々風 Nanaka Tomita",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "3bd5c7ac-a695-41ac-9643-23d2d532e8c9",
+      "name": "Aマッソ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "99d6702a-f975-4d36-b10e-1ce93759a255",
+      "name": "蟹沢 萌子 Moeko Kanisawa",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "0b3e8108-8f57-4362-afea-293cee4764dd",
+      "name": "冨田 菜々風 Nanaka Tomita",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "8cc260c7-b087-42c9-bdc8-d6018eacda49",
+      "name": "落合 希来里 Kirari Ochiai",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "64186a3a-e3f4-4ca0-9c69-02fb15b305d4",
+      "name": "蟹沢 萌子 Moeko Kanisawa",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "183cc2d2-4d00-4476-9c12-b6751176ff5b",
+      "name": "谷崎 早耶 Saya Tanizaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "a6021106-0791-427e-9735-5eb1e0e41589",
+      "name": "冨田 菜々風 Nanaka Tomita",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "4b107056-d11d-4083-9592-c478b80ba887",
+      "name": "佐々木 舞香 Maika Sasaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "fc793183-0152-4932-9336-172b7882157a",
+      "name": "野口 衣織 Iori Noguchi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "f01600d6-ac05-425d-b72a-03c021c92bd5",
+      "name": "諸橋 沙夏 Sana Morohashi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "e2faa9d2-a154-45b1-ac53-7b1a8a2b667d",
+      "name": "佐々木 舞香 Maika Sasaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "4e8e6494-a172-43a0-a236-b21e01f09061",
+      "name": "佐々木 舞香 Maika Sasaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "ae4a6585-fcc1-4249-a10a-e117d30b8e28",
+      "name": "野口 衣織 Iori Noguchi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "beb6aef0-a206-4f4e-88e5-2d14d677225d",
+      "name": "諸橋 沙夏 Sana Morohashi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "1a5d3567-83db-4dc7-863e-106b0c9c541a",
+      "name": "谷崎 早耶 Saya Tanizaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "a79dab24-f638-4519-aaef-92a2026ab0e8",
+      "name": "音源本家様：HoneyWorks feat. 涼海ひよりCV：水瀬いのり",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "dc6588f5-eb4d-469f-a79b-8015e8e3d39d",
+      "name": "佐々木 舞香 Maika Sasaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "94a09dd6-0191-48d4-911c-370284a050d6",
+      "name": "山本 杏奈 Anna Yamamoto",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "8992b7e3-4bae-4924-838a-10fd4844ddb9",
+      "name": "音源本家様：HoneyWorks feat. 涼海ひよりCV：水瀬いのり",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "0653de23-314e-4dbc-a40a-8a9e6a988e65",
+      "name": "振付本家様：七河みこ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "fe6847ce-ca0c-4fde-90f9-77d4e1908e88",
+      "name": "佐々木 舞香 Maika Sasaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "af5f07a2-d441-470f-92d0-5239328890ec",
+      "name": "山本 杏奈 Anna Yamamoto",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "24de842d-d2ac-4325-b8b4-bb0ca8ec2180",
+      "name": "佐々木 舞香 Maika Sasaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "17e4957b-f2d2-4f6a-9f4f-2dcf13c802ed",
+      "name": "諸橋 沙夏 Sana Morohashi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "650f27e7-9a67-4421-ac93-44499d6fbe6b",
+      "name": "蟹沢 萌子 Moeko Kanisawa",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "413b6b45-cf2c-4231-a212-cd6d63fd3b8c",
+      "name": "櫻井 もも Momo Sakurai",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "7125dfc3-420a-45b0-89a5-bc56ccfc5f23",
+      "name": "菅波 美玲 Mirei Suganami",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "00b2ae95-965d-46db-a221-7d75298e689f",
+      "name": "谷崎 早耶 Saya Tanizaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "9039633f-9fb8-4a4b-b1ff-954c8c163e6c",
+      "name": "冨田 菜々風 Nanaka Tomita",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "f185c8a2-8b8b-4d11-aea1-0f47607a1881",
+      "name": "大谷 映美里 Emiri Otani",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "f935b0ba-35da-418f-bdef-f60dd7a9ec5e",
+      "name": "蟹沢 萌子 Moeko Kanisawa",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "cb83f6ff-b10b-4d78-b027-92ebf4bba5b0",
+      "name": "櫻井 もも Momo Sakurai",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "b66f928c-0645-4354-a8e9-d64c07080990",
+      "name": "菅波 美玲 Mirei Suganami",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "8a71e3fe-a176-4202-a604-8693b6d8c68b",
+      "name": "谷崎 早耶 Saya Tanizaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "60ab42cc-f08c-4e3b-b2d0-7feed4d39178",
+      "name": "冨田 菜々風 Nanaka Tomita",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "421fbd1e-a8db-4458-9607-7114fad6cfae",
+      "name": "落合 希来里 Kirari Ochiai",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "b4bdb983-042e-41d0-992e-0de45090219a",
+      "name": "蟹沢 萌子 Moeko Kanisawa",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "94dce574-7b26-4a3f-94ef-9444aedb654b",
+      "name": "谷崎 早耶 Saya Tanizaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "3b9521eb-9a82-4bac-8b2f-77a0c8409aed",
+      "name": "冨田 菜々風 Nanaka Tomita",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "b1137f28-d4ff-4b3c-b2b8-85408cf71ab3",
+      "name": "本田 珠由記 Miyuki Honda",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "e3a3edfa-8626-4f88-8010-24c607ff988b",
+      "name": "大谷 映美里 Emiri Otani",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "6bdffe2f-ea56-45de-9cd5-bfea9f2ef7b0",
+      "name": "音嶋 莉沙 Risa Otoshima",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "744e37af-b082-4098-8b52-888f86bbb695",
+      "name": "佐々木 舞香 Maika Sasaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "b55192fb-2b53-4543-9d68-ba9d84f27469",
+      "name": "瀧脇 笙古 Shoko Takiwaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "edbaf956-18d5-4e32-90dc-bbb7dfa74cf6",
+      "name": "野口 衣織 Iori Noguchi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "09120664-166e-4fce-a2c1-b726f0391af9",
+      "name": "諸橋 沙夏 Sana Morohashi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "c822d355-098b-413a-bd8b-85a6b6736d84",
+      "name": "尾木 波菜 Hana Ogi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "f5687c9e-9cdf-454d-bcf1-c504ecb55827",
+      "name": "鈴木 瞳美 Hitomi Suzuki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "b864cf98-aa28-4b3e-9447-5c8316c612a2",
+      "name": "齋藤 樹愛羅 Kiara Saito",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "32143b08-ab50-4fd1-9923-b8376f1758d1",
+      "name": "佐竹 のん乃 Nonno Satake",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "e0b538fd-f0af-4d3f-bdbb-2dfe854f5833",
+      "name": "諸橋 沙夏 Sana Morohashi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "d0218ac8-ae5b-450d-9696-8602a1eb619e",
+      "name": "山本 杏奈 Anna Yamamoto",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "cadc35da-3ddc-47d5-8481-45c81c6cfb33",
+      "name": "記事参考",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "54c0feeb-ccfa-4271-b53c-e9a30c7e9b57",
+      "name": "尾木 波菜 Hana Ogi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "722dbe6f-7cd6-4dd7-95ca-70168b0bdb9f",
+      "name": "落合 希来里 Kirari Ochiai",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "1d7e9d04-4550-4b63-a28f-f2fc8fbb0e9a",
+      "name": "河口 夏音 Natsune Kawaguchi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "f4796dd6-1ae4-4849-99d6-88057f568252",
+      "name": "川中子 奈月心 Natsumi Kawanago",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "4b95bef5-cb33-44b5-962a-8e23024ee07c",
+      "name": "本田 珠由記 Miyuki Honda",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "c1edada9-b026-4ee6-8b65-ed4370f43f97",
+      "name": "音嶋 莉沙 Risa Otoshima",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "3beb30b5-c567-413f-93f1-50ed286cf74e",
+      "name": "齋藤 樹愛羅 Kiara Saito",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "545738d0-75de-4e6e-a1d7-47758e73dfde",
+      "name": "瀧脇 笙古 Shoko Takiwaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "62109fad-5a7d-4569-b48b-9deea81c1a6a",
+      "name": "尾木 波菜 Hana Ogi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "28f7173e-ca6c-4735-9452-b73740d2140a",
+      "name": "冨田 菜々風 Nanaka Tomita",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "e237277a-693a-40e1-ac8b-75366a4e1a71",
+      "name": "佐竹 のん乃 Nonno Satake",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "6563eb03-8cc8-457a-8037-173c7ef9bc30",
+      "name": "諸橋 沙夏 Sana Morohashi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "a4eaa7fc-d5c8-45bd-8ffc-11742fd43103",
+      "name": "大場 花菜 Hana Oba",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "da3206cb-e706-45f1-9960-b410ab73a492",
+      "name": "佐々木 舞香 Maika Sasaki",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "db083618-e82c-41f4-8410-84f5f18be47f",
+      "name": "佐竹 のん乃 Nonno Satake",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "539f25e4-421d-4e6f-8fbe-4b4c64de74a2",
+      "name": "野口 衣織 Iori Noguchi",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "e696ceb9-7633-4973-b6bf-af3afe278fb0",
+      "name": "櫻井 もも Momo Sakurai",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "286db68a-670f-45a4-b317-452cc6b26550",
+      "name": "永田 詩央里 Shiori Nagata",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "0d128a89-bd00-437f-96d5-b92740c7d669",
+      "name": "■日本テレビ 番組HP",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "e8f12dc9-c8a0-4d16-99aa-24f4dab7fa63",
+      "name": "DAM 第一興商",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "7a5e975c-7b44-411d-8658-ece1f4599bd8",
+      "name": "⛹️川崎ブレイブサンダース",
+      "address": "東京都川崎周辺",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "f72da51d-9c33-42c5-b699-f67195105907",
+      "name": "凶遡咽び家",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "798adf91-a95b-43bd-89e6-3ed9fb145d1c",
+      "name": "DAM 第一興商",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "fd0ac798-c776-4608-9fb4-64f473fb37b9",
+      "name": "千里眼",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "73dc963f-e5b7-4008-b6d6-ebfe79a4ed60",
+      "name": "しながわ水族館",
+      "address": "東京都品川区勝島3-2-1",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "8bb99f55-d8ab-4868-b232-2c481162e2d7",
+      "name": "志摩スペイン村",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "1ad6176b-c741-4299-b6a0-d736b42aa5bf",
+      "name": "古着屋 BARO (ベロ)",
+      "address": "東京都豊島区西池袋2-1-13",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "249d8dfa-7279-4256-99b4-5c2b44e704b4",
+      "name": "アクティブ AKIBA バッティングセンター",
+      "address": "東京都千代田区神田花岡町1-1 ヨドバシAKIBA 9F",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "15cf8dee-5aa1-4fad-8322-4810d1dcbc06",
+      "name": "Dr.HEAD 新宿本店",
+      "address": "東京都新宿区西新宿7-7-33 新銘ビルB1",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "264e8861-6041-48ce-b899-eb7807ebfe77",
+      "name": "東京ミステリーサーカス",
+      "address": "東京都新宿区歌舞伎町1-27-5 APMビル",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "29a48598-666d-4a90-82a5-0381b63660bf",
+      "name": "パテック フィリップ ジュネーブサロン",
+      "address": "Rue du Rhône 41, 1204 Genève, Switzerland",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "7b70b954-6eea-4966-9c5e-789ed8f86b06",
+      "name": "SHISEIDO THE STORE",
+      "address": "東京都中央区銀座8-8-3",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "5298fbed-de56-4620-be1d-4e12cef22034",
+      "name": "盛楼閣",
+      "address": "岩手県盛岡市盛岡駅前通15-5 2F",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "7b626cea-bc1a-4865-8925-c2a2d0927bab",
+      "name": "ホテルニューオータニ東京 ガーデンラウンジ",
+      "address": "東京都千代田区紀尾井町4-1 ホテルニューオータニ東京",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "e35e8334-aef0-436c-9988-44925666f312",
+      "name": "六角家/利尻らーめん味楽",
+      "address": null,
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "14a472bf-9fe8-4d04-957e-ecfebda37df7",
+      "name": "旧朝吹常吉邸（高輪館）",
+      "address": "〒108-0074 東京都港区高輪3丁目",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "26a61c63-d283-4bc4-a054-41a485900f93",
+      "name": "横須賀美術館",
+      "address": "〒238-0016 神奈川県横須賀市鴨居4-1",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "e5406ab6-f491-41df-b89c-7cc681c1a6a3",
+      "name": "hmv museum 渋谷5HMV&BOOKS SHIBUYA5F",
+      "address": "東京都渋谷周辺",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "dd2fa814-4fe2-41e4-a3d3-f4ec3e32da75",
+      "name": "洋麺屋 五右衛門 赤坂店",
+      "address": "東京都港区赤坂５丁目１−４ 赤坂いそむらビル １Ｆ",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "6d625146-dfad-4c5e-9228-4f93fac75c6a",
+      "name": "AKIBA Batting Center",
+      "address": "東京都千代田区外神田4-14-1 秋葉原UDX 9階",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "ec63e596-18db-4b15-a64b-44da38813d08",
+      "name": "永田 詩央里 Shiori Nagata",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "f48f6e42-95bb-4cbb-8990-7dd1bdfd3ad4",
+      "name": "ハリウッドサイン",
+      "address": "3200 Canyon Lake Dr, Los Angeles, CA 90068, USA",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "d77aee5b-cd3b-4eab-a47c-bfe01b812f6c",
+      "name": "hmv museum 心斎橋 satellite心斎橋オーパ 6F イベントスペース",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "8de5e324-5817-45b2-ae63-dce59d81ee15",
+      "name": "クライオサウナ六本木",
+      "address": "東京都港区六本木3-13-8 斉藤ビル5F",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "4deeb79e-b189-4c61-9a45-fdb8f3a262a3",
+      "name": "SixTONES衣装スタジオ",
+      "address": "東京都港区",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "bf885298-4567-425e-abaa-f2aaff0258f7",
+      "name": "下北沢2号踏切",
+      "address": "〒155-0033 東京都世田谷区代田5-31-2",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "fde03bb0-d4b1-493b-9be6-d0948e9207d1",
+      "name": "キャンプ場",
+      "address": "埼玉県",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "b5452723-5ca8-4a69-870d-bada3c218bb8",
+      "name": "新横浜ラーメン博物館",
+      "address": null,
+      "score": 3,
+      "episode_count": 1
+    },
+    {
+      "id": "422c66dd-14cb-492c-8fcb-0a5af6176930",
+      "name": "振付本家さま",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "17be8062-2c43-4c6e-9668-93f504332919",
+      "name": "音源本家",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "74bfc649-4da6-4c96-ada4-c9adc299a091",
+      "name": "2024年4月29日に東京ガーデンシアター",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "ae241564-aaa0-4450-bf30-59ad8698f097",
+      "name": "自由学園明日館",
+      "address": "東京都豊島区西池袋2-31-3",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "f7963767-6850-48fa-9a99-735451c2eb8e",
+      "name": "STEAK HOUSE & BBQ BALCONIWA",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "d1613ec9-a4c2-4137-8a3f-666a3bb4d288",
+      "name": "振付本家様：七河みこ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "d2664098-4970-4ab2-bec9-bcf04de52589",
+      "name": "iki ESPRESSO",
+      "address": "東京都江東区清澄白河（詳細住所要確認）",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "3a93162e-f49e-406b-b0a6-c0f21eb4ca5f",
+      "name": "東京都",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "ccfa19e3-7053-43d5-8453-605c9cf3e9b1",
+      "name": "利尻らーめん",
+      "address": null,
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "e7cdcccc-70f6-434f-bdaf-a19f83efa278",
+      "name": "東京大学生態調和農学機構",
+      "address": "〒188-0002 東京都西東京市緑町1-1-1",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "10f638f1-5ba6-47ae-80ba-d1cd94267c9a",
+      "name": "新横浜ラーメン博物館",
+      "address": null,
+      "score": 3,
+      "episode_count": 1
+    },
+    {
+      "id": "ed4bce49-1770-41a0-91fb-3bdcebe3ce84",
+      "name": "原宿お散歩ロケ",
+      "address": "東京都原宿周辺",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "f22286fc-2483-46d2-b74d-8d6f1df2b467",
+      "name": "振付本家",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "e534e5f1-86cd-4bf1-a566-6da74ed5ece1",
+      "name": "KIZASU.COFFEE（新橋）",
+      "address": "〒105-0004 東京都港区新橋6-16",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "35d8ee91-5485-4023-bd89-a471c11e59d6",
+      "name": "菅波 美玲 Mirei Suganami",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "3c2ed115-2e97-40cd-87bc-99b28ef14459",
+      "name": "浅草もんじゃ もんろう",
+      "address": "東京都台東区浅草１丁目４１−２",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "1f1cc6e5-a24a-499c-bbc9-fe54d32aaf97",
+      "name": "ホテル大野屋伊東園ホテルズ",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "4a354a95-c9b4-4315-892d-693678c33072",
+      "name": "ジャパン",
+      "address": "東京都内",
+      "score": 0,
+      "episode_count": 1
+    },
+    {
+      "id": "98cbf313-d013-45df-9339-03f5e7935045",
+      "name": "ロデオドライブ",
+      "address": "Rodeo Dr, Beverly Hills, CA 90210, USA",
+      "score": 2,
+      "episode_count": 1
+    },
+    {
+      "id": "77a18670-4ad6-4299-9779-2ed8a5ba4c15",
+      "name": "挽肉と米",
+      "address": "東京都渋谷区渋谷3-6-19 第1矢木ビル1F",
+      "score": 3,
+      "episode_count": 1
+    },
+    {
+      "id": "6c93fb26-2f87-4462-b349-c444750b656a",
+      "name": "かき氷工房 雪菓",
+      "address": "東京都杉並区高円寺南4-24-11",
+      "score": 3,
+      "episode_count": 1
+    },
+    {
+      "id": "f4e21951-bd9b-47e4-a8a1-e22d64ec94b5",
+      "name": "サルシータ",
+      "address": "東京都港区南麻布4-5-65 広尾アーバンビル B1F",
+      "score": 3,
+      "episode_count": 1
+    }
+  ]
+}

@@ -20,8 +20,8 @@ import AdminUserPosts from './pages/admin/UserPosts'
 import AdminDataCollection from './pages/admin/DataCollection' // 追加
 import AuthDebug from './pages/debug/AuthDebug' // デバッグ用
 
-// Public Pages
-import Home from './pages/public/Home'
+// Public Pages  
+import Home from './pages/public/HomeUltraOptimized'
 import Celebrities from './pages/public/Celebrities'
 import Episodes from './pages/public/Episodes'
 import Items from './pages/public/Items'

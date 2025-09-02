@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    
+    <!-- Google Search Console 所有権確認 -->
+    <meta name="google-site-verification" content="fz8UM75OfOL3mCUpxoL-UI_lrsRzlBWsWH_KrAXVGYs" />
+    
+    <!-- ❤️ファビコン（絵文字版） -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❤️</text></svg>" />
+    
+    <!-- ビューポート設定 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- テーマカラー（ピンク） -->
+    
+    <!-- DNS プリフェッチでパフォーマンス向上 -->
+    <link rel="dns-prefetch" href="//aml.valuecommerce.com">
+    <link rel="preconnect" href="//aml.valuecommerce.com" crossorigin>
+    
+    <meta name="theme-color" content="#ec4899" />
+    
+    <!-- SEO用の説明文 -->
+    <meta name="robots" content="index, follow">
+    <meta name="description" content="推し活の聖地巡礼・私服特定をもっとリッチに。ファン同士で情報を共有し、お気に入りのアイテムやスポットを発見するプラットフォーム。" />
+    
+    <!-- SNSシェア用 -->
+    <meta property="og:title" content="推し活コレクション | みんなで作る推し活辞典" />
+    <meta property="og:description" content="推し活の聖地巡礼・私服特定をもっとリッチに。ファン同士で情報を共有し、お気に入りのアイテムやスポットを発見するプラットフォーム。" />
+    <meta property="og:type" content="website" />
+    
+    <!-- ページタイトル -->
+    <title>推し活コレクション | みんなで作る推し活辞典</title>
+    
+    
+    <!-- バリューコマース LinkSwitch 最適化版 -->
+    <script>
+      // 遅延読み込み（ページ読み込み完了後）
+      window.addEventListener('load', function() {
+        // アフィリエイト対象ページでのみ読み込み
+        if (window.location.pathname.includes('/locations/') || 
+            window.location.pathname.includes('/items/')) {
+          var vc_pid = "891908080";
+          var script = document.createElement('script');
+          script.type = 'text/javascript';
+          script.src = '//aml.valuecommerce.com/vcdal.js';
+          script.async = true;
+          document.head.appendChild(script);
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

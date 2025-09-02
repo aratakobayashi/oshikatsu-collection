@@ -106,7 +106,7 @@ const allLocationImages = [
     name: '銀座三越',
     searchPatterns: ['銀座三越', '三越', '銀座 三越'],
     images: [
-      'https://images.unsplash.com/photo-1555529902-1974e9dd9e97?w=400&h=250&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop&q=80'
     ],
@@ -174,7 +174,7 @@ const allLocationImages = [
     searchPatterns: ['竹下通り', '竹下', '原宿 竹下'],
     images: [
       'https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=400&h=250&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&h=250&fit=crop&q=80'
     ],
     description: '原宿のポップカルチャーの聖地。若者文化の発信地として多くのタレントが訪れる人気スポット'
@@ -184,7 +184,7 @@ const allLocationImages = [
     name: '江ノ島',
     searchPatterns: ['江ノ島', '江の島', 'えのしま'],
     images: [
-      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1480796927426-f609979314bd?w=400&h=250&fit=crop&q=80'
     ],

@@ -43,117 +43,108 @@ interface SearchFilters {
   status?: string
 }
 
-export default function IdolSearchComponent() {
-  const [searchParams] = useSearchParams()
-  const [searchQuery, setSearchQuery] = useState('')
-  const [filters, setFilters] = useState<SearchFilters>({})
-  const [results, setResults] = useState<Celebrity[]>([])
+const IdolSearchComponent: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState('')
+  const [results, setResults] = useState<SearchResult[]>([])
   const [loading, setLoading] = useState(false)
-  const [showFilters, setShowFilters] = useState(false)
-  const [popularCelebrities, setPopularCelebrities] = useState<Celebrity[]>([])
-
-  // URLパラメータから検索クエリを読み取り、自動検索実行
-  useEffect(() => {
-    const searchFromUrl = searchParams.get('search')
-    if (searchFromUrl) {
-      setSearchQuery(searchFromUrl)
-      // 検索を自動実行
-      const autoSearch = async () => {
-        setLoading(true)
-        try {
-          const data = await db.celebrities.unifiedSearch(searchFromUrl, {})
-          setResults(data)
-        } catch (error) {
-          console.error('Error auto-searching celebrities:', error)
-          setResults([])
-        } finally {
-          setLoading(false)
-        }
-      }
-      autoSearch()
-    }
-  }, [searchParams])
-
-  // 人気アイドル・チャンネルを初期表示（検索がない場合のみ）
-  useEffect(() => {
-    if (!searchParams.get('search')) {
-      fetchPopularCelebrities()
-    }
-  }, [searchParams])
-
-  const fetchPopularCelebrities = async () => {
-    try {
-      const data = await db.celebrities.getPopular(1000)
-      setPopularCelebrities(data)
-    } catch (error) {
-      console.error('Error fetching popular celebrities:', error)
-    }
-  }
 
   const handleSearch = async () => {
-    if (!searchQuery.trim() && !filters.type && !filters.agency && !filters.status) {
-      setResults([])
-      return
-    }
-
+    if (!searchTerm.trim()) return
+    
     setLoading(true)
     try {
-      const data = await db.celebrities.unifiedSearch(searchQuery, filters)
-      setResults(data)
+      // アイドル検索APIを呼び出す（仮実装）
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      
+      // ダミーデータ（実際は API から取得）
+      const mockResults: SearchResult[] = [
+        {
+          id: '1',
+          name: '架空のアイドル1',
+          group: 'Test Group A',
+          image_url: '/placeholder-celebrity.jpg',
+          profile_url: '#'
+        },
+        {
+          id: '2', 
+          name: '架空のアイドル2',
+          group: 'Test Group B',
+          image_url: '/placeholder-celebrity.jpg',
+          profile_url: '#'
+        }
+      ]
+      
+      setResults(mockResults)
     } catch (error) {
-      console.error('Error searching celebrities:', error)
+      console.error('Search failed:', error)
       setResults([])
     } finally {
       setLoading(false)
     }
   }
 
-  const handleTypeFilter = async (type: 'individual' | 'group' | 'youtube_channel') => {
-    setLoading(true)
-    setFilters({ ...filters, type })
-    try {
-      const data = await db.celebrities.getByType(type)
-      setResults(data)
-    } catch (error) {
-      console.error('Error filtering by type:', error)
-      setResults([])
-    } finally {
-      setLoading(false)
-    }
-  }
+  return (
+    <div className="max-w-4xl mx-auto p-6">
+      <div className="bg-white rounded-lg shadow-lg p-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">アイドル・タレント検索</h2>
+        
+        <div className="flex gap-2 mb-6">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+            placeholder="アイドル・タレント名を入力..."
+            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+          <button
+            onClick={handleSearch}
+            disabled={loading}
+            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+          >
+            {loading ? '検索中...' : '検索'}
+          </button>
+        </div>
 
-  const clearFilters = () => {
-    setFilters({})
-    setResults([])
-    setSearchQuery('')
-  }
+        {results.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {results.map(result => (
+              <div key={result.id} className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
+                <div className="flex items-center space-x-3">
+                  <img
+                    src={result.image_url}
+                    alt={result.name}
+                    className="w-12 h-12 rounded-full object-cover"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement
+                      target.src = '/placeholder-celebrity.jpg'
+                    }}
+                  />
+                  <div>
+                    <h3 className="font-semibold text-gray-900">{result.name}</h3>
+                    <p className="text-sm text-gray-600">{result.group}</p>
+                  </div>
+                </div>
+                <a
+                  href={result.profile_url}
+                  className="mt-2 inline-block text-blue-600 hover:text-blue-800 text-sm"
+                >
+                  プロフィールを見る →
+                </a>
+              </div>
+            ))}
+          </div>
+        )}
 
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case 'group': return <Users className="h-4 w-4" />
-      case 'individual': return <User className="h-4 w-4" />
-      case 'youtube_channel': return <Youtube className="h-4 w-4" />
-      default: return <User className="h-4 w-4" />
-    }
-  }
-
-  const getTypeLabel = (type: string) => {
-    switch (type) {
-      case 'group': return 'グループ'
-      case 'individual': return '個人'
-      case 'youtube_channel': return 'YouTubeチャンネル'
-      default: return '不明'
-    }
-  }
-
-  const formatSubscriberCount = (count: number) => {
-    if (count >= 1000000) return `${(count / 1000000).toFixed(1)}M`
-    if (count >= 1000) return `${(count / 1000).toFixed(1)}K`
-    return count.toString()
-  }
-
-  const CelebrityCard = ({ celebrity }: { celebrity: Celebrity }) => (
-    <Link to={`/celebrities/${celebrity.slug}`}>
+        {results.length === 0 && !loading && searchTerm && (
+          <div className="text-center py-8 text-gray-500">
+            検索結果が見つかりませんでした
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}>
       <Card className="group hover:shadow-xl transition-all duration-300 cursor-pointer border-0 shadow-md overflow-hidden">
         <CardContent className="p-0">
           <div className="relative">

@@ -25,7 +25,7 @@ const priority2LocationImages = [
   {
     name: '東京ドーム',
     images: [
-      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop&q=80', // 東京ドーム外観
+      'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop&q=80', // 東京ドーム外観
       'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&h=250&fit=crop&q=80', // スタジアム内部
       'https://images.unsplash.com/photo-1459865264687-595d652de67e?w=400&h=250&fit=crop&q=80'  // ドーム球場の照明
     ],
@@ -35,7 +35,7 @@ const priority2LocationImages = [
   {
     name: '銀座三越',
     images: [
-      'https://images.unsplash.com/photo-1555529902-1974e9dd9e97?w=400&h=250&fit=crop&q=80', // 高級デパート外観
+      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop&q=80', // 高級デパート外観
       'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop&q=80', // デパート内部のラグジュアリー空間
       'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop&q=80'  // 高級ショッピング
     ],

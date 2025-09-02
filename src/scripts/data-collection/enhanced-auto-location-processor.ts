@@ -31,7 +31,7 @@ const CATEGORY_IMAGES = {
   restaurant: [
     'https://images.unsplash.com/photo-1604909052743-94e838986d24?w=400&h=250&fit=crop&q=80',
     'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80'
+    'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80'
   ],
   cafe: [
     'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=400&h=250&fit=crop&q=80',
@@ -45,7 +45,7 @@ const CATEGORY_IMAGES = {
   ],
   tourist: [
     'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=400&h=250&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop&q=80',
     'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=250&fit=crop&q=80'
   ],
   entertainment: [
@@ -55,11 +55,11 @@ const CATEGORY_IMAGES = {
   ],
   hotel: [
     'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80',
     'https://images.unsplash.com/photo-1574263867128-a3d06c4b2110?w=400&h=250&fit=crop&q=80'
   ],
   other: [
-    'https://images.unsplash.com/photo-1555529902-1974e9dd9e97?w=400&h=250&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop&q=80',
     'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop&q=80',
     'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop&q=80'
   ]
@@ -85,11 +85,11 @@ const CUISINE_IMAGES = {
   pizza: [
     'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=250&fit=crop&q=80',
     'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80'
+    'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80'
   ],
   burger: [
     'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=250&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80',
     'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&h=250&fit=crop&q=80'
   ],
   sweets: [

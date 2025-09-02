@@ -5,6 +5,8 @@ import { MetaTags, generateSEO } from '../../components/SEO/MetaTags'
 import { StructuredData, generateStructuredData } from '../../components/SEO/StructuredData'
 import { generateImageProps } from '../../utils/imageOptimization'
 import { RelatedContent } from '../../components/SEO/RelatedContent'
+import { generateCelebrityFAQ, generateFAQStructuredData, extractAreasFromAddresses } from '../../utils/faqGenerator'
+import { OptimizedYouTubeThumbnail } from '../../components/OptimizedYouTubeThumbnail'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import Select from '../../components/ui/Select'
@@ -47,18 +49,16 @@ interface Item {
 function getYouTubeThumbnail(videoUrl: string | null): string | null {
   if (!videoUrl) return null
   
-  // YouTube URLから動画IDを抽出
   const patterns = [
-    /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/,
-    /youtube\.com\/embed\/([^&\n?#]+)/,
+    /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i,
     /youtube\.com\/v\/([^&\n?#]+)/
   ]
   
   for (const pattern of patterns) {
     const match = videoUrl.match(pattern)
     if (match && match[1]) {
-      // 高品質なサムネイルを返す
-      return `https://img.youtube.com/vi/${match[1]}/maxresdefault.jpg`
+      // Video IDのみを返す（最適化されたコンポーネントで使用）
+      return match[1]
     }
   }
   
@@ -376,11 +376,16 @@ export default function CelebrityProfile() {
     )
   }
   
-  // Generate SEO data
+  // Generate SEO data with enhanced content generation
   const celebritySEO = celebrity ? generateSEO.celebrity(
     celebrity.name,
     episodes.length,
-    locations.length
+    locations.length,
+    {
+      items: items.length,
+      recentVisits: locations.slice(0, 3).map(loc => loc.name),
+      popularTags: [...new Set(locations.flatMap(loc => loc.tags || []))].slice(0, 5)
+    }
   ) : { title: '', description: '', keywords: '' }
 
   // Generate structured data
@@ -406,6 +411,29 @@ export default function CelebrityProfile() {
     { name: celebrity.name }
   ]) : null
 
+  // Generate enhanced FAQ using database data
+  const areas = locations.length > 0 
+    ? extractAreasFromAddresses(locations.map(loc => loc.address || ''))
+    : []
+  
+  const latestEpisode = episodes.length > 0 
+    ? { title: episodes[0].title, airDate: episodes[0].air_date || '' }
+    : undefined
+
+  const faqItems = celebrity 
+    ? generateCelebrityFAQ(celebrity.name, {
+        locationCount: locations.length,
+        latestEpisode,
+        areas,
+        episodeCount: episodes.length
+      })
+    : []
+
+  // FAQ structured data for rich snippets
+  const faqData = faqItems.length > 0 
+    ? generateFAQStructuredData(faqItems)
+    : null
+
   return (
     <div className="min-h-screen bg-white">
       {celebrity && (
@@ -421,7 +449,8 @@ export default function CelebrityProfile() {
           
           <StructuredData data={[
             ...(personStructuredData ? [personStructuredData] : []),
-            ...(breadcrumbData ? [breadcrumbData] : [])
+            ...(breadcrumbData ? [breadcrumbData] : []),
+            ...(faqData ? [faqData] : [])
           ]} />
         </>
       )}
@@ -759,9 +788,9 @@ export default function CelebrityProfile() {
                   <CardContent className="p-0">
                     {/* Thumbnail */}
                     <div className="relative">
-                      {(episode.thumbnail_url || getYouTubeThumbnail(episode.video_url)) ? (
+                      {episode.thumbnail_url ? (
                         <img
-                          {...generateImageProps('episode', episode.title, episode.thumbnail_url || getYouTubeThumbnail(episode.video_url), {
+                          {...generateImageProps('episode', episode.title, episode.thumbnail_url, {
                             celebrityName: celebrity.name,
                             date: episode.date,
                             platform: getPlatformLabel(getPlatformFromUrl(episode.video_url)) as any,
@@ -769,6 +798,13 @@ export default function CelebrityProfile() {
                             hasItems: episodeLinks.items > 0
                           })}
                           className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                      ) : getYouTubeThumbnail(episode.video_url) ? (
+                        <OptimizedYouTubeThumbnail
+                          videoId={getYouTubeThumbnail(episode.video_url)!}
+                          alt={`${episode.title} - ${celebrity.name}`}
+                          className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                          priority={filteredEpisodes.indexOf(episode) < 3} // 最初の3件は優先読み込み
                         />
                       ) : (
                         <div className="w-full h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">

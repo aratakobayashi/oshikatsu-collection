@@ -236,7 +236,7 @@ const moreLocationImages = [
     searchPatterns: ['サンリオピューロランド', 'ピューロランド'],
     images: [
       'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=250&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1605440777709-a0c699a82d1e?w=400&h=250&fit=crop&q=80'
     ],
     description: 'サンリオキャラクターのテーマパーク。キティちゃんやマイメロディに会える'
@@ -269,7 +269,7 @@ const moreLocationImages = [
     images: [
       'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=250&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1555529902-1974e9dd9e97?w=400&h=250&fit=crop&q=80'
+      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop&q=80'
     ],
     description: '輸入雑貨とコスメの人気ショップ。海外のおしゃれアイテムが豊富'
   },
@@ -289,7 +289,7 @@ const moreLocationImages = [
     images: [
       'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1556742111-a301076d9d18?w=400&h=250&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1555529902-1974e9dd9e97?w=400&h=250&fit=crop&q=80'
+      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop&q=80'
     ],
     description: 'フランスの高級ブランド。銀座並木通り店は日本最大級の店舗'
   },
@@ -317,7 +317,7 @@ const moreLocationImages = [
     name: 'ギンザシックス',
     searchPatterns: ['ギンザシックス', 'GINZA SIX', '銀座'],
     images: [
-      'https://images.unsplash.com/photo-1555529902-1974e9dd9e97?w=400&h=250&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop&q=80'
     ],
@@ -331,7 +331,7 @@ const moreLocationImages = [
     images: [
       'https://images.unsplash.com/photo-1604177439146-3b906f750cf2?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1511882150382-421056c89033?w=400&h=250&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop&q=80'
+      'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop&q=80'
     ],
     description: '新宿歌舞伎町にある体験型エンターテイメント施設。謎解きゲームの聖地'
   },

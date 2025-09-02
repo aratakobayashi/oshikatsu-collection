@@ -22,7 +22,7 @@ const megaLocationImages = [
     searchPatterns: ['フレッシュネスバーガー', 'フレッシュネス', '渋谷センター街'],
     images: [
       'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=250&fit=crop&q=80', // ハンバーガー
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&h=250&fit=crop&q=80'
     ],
     description: '渋谷センター街の人気ハンバーガーチェーン。フレッシュな野菜とパティが自慢'
@@ -72,7 +72,7 @@ const megaLocationImages = [
     searchPatterns: ['キッチンオリジン', 'オリジン弁当', '赤坂'],
     images: [
       'https://images.unsplash.com/photo-1605847780692-d7b2c8e5ecd9?w=400&h=250&fit=crop&q=80', // 弁当
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1581873372213-2ec0b1e7d0c8?w=400&h=250&fit=crop&q=80'
     ],
     description: '赤坂にあるお弁当・総菜チェーン。手作りの惣菜とお弁当が人気'
@@ -131,7 +131,7 @@ const megaLocationImages = [
     name: '日本橋髙島屋',
     searchPatterns: ['日本橋髙島屋', '高島屋', '日本橋'],
     images: [
-      'https://images.unsplash.com/photo-1555529902-1974e9dd9e97?w=400&h=250&fit=crop&q=80', // デパート
+      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop&q=80', // デパート
       'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop&q=80'
     ],
@@ -141,7 +141,7 @@ const megaLocationImages = [
     name: '東京都庁第一庁舎32階職員食堂',
     searchPatterns: ['東京都庁', '都庁食堂', '32階'],
     images: [
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80', // 食堂
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80', // 食堂
       'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1574263867128-a3d06c4b2110?w=400&h=250&fit=crop&q=80'
     ],
@@ -380,7 +380,7 @@ const megaLocationImages = [
     searchPatterns: ['丸武', 'まるたけ', '築地', '卵焼き'],
     images: [
       'https://images.unsplash.com/photo-1533777419517-3e4017e2e15a?w=400&h=250&fit=crop&q=80', // 卵焼き
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop&q=80'
     ],
     description: '築地の老舗卵焼き専門店。ふわふわの卵焼きが名物'
@@ -421,7 +421,7 @@ const megaLocationImages = [
     images: [
       'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400&h=250&fit=crop&q=80', // 中華料理
       'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=400&h=250&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80'
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80'
     ],
     description: '西麻布の高級中華料理店。本格的な北京料理が味わえる'
   },
@@ -433,7 +433,7 @@ const megaLocationImages = [
     images: [
       'https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=400&h=250&fit=crop&q=80', // 建築
       'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1555529902-1974e9dd9e97?w=400&h=250&fit=crop&q=80'
+      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop&q=80'
     ],
     description: '池袋にある重要文化財。フランク・ロイド・ライト設計の美しい建築'
   },
@@ -452,7 +452,7 @@ const megaLocationImages = [
     searchPatterns: ['横須賀美術館', '横須賀', '美術館'],
     images: [
       'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=250&fit=crop&q=80', // 美術館
-      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=250&fit=crop&q=80'
     ],
     description: '神奈川県横須賀市の美術館。海に面した絶好のロケーション'
@@ -463,7 +463,7 @@ const megaLocationImages = [
     name: '武蔵野アブラ學会',
     searchPatterns: ['武蔵野アブラ學会', 'アブラ學会', '早稲田'],
     images: [
-      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop&q=80', // ユニークな店舗
+      'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop&q=80', // ユニークな店舗
       'https://images.unsplash.com/photo-1574263867128-a3d06c4b2110?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?w=400&h=250&fit=crop&q=80'
     ],

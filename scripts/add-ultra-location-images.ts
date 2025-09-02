@@ -52,7 +52,7 @@ const ultraLocationImages = [
     searchPatterns: ['ホテル大野屋', '伊東園', '熱海'],
     images: [
       'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop&q=80', // ホテル料理
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1574263867128-a3d06c4b2110?w=400&h=250&fit=crop&q=80'
     ],
     description: '熱海の温泉ホテル。伝統的な和食と温泉が楽しめる老舗旅館'
@@ -63,7 +63,7 @@ const ultraLocationImages = [
     images: [
       'https://images.unsplash.com/photo-1604909052743-94e838986d24?w=400&h=250&fit=crop&q=80', // 土鍋ご飯
       'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80'
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80'
     ],
     description: '中目黒の土鍋ご飯専門店。炊きたての土鍋ご飯と季節料理が自慢'
   },
@@ -103,7 +103,7 @@ const ultraLocationImages = [
     images: [
       'https://images.unsplash.com/photo-1604909052743-94e838986d24?w=400&h=250&fit=crop&q=80', // 定食
       'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80'
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80'
     ],
     description: '新宿南口の健康志向定食屋。無添加食材を使った体に優しい料理'
   },
@@ -133,7 +133,7 @@ const ultraLocationImages = [
     images: [
       'https://images.unsplash.com/photo-1604909052743-94e838986d24?w=400&h=250&fit=crop&q=80', // 丼物
       'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80'
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80'
     ],
     description: '渋谷の挽肉丼専門店。ボリューム満点の挽肉丼が若者に人気'
   },
@@ -143,7 +143,7 @@ const ultraLocationImages = [
     images: [
       'https://images.unsplash.com/photo-1604909052743-94e838986d24?w=400&h=250&fit=crop&q=80', // 和食
       'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80'
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80'
     ],
     description: '麻布十番の和食レストラン。季節の食材を活かした上品な料理'
   },
@@ -153,7 +153,7 @@ const ultraLocationImages = [
     images: [
       'https://images.unsplash.com/photo-1604909052743-94e838986d24?w=400&h=250&fit=crop&q=80', // おにぎり
       'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80'
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80'
     ],
     description: '浅草の老舗おにぎり専門店。昔ながらの手作りおにぎりが味わえる'
   },
@@ -163,7 +163,7 @@ const ultraLocationImages = [
     images: [
       'https://images.unsplash.com/photo-1604909052743-94e838986d24?w=400&h=250&fit=crop&q=80', // もんじゃ
       'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80'
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80'
     ],
     description: '浅草のもんじゃ焼き専門店。アットホームな雰囲気で本場の味が楽しめる'
   },
@@ -173,7 +173,7 @@ const ultraLocationImages = [
     images: [
       'https://images.unsplash.com/photo-1604909052743-94e838986d24?w=400&h=250&fit=crop&q=80', // もんじゃ
       'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80'
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80'
     ],
     description: '浅草の人気もんじゃ焼き店。観光客にも地元民にも愛される老舗'
   },
@@ -183,7 +183,7 @@ const ultraLocationImages = [
     images: [
       'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400&h=250&fit=crop&q=80', // 中華料理
       'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=400&h=250&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80'
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80'
     ],
     description: '盛岡の中華料理店。本格的な中華料理がリーズナブルに楽しめる'
   },
@@ -257,7 +257,7 @@ const ultraLocationImages = [
     images: [
       'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=400&h=250&fit=crop&q=80', // 昭和の街並み
       'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1555529902-1974e9dd9e97?w=400&h=250&fit=crop&q=80'
+      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop&q=80'
     ],
     description: '大分県豊後高田市の昭和レトロな街並み。タイムスリップしたような体験ができる'
   },
@@ -266,7 +266,7 @@ const ultraLocationImages = [
     searchPatterns: ['回向院', 'えこういん', '両国'],
     images: [
       'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=400&h=250&fit=crop&q=80', // 寺院
-      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=250&fit=crop&q=80'
     ],
     description: '両国の歴史ある寺院。江戸時代の力士や動物の供養で有名'
@@ -286,7 +286,7 @@ const ultraLocationImages = [
     searchPatterns: ['ナビオス横浜', 'みなとみらい', 'ホテル'],
     images: [
       'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop&q=80', // ホテル
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1574263867128-a3d06c4b2110?w=400&h=250&fit=crop&q=80'
     ],
     description: '横浜みなとみらいの老舗ホテル。港を望む絶好のロケーション'
@@ -296,7 +296,7 @@ const ultraLocationImages = [
     searchPatterns: ['ヒルトン東京', 'マーブルラウンジ', '西新宿'],
     images: [
       'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop&q=80', // ホテルラウンジ
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&h=250&fit=crop&q=80'
     ],
     description: '新宿ヒルトンホテルの高級ラウンジ。アフタヌーンティーとスイーツビュッフェが人気'
@@ -361,7 +361,7 @@ const ultraLocationImages = [
     images: [
       'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400&h=250&fit=crop&q=80', // 中華料理
       'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=400&h=250&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80'
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80'
     ],
     description: '上海豫園商城内の小籠包専門店。本場の味が体験できる'
   },
@@ -371,7 +371,7 @@ const ultraLocationImages = [
     images: [
       'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400&h=250&fit=crop&q=80', // 中華レストラン
       'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=400&h=250&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80'
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80'
     ],
     description: '上海豫園の伝統的中華レストラン。歴史ある建物で本格中華を味わう'
   },
@@ -381,7 +381,7 @@ const ultraLocationImages = [
     images: [
       'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400&h=250&fit=crop&q=80', // 中華レストラン
       'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=400&h=250&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80'
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80'
     ],
     description: '上海豫園の高級中華料理店。伝統的な上海料理が楽しめる'
   },
@@ -400,7 +400,7 @@ const ultraLocationImages = [
     searchPatterns: ['EL SUENITO', 'エルスエニート', '備前'],
     images: [
       'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop&q=80', // カフェレストラン
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1574263867128-a3d06c4b2110?w=400&h=250&fit=crop&q=80'
     ],
     description: '岡山県備前市日生町のスペイン料理レストラン。海の見える絶景カフェ'
@@ -442,7 +442,7 @@ const ultraLocationImages = [
     searchPatterns: ['Hohokam DINER', 'ホホカムダイナー', '神宮前'],
     images: [
       'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop&q=80', // アメリカンダイナー
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1574263867128-a3d06c4b2110?w=400&h=250&fit=crop&q=80'
     ],
     description: '原宿のアメリカンダイナー。本格的なハンバーガーとフライドポテトが人気'
@@ -452,7 +452,7 @@ const ultraLocationImages = [
     searchPatterns: ['JUNKY SPECIAL', 'ジャンキー', '歌舞伎町'],
     images: [
       'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop&q=80', // バー
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=400&h=250&fit=crop&q=80'
     ],
     description: '歌舞伎町のユニークなバー。個性的な内装とオリジナルカクテルが自慢'
@@ -463,7 +463,7 @@ const ultraLocationImages = [
     images: [
       'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=250&fit=crop&q=80', // イタリアンピザ
       'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80'
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80'
     ],
     description: '南青山の本格ナポリピッツァ店。窯焼きの絶品ピザが味わえる'
   },
@@ -513,7 +513,7 @@ const ultraLocationImages = [
     images: [
       'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=250&fit=crop&q=80', // 窯焼きピザ
       'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80'
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80'
     ],
     description: '神楽坂の高温窯焼きピザ店。400度の高温で焼く本格ナポリピッツァ'
   },
@@ -523,7 +523,7 @@ const ultraLocationImages = [
     images: [
       'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=400&h=250&fit=crop&q=80', // 踏切
       'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1555529902-1974e9dd9e97?w=400&h=250&fit=crop&q=80'
+      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop&q=80'
     ],
     description: '下北沢の有名な踏切。映画やドラマの撮影地としても人気'
   },
@@ -552,7 +552,7 @@ const ultraLocationImages = [
     searchPatterns: ['浅草', 'あさくさ', '台東区'],
     images: [
       'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=400&h=250&fit=crop&q=80', // 浅草寺
-      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=250&fit=crop&q=80'
     ],
     description: '東京の下町浅草。浅草寺と雷門で有名な伝統的観光地'
@@ -642,7 +642,7 @@ const ultraLocationImages = [
     searchPatterns: ['銀座月と花', '月と花', '銀座'],
     images: [
       'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop&q=80', // 和食レストラン
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1574263867128-a3d06c4b2110?w=400&h=250&fit=crop&q=80'
     ],
     description: '銀座の高級和食レストラン。季節感あふれる日本料理が味わえる'
@@ -652,7 +652,7 @@ const ultraLocationImages = [
     searchPatterns: ['銀座風香', '風香', '築地'],
     images: [
       'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop&q=80', // 和食
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80',
       'https://images.unsplash.com/photo-1574263867128-a3d06c4b2110?w=400&h=250&fit=crop&q=80'
     ],
     description: '築地近くの和食店。新鮮な魚介を使った料理が自慢'

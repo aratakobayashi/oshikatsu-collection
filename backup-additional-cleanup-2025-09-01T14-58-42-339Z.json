@@ -1,0 +1,63 @@
+{
+  "timestamp": "2025-09-01T14:58:42.339Z",
+  "phase": "user-requested-additional-cleanup",
+  "reason": "人名データ・曖昧データの追加削除",
+  "deleted_locations": [
+    {
+      "id": "0ffca7df-2951-4c29-bc65-c891ef267dec",
+      "name": "取り扱い店",
+      "address": "東京都内",
+      "description": "【神引き!!!】イコラブくじ 自分たちで引いてみました！に関連する店舗",
+      "episode_count": 1
+    },
+    {
+      "id": "702bf87b-1e0b-4e70-9e49-016c35bd313e",
+      "name": "📖楽天限定版",
+      "address": "東京都内",
+      "description": "【ひとめぼれ】鈴木瞳美の1st写真集がついに完成！メンバー12人で見てみると・・・！？で紹介された店舗",
+      "episode_count": 1
+    },
+    {
+      "id": "94078027-58e0-4eb1-862c-c2ad0c2029f4",
+      "name": "マクドナルド",
+      "address": "住所不明",
+      "description": "世界最大のファストフードチェーン。気軽に利用できる定番グルメ",
+      "episode_count": 1
+    },
+    {
+      "id": "a91ead51-2f91-42dd-8c6f-1917e5530379",
+      "name": "📖TSUTAYA限定版",
+      "address": "東京都内",
+      "description": "【ひとめぼれ】鈴木瞳美の1st写真集がついに完成！メンバー12人で見てみると・・・！？で紹介された店舗",
+      "episode_count": 1
+    },
+    {
+      "id": "b39b6280-6ffb-47a0-b36a-7f6af2d90a14",
+      "name": "冨田 菜々風 Nanaka Tomita",
+      "address": "東京都内",
+      "description": "【ストライク連発！？】≠MEメンバーでボウリング対決したら、まさかのハイスコアメンバーが！【ノイミーといっしょ動画版(short)】で紹介された店舗",
+      "episode_count": 1
+    },
+    {
+      "id": "b91ab2b5-e36b-4f1c-ab06-e983aed22144",
+      "name": "冨田＆櫻井で釣りが楽しめるお店",
+      "address": "東京都内",
+      "description": "【大漁】自分で釣ってすぐ食べる！釣りができるお店に行ってみたら楽しすぎた🐟🎶に関連する店舗",
+      "episode_count": 1
+    },
+    {
+      "id": "bbe8ec56-0482-4dd7-a119-d411460fe4c4",
+      "name": "焼き鳥店",
+      "address": "東京都内",
+      "description": "無限シリーズで焼き鳥を食べ続けた店",
+      "episode_count": 1
+    },
+    {
+      "id": "fb0adf88-858e-416c-84f9-08ec14017a1f",
+      "name": "川中子 奈月心 Natsumi Kawanago",
+      "address": "東京都内",
+      "description": "【≠ME】『君はこの夏、恋をする』のMVをメンバーが徹底解説します！で紹介された店舗",
+      "episode_count": 1
+    }
+  ]
+}

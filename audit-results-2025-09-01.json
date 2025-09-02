@@ -1,0 +1,2599 @@
+{
+  "total_locations": 251,
+  "tabelog_coverage": {
+    "with_tabelog": 203,
+    "without_tabelog": 48,
+    "percentage": 81,
+    "missing_locations": [
+      {
+        "id": "d2aa6ea4-b328-4f86-8b77-d9ea63c3ed46",
+        "name": "豫園商城小籠包体験店",
+        "address": "中国上海市黄浦区豫園商城内（GODIVA横）",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "Snow Man",
+          "上海",
+          "豫園",
+          "小籠包",
+          "体験",
+          "すのちゅーぶ",
+          "特定済み"
+        ],
+        "image_url": null,
+        "description": "豫園商城小籠包体験店は都内にある専門店・名店で、Snow Manのロケ地として1回紹介。Snow Manが実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 豫園商城小籠包体験店でSnow Manと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "Snow Man"
+        ]
+      },
+      {
+        "id": "b6f58245-71de-4a0a-8074-b04c85f8c1b0",
+        "name": "キャットストリート",
+        "address": "東京都渋谷区神宮前",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "原宿",
+          "散歩",
+          "ストリート",
+          "ショッピング",
+          "聖地"
+        ],
+        "image_url": null,
+        "description": "キャットストリートは渋谷区のカフェで、SixTONESが1回のロケで利用。落ち着いた雰囲気でSixTONESファンの聖地巡礼にも最適。コーヒーやスイーツを楽しみながら、憧れのセレブと同じ空間を体験できます。 キャットストリートでSixTONESと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "SixTONES"
+        ]
+      },
+      {
+        "id": "b5634cc9-d94c-417d-9b45-0f381ddeebcc",
+        "name": "東京都庁第一庁舎32階職員食堂",
+        "address": "東京都新宿区西新宿２丁目８−１",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "定食",
+          "食堂",
+          "家庭料理",
+          "新宿",
+          "東京",
+          "繁華街",
+          "よにのちゃんねる",
+          "YouTuber",
+          "エンターテイメント",
+          "よにのちゃんねるロケ地",
+          "聖地巡礼",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "東京都庁第一庁舎32階職員食堂は新宿区にあるよにのちゃんねるがロケで訪れたレストランです。1回のエピソードで紹介され、よにのちゃんねるの聖地巡礼スポットとしても人気。グルメ好きなファンには特におすすめの店舗です。 東京都庁第一庁舎32階職員食堂でよにのちゃんねると同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "よにのちゃんねる"
+        ]
+      },
+      {
+        "id": "be37f45c-5a83-476d-b631-df6dde7ea8fb",
+        "name": "ボートレース浜名湖",
+        "address": "静岡県湖西市新居町中之郷3727-7",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "AI抽出シミュレーション",
+          "YouTube概要欄モック",
+          "high",
+          "スポーツ施設",
+          "バー",
+          "居酒屋",
+          "お酒",
+          "=LOVE",
+          "女性アイドル",
+          "指原莉乃プロデュース",
+          "=LOVEロケ地",
+          "聖地巡礼",
+          "人気ロケ地",
+          "複数回登場"
+        ],
+        "image_url": null,
+        "description": "ボートレース観戦でメンバーが訪問した競艇場 (動画: 【大絶叫再来】イコラブボートレース部がレディース戦で勝負！ビギナーズラック発動で奇跡巻き起こす！？🤩 【レディース戦盛り上げ大使奮闘記】)",
+        "episodes_count": 9,
+        "celebrity_names": [
+          "=LOVE"
+        ]
+      },
+      {
+        "id": "b4c1537c-52af-495e-bdd0-f1123df8d3a4",
+        "name": "お台場海浜公園BBQエリア",
+        "address": "東京都港区台場1-4-1",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "AI抽出シミュレーション",
+          "YouTube概要欄モック",
+          "high",
+          "レジャー施設",
+          "バー",
+          "居酒屋",
+          "お酒",
+          "=LOVE",
+          "女性アイドル",
+          "指原莉乃プロデュース",
+          "=LOVEロケ地",
+          "聖地巡礼",
+          "人気ロケ地",
+          "複数回登場",
+          "東京"
+        ],
+        "image_url": null,
+        "description": "BBQ動画で=LOVEメンバーが利用したバーベキュー施設 (動画: 【大爆笑】各自ネタ持ち込みバーベキュー🍖！超自由空間爆誕しました。【平和】)",
+        "episodes_count": 2,
+        "celebrity_names": [
+          "=LOVE"
+        ]
+      },
+      {
+        "id": "d24e07d8-5095-491e-a53e-b0e5c578d365",
+        "name": "スタージュエリー銀座店",
+        "address": "〒104-0061 東京都中央区銀座6-8-3",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": "11:00-20:00",
+        "tags": [
+          "filming_location",
+          "jewelry",
+          "luxury",
+          "銀座",
+          "東京",
+          "高級エリア",
+          "二宮和也",
+          "嵐",
+          "ジャニーズ",
+          "人気店",
+          "有名店",
+          "話題",
+          "二宮和也ロケ地",
+          "聖地巡礼",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "スタージュエリー銀座店は中央区にある専門店・名店で、二宮和也のロケ地として1回紹介。二宮和也が実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 事前の確認・予約がおすすめ。 スタージュエリー銀座店で二宮和也と同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "二宮和也"
+        ]
+      },
+      {
+        "id": "03fa1617-8950-4369-8b13-b11301660b94",
+        "name": "USJ",
+        "address": "住所不明",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "無料抽出",
+          "タイトル抽出",
+          "theme_park",
+          "low",
+          "≠ME"
+        ],
+        "image_url": null,
+        "description": "【USJ】メンバーでユニバ行ったら最高の日になりました！スーパー・ニンテンドー・ワールド™〜ウィザーディング・ワールド・オブ・ハリー・ポッター【いこのいじょいch×ノイステコラボ】【USJ旅#1】で言及された店舗・施設",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≠ME"
+        ]
+      },
+      {
+        "id": "f5248622-e12c-45e3-b82a-68153e082919",
+        "name": "ABCラジオ",
+        "address": "東京都内",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "other",
+          "≠ME",
+          "撮影協力",
+          "filming_location"
+        ],
+        "image_url": null,
+        "description": "【USJ】メンバーでユニバ行ったら最高の日になりました！スーパー・ニンテンドー・ワールド™〜ウィザーディング・ワールド・オブ・ハリー・ポッター【いこのいじょいch×ノイステコラボ】【USJ旅#1】の撮影協力店舗",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≠ME"
+        ]
+      },
+      {
+        "id": "e0d0bccc-2ce9-400f-8240-61c318eb86e1",
+        "name": "名古屋・大須商店",
+        "address": "東京都内",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "shop",
+          "≠ME",
+          "女性アイドル",
+          "指原莉乃プロデュース",
+          "≠MEロケ地",
+          "聖地巡礼",
+          "東京",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "【名古屋来た】お仕事の合間に大須商店街へ！グルメを堪能😋そして何やら不思議なことが起こる・・？に関連する店舗",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≠ME"
+        ]
+      },
+      {
+        "id": "92e5a04a-f358-4acf-aa60-07fb4ee86b9f",
+        "name": "開店前のお店",
+        "address": "東京都内",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "shop",
+          "≠ME",
+          "麺類",
+          "和食",
+          "そば・うどん",
+          "女性アイドル",
+          "指原莉乃プロデュース",
+          "≠MEロケ地",
+          "聖地巡礼",
+          "東京",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "開店前のお店は都内の麺類店で、≠MEが1回のロケで訪問。≠MEお気に入りのラーメン・麺類が味わえる聖地巡礼必須スポット。ファンなら一度は食べてみたい名店です。 開店前のお店で≠MEと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≠ME"
+        ]
+      },
+      {
+        "id": "c01dadd9-1e0d-46a5-99d7-6540e7c927ff",
+        "name": "警視庁本庁舎",
+        "address": "〒100-8929 東京都千代田区霞が関2-1-1",
+        "tabelog_url": null,
+        "phone": "03-3581-4321",
+        "opening_hours": null,
+        "tags": [
+          "filming_location",
+          "government",
+          "人気店",
+          "有名店",
+          "話題",
+          "山田涼介",
+          "山田涼介ロケ地",
+          "聖地巡礼",
+          "東京",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "警視庁本庁舎は千代田区にある専門店・名店で、山田涼介のロケ地として1回紹介。山田涼介が実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 事前の確認・予約がおすすめ。 警視庁本庁舎で山田涼介と同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "山田涼介"
+        ]
+      },
+      {
+        "id": "4cc356ec-1bd0-452c-b71e-e34931e71700",
+        "name": "豊後高田昭和の町",
+        "address": "〒872-1104 大分県豊後高田市新町",
+        "tabelog_url": null,
+        "phone": "0978-23-1860",
+        "opening_hours": "9:00-18:00",
+        "tags": [
+          "filming_location",
+          "main_location",
+          "retro_town",
+          "山田涼介",
+          "山田涼介ロケ地",
+          "聖地巡礼"
+        ],
+        "image_url": null,
+        "description": "豊後高田昭和の町は都内のエンターテイメント施設で、山田涼介が1回のロケで利用。山田涼介と同じ体験ができる人気の聖地巡礼スポット。ファンには特別な思い出になること間違いなしです。 事前の確認・予約がおすすめ。 豊後高田昭和の町で山田涼介と同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "山田涼介"
+        ]
+      },
+      {
+        "id": "05ddfda7-d446-423b-8262-dca0f725bced",
+        "name": "📖Loppi・HMV限定版",
+        "address": "東京都内",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "other",
+          "≠ME",
+          "公式リンク付き",
+          "バー",
+          "居酒屋",
+          "お酒",
+          "女性アイドル",
+          "指原莉乃プロデュース",
+          "≠MEロケ地",
+          "聖地巡礼",
+          "東京",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "【ひとめぼれ】鈴木瞳美の1st写真集がついに完成！メンバー12人で見てみると・・・！？で紹介された店舗",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≠ME"
+        ]
+      },
+      {
+        "id": "623a112e-e80b-4e2f-88bb-68bf665aa59a",
+        "name": "namco横浜ワールドポーターズ店",
+        "address": "東京都横浜周辺",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "shop",
+          "≒JOY",
+          "撮影協力",
+          "filming_location"
+        ],
+        "image_url": null,
+        "description": "namco横浜ワールドポーターズ店は都内にある専門店・名店で、≒JOYのロケ地として1回紹介。≒JOYが実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 namco横浜ワールドポーターズ店で≒JOYと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≒JOY"
+        ]
+      },
+      {
+        "id": "8d340753-f9c5-412f-90e4-7594e9f1b5e7",
+        "name": "六角家 1994+",
+        "address": "東京都内",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "other",
+          "≒JOY",
+          "公式リンク付き",
+          "ラーメン",
+          "麺類",
+          "人気ラーメン店",
+          "横浜",
+          "神奈川",
+          "みなとみらい",
+          "人気店",
+          "有名店",
+          "話題",
+          "≒JOYロケ地",
+          "聖地巡礼"
+        ],
+        "image_url": null,
+        "description": "【爆食】新横浜ラーメン博物館で念願の有名店はしごラーメン！🍜【六角家/利尻らーめん味楽】で紹介された店舗",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≒JOY"
+        ]
+      },
+      {
+        "id": "7dd31864-9dd0-4648-8ee9-46fb81331a55",
+        "name": "Napule Pizzeria",
+        "address": "東京都港区南青山5-6-24",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "Snow Man",
+          "ファンサイト情報",
+          "restaurant",
+          "高精度",
+          "ORICON"
+        ],
+        "image_url": null,
+        "description": "Napule Pizzeriaは港区にある専門店・名店で、Snow Manのロケ地として1回紹介。Snow Manが実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 Napule PizzeriaでSnow Manと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "Snow Man"
+        ]
+      },
+      {
+        "id": "7187bf8a-5c67-4c50-8305-40523d48bf2b",
+        "name": "PLAZA 東京店",
+        "address": "東京都内",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "shop",
+          "≒JOY",
+          "撮影協力",
+          "filming_location"
+        ],
+        "image_url": null,
+        "description": "【爆買い🛍️】PLAZA30分間貸切で買い放題！コスメ・日焼け対策商品など夏におすすめの商品続々登場🍉☀️【ニアジョイ】の撮影協力店舗",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≒JOY"
+        ]
+      },
+      {
+        "id": "a6531c83-f70c-4bb0-bb4b-f47a5c67a884",
+        "name": "Sarashina Horii",
+        "address": "東京都港区麻布十番1-8-7",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "Snow Man",
+          "ファンサイト情報",
+          "restaurant",
+          "高精度",
+          "ORICON"
+        ],
+        "image_url": null,
+        "description": "Sarashina Horiiは港区の麺類店で、Snow Manが1回のロケで訪問。Snow Manお気に入りのラーメン・麺類が味わえる聖地巡礼必須スポット。ファンなら一度は食べてみたい名店です。 Sarashina HoriiでSnow Manと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "Snow Man"
+        ]
+      },
+      {
+        "id": "855d480a-120e-4b3d-8dba-8ba1806b5b21",
+        "name": "Wagaya no Shokudo",
+        "address": "東京都渋谷区桜丘町8-23-5",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "Snow Man",
+          "ファンサイト情報",
+          "restaurant",
+          "高精度",
+          "ORICON"
+        ],
+        "image_url": null,
+        "description": "Wagaya no Shokudoは渋谷区にあるSnow Manがロケで訪れたレストランです。1回のエピソードで紹介され、Snow Manの聖地巡礼スポットとしても人気。グルメ好きなファンには特におすすめの店舗です。 Wagaya no ShokudoでSnow Manと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "Snow Man"
+        ]
+      },
+      {
+        "id": "b3fc1d6c-5980-44b5-ae59-44873088a55d",
+        "name": "账房 豫園店",
+        "address": "中国上海市黄浦区豫園商城内",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "Snow Man",
+          "上海",
+          "豫園",
+          "香嚢",
+          "体験",
+          "すのちゅーぶ",
+          "特定済み"
+        ],
+        "image_url": null,
+        "description": "账房 豫園店は都内にあるSnow Manがロケで訪れたレストランです。1回のエピソードで紹介され、Snow Manの聖地巡礼スポットとしても人気。グルメ好きなファンには特におすすめの店舗です。 账房 豫園店でSnow Manと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "Snow Man"
+        ]
+      },
+      {
+        "id": "dfa315f2-64a8-4c7a-b8d7-de8ac7a5d978",
+        "name": "GiGO 新宿歌舞伎町店",
+        "address": "東京都新宿周辺",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "hotel",
+          "≠ME",
+          "撮影協力",
+          "filming_location"
+        ],
+        "image_url": null,
+        "description": "GiGO 新宿歌舞伎町店は都内にある専門店・名店で、≠MEのロケ地として1回紹介。≠MEが実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 GiGO 新宿歌舞伎町店で≠MEと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≠ME"
+        ]
+      },
+      {
+        "id": "caf07b83-1a46-4825-bde2-7d17612e6d10",
+        "name": "麗雲閣 豫園店",
+        "address": "中国上海市黄浦区豫園商城内",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "Snow Man",
+          "上海",
+          "豫園",
+          "扇子",
+          "体験",
+          "すのちゅーぶ",
+          "特定済み"
+        ],
+        "image_url": null,
+        "description": "麗雲閣 豫園店は都内のエンターテイメント施設で、Snow Manが1回のロケで利用。Snow Manと同じ体験ができる人気の聖地巡礼スポット。ファンには特別な思い出になること間違いなしです。 麗雲閣 豫園店でSnow Manと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "Snow Man"
+        ]
+      },
+      {
+        "id": "8f366512-28b9-4df1-83a9-3f245876e455",
+        "name": "EL SUENITO（エルスエニート）",
+        "address": "岡山県備前市日生町日生641-51",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "カフェ",
+          "コーヒー",
+          "喫茶店",
+          "亀梨和也",
+          "KAT-TUN",
+          "ジャニーズ",
+          "亀梨和也ロケ地",
+          "聖地巡礼"
+        ],
+        "image_url": null,
+        "description": "EL SUENITO（エルスエニート）は都内にある亀梨和也がロケで訪れたレストランです。1回のエピソードで紹介され、亀梨和也の聖地巡礼スポットとしても人気。グルメ好きなファンには特におすすめの店舗です。 EL SUENITO（エルスエニート）で亀梨和也と同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "亀梨和也"
+        ]
+      },
+      {
+        "id": "0d06e133-eea2-4910-b9a9-8754b0c9a97e",
+        "name": "ギンザシックス",
+        "address": "〒104-0061 東京都中央区銀座6-10-1",
+        "tabelog_url": null,
+        "phone": "03-6891-3390",
+        "opening_hours": "10:30-20:30（レストランフロア11:00-23:00）",
+        "tags": [
+          "sixtones",
+          "ginza",
+          "shopping_mall",
+          "fashion",
+          "modern"
+        ],
+        "image_url": null,
+        "description": "ギンザシックスは中央区のエンターテイメント施設で、SixTONESが1回のロケで利用。SixTONESと同じ体験ができる人気の聖地巡礼スポット。ファンには特別な思い出になること間違いなしです。 事前の確認・予約がおすすめ。 ギンザシックスでSixTONESと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "SixTONES"
+        ]
+      },
+      {
+        "id": "1b426176-85fa-4e92-b90b-f0067bec44e3",
+        "name": "サウナセンター稲荷町",
+        "address": "東京都台東区東上野6-2-8",
+        "tabelog_url": null,
+        "phone": "03-3841-2555",
+        "opening_hours": "24時間営業",
+        "tags": [
+          "サウナ",
+          "サウナ飯",
+          "豚生姜焼き定食",
+          "台東区",
+          "東上野",
+          "稲荷町",
+          "それぞれの孤独のグルメ",
+          "Season11"
+        ],
+        "image_url": null,
+        "description": "サウナ施設内の食堂。サウナ後の豚生姜焼き定食が絶品。玉井詩織がゲスト出演。それぞれの孤独のグルメ第5話の舞台。",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "松重豊"
+        ]
+      },
+      {
+        "id": "6ee97037-e4b8-417e-9291-c097554d1e81",
+        "name": "平塚バプテスト教会 こひつじ食堂",
+        "address": "神奈川県平塚市豊原町4-5",
+        "tabelog_url": null,
+        "phone": "0463-33-2320",
+        "opening_hours": "毎月第3・第4金曜日開催",
+        "tags": [
+          "子ども食堂",
+          "教会",
+          "豚バラ大根",
+          "シイラのフライ",
+          "平塚市",
+          "バプテスト教会",
+          "それぞれの孤独のグルメ",
+          "Season11"
+        ],
+        "image_url": null,
+        "description": "平塚バプテスト教会の子ども食堂「こひつじ食堂」。豚バラ大根とシイラのフライを提供。平田満がゲスト出演。それぞれの孤独のグルメ第6話の舞台。",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "松重豊"
+        ]
+      },
+      {
+        "id": "10ce72ce-fe76-4768-960f-bb70c8d697cb",
+        "name": "利尻らーめん味楽",
+        "address": "東京都内",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "other",
+          "≒JOY",
+          "公式リンク付き",
+          "ラーメン",
+          "麺類",
+          "人気ラーメン店",
+          "横浜",
+          "神奈川",
+          "みなとみらい",
+          "人気店",
+          "有名店",
+          "話題",
+          "≒JOYロケ地",
+          "聖地巡礼"
+        ],
+        "image_url": null,
+        "description": "【爆食】新横浜ラーメン博物館で念願の有名店はしごラーメン！🍜【六角家/利尻らーめん味楽】で紹介された店舗",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≒JOY"
+        ]
+      },
+      {
+        "id": "994efa92-e87f-4bd4-a08b-4b3db7df567d",
+        "name": "回転わんこそば店",
+        "address": "東京都内",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "そば",
+          "大食い",
+          "わんこそば",
+          "聖地",
+          "792杯"
+        ],
+        "image_url": null,
+        "description": "回転わんこそば店は都内の麺類店で、SixTONESが1回のロケで訪問。SixTONESお気に入りのラーメン・麺類が味わえる聖地巡礼必須スポット。ファンなら一度は食べてみたい名店です。 回転わんこそば店でSixTONESと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "SixTONES"
+        ]
+      },
+      {
+        "id": "524529fa-2096-4182-b99e-9ae8e133562e",
+        "name": "現在開催中のスイーツパラダイス×≠MEのコラボカフェ",
+        "address": "東京都内",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "cafe",
+          "≠ME",
+          "カフェ",
+          "コーヒー",
+          "喫茶店",
+          "女性アイドル",
+          "指原莉乃プロデュース",
+          "≠MEロケ地",
+          "聖地巡礼",
+          "東京",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "現在開催中のスイーツパラダイス×≠MEのコラボカフェは都内のカフェで、≠MEが1回のロケで利用。落ち着いた雰囲気で≠MEファンの聖地巡礼にも最適。コーヒーやスイーツを楽しみながら、憧れのセレブと同じ空間を体験できます。 現在開催中のスイーツパラダイス×≠MEのコラボカフェで≠MEと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≠ME"
+        ]
+      },
+      {
+        "id": "50eda8a9-8974-46fb-9eef-f80491acaf0b",
+        "name": "スイーツパラダイス上野マルイ店",
+        "address": "東京都上野周辺",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "cafe",
+          "≠ME",
+          "カフェ",
+          "コーヒー",
+          "喫茶店",
+          "女性アイドル",
+          "指原莉乃プロデュース",
+          "≠MEロケ地",
+          "聖地巡礼",
+          "東京",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "スイーツパラダイス上野マルイ店は都内のカフェで、≠MEが1回のロケで利用。落ち着いた雰囲気で≠MEファンの聖地巡礼にも最適。コーヒーやスイーツを楽しみながら、憧れのセレブと同じ空間を体験できます。 スイーツパラダイス上野マルイ店で≠MEと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≠ME"
+        ]
+      },
+      {
+        "id": "5d8315f8-5312-4add-a786-88cdd5ef463e",
+        "name": "JUNKY SPECIAL（歌舞伎町）",
+        "address": "〒160-0021 東京都新宿区歌舞伎町2-46-5",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": "11:00-20:00",
+        "tags": [
+          "yonino_channel",
+          "breakfast_series",
+          "hamburger",
+          "restaurant",
+          "バー",
+          "居酒屋",
+          "お酒",
+          "新宿",
+          "東京",
+          "繁華街",
+          "よにのちゃんねる",
+          "YouTuber",
+          "エンターテイメント",
+          "よにのちゃんねるロケ地",
+          "聖地巡礼"
+        ],
+        "image_url": null,
+        "description": "JUNKY SPECIAL（歌舞伎町）は新宿区にあるバー・居酒屋で、よにのちゃんねるのロケ地として1回登場。大人の雰囲気を楽しめるよにのちゃんねる聖地巡礼スポット。お酒を飲みながらセレブの足跡を辿る特別な体験ができます。 事前の確認・予約がおすすめ。 JUNKY SPECIAL（歌舞伎町）でよにのちゃんねると同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "よにのちゃんねる"
+        ]
+      },
+      {
+        "id": "c23562ca-bb13-41af-aff9-ba08d8bf6c68",
+        "name": "キッチンオリジン 赤坂店",
+        "address": "東京都港区赤坂５丁目５−７",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "よにのちゃんねる",
+          "YouTuber",
+          "エンターテイメント",
+          "人気店",
+          "有名店",
+          "話題",
+          "よにのちゃんねるロケ地",
+          "聖地巡礼",
+          "東京",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "キッチンオリジン 赤坂店は港区にある専門店・名店で、よにのちゃんねるのロケ地として1回紹介。よにのちゃんねるが実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 キッチンオリジン 赤坂店でよにのちゃんねると同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "よにのちゃんねる"
+        ]
+      },
+      {
+        "id": "a4e032e6-8573-41f2-9a9a-5eba7935018e",
+        "name": "ルイ・ヴィトン銀座並木通り店",
+        "address": "〒104-0061 東京都中央区銀座7-6-1",
+        "tabelog_url": null,
+        "phone": "0120-00-1854",
+        "opening_hours": "11:00-20:00",
+        "tags": [
+          "sixtones",
+          "ginza",
+          "luxury",
+          "leather_goods",
+          "louis_vuitton"
+        ],
+        "image_url": null,
+        "description": "ルイ・ヴィトン銀座並木通り店は中央区にある専門店・名店で、SixTONESのロケ地として1回紹介。SixTONESが実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 事前の確認・予約がおすすめ。 ルイ・ヴィトン銀座並木通り店でSixTONESと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "SixTONES"
+        ]
+      },
+      {
+        "id": "e4bf4474-174a-4265-9c74-3be2fc1a2822",
+        "name": "回転わんこそばくるくるわんこ",
+        "address": "東京都内",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "restaurant",
+          "≠ME",
+          "撮影協力",
+          "filming_location"
+        ],
+        "image_url": null,
+        "description": "回転わんこそばくるくるわんこは都内の麺類店で、≠MEが1回のロケで訪問。≠MEお気に入りのラーメン・麺類が味わえる聖地巡礼必須スポット。ファンなら一度は食べてみたい名店です。 回転わんこそばくるくるわんこで≠MEと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≠ME"
+        ]
+      },
+      {
+        "id": "450c67c9-a8ab-4fdc-9128-f9a0f7793b53",
+        "name": "ユザワヤ新宿本店",
+        "address": "東京都新宿区新宿3-23-17",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "AI抽出シミュレーション",
+          "YouTube概要欄モック",
+          "medium",
+          "手芸店",
+          "新宿",
+          "東京",
+          "繁華街",
+          "=LOVE",
+          "女性アイドル",
+          "指原莉乃プロデュース",
+          "=LOVEロケ地",
+          "聖地巡礼",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "ユザワヤ新宿本店は新宿区にある専門店・名店で、=LOVEのロケ地として1回紹介。=LOVEが実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 ユザワヤ新宿本店で=LOVEと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "=LOVE"
+        ]
+      },
+      {
+        "id": "e3f56129-6f1a-4025-aee6-ef4ef3904bb3",
+        "name": "熱海プリン食堂",
+        "address": "東京都内",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "restaurant",
+          "≠ME",
+          "撮影協力",
+          "filming_location"
+        ],
+        "image_url": null,
+        "description": "熱海プリン食堂は都内にある≠MEがロケで訪れたレストランです。1回のエピソードで紹介され、≠MEの聖地巡礼スポットとしても人気。グルメ好きなファンには特におすすめの店舗です。 熱海プリン食堂で≠MEと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≠ME"
+        ]
+      },
+      {
+        "id": "c79f6d82-63b2-4389-a66a-a219a26d3702",
+        "name": "あん梅",
+        "address": "東京都港区麻布十番",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "麻布",
+          "東京",
+          "高級住宅街",
+          "よにのちゃんねる",
+          "YouTuber",
+          "エンターテイメント",
+          "よにのちゃんねるロケ地",
+          "聖地巡礼",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "あん梅は港区にあるよにのちゃんねるがロケで訪れたレストランです。1回のエピソードで紹介され、よにのちゃんねるの聖地巡礼スポットとしても人気。グルメ好きなファンには特におすすめの店舗です。 あん梅でよにのちゃんねると同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "よにのちゃんねる"
+        ]
+      },
+      {
+        "id": "698cc315-faab-45fe-be58-37eaf0823daf",
+        "name": "全国各地の有名ラーメン店舗が集う新横浜ラーメン博物館",
+        "address": "東京都横浜周辺",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "restaurant",
+          "≒JOY",
+          "ラーメン",
+          "麺類",
+          "人気ラーメン店",
+          "横浜",
+          "神奈川",
+          "みなとみらい",
+          "人気店",
+          "有名店",
+          "話題",
+          "≒JOYロケ地",
+          "聖地巡礼",
+          "東京"
+        ],
+        "image_url": null,
+        "description": "【爆食】新横浜ラーメン博物館で念願の有名店はしごラーメン！🍜【六角家/利尻らーめん味楽】に関連する店舗",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≒JOY"
+        ]
+      },
+      {
+        "id": "d0130d0d-e935-4146-9724-75c047c3d671",
+        "name": "ティップネス三軒茶屋店",
+        "address": "〒154-0024 東京都世田谷区三軒茶屋2-2-16",
+        "tabelog_url": null,
+        "phone": "03-5787-1811",
+        "opening_hours": "平日9:00-23:00、土日祝9:00-21:00",
+        "tags": [
+          "filming_location",
+          "gym",
+          "fitness",
+          "山田涼介",
+          "山田涼介ロケ地",
+          "聖地巡礼",
+          "東京",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "ティップネス三軒茶屋店は世田谷区にある専門店・名店で、山田涼介のロケ地として1回紹介。山田涼介が実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 事前の確認・予約がおすすめ。 ティップネス三軒茶屋店で山田涼介と同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "山田涼介"
+        ]
+      },
+      {
+        "id": "b8c08955-f4e6-49a9-af18-c5d173903786",
+        "name": "ラウンドワンスタジアム川崎大師店",
+        "address": "東京都川崎周辺",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "shop",
+          "≠ME",
+          "撮影協力",
+          "filming_location"
+        ],
+        "image_url": null,
+        "description": "ラウンドワンスタジアム川崎大師店は都内のエンターテイメント施設で、≠MEが1回のロケで利用。≠MEと同じ体験ができる人気の聖地巡礼スポット。ファンには特別な思い出になること間違いなしです。 ラウンドワンスタジアム川崎大師店で≠MEと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≠ME"
+        ]
+      },
+      {
+        "id": "a31739e7-1c16-4859-9267-e4c036420622",
+        "name": "ジャパン",
+        "address": "東京都内",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "other",
+          "≠ME",
+          "撮影協力",
+          "filming_location"
+        ],
+        "image_url": null,
+        "description": "【USJ】メンバーでユニバ行ったら最高の日になりました！スーパー・ニンテンドー・ワールド™〜ウィザーディング・ワールド・オブ・ハリー・ポッター【いこのいじょいch×ノイステコラボ】【USJ旅#1】の撮影協力店舗",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≠ME"
+        ]
+      },
+      {
+        "id": "03a5a18c-1846-4805-a76c-7d2637351029",
+        "name": "店：アドアーズ渋谷店",
+        "address": "東京都渋谷周辺",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "shop",
+          "≠ME",
+          "撮影協力",
+          "filming_location"
+        ],
+        "image_url": null,
+        "description": "店：アドアーズ渋谷店は都内にある専門店・名店で、≠MEのロケ地として1回紹介。≠MEが実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 店：アドアーズ渋谷店で≠MEと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≠ME"
+        ]
+      },
+      {
+        "id": "790327b8-d002-4eaf-90f9-02daba5716b7",
+        "name": "トバン（土房）",
+        "address": "韓国 全州市 完山区 平和洞1街 727-1",
+        "tabelog_url": "",
+        "phone": "+82-63-226-1080",
+        "opening_hours": "10:00-21:30（ブレイクタイム15:00-17:00、日曜休み）",
+        "tags": [
+          "韓国料理",
+          "ビビンパ",
+          "納豆チゲ",
+          "全州",
+          "老舗",
+          "海外ロケ",
+          "孤独のグルメ",
+          "Season7"
+        ],
+        "image_url": null,
+        "description": "韓国全州市の老舗韓国料理店。1930年代創業でビビンバ発祥の地として有名。納豆チゲとセルフビビンパが名物。孤独のグルメSeason7第9話の海外ロケ地。",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "松重豊"
+        ]
+      },
+      {
+        "id": "dfe317d2-1667-41e5-ba23-96ef9406e7f8",
+        "name": "イテウォン韓国料理店",
+        "address": "韓国 ソウル特別市 龍山区 梨泰院洞",
+        "tabelog_url": "",
+        "phone": "",
+        "opening_hours": "営業時間不明（韓国現地店舗）",
+        "tags": [
+          "韓国料理",
+          "豚カルビ",
+          "焼肉",
+          "ソウル",
+          "梨泰院",
+          "海外ロケ",
+          "孤独のグルメ",
+          "Season7"
+        ],
+        "image_url": null,
+        "description": "ソウル・梨泰院の韓国料理店。骨付き豚カルビとおかずの群れが名物。炭火焼肉で本場の味を提供。孤独のグルメSeason7第10話の海外ロケ地。",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "松重豊"
+        ]
+      },
+      {
+        "id": "4d082bce-52da-47ae-a039-624a88c48a3e",
+        "name": "由比ガ浜ドイツ料理店",
+        "address": "神奈川県鎌倉市由比ガ浜",
+        "tabelog_url": "",
+        "phone": "",
+        "opening_hours": "営業時間要確認",
+        "tags": [
+          "ドイツ料理",
+          "サバ燻製",
+          "スペアリブ",
+          "由比ガ浜",
+          "鎌倉",
+          "孤独のグルメ",
+          "Season8"
+        ],
+        "image_url": null,
+        "description": "由比ガ浜のドイツ料理店。サバの燻製とスペアリブが名物。海辺の本格ドイツ料理レストラン。孤独のグルメSeason8第7話の舞台。",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "松重豊"
+        ]
+      },
+      {
+        "id": "a5d57a47-f3df-4a8e-bcba-f46d59682423",
+        "name": "鳥取ホルモンそば店",
+        "address": "鳥取県鳥取市",
+        "tabelog_url": "",
+        "phone": "",
+        "opening_hours": "営業時間要確認",
+        "tags": [
+          "ホルモンそば",
+          "オーカク",
+          "鳥取",
+          "郷土料理",
+          "孤独のグルメ",
+          "Season8"
+        ],
+        "image_url": null,
+        "description": "鳥取市のホルモンそば専門店。オーカクとホルモンそばが名物。鳥取の郷土料理を提供。孤独のグルメSeason8第8話の舞台。",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "松重豊"
+        ]
+      },
+      {
+        "id": "997acab3-737b-4d00-bb93-832a10d0060d",
+        "name": "魚処にしけん",
+        "address": "神奈川県中郡二宮町山西226",
+        "tabelog_url": "",
+        "phone": "0463-71-2323",
+        "opening_hours": "11:30-14:30（月火水休み、夕方営業休止中）",
+        "tags": [
+          "海鮮料理",
+          "金目鯛",
+          "煮付け",
+          "二宮",
+          "地魚",
+          "孤独のグルメ",
+          "Season9"
+        ],
+        "image_url": null,
+        "description": "二宮の老舗海鮮料理店。金目鯛の煮付けが看板メニュー。地元で愛される家庭的な味。孤独のグルメSeason9第2話の舞台。",
+        "episodes_count": 0,
+        "celebrity_names": []
+      },
+      {
+        "id": "d88eb56b-0544-4d43-a9e9-bded40839ef3",
+        "name": "しんせらてぃ",
+        "address": "東京都府中市新町3-25-10",
+        "tabelog_url": "",
+        "phone": "042-336-5517",
+        "opening_hours": "要電話確認（11:00-11:30、14:00-15:00、20:00-21:00）",
+        "tags": [
+          "中華料理",
+          "鰻チャーハン",
+          "カキ炒め",
+          "府中",
+          "予約困難",
+          "高評価",
+          "孤独のグルメ",
+          "Season9"
+        ],
+        "image_url": null,
+        "description": "府中の隠れた名店。鰻の蒲焼チャーハンとカキとニラの辛し炒めが名物。予約困難な食べログ3.48の高評価店。孤独のグルメSeason9第4話の舞台。",
+        "episodes_count": 0,
+        "celebrity_names": []
+      }
+    ]
+  },
+  "store_info_coverage": {
+    "phone": {
+      "count": 62,
+      "percentage": 25
+    },
+    "opening_hours": {
+      "count": 76,
+      "percentage": 30
+    },
+    "description": {
+      "count": 251,
+      "percentage": 100
+    },
+    "image": {
+      "count": 3,
+      "percentage": 1
+    }
+  },
+  "keyword_opportunities": {
+    "celebrity_location_pairs": 252,
+    "celebrity_restaurant_pairs": 206,
+    "potential_longtail_pages": 504
+  },
+  "priority_actions": {
+    "high_traffic_missing_tabelog": [
+      {
+        "id": "be37f45c-5a83-476d-b631-df6dde7ea8fb",
+        "name": "ボートレース浜名湖",
+        "address": "静岡県湖西市新居町中之郷3727-7",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "AI抽出シミュレーション",
+          "YouTube概要欄モック",
+          "high",
+          "スポーツ施設",
+          "バー",
+          "居酒屋",
+          "お酒",
+          "=LOVE",
+          "女性アイドル",
+          "指原莉乃プロデュース",
+          "=LOVEロケ地",
+          "聖地巡礼",
+          "人気ロケ地",
+          "複数回登場"
+        ],
+        "image_url": null,
+        "description": "ボートレース観戦でメンバーが訪問した競艇場 (動画: 【大絶叫再来】イコラブボートレース部がレディース戦で勝負！ビギナーズラック発動で奇跡巻き起こす！？🤩 【レディース戦盛り上げ大使奮闘記】)",
+        "episodes_count": 9,
+        "celebrity_names": [
+          "=LOVE"
+        ]
+      },
+      {
+        "id": "b4c1537c-52af-495e-bdd0-f1123df8d3a4",
+        "name": "お台場海浜公園BBQエリア",
+        "address": "東京都港区台場1-4-1",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "AI抽出シミュレーション",
+          "YouTube概要欄モック",
+          "high",
+          "レジャー施設",
+          "バー",
+          "居酒屋",
+          "お酒",
+          "=LOVE",
+          "女性アイドル",
+          "指原莉乃プロデュース",
+          "=LOVEロケ地",
+          "聖地巡礼",
+          "人気ロケ地",
+          "複数回登場",
+          "東京"
+        ],
+        "image_url": null,
+        "description": "BBQ動画で=LOVEメンバーが利用したバーベキュー施設 (動画: 【大爆笑】各自ネタ持ち込みバーベキュー🍖！超自由空間爆誕しました。【平和】)",
+        "episodes_count": 2,
+        "celebrity_names": [
+          "=LOVE"
+        ]
+      },
+      {
+        "id": "d2aa6ea4-b328-4f86-8b77-d9ea63c3ed46",
+        "name": "豫園商城小籠包体験店",
+        "address": "中国上海市黄浦区豫園商城内（GODIVA横）",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "Snow Man",
+          "上海",
+          "豫園",
+          "小籠包",
+          "体験",
+          "すのちゅーぶ",
+          "特定済み"
+        ],
+        "image_url": null,
+        "description": "豫園商城小籠包体験店は都内にある専門店・名店で、Snow Manのロケ地として1回紹介。Snow Manが実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 豫園商城小籠包体験店でSnow Manと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "Snow Man"
+        ]
+      },
+      {
+        "id": "b6f58245-71de-4a0a-8074-b04c85f8c1b0",
+        "name": "キャットストリート",
+        "address": "東京都渋谷区神宮前",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "原宿",
+          "散歩",
+          "ストリート",
+          "ショッピング",
+          "聖地"
+        ],
+        "image_url": null,
+        "description": "キャットストリートは渋谷区のカフェで、SixTONESが1回のロケで利用。落ち着いた雰囲気でSixTONESファンの聖地巡礼にも最適。コーヒーやスイーツを楽しみながら、憧れのセレブと同じ空間を体験できます。 キャットストリートでSixTONESと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "SixTONES"
+        ]
+      },
+      {
+        "id": "b5634cc9-d94c-417d-9b45-0f381ddeebcc",
+        "name": "東京都庁第一庁舎32階職員食堂",
+        "address": "東京都新宿区西新宿２丁目８−１",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "定食",
+          "食堂",
+          "家庭料理",
+          "新宿",
+          "東京",
+          "繁華街",
+          "よにのちゃんねる",
+          "YouTuber",
+          "エンターテイメント",
+          "よにのちゃんねるロケ地",
+          "聖地巡礼",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "東京都庁第一庁舎32階職員食堂は新宿区にあるよにのちゃんねるがロケで訪れたレストランです。1回のエピソードで紹介され、よにのちゃんねるの聖地巡礼スポットとしても人気。グルメ好きなファンには特におすすめの店舗です。 東京都庁第一庁舎32階職員食堂でよにのちゃんねると同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "よにのちゃんねる"
+        ]
+      },
+      {
+        "id": "d24e07d8-5095-491e-a53e-b0e5c578d365",
+        "name": "スタージュエリー銀座店",
+        "address": "〒104-0061 東京都中央区銀座6-8-3",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": "11:00-20:00",
+        "tags": [
+          "filming_location",
+          "jewelry",
+          "luxury",
+          "銀座",
+          "東京",
+          "高級エリア",
+          "二宮和也",
+          "嵐",
+          "ジャニーズ",
+          "人気店",
+          "有名店",
+          "話題",
+          "二宮和也ロケ地",
+          "聖地巡礼",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "スタージュエリー銀座店は中央区にある専門店・名店で、二宮和也のロケ地として1回紹介。二宮和也が実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 事前の確認・予約がおすすめ。 スタージュエリー銀座店で二宮和也と同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "二宮和也"
+        ]
+      },
+      {
+        "id": "03fa1617-8950-4369-8b13-b11301660b94",
+        "name": "USJ",
+        "address": "住所不明",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "無料抽出",
+          "タイトル抽出",
+          "theme_park",
+          "low",
+          "≠ME"
+        ],
+        "image_url": null,
+        "description": "【USJ】メンバーでユニバ行ったら最高の日になりました！スーパー・ニンテンドー・ワールド™〜ウィザーディング・ワールド・オブ・ハリー・ポッター【いこのいじょいch×ノイステコラボ】【USJ旅#1】で言及された店舗・施設",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≠ME"
+        ]
+      },
+      {
+        "id": "f5248622-e12c-45e3-b82a-68153e082919",
+        "name": "ABCラジオ",
+        "address": "東京都内",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "other",
+          "≠ME",
+          "撮影協力",
+          "filming_location"
+        ],
+        "image_url": null,
+        "description": "【USJ】メンバーでユニバ行ったら最高の日になりました！スーパー・ニンテンドー・ワールド™〜ウィザーディング・ワールド・オブ・ハリー・ポッター【いこのいじょいch×ノイステコラボ】【USJ旅#1】の撮影協力店舗",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≠ME"
+        ]
+      },
+      {
+        "id": "e0d0bccc-2ce9-400f-8240-61c318eb86e1",
+        "name": "名古屋・大須商店",
+        "address": "東京都内",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "shop",
+          "≠ME",
+          "女性アイドル",
+          "指原莉乃プロデュース",
+          "≠MEロケ地",
+          "聖地巡礼",
+          "東京",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "【名古屋来た】お仕事の合間に大須商店街へ！グルメを堪能😋そして何やら不思議なことが起こる・・？に関連する店舗",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≠ME"
+        ]
+      },
+      {
+        "id": "92e5a04a-f358-4acf-aa60-07fb4ee86b9f",
+        "name": "開店前のお店",
+        "address": "東京都内",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "shop",
+          "≠ME",
+          "麺類",
+          "和食",
+          "そば・うどん",
+          "女性アイドル",
+          "指原莉乃プロデュース",
+          "≠MEロケ地",
+          "聖地巡礼",
+          "東京",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "開店前のお店は都内の麺類店で、≠MEが1回のロケで訪問。≠MEお気に入りのラーメン・麺類が味わえる聖地巡礼必須スポット。ファンなら一度は食べてみたい名店です。 開店前のお店で≠MEと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≠ME"
+        ]
+      },
+      {
+        "id": "c01dadd9-1e0d-46a5-99d7-6540e7c927ff",
+        "name": "警視庁本庁舎",
+        "address": "〒100-8929 東京都千代田区霞が関2-1-1",
+        "tabelog_url": null,
+        "phone": "03-3581-4321",
+        "opening_hours": null,
+        "tags": [
+          "filming_location",
+          "government",
+          "人気店",
+          "有名店",
+          "話題",
+          "山田涼介",
+          "山田涼介ロケ地",
+          "聖地巡礼",
+          "東京",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "警視庁本庁舎は千代田区にある専門店・名店で、山田涼介のロケ地として1回紹介。山田涼介が実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 事前の確認・予約がおすすめ。 警視庁本庁舎で山田涼介と同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "山田涼介"
+        ]
+      },
+      {
+        "id": "4cc356ec-1bd0-452c-b71e-e34931e71700",
+        "name": "豊後高田昭和の町",
+        "address": "〒872-1104 大分県豊後高田市新町",
+        "tabelog_url": null,
+        "phone": "0978-23-1860",
+        "opening_hours": "9:00-18:00",
+        "tags": [
+          "filming_location",
+          "main_location",
+          "retro_town",
+          "山田涼介",
+          "山田涼介ロケ地",
+          "聖地巡礼"
+        ],
+        "image_url": null,
+        "description": "豊後高田昭和の町は都内のエンターテイメント施設で、山田涼介が1回のロケで利用。山田涼介と同じ体験ができる人気の聖地巡礼スポット。ファンには特別な思い出になること間違いなしです。 事前の確認・予約がおすすめ。 豊後高田昭和の町で山田涼介と同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "山田涼介"
+        ]
+      },
+      {
+        "id": "05ddfda7-d446-423b-8262-dca0f725bced",
+        "name": "📖Loppi・HMV限定版",
+        "address": "東京都内",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "other",
+          "≠ME",
+          "公式リンク付き",
+          "バー",
+          "居酒屋",
+          "お酒",
+          "女性アイドル",
+          "指原莉乃プロデュース",
+          "≠MEロケ地",
+          "聖地巡礼",
+          "東京",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "【ひとめぼれ】鈴木瞳美の1st写真集がついに完成！メンバー12人で見てみると・・・！？で紹介された店舗",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≠ME"
+        ]
+      },
+      {
+        "id": "623a112e-e80b-4e2f-88bb-68bf665aa59a",
+        "name": "namco横浜ワールドポーターズ店",
+        "address": "東京都横浜周辺",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "shop",
+          "≒JOY",
+          "撮影協力",
+          "filming_location"
+        ],
+        "image_url": null,
+        "description": "namco横浜ワールドポーターズ店は都内にある専門店・名店で、≒JOYのロケ地として1回紹介。≒JOYが実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 namco横浜ワールドポーターズ店で≒JOYと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≒JOY"
+        ]
+      },
+      {
+        "id": "8d340753-f9c5-412f-90e4-7594e9f1b5e7",
+        "name": "六角家 1994+",
+        "address": "東京都内",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "other",
+          "≒JOY",
+          "公式リンク付き",
+          "ラーメン",
+          "麺類",
+          "人気ラーメン店",
+          "横浜",
+          "神奈川",
+          "みなとみらい",
+          "人気店",
+          "有名店",
+          "話題",
+          "≒JOYロケ地",
+          "聖地巡礼"
+        ],
+        "image_url": null,
+        "description": "【爆食】新横浜ラーメン博物館で念願の有名店はしごラーメン！🍜【六角家/利尻らーめん味楽】で紹介された店舗",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≒JOY"
+        ]
+      },
+      {
+        "id": "7dd31864-9dd0-4648-8ee9-46fb81331a55",
+        "name": "Napule Pizzeria",
+        "address": "東京都港区南青山5-6-24",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "Snow Man",
+          "ファンサイト情報",
+          "restaurant",
+          "高精度",
+          "ORICON"
+        ],
+        "image_url": null,
+        "description": "Napule Pizzeriaは港区にある専門店・名店で、Snow Manのロケ地として1回紹介。Snow Manが実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 Napule PizzeriaでSnow Manと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "Snow Man"
+        ]
+      },
+      {
+        "id": "7187bf8a-5c67-4c50-8305-40523d48bf2b",
+        "name": "PLAZA 東京店",
+        "address": "東京都内",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "shop",
+          "≒JOY",
+          "撮影協力",
+          "filming_location"
+        ],
+        "image_url": null,
+        "description": "【爆買い🛍️】PLAZA30分間貸切で買い放題！コスメ・日焼け対策商品など夏におすすめの商品続々登場🍉☀️【ニアジョイ】の撮影協力店舗",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≒JOY"
+        ]
+      },
+      {
+        "id": "a6531c83-f70c-4bb0-bb4b-f47a5c67a884",
+        "name": "Sarashina Horii",
+        "address": "東京都港区麻布十番1-8-7",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "Snow Man",
+          "ファンサイト情報",
+          "restaurant",
+          "高精度",
+          "ORICON"
+        ],
+        "image_url": null,
+        "description": "Sarashina Horiiは港区の麺類店で、Snow Manが1回のロケで訪問。Snow Manお気に入りのラーメン・麺類が味わえる聖地巡礼必須スポット。ファンなら一度は食べてみたい名店です。 Sarashina HoriiでSnow Manと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "Snow Man"
+        ]
+      },
+      {
+        "id": "855d480a-120e-4b3d-8dba-8ba1806b5b21",
+        "name": "Wagaya no Shokudo",
+        "address": "東京都渋谷区桜丘町8-23-5",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "Snow Man",
+          "ファンサイト情報",
+          "restaurant",
+          "高精度",
+          "ORICON"
+        ],
+        "image_url": null,
+        "description": "Wagaya no Shokudoは渋谷区にあるSnow Manがロケで訪れたレストランです。1回のエピソードで紹介され、Snow Manの聖地巡礼スポットとしても人気。グルメ好きなファンには特におすすめの店舗です。 Wagaya no ShokudoでSnow Manと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "Snow Man"
+        ]
+      },
+      {
+        "id": "b3fc1d6c-5980-44b5-ae59-44873088a55d",
+        "name": "账房 豫園店",
+        "address": "中国上海市黄浦区豫園商城内",
+        "tabelog_url": null,
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "Snow Man",
+          "上海",
+          "豫園",
+          "香嚢",
+          "体験",
+          "すのちゅーぶ",
+          "特定済み"
+        ],
+        "image_url": null,
+        "description": "账房 豫園店は都内にあるSnow Manがロケで訪れたレストランです。1回のエピソードで紹介され、Snow Manの聖地巡礼スポットとしても人気。グルメ好きなファンには特におすすめの店舗です。 账房 豫園店でSnow Manと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "Snow Man"
+        ]
+      }
+    ],
+    "popular_celebrity_locations": [
+      {
+        "id": "9dba22c4-45a4-4c46-b6e5-e7728a8b3117",
+        "name": "伊勢屋食堂",
+        "address": "東京都新宿区大久保1-12-1 第2韓国広場市場内",
+        "tabelog_url": "https://tabelog.com/tokyo/A1304/A130404/13081288/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "Snow Man",
+          "市場食堂",
+          "大久保",
+          "韓国広場",
+          "定食",
+          "昭和レトロ",
+          "すのちゅーぶ",
+          "特定済み"
+        ],
+        "image_url": null,
+        "description": "伊勢屋食堂は新宿区にある松重豊・Snow Manがロケで訪れたレストランです。2回のエピソードで紹介され、松重豊の聖地巡礼スポットとしても人気。グルメ好きなファンには特におすすめの店舗です。 食べログでも高評価を獲得している人気店。 伊勢屋食堂で松重豊と同じ体験をしてみませんか？",
+        "episodes_count": 2,
+        "celebrity_names": [
+          "松重豊",
+          "Snow Man"
+        ]
+      },
+      {
+        "id": "986a9665-48e5-41ff-bf17-235016d6753e",
+        "name": "新横浜ラーメン博物館",
+        "address": "神奈川県横浜市港北区新横浜2-14-21",
+        "tabelog_url": "https://tabelog.com/kanagawa/A1401/A140206/14047083/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "ラーメン",
+          "博物館",
+          "新横浜",
+          "かくれんぼ",
+          "聖地"
+        ],
+        "image_url": null,
+        "description": "新横浜ラーメン博物館は神奈川県横浜市の麺類店で、≒JOY・SixTONESが2回のロケで訪問。≒JOYお気に入りのラーメン・麺類が味わえる聖地巡礼必須スポット。ファンなら一度は食べてみたい名店です。 食べログでも高評価を獲得している人気店。 新横浜ラーメン博物館で≒JOYと同じ体験をしてみませんか？",
+        "episodes_count": 2,
+        "celebrity_names": [
+          "≒JOY",
+          "SixTONES"
+        ]
+      },
+      {
+        "id": "4dc05277-86c3-4fd9-a3b6-ef299bbf5b01",
+        "name": "羽田市場 GINZA SEVEN",
+        "address": "東京都中央区銀座7-2-14 第26興和ビル B1F",
+        "tabelog_url": "https://tabelog.com/tokyo/A1301/A130101/13228726/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "Snow Man",
+          "寿司",
+          "銀座",
+          "高級",
+          "すのちゅーぶ",
+          "特定済み"
+        ],
+        "image_url": null,
+        "description": "羽田市場 GINZA SEVENは中央区にある専門店・名店で、Snow Man・≒JOYのロケ地として2回紹介。Snow Manが実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 食べログでも高評価を獲得している人気店。 羽田市場 GINZA SEVENでSnow Manと同じ体験をしてみませんか？",
+        "episodes_count": 2,
+        "celebrity_names": [
+          "Snow Man",
+          "≒JOY"
+        ]
+      }
+    ],
+    "incomplete_restaurant_info": [
+      {
+        "id": "55100fe9-44f5-44fa-bbaf-77352b178f39",
+        "name": "無印良品",
+        "address": "東京都内各店舗",
+        "tabelog_url": "https://tabelog.com/tokyo/A1304/A130401/13053848/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "無印",
+          "雑貨",
+          "プレゼント",
+          "誕生日",
+          "SixTONES",
+          "ジャニーズ",
+          "アイドル",
+          "人気店",
+          "有名店",
+          "話題",
+          "SixTONESロケ地",
+          "聖地巡礼",
+          "食べログ掲載",
+          "東京",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "無印良品は都内にある専門店・名店で、SixTONESのロケ地として1回紹介。SixTONESが実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 食べログでも高評価を獲得している人気店。 無印良品でSixTONESと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "SixTONES"
+        ]
+      },
+      {
+        "id": "7c7d9db5-dae7-41a2-8005-c4178ae9bffa",
+        "name": "亀澤堂",
+        "address": "〒101-0051 東京都千代田区神田神保町1-12-1",
+        "tabelog_url": "https://tabelog.com/tokyo/A1310/A131003/13021812/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "filming_location",
+          "sweets",
+          "traditional",
+          "二宮和也",
+          "嵐",
+          "ジャニーズ",
+          "老舗",
+          "伝統",
+          "歴史ある店",
+          "二宮和也ロケ地",
+          "聖地巡礼",
+          "食べログ掲載",
+          "人気店",
+          "東京",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "亀澤堂は千代田区にある専門店・名店で、二宮和也のロケ地として1回紹介。二宮和也が実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 食べログでも高評価を獲得している人気店。 亀澤堂で二宮和也と同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "二宮和也"
+        ]
+      },
+      {
+        "id": "75c9aef0-e088-48ca-8d6d-c8bf8e7d5695",
+        "name": "志づや",
+        "address": "〒110-0015 東京都台東区東上野2-4-3",
+        "tabelog_url": "https://tabelog.com/tokyo/A1311/A131101/13279833/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "filming_location",
+          "restaurant",
+          "soba",
+          "二宮和也",
+          "嵐",
+          "ジャニーズ",
+          "二宮和也ロケ地",
+          "聖地巡礼",
+          "食べログ掲載",
+          "人気店",
+          "東京",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "志づやは台東区にある専門店・名店で、二宮和也のロケ地として1回紹介。二宮和也が実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 食べログでも高評価を獲得している人気店。 志づやで二宮和也と同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "二宮和也"
+        ]
+      },
+      {
+        "id": "51cb7af1-b03f-438e-91fc-e1bcb307211d",
+        "name": "山源",
+        "address": "東京都板橋区板橋1-22-10",
+        "tabelog_url": "https://tabelog.com/tokyo/A1322/A132201/13025646/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "松重豊",
+          "孤独のグルメ",
+          "グルメロケ",
+          "松重豊ロケ地",
+          "聖地巡礼",
+          "食べログ掲載",
+          "人気店",
+          "東京",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "昔ながらのホルモン焼き店。煙モクモクの昭和レトロな雰囲気で、ぷりぷりのホルモンが自慢。孤独のグルメSeason3第6話で松重豊が訪問。",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "松重豊"
+        ]
+      },
+      {
+        "id": "85823106-2a8a-4951-a97f-d630ad5220c4",
+        "name": "Hohokam DINER（ホホカムダイナー）",
+        "address": "東京都渋谷区神宮前1-14-21",
+        "tabelog_url": "https://tabelog.com/tokyo/A1306/A130601/13241100/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "バー",
+          "居酒屋",
+          "お酒",
+          "渋谷",
+          "東京",
+          "若者の街",
+          "原宿・表参道",
+          "ファッション",
+          "亀梨和也",
+          "KAT-TUN",
+          "ジャニーズ",
+          "人気店",
+          "有名店",
+          "話題",
+          "亀梨和也ロケ地"
+        ],
+        "image_url": null,
+        "description": "Hohokam DINER（ホホカムダイナー）は渋谷区にあるバー・居酒屋で、亀梨和也のロケ地として1回登場。大人の雰囲気を楽しめる亀梨和也聖地巡礼スポット。お酒を飲みながらセレブの足跡を辿る特別な体験ができます。 食べログでも高評価を獲得している人気店。 Hohokam DINER（ホホカムダイナー）で亀梨和也と同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "亀梨和也"
+        ]
+      },
+      {
+        "id": "2c835dce-f322-494b-b170-f9a73f0bf664",
+        "name": "魚谷",
+        "address": "東京都文京区関口1-2-8",
+        "tabelog_url": "https://tabelog.com/tokyo/A1309/A130905/13091985/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "バー",
+          "居酒屋",
+          "お酒",
+          "松重豊",
+          "孤独のグルメ",
+          "グルメロケ",
+          "松重豊ロケ地",
+          "聖地巡礼",
+          "食べログ掲載",
+          "人気店",
+          "東京",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "魚屋直営の居酒屋。新鮮な魚介をリーズナブルに提供。名物「銀だら西京焼」が絶品。孤独のグルメSeason3第4話で松重豊が訪問。",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "松重豊"
+        ]
+      },
+      {
+        "id": "60000bf9-0d9d-4e60-8acc-3bda5cb0be0f",
+        "name": "銀座風香",
+        "address": "東京都中央区築地2-6-8",
+        "tabelog_url": "https://tabelog.com/tokyo/A1313/A131301/13310531/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "銀座",
+          "東京",
+          "高級エリア",
+          "築地",
+          "市場グルメ",
+          "亀梨和也",
+          "KAT-TUN",
+          "ジャニーズ",
+          "亀梨和也ロケ地",
+          "聖地巡礼",
+          "食べログ掲載",
+          "人気店",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "銀座風香は中央区にある専門店・名店で、亀梨和也のロケ地として1回紹介。亀梨和也が実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 食べログでも高評価を獲得している人気店。 銀座風香で亀梨和也と同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "亀梨和也"
+        ]
+      },
+      {
+        "id": "3d432080-371b-4001-8be6-fa549084da8d",
+        "name": "つり堀武蔵野園",
+        "address": "東京都杉並区大宮2-22-3 和田掘公園",
+        "tabelog_url": "https://tabelog.com/tokyo/A1318/A131805/13140021/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "定食",
+          "食堂",
+          "家庭料理",
+          "麺類",
+          "和食",
+          "そば・うどん",
+          "松重豊",
+          "孤独のグルメ",
+          "グルメロケ",
+          "松重豊ロケ地",
+          "聖地巡礼",
+          "食べログ掲載",
+          "人気店",
+          "東京",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "つり堀武蔵野園は杉並区にある松重豊がロケで訪れたレストランです。1回のエピソードで紹介され、松重豊の聖地巡礼スポットとしても人気。グルメ好きなファンには特におすすめの店舗です。 食べログでも高評価を獲得している人気店。 つり堀武蔵野園で松重豊と同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "松重豊"
+        ]
+      },
+      {
+        "id": "1d9630be-103f-493c-bd61-9cb9bab6af22",
+        "name": "銀座月と花",
+        "address": "東京都中央区銀座4-10-6 G4ビル1階",
+        "tabelog_url": "https://tabelog.com/tokyo/A1301/A130101/13002329/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "銀座",
+          "和食",
+          "雑誌掲載",
+          "聖地",
+          "東京",
+          "高級エリア",
+          "SixTONES",
+          "ジャニーズ",
+          "アイドル",
+          "高級店",
+          "ミシュラン",
+          "特別な日",
+          "SixTONESロケ地",
+          "聖地巡礼",
+          "食べログ掲載"
+        ],
+        "image_url": null,
+        "description": "銀座月と花は中央区にあるSixTONESがロケで訪れたレストランです。1回のエピソードで紹介され、SixTONESの聖地巡礼スポットとしても人気。グルメ好きなファンには特におすすめの店舗です。 食べログでも高評価を獲得している人気店。 銀座月と花でSixTONESと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "SixTONES"
+        ]
+      },
+      {
+        "id": "c57e0996-e886-49b2-9298-01560c508c77",
+        "name": "ポール・ボキューズ 西新宿店",
+        "address": "東京都新宿区西新宿1-26-2 新宿野村ビル48階",
+        "tabelog_url": "https://tabelog.com/tokyo/A1301/A130101/13042858/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "フレンチ",
+          "高級レストラン",
+          "新宿",
+          "眺望",
+          "洋食",
+          "高級料理",
+          "東京",
+          "繁華街",
+          "よにのちゃんねる",
+          "YouTuber",
+          "エンターテイメント",
+          "高級店",
+          "ミシュラン",
+          "特別な日",
+          "よにのちゃんねるロケ地"
+        ],
+        "image_url": null,
+        "description": "ポール・ボキューズ 西新宿店は新宿区にあるよにのちゃんねるがロケで訪れたレストランです。1回のエピソードで紹介され、よにのちゃんねるの聖地巡礼スポットとしても人気。グルメ好きなファンには特におすすめの店舗です。 食べログでも高評価を獲得している人気店。 ポール・ボキューズ 西新宿店でよにのちゃんねると同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "よにのちゃんねる"
+        ]
+      },
+      {
+        "id": "c1dc9e65-dccf-4952-98e5-016f90d5413f",
+        "name": "青山迎賓館",
+        "address": "〒107-0062 東京都港区南青山4-9-26",
+        "tabelog_url": "https://tabelog.com/tokyo/A1306/A130603/13054686/",
+        "phone": "03-3403-3131",
+        "opening_hours": null,
+        "tags": [
+          "filming_location",
+          "party_venue",
+          "guest_house",
+          "菊池風磨",
+          "菊池風磨ロケ地",
+          "聖地巡礼",
+          "食べログ掲載",
+          "人気店",
+          "東京",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "青山迎賓館は港区にある専門店・名店で、菊池風磨のロケ地として1回紹介。菊池風磨が実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 食べログでも高評価を獲得している人気店。事前の確認・予約がおすすめ。 青山迎賓館で菊池風磨と同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "菊池風磨"
+        ]
+      },
+      {
+        "id": "ba3d2b0a-909d-40d8-acfe-94746f4b09e3",
+        "name": "極味や 渋谷パルコ店",
+        "address": "東京都渋谷区宇田川町15-1 渋谷PARCO B1F",
+        "tabelog_url": "https://tabelog.com/tokyo/A1303/A130301/13241227/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "渋谷",
+          "パルコ",
+          "ハンバーグ",
+          "極味や",
+          "自分で焼く",
+          "食べ放題",
+          "Travis Japan",
+          "ランチ"
+        ],
+        "image_url": null,
+        "description": "極味や 渋谷パルコ店は渋谷区にあるバー・居酒屋で、Travis Japanのロケ地として1回登場。大人の雰囲気を楽しめるTravis Japan聖地巡礼スポット。お酒を飲みながらセレブの足跡を辿る特別な体験ができます。 食べログでも高評価を獲得している人気店。 極味や 渋谷パルコ店でTravis Japanと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "Travis Japan"
+        ]
+      },
+      {
+        "id": "ea627ed7-23a7-45f6-b9ab-2d0b75920164",
+        "name": "みやこや",
+        "address": "東京都中野区鷺宮3-21-6",
+        "tabelog_url": "https://tabelog.com/tokyo/A1321/A132104/13011853/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "松重豊",
+          "孤独のグルメ",
+          "グルメロケ",
+          "松重豊ロケ地",
+          "聖地巡礼",
+          "食べログ掲載",
+          "人気店",
+          "東京",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "孤独のグルメ Season1 第6話で登場。ロースにんにく焼きが名物のとんかつ店。五郎がロースにんにく焼きを注文。",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "松重豊"
+        ]
+      },
+      {
+        "id": "6291fb44-9655-4ce1-bd2b-9cf7d34f8780",
+        "name": "中国家庭料理 楊 2号店",
+        "address": "東京都豊島区西池袋3-25-5",
+        "tabelog_url": "https://tabelog.com/tokyo/A1305/A130501/13009261/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "ラーメン",
+          "麺類",
+          "人気ラーメン店",
+          "池袋",
+          "東京",
+          "サンシャインシティ",
+          "松重豊",
+          "孤独のグルメ",
+          "グルメロケ",
+          "人気店",
+          "有名店",
+          "話題",
+          "松重豊ロケ地",
+          "聖地巡礼",
+          "食べログ掲載"
+        ],
+        "image_url": null,
+        "description": "孤独のグルメ Season1 第3話で登場。汁なし担々麺で有名な四川料理店。五郎が汁なし担々麺を注文。",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "松重豊"
+        ]
+      },
+      {
+        "id": "ce1711b4-cefd-4711-860a-64043536c006",
+        "name": "キッチンぴーなっつ",
+        "address": "東京都荒川区西尾久6-18-1",
+        "tabelog_url": "https://tabelog.com/tokyo/A1323/A132301/13059703/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "Snow Man",
+          "洋食",
+          "荒川",
+          "ハンバーグ",
+          "プライベート飯",
+          "隠れ家",
+          "すのちゅーぶ",
+          "特定済み"
+        ],
+        "image_url": null,
+        "description": "キッチンぴーなっつは荒川区にあるSnow Manがロケで訪れたレストランです。1回のエピソードで紹介され、Snow Manの聖地巡礼スポットとしても人気。グルメ好きなファンには特におすすめの店舗です。 食べログでも高評価を獲得している人気店。 キッチンぴーなっつでSnow Manと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "Snow Man"
+        ]
+      },
+      {
+        "id": "3bf88ab8-0731-4f06-8022-c98b3356ad07",
+        "name": "回向院",
+        "address": "東京都墨田区両国2-8-10",
+        "tabelog_url": "https://tabelog.com/tokyo/A1312/A131201/13036713/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "寺院",
+          "両国",
+          "石巡り",
+          "ねずみ小僧",
+          "聖地"
+        ],
+        "image_url": null,
+        "description": "回向院は墨田区にある専門店・名店で、SixTONESのロケ地として1回紹介。SixTONESが実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 食べログでも高評価を獲得している人気店。 回向院でSixTONESと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "SixTONES"
+        ]
+      },
+      {
+        "id": "671a22f7-44de-4a4a-8ba1-9a06dd067362",
+        "name": "コストコ",
+        "address": "東京都江東区",
+        "tabelog_url": "https://tabelog.com/kanagawa/A1405/A140502/14011092/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "コストコ",
+          "買い物",
+          "倉庫店",
+          "企画",
+          "SixTONES",
+          "ジャニーズ",
+          "アイドル",
+          "人気店",
+          "有名店",
+          "話題",
+          "SixTONESロケ地",
+          "聖地巡礼",
+          "食べログ掲載",
+          "東京",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "コストコは江東区にある専門店・名店で、SixTONESのロケ地として1回紹介。SixTONESが実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 食べログでも高評価を獲得している人気店。 コストコでSixTONESと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "SixTONES"
+        ]
+      },
+      {
+        "id": "db2d4e59-2f49-4ea1-9a93-0405394b59e2",
+        "name": "おにぎり浅草宿六",
+        "address": "東京都台東区浅草3-9-10",
+        "tabelog_url": "https://tabelog.com/tokyo/A1311/A131102/13024859/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "Snow Man",
+          "おにぎり",
+          "浅草",
+          "老舗",
+          "ミシュラン",
+          "専門店",
+          "すのちゅーぶ",
+          "特定済み"
+        ],
+        "image_url": null,
+        "description": "おにぎり浅草宿六は台東区にある専門店・名店で、Snow Manのロケ地として1回紹介。Snow Manが実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 食べログでも高評価を獲得している人気店。長年愛される老舗の味を堪能できます。 おにぎり浅草宿六でSnow Manと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "Snow Man"
+        ]
+      },
+      {
+        "id": "5faeef0e-bfc9-4f72-af47-67b2d7b048bf",
+        "name": "築地すし大 本館",
+        "address": "東京都中央区築地4-13-9",
+        "tabelog_url": "https://tabelog.com/tokyo/A1313/A131301/13002314/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "寿司",
+          "和食",
+          "江戸前寿司",
+          "築地",
+          "東京",
+          "市場グルメ",
+          "人気店",
+          "有名店",
+          "話題",
+          "伊藤かりん",
+          "伊藤かりんロケ地",
+          "聖地巡礼",
+          "食べログ掲載",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "築地すし大 本館は中央区にある専門店・名店で、伊藤かりんのロケ地として1回紹介。伊藤かりんが実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 食べログでも高評価を獲得している人気店。 築地すし大 本館で伊藤かりんと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "伊藤かりん"
+        ]
+      },
+      {
+        "id": "c9c0deb1-6a9f-4d0a-91a9-22d4c86ece1b",
+        "name": "サンリオピューロランド",
+        "address": "東京都多摩市落合1-31",
+        "tabelog_url": "https://tabelog.com/tokyo/A1327/A132702/13077966/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "AI抽出シミュレーション",
+          "YouTube概要欄モック",
+          "high",
+          "テーマパーク",
+          "=LOVE",
+          "女性アイドル",
+          "指原莉乃プロデュース",
+          "=LOVEロケ地",
+          "聖地巡礼",
+          "人気ロケ地",
+          "複数回登場",
+          "食べログ掲載",
+          "人気店",
+          "東京",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "サンリオピューロランドは多摩市にある専門店・名店で、=LOVEのロケ地として4回紹介。=LOVEが実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 食べログでも高評価を獲得している人気店。 サンリオピューロランドで=LOVEと同じ体験をしてみませんか？",
+        "episodes_count": 4,
+        "celebrity_names": [
+          "=LOVE"
+        ]
+      },
+      {
+        "id": "b3b3b18b-0a47-4b74-9f0a-78e7ebc70ca5",
+        "name": "もんじゃ かっぱ祭り",
+        "address": "東京都台東区西浅草1-3-14",
+        "tabelog_url": "https://tabelog.com/tokyo/A1311/A131102/13058638/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "浅草",
+          "東京",
+          "下町",
+          "亀梨和也",
+          "KAT-TUN",
+          "ジャニーズ",
+          "亀梨和也ロケ地",
+          "聖地巡礼",
+          "食べログ掲載",
+          "人気店",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "もんじゃ かっぱ祭りは台東区にある専門店・名店で、亀梨和也のロケ地として1回紹介。亀梨和也が実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 食べログでも高評価を獲得している人気店。 もんじゃ かっぱ祭りで亀梨和也と同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "亀梨和也"
+        ]
+      },
+      {
+        "id": "c31fa043-aadd-408f-96c0-53b378e51c4a",
+        "name": "築地場外市場",
+        "address": "東京都中央区築地4-16-2",
+        "tabelog_url": "https://tabelog.com/tokyo/A1313/A131306/13091847/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "AI抽出シミュレーション",
+          "YouTube概要欄モック",
+          "medium",
+          "市場・観光地",
+          "築地",
+          "東京",
+          "市場グルメ",
+          "=LOVE",
+          "女性アイドル",
+          "指原莉乃プロデュース",
+          "人気店",
+          "有名店",
+          "話題",
+          "=LOVEロケ地",
+          "聖地巡礼"
+        ],
+        "image_url": null,
+        "description": "YouTube動画で言及された築地の有名市場 (動画: 【ロリータ体験】まるでお姫様！？お人形！？🥹超メルヘンに大変身しました🎀)",
+        "episodes_count": 3,
+        "celebrity_names": [
+          "=LOVE"
+        ]
+      },
+      {
+        "id": "44d8966c-c17c-4083-83fd-4df513c3d449",
+        "name": "わんこそば専門店",
+        "address": "東京都渋谷区",
+        "tabelog_url": "https://tabelog.com/tokyo/A1304/A130401/13273517/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "そば",
+          "大食い",
+          "企画",
+          "バラエティ",
+          "麺類",
+          "和食",
+          "そば・うどん",
+          "渋谷",
+          "東京",
+          "若者の街",
+          "SixTONES",
+          "ジャニーズ",
+          "アイドル",
+          "SixTONESロケ地",
+          "聖地巡礼"
+        ],
+        "image_url": null,
+        "description": "わんこそば専門店は渋谷区の麺類店で、SixTONESが1回のロケで訪問。SixTONESお気に入りのラーメン・麺類が味わえる聖地巡礼必須スポット。ファンなら一度は食べてみたい名店です。 食べログでも高評価を獲得している人気店。 わんこそば専門店でSixTONESと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "SixTONES"
+        ]
+      },
+      {
+        "id": "5cb387b6-efea-42fa-9164-888d0258e948",
+        "name": "Clover's Pancake Cafe",
+        "address": "東京都渋谷区恵比寿西2-20-19",
+        "tabelog_url": "https://tabelog.com/tokyo/A1303/A130303/13049570/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "パンケーキ",
+          "代官山",
+          "ファンカフェ",
+          "中村海人",
+          "カフェ",
+          "コーヒー",
+          "喫茶店",
+          "渋谷",
+          "東京",
+          "若者の街",
+          "人気店",
+          "有名店",
+          "話題",
+          "Travis Japan",
+          "Travis Japanロケ地"
+        ],
+        "image_url": null,
+        "description": "Clover's Pancake Cafeは渋谷区のカフェで、Travis Japanが1回のロケで利用。落ち着いた雰囲気でTravis Japanファンの聖地巡礼にも最適。コーヒーやスイーツを楽しみながら、憧れのセレブと同じ空間を体験できます。 食べログでも高評価を獲得している人気店。 Clover's Pancake CafeでTravis Japanと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "Travis Japan"
+        ]
+      },
+      {
+        "id": "2175d027-9afb-430d-8889-cc2a7f87d77a",
+        "name": "one big family 鉄板マン",
+        "address": "東京都墨田区",
+        "tabelog_url": "https://tabelog.com/tokyo/A1312/A131201/13129992/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "もんじゃ焼き",
+          "鉄板焼き",
+          "墨田区",
+          "Travis Japan",
+          "Travis Japanロケ地",
+          "聖地巡礼",
+          "食べログ掲載",
+          "人気店",
+          "東京",
+          "京都"
+        ],
+        "image_url": null,
+        "description": "one big family 鉄板マンは墨田区にあるTravis Japanがロケで訪れたレストランです。1回のエピソードで紹介され、Travis Japanの聖地巡礼スポットとしても人気。グルメ好きなファンには特におすすめの店舗です。 食べログでも高評価を獲得している人気店。 one big family 鉄板マンでTravis Japanと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "Travis Japan"
+        ]
+      },
+      {
+        "id": "04e0e720-b6e9-4150-8918-92cb806c0444",
+        "name": "焼肉トラジ 京橋店",
+        "address": "東京都内",
+        "tabelog_url": "https://tabelog.com/tokyo/A1302/A130201/13154977/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "restaurant",
+          "≠ME",
+          "撮影協力",
+          "filming_location"
+        ],
+        "image_url": null,
+        "description": "焼肉トラジ 京橋店は都内にある専門店・名店で、≠MEのロケ地として1回紹介。≠MEが実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 食べログでも高評価を獲得している人気店。 焼肉トラジ 京橋店で≠MEと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≠ME"
+        ]
+      },
+      {
+        "id": "b07fbdb3-1260-45db-b7e3-3811f16622b8",
+        "name": "109渋谷",
+        "address": "東京都渋谷区道玄坂2-29-1",
+        "tabelog_url": "https://tabelog.com/tokyo/A1303/A130301/13185444/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "AI抽出シミュレーション",
+          "YouTube概要欄モック",
+          "medium",
+          "ショッピング",
+          "渋谷",
+          "東京",
+          "若者の街",
+          "=LOVE",
+          "女性アイドル",
+          "指原莉乃プロデュース",
+          "=LOVEロケ地",
+          "聖地巡礼",
+          "人気ロケ地",
+          "複数回登場",
+          "食べログ掲載"
+        ],
+        "image_url": null,
+        "description": "109渋谷は渋谷区のエンターテイメント施設で、=LOVEが2回のロケで利用。=LOVEと同じ体験ができる人気の聖地巡礼スポット。ファンには特別な思い出になること間違いなしです。 食べログでも高評価を獲得している人気店。 109渋谷で=LOVEと同じ体験をしてみませんか？",
+        "episodes_count": 2,
+        "celebrity_names": [
+          "=LOVE"
+        ]
+      },
+      {
+        "id": "fdc57371-028b-4ad1-99bd-9981ccc75444",
+        "name": "モスバーガー芝大門店",
+        "address": "東京都港区芝大門1-15-7",
+        "tabelog_url": "https://tabelog.com/tokyo/A1314/A131401/13079518/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "Snow Man",
+          "モスバーガー",
+          "芝大門",
+          "ドライブ",
+          "すのちゅーぶ",
+          "特定済み"
+        ],
+        "image_url": null,
+        "description": "モスバーガー芝大門店は港区にあるバー・居酒屋で、Snow Manのロケ地として1回登場。大人の雰囲気を楽しめるSnow Man聖地巡礼スポット。お酒を飲みながらセレブの足跡を辿る特別な体験ができます。 食べログでも高評価を獲得している人気店。 モスバーガー芝大門店でSnow Manと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "Snow Man"
+        ]
+      },
+      {
+        "id": "05178aa8-3538-402b-a067-2e08724af20b",
+        "name": "近江牛かね吉",
+        "address": "東京都内",
+        "tabelog_url": "https://tabelog.com/shiga/A2501/A250101/25000386/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "概要欄抽出",
+          "other",
+          "≠ME",
+          "撮影協力",
+          "filming_location"
+        ],
+        "image_url": null,
+        "description": "近江牛かね吉は都内にある専門店・名店で、≠MEのロケ地として1回紹介。≠MEが実際に体験した特別な味やサービスを楽しめる聖地巡礼スポットです。 食べログでも高評価を獲得している人気店。 近江牛かね吉で≠MEと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≠ME"
+        ]
+      },
+      {
+        "id": "0ba3cf1d-648d-41a9-ae01-da1c6caada1c",
+        "name": "釣船茶屋ざうお 渋谷店",
+        "address": "東京都渋谷区神南1-19-3 ハイマンテン神南ビルB1",
+        "tabelog_url": "https://tabelog.com/tokyo/A1303/A130301/13180300/",
+        "phone": null,
+        "opening_hours": null,
+        "tags": [
+          "撮影協力",
+          "filming_location",
+          "restaurant",
+          "釣り体験",
+          "居酒屋"
+        ],
+        "image_url": null,
+        "description": "釣船茶屋ざうお 渋谷店は渋谷区にあるバー・居酒屋で、≠MEのロケ地として1回登場。大人の雰囲気を楽しめる≠ME聖地巡礼スポット。お酒を飲みながらセレブの足跡を辿る特別な体験ができます。 食べログでも高評価を獲得している人気店。 釣船茶屋ざうお 渋谷店で≠MEと同じ体験をしてみませんか？",
+        "episodes_count": 1,
+        "celebrity_names": [
+          "≠ME"
+        ]
+      }
+    ]
+  }
+}

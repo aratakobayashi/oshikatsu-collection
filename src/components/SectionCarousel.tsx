@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ChevronLeft, ChevronRight, Users, MapPin, Play, Package, ExternalLink, Calendar, Star } from 'lucide-react'
+import { OptimizedYouTubeThumbnail } from './OptimizedYouTubeThumbnail'
 
 // データ型定義
 interface Celebrity {
@@ -112,6 +113,21 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
     setCurrentIndex(prev => prev - 1)
   }
 
+  // YouTube動画IDを抽出する関数
+  const extractYouTubeVideoId = (thumbnailUrl: string): string | null => {
+    if (!thumbnailUrl) return null
+    
+    // maxresdefault.jpg URLs from YouTube
+    const maxresMatch = thumbnailUrl.match(/\/vi\/([^\/]+)\/maxresdefault\.jpg/)
+    if (maxresMatch) return maxresMatch[1]
+    
+    // 他のYouTubeサムネイル形式
+    const standardMatch = thumbnailUrl.match(/\/vi\/([^\/]+)\/(default|mqdefault|hqdefault|sddefault|maxresdefault)\.jpg/)
+    if (standardMatch) return standardMatch[1]
+    
+    return null
+  }
+
   // カードレンダリング関数
   const renderCelebrityCard = (celebrity: Celebrity) => (
     <Link to={`/celebrities/${celebrity.slug}`} key={celebrity.id}>
@@ -119,9 +135,13 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
         <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden">
           <div className="relative">
             <img 
-              src={celebrity.image_url || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face'} 
+              src={celebrity.image_url || '/placeholder-celebrity.jpg'} 
               alt={celebrity.name}
               className="w-full h-48 object-cover"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement
+                target.src = '/placeholder-celebrity.jpg'
+              }}
             />
             <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-gray-700">
               {celebrity.episode_count || 0}回登場
@@ -137,39 +157,32 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
   )
 
   const renderEpisodeCard = (episode: Episode) => {
-    // YouTubeサムネイルURLのバリデーション
-    const getThumbnailUrl = () => {
-      if (!episode.thumbnail_url) {
-        return 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&h=250&fit=crop'
-      }
-      
-      // 明らかに無効なYouTube IDをフィルタリング
-      const invalidPatterns = ['sample', 'pending', 'EP\\d+_', 'test', 'dummy']
-      const isInvalid = invalidPatterns.some(pattern => 
-        new RegExp(pattern, 'i').test(episode.thumbnail_url || '')
-      )
-      
-      if (isInvalid) {
-        return 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&h=250&fit=crop'
-      }
-      
-      return episode.thumbnail_url
-    }
+    // YouTube動画IDを抽出
+    const videoId = episode.thumbnail_url ? extractYouTubeVideoId(episode.thumbnail_url) : null
     
     return (
     <Link to={`/episodes/${episode.id}`} key={episode.id}>
       <div className="relative group cursor-pointer">
         <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden">
           <div className="relative">
-            <img 
-              src={getThumbnailUrl()} 
-              alt={episode.title}
-              className="w-full h-48 object-cover"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement
-                target.src = 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&h=250&fit=crop'
-              }}
-            />
+            {videoId ? (
+              <OptimizedYouTubeThumbnail
+                videoId={videoId}
+                alt={episode.title}
+                className="w-full h-48 object-cover"
+                fallbackSrc="/placeholder-episode.jpg"
+              />
+            ) : (
+              <img 
+                src={episode.thumbnail_url || '/placeholder-episode.jpg'}
+                alt={episode.title}
+                className="w-full h-48 object-cover"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement
+                  target.src = '/placeholder-episode.jpg'
+                }}
+              />
+            )}
             <div className="absolute top-2 left-2 bg-black/70 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-white flex items-center">
               <Play className="h-3 w-3 mr-1" />
               {episode.duration || '動画'}
@@ -205,30 +218,19 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
   }
 
   const renderLocationCard = (location: Location) => {
-    // 聖地巡礼スポット用の高品質プレースホルダー画像（レストラン・カフェ系）
-    const getLocationPlaceholder = (index: number) => {
-      const placeholders = [
-        'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=250&fit=crop', // レストラン内装
-        'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=250&fit=crop', // カフェテーブル
-        'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop', // 料理
-        'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=400&h=250&fit=crop', // カフェ外観
-        'https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=400&h=250&fit=crop', // レストラン雰囲気
-        'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=250&fit=crop', // レストランテーブル
-        'https://images.unsplash.com/photo-1567521464027-f127ff144326?w=400&h=250&fit=crop', // カフェラテ
-        'https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=400&h=250&fit=crop'  // カフェ内装
-      ]
-      return placeholders[index % placeholders.length]
-    }
-
     return (
       <Link to={`/locations/${location.id}`} key={location.id}>
         <div className="relative group cursor-pointer">
           <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden">
             <div className="relative">
               <img 
-                src={location.image_url || getLocationPlaceholder(parseInt(location.id))} 
+                src={location.image_url || '/placeholder-location.jpg'} 
                 alt={location.name}
                 className="w-full h-48 object-cover"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement
+                  target.src = '/placeholder-location.jpg'
+                }}
               />
               <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-gray-700">
                 {location.episode_count || 0}回登場
@@ -254,30 +256,19 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
   }
 
   const renderItemCard = (item: Item) => {
-    // 推しアイテム用の高品質プレースホルダー画像（コスメ・ファッション・グッズ系）
-    const getItemPlaceholder = (index: number) => {
-      const placeholders = [
-        'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=300&h=200&fit=crop', // コスメ
-        'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=300&h=200&fit=crop', // ファッション
-        'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=300&h=200&fit=crop', // アクセサリー
-        'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=300&h=200&fit=crop', // ファッション小物
-        'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=200&fit=crop', // コスメセット
-        'https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?w=300&h=200&fit=crop', // バッグ
-        'https://images.unsplash.com/photo-1541643600914-78b084683601?w=300&h=200&fit=crop', // リップ・コスメ
-        'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=300&h=200&fit=crop'  // ジュエリー
-      ]
-      return placeholders[index % placeholders.length]
-    }
-
     return (
       <Link to={`/items/${item.id}`} key={item.id}>
         <div className="relative group cursor-pointer">
           <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden">
             <div className="relative">
               <img 
-                src={item.image_url || getItemPlaceholder(parseInt(item.id))} 
+                src={item.image_url || '/placeholder-item.jpg'} 
                 alt={item.name}
                 className="w-full h-48 object-cover"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement
+                  target.src = '/placeholder-item.jpg'
+                }}
               />
               {item.brand && (
                 <div className="absolute top-2 left-2 bg-black/70 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-white">
@@ -412,16 +403,17 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
               />
             ))}
           </div>
-        </div>
-
-        {/* 「もっと見る」ボタン */}
-        <div className="text-center mt-8">
-          <Link to={linkPath}>
-            <button className="inline-flex items-center px-8 py-4 bg-white border-2 border-gray-200 hover:border-gray-300 rounded-full text-gray-700 hover:text-gray-900 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-              {title}をもっと見る
-              <ChevronRight className="h-5 w-5 ml-2" />
-            </button>
-          </Link>
+          
+          {/* 全て見るボタン */}
+          <div className="text-center mt-6">
+            <Link
+              to={linkPath}
+              className="inline-flex items-center px-6 py-3 bg-white text-gray-900 font-medium rounded-full hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+            >
+              全て見る
+              <ChevronRight className="h-4 w-4 ml-2" />
+            </Link>
+          </div>
         </div>
       </div>
     </section>

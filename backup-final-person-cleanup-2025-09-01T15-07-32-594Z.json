@@ -1,0 +1,63 @@
+{
+  "timestamp": "2025-09-01T15:07:32.594Z",
+  "phase": "final-person-name-cleanup",
+  "reason": "≠MEメンバー名の最終削除",
+  "deleted_locations": [
+    {
+      "id": "04c721cd-3c80-442a-a9e6-3c068214bd6b",
+      "name": "河口 夏音 Natsune Kawaguchi",
+      "address": "東京都内",
+      "description": "【占い】超幸運メンバーが発覚！？中華街の有名占い館で2021年の運勢占ってみた！で紹介された店舗",
+      "episode_count": 1
+    },
+    {
+      "id": "09cbb092-c0e0-4248-b0cb-519a2af65e28",
+      "name": "大谷 映美里 Emiri Otani",
+      "address": "東京都内",
+      "description": "【ドッキリ検証】いきなりメンバーに電話してみたら面白すぎた！【仕事中？お家？】で紹介された店舗",
+      "episode_count": 1
+    },
+    {
+      "id": "208ee841-1bc2-46a0-8d71-419da0606c1e",
+      "name": "齊藤 なぎさ Nagisa Saito",
+      "address": "東京都内",
+      "description": "【一人焼肉】齊藤なぎさが朝から焼肉食べ放題してきた！【なーたん】で紹介された店舗",
+      "episode_count": 1
+    },
+    {
+      "id": "2b8837f9-6afe-4201-90f6-6c7825ad28da",
+      "name": "野口 衣織 Iori Noguchi",
+      "address": "東京都内",
+      "description": "【ドッキリ検証】いきなりメンバーに電話してみたら面白すぎた！【仕事中？お家？】で紹介された店舗",
+      "episode_count": 1
+    },
+    {
+      "id": "715fb0eb-f168-4ff3-b870-f31947196291",
+      "name": "谷崎 早耶 Saya Tanizaki",
+      "address": "東京都内",
+      "description": "【占い】超幸運メンバーが発覚！？中華街の有名占い館で2021年の運勢占ってみた！で紹介された店舗",
+      "episode_count": 1
+    },
+    {
+      "id": "9a40f52b-adcc-4a3f-8921-918290f41d79",
+      "name": "佐竹 のん乃 Nonno Satake",
+      "address": "東京都内",
+      "description": "【ドッキリ検証】いきなりメンバーに電話してみたら面白すぎた！【仕事中？お家？】で紹介された店舗",
+      "episode_count": 1
+    },
+    {
+      "id": "bbae2f7b-cc36-4609-beaa-04b66544c437",
+      "name": "音嶋 莉沙 Risa Otoshima",
+      "address": "東京都内",
+      "description": "【心理戦】NGワード言ったらデスソース！メンバーの誘導尋問で疑心暗鬼に！で紹介された店舗",
+      "episode_count": 1
+    },
+    {
+      "id": "d35b7e20-1491-46b3-8b1b-2b639215e10c",
+      "name": "櫻井 もも Momo Sakurai",
+      "address": "東京都内",
+      "description": "【やっぱり無理】読んだことのない本を、愛読書のように説明されたらメンバーは気づくの？【≠ME 落合 櫻井 菅波 鈴木】で紹介された店舗",
+      "episode_count": 1
+    }
+  ]
+}

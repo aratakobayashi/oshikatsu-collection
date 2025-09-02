@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Users, Play, MapPin, Package } from 'lucide-react'
 import { MetaTags, generateSEO } from '../../components/SEO/MetaTags'
 import { StructuredData, generateStructuredData } from '../../components/SEO/StructuredData'
-import HeroSection from '../../components/HeroSection'
+import HeroSection from '../../components/HeroSectionLite'
 import SectionCarousel from '../../components/SectionCarousel'
 import WikipediaAPITest from '../../components/WikipediaAPITest'
 import DevDataCreator from '../../components/DevDataCreator'
@@ -14,6 +14,7 @@ import { getSearchPath, detectSearchType } from '../../utils/searchHelper'
 
 
 // Star Logo Component
+import { optimizedQueries } from '../../hooks/useOptimizedFetch'
 const StarLogo = ({ className = "h-8 w-8" }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
@@ -64,38 +65,19 @@ interface Item {
 
 export default function Home() {
   const navigate = useNavigate()
-  const [celebrities, setCelebrities] = useState<Celebrity[]>([])
-  const [episodes, setEpisodes] = useState<Episode[]>([])
-  const [locations, setLocations] = useState<Location[]>([])
-  const [items, setItems] = useState<Item[]>([])
-  const [loading, setLoading] = useState(true)
+  
+  // Optimized data fetching with caching
+  const { data: celebrities = [], loading: celebritiesLoading } = optimizedQueries.celebrities({ ttl: 300000 })
+  const { data: episodes = [], loading: episodesLoading } = optimizedQueries.episodes({ ttl: 60000 })
+  const { data: locations = [], loading: locationsLoading } = optimizedQueries.locations({ ttl: 300000 })
+  const { data: items = [], loading: itemsLoading } = optimizedQueries.items({ ttl: 300000 })
+  
+  const loading = celebritiesLoading || episodesLoading || locationsLoading || itemsLoading
   
   useEffect(() => {
     // ページ読み込み時に必ずトップに戻す
     window.scrollTo(0, 0)
-    fetchData()
   }, [])
-  
-  async function fetchData() {
-    try {
-      // Supabaseから実データを並行取得
-      const [celebritiesData, episodesData, locationsData, itemsData] = await Promise.all([
-        db.celebrities.getAll(),
-        db.episodes.getAll(),
-        db.locations.getAll(),
-        db.items.getAll()
-      ])
-
-      setCelebrities(celebritiesData)
-      setEpisodes(episodesData)
-      setLocations(locationsData)
-      setItems(itemsData)
-    } catch (error) {
-      console.error('データ取得エラー:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
   
   async function handleSearch(searchQuery: string) {
     if (!searchQuery.trim()) return

@@ -1,0 +1,57 @@
+[
+  {
+    "page": "home",
+    "url": "https://collection.oshikatsu-guide.com/",
+    "performance": 38,
+    "fcp": "2.2 s",
+    "lcp": "17.8 s",
+    "cls": "0.005",
+    "tbt": "2,310 ms",
+    "si": "7.0 s",
+    "tti": "18.9 s"
+  },
+  {
+    "page": "celebrities",
+    "url": "https://collection.oshikatsu-guide.com/celebrities",
+    "performance": 70,
+    "fcp": "3.0 s",
+    "lcp": "5.4 s",
+    "cls": "0.005",
+    "tbt": "150 ms",
+    "si": "4.7 s",
+    "tti": "5.5 s"
+  },
+  {
+    "page": "celebrity-profile",
+    "url": "https://collection.oshikatsu-guide.com/celebrities/matsushige-yutaka",
+    "performance": 44,
+    "fcp": "2.2 s",
+    "lcp": "5.6 s",
+    "cls": "0.005",
+    "tbt": "1,330 ms",
+    "si": "8.3 s",
+    "tti": "5.7 s"
+  },
+  {
+    "page": "locations",
+    "url": "https://collection.oshikatsu-guide.com/locations",
+    "performance": 70,
+    "fcp": "2.2 s",
+    "lcp": "5.9 s",
+    "cls": "0.024",
+    "tbt": "170 ms",
+    "si": "5.1 s",
+    "tti": "5.9 s"
+  },
+  {
+    "page": "items",
+    "url": "https://collection.oshikatsu-guide.com/items",
+    "performance": 83,
+    "fcp": "2.1 s",
+    "lcp": "3.9 s",
+    "cls": "0.005",
+    "tbt": "130 ms",
+    "si": "4.2 s",
+    "tti": "3.9 s"
+  }
+]

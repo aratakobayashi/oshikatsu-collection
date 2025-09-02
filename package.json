@@ -51,7 +51,9 @@
     "generate-sitemap:enhanced": "tsx src/scripts/enhanced-sitemap-generator.ts",
     "submit-sitemap:enhanced": "tsx src/scripts/search-console-integration.ts",
     "seo:full-setup": "npm run generate-sitemap:enhanced && npm run submit-sitemap:enhanced",
-    "deploy:seo": "bash scripts/deploy-with-seo.sh"
+    "deploy:seo": "bash scripts/deploy-with-seo.sh",
+    "lighthouse:test": "tsx scripts/lighthouse-performance-test.ts",
+    "lighthouse:compare": "tsx scripts/compare-lighthouse-results.ts"
   },
   "dependencies": {
     "@supabase/storage-js": "^2.8.0",
@@ -76,6 +78,7 @@
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.18",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "^9.9.1",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.11",

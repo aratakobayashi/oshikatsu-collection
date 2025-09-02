@@ -64,12 +64,37 @@ interface SitemapStats {
   estimatedIndexTime: string
 }
 
+interface SitemapIndexEntry {
+  loc: string
+  lastmod: string
+}
+
+interface SitemapConfig {
+  maxUrlsPerSitemap: number
+  enableSitemapIndex: boolean
+  splitByCategory: boolean
+  splitByDate: boolean
+}
+
+interface SitemapGroup {
+  name: string
+  urls: EnhancedSitemapUrl[]
+  filename: string
+}
+
 export class EnhancedSitemapGenerator {
   private stats: SitemapStats
   private supabase: any
+  private config: SitemapConfig
   
   constructor() {
     this.supabase = supabase
+    this.config = {
+      maxUrlsPerSitemap: 1000,  // 1000URLで分割（Google推奨50,000だが管理しやすさ優先）
+      enableSitemapIndex: false, // URL数に応じて自動で有効化
+      splitByCategory: true,     // カテゴリ別分割
+      splitByDate: false         // 日付別分割（将来の拡張用）
+    }
     this.stats = {
       totalUrls: 0,
       byType: {},
@@ -152,7 +177,7 @@ export class EnhancedSitemapGenerator {
         priority: page.priority,
         category: page.category,
       })
-      this.stats.categoryCounts[page.category]++
+      this.stats.categoryCounts[page.category] = (this.stats.categoryCounts[page.category] || 0) + 1
     })
     
     console.log(`  ✅ Added ${staticPages.length} static pages`)
@@ -175,14 +200,27 @@ export class EnhancedSitemapGenerator {
     }
 
     celebrities?.forEach(celebrity => {
+      // 改良版の動的優先度計算を使用
+      const priority = this.calculateDynamicPriority({
+        type: 'celebrity',
+        updatedAt: celebrity.updated_at,
+        // 将来的にはここにpageViewsやsocialSharesなどを追加
+      })
+
+      // 改良版の動的更新頻度計算を使用
+      const changefreq = this.calculateDynamicChangeFreq({
+        type: 'celebrity',
+        updatedAt: celebrity.updated_at
+      })
+
       urls.push({
         loc: `${SITE_URL}/celebrities/${celebrity.slug || celebrity.id}`,
         lastmod: this.formatSitemapDate(celebrity.updated_at),
-        changefreq: 'weekly',
-        priority: 0.8,
+        changefreq,
+        priority,
         category: 'celebrity',
       })
-      this.stats.categoryCounts.celebrity++
+      this.stats.categoryCounts.celebrity = (this.stats.categoryCounts.celebrity || 0) + 1
     })
     
     console.log(`  ✅ Added ${celebrities?.length || 0} celebrity pages`)
@@ -206,14 +244,28 @@ export class EnhancedSitemapGenerator {
     }
 
     episodes?.forEach(episode => {
+      // 改良版の動的優先度計算を使用
+      const priority = this.calculateDynamicPriority({
+        type: 'episode',
+        updatedAt: episode.updated_at,
+        hasVideo: true, // YouTubeビデオがある
+        // 将来的にはpageViewsやsocialSharesを追加
+      })
+
+      // 改良版の動的更新頻度計算を使用  
+      const changefreq = this.calculateDynamicChangeFreq({
+        type: 'episode',
+        updatedAt: episode.updated_at
+      })
+
       urls.push({
         loc: `${SITE_URL}/episodes/${episode.youtube_id || episode.id}`,
         lastmod: this.formatSitemapDate(episode.updated_at),
-        changefreq: 'monthly',
-        priority: 0.8,
+        changefreq,
+        priority,
         category: 'episode',
       })
-      this.stats.categoryCounts.episode++
+      this.stats.categoryCounts.episode = (this.stats.categoryCounts.episode || 0) + 1
     })
     
     console.log(`  ✅ Added ${episodes?.length || 0} episode pages`)
@@ -260,17 +312,32 @@ export class EnhancedSitemapGenerator {
         }
       }
 
+      // 改良版の動的優先度計算を使用
+      const priority = this.calculateDynamicPriority({
+        type: 'location',
+        updatedAt: location.updated_at,
+        hasImages: images.length > 0,
+        // 将来的にはカテゴリ（レストラン、観光地など）も追加
+      })
+
+      // 改良版の動的更新頻度計算を使用
+      const changefreq = this.calculateDynamicChangeFreq({
+        type: 'location',
+        updatedAt: location.updated_at
+      })
+
       urls.push({
         loc: `${SITE_URL}/locations/${location.id}`,
         lastmod: this.formatSitemapDate(location.updated_at),
-        changefreq: 'weekly',
-        priority: 0.6,
+        changefreq,
+        priority,
         category: 'location',
         images: images.length > 0 ? images : undefined,
       })
-      this.stats.categoryCounts.location++
+      this.stats.categoryCounts.location = (this.stats.categoryCounts.location || 0) + 1
     })
     
+    this.stats.withImages = locationsWithImages
     console.log(`  ✅ Added ${locations?.length || 0} location pages`)
     console.log(`  🖼️  With images: ${locationsWithImages}`)
   }
@@ -292,14 +359,27 @@ export class EnhancedSitemapGenerator {
     }
 
     items?.forEach(item => {
+      // 改良版の動的優先度計算を使用
+      const priority = this.calculateDynamicPriority({
+        type: 'item',
+        updatedAt: item.updated_at,
+        // 将来的にはカテゴリや画像の有無も追加
+      })
+
+      // 改良版の動的更新頻度計算を使用
+      const changefreq = this.calculateDynamicChangeFreq({
+        type: 'item',
+        updatedAt: item.updated_at
+      })
+
       urls.push({
         loc: `${SITE_URL}/items/${item.id}`,
         lastmod: this.formatSitemapDate(item.updated_at),
-        changefreq: 'weekly',
-        priority: 0.7,
+        changefreq,
+        priority,
         category: 'item',
       })
-      this.stats.categoryCounts.item++
+      this.stats.categoryCounts.item = (this.stats.categoryCounts.item || 0) + 1
     })
     
     console.log(`  ✅ Added ${items?.length || 0} item pages`)
@@ -328,7 +408,7 @@ export class EnhancedSitemapGenerator {
         priority: category.priority,
         category: 'category',
       })
-      this.stats.categoryCounts.category++
+      this.stats.categoryCounts.category = (this.stats.categoryCounts.category || 0) + 1
     })
     
     console.log(`  ✅ Added ${categoryPages.length} category pages`)
@@ -396,19 +476,452 @@ export class EnhancedSitemapGenerator {
   }
 
   /**
+   * 動的優先度計算システム（改良版）
+   * 複数の要因を考慮した高度な優先度計算
+   */
+  private calculateDynamicPriority(params: {
+    type: string
+    updatedAt?: string
+    pageViews?: number
+    socialShares?: number
+    hasImages?: boolean
+    hasVideo?: boolean
+    contentLength?: number
+    category?: string
+    tags?: string[]
+  }): number {
+    let priority = 0.5 // ベース優先度
+
+    // 1. コンテンツタイプによる基本優先度
+    const typePriority: Record<string, number> = {
+      homepage: 1.0,
+      celebrity: 0.8,
+      episode: 0.75,
+      location: 0.7,
+      item: 0.65,
+      category: 0.7,
+      listing: 0.8,
+      legal: 0.3
+    }
+    priority = typePriority[params.type] || 0.5
+
+    // 2. 更新頻度による調整（-0.2 ~ +0.2）
+    if (params.updatedAt) {
+      const daysSinceUpdate = this.getDaysSinceUpdate(params.updatedAt)
+      if (daysSinceUpdate <= 7) {
+        priority += 0.2 // 最近更新された
+      } else if (daysSinceUpdate <= 30) {
+        priority += 0.1
+      } else if (daysSinceUpdate <= 90) {
+        priority += 0.0
+      } else if (daysSinceUpdate <= 365) {
+        priority -= 0.1
+      } else {
+        priority -= 0.2 // 古いコンテンツ
+      }
+    }
+
+    // 3. メディアコンテンツによるブースト
+    if (params.hasVideo) {
+      priority += 0.15 // 動画は最も重要
+    }
+    if (params.hasImages) {
+      priority += 0.1 // 画像も重要
+    }
+
+    // 4. エンゲージメント指標（将来の拡張用）
+    if (params.pageViews) {
+      // 高アクセスページを優先
+      if (params.pageViews > 10000) priority += 0.15
+      else if (params.pageViews > 1000) priority += 0.1
+      else if (params.pageViews > 100) priority += 0.05
+    }
+
+    // 5. ソーシャルシグナル（将来の拡張用）
+    if (params.socialShares) {
+      if (params.socialShares > 100) priority += 0.1
+      else if (params.socialShares > 10) priority += 0.05
+    }
+
+    // 6. コンテンツの充実度
+    if (params.contentLength) {
+      if (params.contentLength > 2000) priority += 0.1
+      else if (params.contentLength > 500) priority += 0.05
+    }
+
+    // 7. カテゴリ特別扱い
+    if (params.category) {
+      const categoryBoost: Record<string, number> = {
+        'restaurant': 0.1,
+        'trending': 0.15,
+        'featured': 0.2,
+        'sponsored': 0.15
+      }
+      priority += categoryBoost[params.category] || 0
+    }
+
+    // 8. タグによる微調整（将来の拡張用）
+    if (params.tags && params.tags.length > 0) {
+      const importantTags = ['人気', 'おすすめ', 'new', '限定']
+      const hasImportantTag = params.tags.some(tag => 
+        importantTags.includes(tag.toLowerCase())
+      )
+      if (hasImportantTag) priority += 0.05
+    }
+
+    // 優先度を0.0-1.0の範囲に正規化
+    return Math.max(0.0, Math.min(1.0, priority))
+  }
+
+  /**
+   * 更新からの経過日数を計算
+   */
+  private getDaysSinceUpdate(updatedAt: string): number {
+    const lastUpdate = new Date(updatedAt)
+    const now = new Date()
+    return Math.floor((now.getTime() - lastUpdate.getTime()) / (1000 * 60 * 60 * 24))
+  }
+
+  /**
+   * 動的更新頻度計算（改良版）
+   * コンテンツの特性と更新パターンを考慮
+   */
+  private calculateDynamicChangeFreq(params: {
+    type: string
+    updatedAt?: string
+    updateHistory?: Date[]
+    seasonal?: boolean
+    eventDriven?: boolean
+  }): 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never' {
+    // イベント駆動型コンテンツ
+    if (params.eventDriven) {
+      return 'hourly'
+    }
+
+    // 季節性のあるコンテンツ
+    if (params.seasonal) {
+      const now = new Date()
+      const month = now.getMonth()
+      // 季節の変わり目（3,6,9,12月）は頻繁に更新
+      if ([2, 5, 8, 11].includes(month)) {
+        return 'daily'
+      }
+    }
+
+    // 更新履歴から頻度を推定
+    if (params.updateHistory && params.updateHistory.length > 1) {
+      const intervals = []
+      for (let i = 1; i < params.updateHistory.length; i++) {
+        const diff = params.updateHistory[i].getTime() - params.updateHistory[i-1].getTime()
+        intervals.push(diff)
+      }
+      const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length
+      const avgDays = avgInterval / (1000 * 60 * 60 * 24)
+
+      if (avgDays < 1) return 'hourly'
+      if (avgDays <= 3) return 'daily'
+      if (avgDays <= 14) return 'weekly'
+      if (avgDays <= 60) return 'monthly'
+      return 'yearly'
+    }
+
+    // コンテンツタイプ別のデフォルト頻度
+    const typeFrequency: Record<string, 'daily' | 'weekly' | 'monthly' | 'yearly'> = {
+      homepage: 'daily',
+      listing: 'daily',
+      celebrity: 'weekly',
+      episode: 'weekly',
+      location: 'weekly',
+      item: 'monthly',
+      category: 'weekly',
+      legal: 'yearly',
+      about: 'monthly'
+    }
+
+    // 最終更新日からの推定
+    if (params.updatedAt) {
+      const daysSince = this.getDaysSinceUpdate(params.updatedAt)
+      
+      // 最近更新されたコンテンツは頻繁に更新される可能性が高い
+      if (daysSince <= 1) return 'daily'
+      if (daysSince <= 7) return 'weekly'
+      if (daysSince <= 30) return 'monthly'
+      
+      // タイプ別のデフォルトにフォールバック
+      return typeFrequency[params.type] || 'monthly'
+    }
+
+    return typeFrequency[params.type] || 'monthly'
+  }
+
+  /**
    * サイトマップファイル生成
    */
   private async generateSitemapFiles(urls: EnhancedSitemapUrl[]): Promise<void> {
     console.log('\n📝 Generating sitemap files...')
     
+    // URL数が閾値を超えたらサイトマップインデックスを有効化
+    if (urls.length > this.config.maxUrlsPerSitemap) {
+      console.log(`  📊 ${urls.length} URLs detected - enabling sitemap index`)
+      this.config.enableSitemapIndex = true
+    }
+    
+    if (this.config.enableSitemapIndex) {
+      await this.generateSitemapIndex(urls)
+    } else {
+      await this.generateSingleSitemap(urls)
+    }
+  }
+
+  /**
+   * サイトマップインデックス生成（複数サイトマップ対応）
+   */
+  private async generateSitemapIndex(urls: EnhancedSitemapUrl[]): Promise<void> {
+    console.log('  📊 Generating sitemap index...')
+    
+    // URLをカテゴリ別にグループ化
+    const groups = this.groupUrls(urls)
+    const sitemapEntries: SitemapIndexEntry[] = []
+    
+    // 各グループのサイトマップを生成
+    for (const group of groups) {
+      const sitemapXML = this.generateMainSitemapXML(group.urls)
+      const sitemapPath = `${group.filename}.xml`
+      
+      // ファイル保存
+      await this.saveToFiles(sitemapPath, sitemapXML)
+      
+      // インデックス用のエントリ追加
+      sitemapEntries.push({
+        loc: `${SITE_URL}/${sitemapPath}`,
+        lastmod: new Date().toISOString()
+      })
+      
+      console.log(`    ✅ ${group.name}: ${group.urls.length} URLs → ${sitemapPath}`)
+    }
+    
+    // 画像サイトマップも追加
+    const imageUrls = urls.filter(url => url.images && url.images.length > 0)
+    if (imageUrls.length > 0) {
+      const imageSitemap = this.generateImageSitemapXML(imageUrls)
+      await this.saveToFiles('sitemap-images.xml', imageSitemap)
+      sitemapEntries.push({
+        loc: `${SITE_URL}/sitemap-images.xml`,
+        lastmod: new Date().toISOString()
+      })
+      console.log(`    🖼️  Images: ${imageUrls.length} URLs → sitemap-images.xml`)
+    }
+    
+    // サイトマップインデックスファイル生成
+    const indexXML = this.generateSitemapIndexXML(sitemapEntries)
+    await this.saveToFiles('sitemap.xml', indexXML)
+    
+    this.stats.totalUrls = urls.length
+    console.log(`  ✅ Sitemap index: ${sitemapEntries.length} sitemaps`)
+    console.log(`  📁 Total URLs: ${urls.length}`)
+  }
+
+  /**
+   * 単一サイトマップ生成（従来の方式）
+   */
+  private async generateSingleSitemap(urls: EnhancedSitemapUrl[]): Promise<void> {
+    console.log('  📄 Generating single sitemap...')
+    
     // メインサイトマップ
     const mainSitemap = this.generateMainSitemapXML(urls)
+    await this.saveToFiles('sitemap.xml', mainSitemap)
     
-    // 画像サイトマップ（画像があるURLのみ）
+    // 画像サイトマップ
     const imageUrls = urls.filter(url => url.images && url.images.length > 0)
-    const imageSitemap = this.generateImageSitemapXML(imageUrls)
+    if (imageUrls.length > 0) {
+      const imageSitemap = this.generateImageSitemapXML(imageUrls)
+      await this.saveToFiles('sitemap-images.xml', imageSitemap)
+      console.log(`  🖼️  Image sitemap: ${imageUrls.length} URLs with ${this.stats.totalImages} images`)
+    }
     
-    // ファイル保存
+    this.stats.totalUrls = urls.length
+    console.log(`  ✅ Main sitemap: ${urls.length} URLs`)
+    console.log(`  📁 Saved to: public/ and dist/`)
+  }
+
+  /**
+   * URLをカテゴリ別にグループ化
+   */
+  private groupUrls(urls: EnhancedSitemapUrl[]): SitemapGroup[] {
+    const groups: SitemapGroup[] = []
+    
+    // 地域別・カテゴリ別の高度な分割ロジック
+    if (this.config.splitByCategory) {
+      // カテゴリ別に分割
+      const categories = new Map<string, EnhancedSitemapUrl[]>()
+      
+      // 特別なカテゴリグループの定義
+      const categoryGroups: Record<string, string[]> = {
+        'core': ['homepage', 'listing', 'navigation', 'utility'],
+        'content': ['celebrity', 'episode', 'item'],
+        'places': ['location'], // 将来的に地域別に細分化
+        'meta': ['category', 'info', 'legal']
+      }
+      
+      // URLをカテゴリごとに分類
+      urls.forEach(url => {
+        const category = url.category || 'other'
+        
+        // 特別なグルーピング処理
+        if (category === 'location') {
+          // ロケーションは地域別に分割（将来実装）
+          // 現在は都道府県別に分割できるようコメントで準備
+          // const region = this.extractRegionFromAddress(url.address)
+          // const locationCategory = `location-${region}`
+          const locationCategory = 'location'
+          
+          if (!categories.has(locationCategory)) {
+            categories.set(locationCategory, [])
+          }
+          categories.get(locationCategory)!.push(url)
+        } else {
+          // 通常のカテゴリ処理
+          if (!categories.has(category)) {
+            categories.set(category, [])
+          }
+          categories.get(category)!.push(url)
+        }
+      })
+      
+      // 各カテゴリをグループ化
+      categories.forEach((categoryUrls, category) => {
+        // 優先度でソート（高い順）
+        categoryUrls.sort((a, b) => b.priority - a.priority)
+        
+        // 大きなカテゴリは更に分割
+        if (categoryUrls.length > this.config.maxUrlsPerSitemap) {
+          const chunks = this.chunkArray(categoryUrls, this.config.maxUrlsPerSitemap)
+          chunks.forEach((chunk, index) => {
+            groups.push({
+              name: `${category} (${index + 1}/${chunks.length})`,
+              urls: chunk,
+              filename: `sitemap-${category}-${index + 1}`
+            })
+          })
+        } else {
+          groups.push({
+            name: category,
+            urls: categoryUrls,
+            filename: `sitemap-${category}`
+          })
+        }
+      })
+      
+      // グループを論理的な順序でソート
+      const categoryOrder = ['homepage', 'listing', 'celebrity', 'episode', 'location', 'item', 'category', 'navigation', 'utility', 'info', 'legal', 'other']
+      groups.sort((a, b) => {
+        const aCategory = a.name.split(' ')[0]
+        const bCategory = b.name.split(' ')[0]
+        const aIndex = categoryOrder.indexOf(aCategory)
+        const bIndex = categoryOrder.indexOf(bCategory)
+        
+        if (aIndex === -1 && bIndex === -1) return 0
+        if (aIndex === -1) return 1
+        if (bIndex === -1) return -1
+        return aIndex - bIndex
+      })
+      
+    } else {
+      // サイズベースで単純分割
+      const chunks = this.chunkArray(urls, this.config.maxUrlsPerSitemap)
+      chunks.forEach((chunk, index) => {
+        groups.push({
+          name: `Part ${index + 1}`,
+          urls: chunk,
+          filename: `sitemap-${index + 1}`
+        })
+      })
+    }
+    
+    return groups
+  }
+
+  /**
+   * 住所から地域を抽出（将来実装用）
+   */
+  private extractRegionFromAddress(address?: string): string {
+    if (!address) return 'unknown'
+    
+    // 都道府県のパターンマッチング
+    const prefectures = [
+      '北海道', '青森県', '岩手県', '宮城県', '秋田県', '山形県', '福島県',
+      '茨城県', '栃木県', '群馬県', '埼玉県', '千葉県', '東京都', '神奈川県',
+      '新潟県', '富山県', '石川県', '福井県', '山梨県', '長野県', '岐阜県',
+      '静岡県', '愛知県', '三重県', '滋賀県', '京都府', '大阪府', '兵庫県',
+      '奈良県', '和歌山県', '鳥取県', '島根県', '岡山県', '広島県', '山口県',
+      '徳島県', '香川県', '愛媛県', '高知県', '福岡県', '佐賀県', '長崎県',
+      '熊本県', '大分県', '宮崎県', '鹿児島県', '沖縄県'
+    ]
+    
+    for (const prefecture of prefectures) {
+      if (address.includes(prefecture)) {
+        // 地域グループに変換
+        if (['東京都', '神奈川県', '千葉県', '埼玉県'].includes(prefecture)) {
+          return 'kanto'
+        }
+        if (['大阪府', '京都府', '兵庫県', '奈良県', '和歌山県', '滋賀県'].includes(prefecture)) {
+          return 'kansai'
+        }
+        if (['愛知県', '岐阜県', '三重県', '静岡県'].includes(prefecture)) {
+          return 'chubu'
+        }
+        if (['福岡県', '佐賀県', '長崎県', '熊本県', '大分県', '宮崎県', '鹿児島県', '沖縄県'].includes(prefecture)) {
+          return 'kyushu'
+        }
+        if (['北海道'].includes(prefecture)) {
+          return 'hokkaido'
+        }
+        if (['青森県', '岩手県', '宮城県', '秋田県', '山形県', '福島県'].includes(prefecture)) {
+          return 'tohoku'
+        }
+        // その他の地域
+        return 'other-regions'
+      }
+    }
+    
+    return 'unknown'
+  }
+
+  /**
+   * 配列を指定サイズに分割
+   */
+  private chunkArray<T>(array: T[], chunkSize: number): T[][] {
+    const chunks: T[][] = []
+    for (let i = 0; i < array.length; i += chunkSize) {
+      chunks.push(array.slice(i, i + chunkSize))
+    }
+    return chunks
+  }
+
+  /**
+   * サイトマップインデックスXML生成
+   */
+  private generateSitemapIndexXML(entries: SitemapIndexEntry[]): string {
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+`
+    
+    entries.forEach(entry => {
+      xml += `  <sitemap>
+    <loc>${this.escapeXml(entry.loc)}</loc>
+    <lastmod>${entry.lastmod}</lastmod>
+  </sitemap>
+`
+    })
+    
+    xml += `</sitemapindex>`
+    return xml
+  }
+
+  /**
+   * ファイル保存ヘルパー
+   */
+  private async saveToFiles(filename: string, content: string): Promise<void> {
     const publicDir = path.join(process.cwd(), 'public')
     const distDir = path.join(process.cwd(), 'dist')
     
@@ -420,33 +933,12 @@ export class EnhancedSitemapGenerator {
       fs.mkdirSync(distDir, { recursive: true })
     }
     
-    // メインサイトマップ保存
-    const mainSitemapPaths = [
-      path.join(publicDir, 'sitemap.xml'),
-      path.join(distDir, 'sitemap.xml')
-    ]
+    // ファイル保存
+    const publicPath = path.join(publicDir, filename)
+    const distPath = path.join(distDir, filename)
     
-    mainSitemapPaths.forEach(filePath => {
-      fs.writeFileSync(filePath, mainSitemap)
-    })
-    
-    // 画像サイトマップ保存
-    if (imageUrls.length > 0) {
-      const imageSitemapPaths = [
-        path.join(publicDir, 'sitemap-images.xml'),
-        path.join(distDir, 'sitemap-images.xml')
-      ]
-      
-      imageSitemapPaths.forEach(filePath => {
-        fs.writeFileSync(filePath, imageSitemap)
-      })
-      
-      console.log(`  ✅ Image sitemap: ${imageUrls.length} URLs with ${this.stats.totalImages} images`)
-    }
-    
-    this.stats.totalUrls = urls.length
-    console.log(`  ✅ Main sitemap: ${urls.length} URLs`)
-    console.log(`  📁 Saved to: public/ and dist/`)
+    fs.writeFileSync(publicPath, content)
+    fs.writeFileSync(distPath, content)
   }
 
   /**
@@ -610,10 +1102,10 @@ Crawl-delay: 1
     })
     
     console.log('\n🖼️  Image Statistics:')
-    const urlsWithImages = Object.values(this.stats.categoryCounts).reduce((sum, count) => sum + count, 0)
-    console.log(`  • URLs with images: ${this.stats.withImages}/${this.stats.totalUrls} (${Math.round(this.stats.withImages/this.stats.totalUrls*100)}%)`)
+    const totalPages = Object.values(this.stats.categoryCounts).reduce((sum, count) => sum + count, 0)
+    console.log(`  • URLs with images: ${this.stats.withImages}/${totalPages} (${totalPages > 0 ? Math.round(this.stats.withImages/totalPages*100) : 0}%)`)
     console.log(`  • Total images: ${this.stats.totalImages}`)
-    console.log(`  • Average images per page: ${(this.stats.totalImages / this.stats.withImages || 0).toFixed(1)}`)
+    console.log(`  • Average images per page: ${this.stats.withImages > 0 ? (this.stats.totalImages / this.stats.withImages).toFixed(1) : '0.0'}`)
     
     console.log('\n🔗 Generated Files:')
     console.log(`  • ${SITE_URL}/sitemap.xml`)
@@ -635,11 +1127,100 @@ Crawl-delay: 1
     
     console.log('\n🎉 Ready for Search Console submission!')
   }
+
+  /**
+   * 特定の店舗情報を取得するデバッグ用メソッド
+   */
+  async debugLocationInfo(locationId: string): Promise<void> {
+    console.log(`\n🔍 Fetching location info for ID: ${locationId}`)
+    
+    // 複数のテーブル名を試行
+    const tableNames = ['filming_locations', 'episode_locations', 'locations']
+    
+    for (const tableName of tableNames) {
+      console.log(`Trying table: ${tableName}`)
+      const { data: location, error } = await this.supabase
+        .from(tableName)
+        .select('*')
+        .eq('id', locationId)
+        .single()
+
+      if (!error && location) {
+        console.log('📍 Location Details:')
+        console.log('  Name:', location.name)
+        console.log('  Address:', location.address)  
+        console.log('  Description:', location.description)
+        console.log('  Category:', location.category)
+        console.log('  Updated:', location.updated_at)
+        console.log('  Table:', tableName)
+        
+        // エピソード情報を取得
+        if (location.episode_id) {
+          console.log('\n🎬 Fetching episode info...')
+          const { data: episode, error: episodeError } = await this.supabase
+            .from('episodes')
+            .select('*')
+            .eq('id', location.episode_id)
+            .single()
+            
+          if (!episodeError && episode) {
+            console.log('📺 Episode Details:')
+            console.log('  Title:', episode.title)
+            console.log('  YouTube ID:', episode.youtube_id)
+            console.log('  YouTube URL:', episode.youtube_id ? `https://youtube.com/watch?v=${episode.youtube_id}` : 'N/A')
+            console.log('  Published:', episode.published_at)
+            console.log('  Description:', episode.description)
+          } else {
+            console.log('❌ Episode not found or error:', episodeError)
+          }
+        }
+        
+        // セレブリティ情報を取得
+        if (location.celebrity_id) {
+          console.log('\n👨‍🎤 Fetching celebrity info...')
+          const { data: celebrity, error: celebError } = await this.supabase
+            .from('celebrities')
+            .select('*')
+            .eq('id', location.celebrity_id)
+            .single()
+            
+          if (!celebError && celebrity) {
+            console.log('⭐ Celebrity Details:')
+            console.log('  Name:', celebrity.name)
+            console.log('  Slug:', celebrity.slug)
+            console.log('  Description:', celebrity.description)
+          } else {
+            console.log('❌ Celebrity not found or error:', celebError)
+          }
+        }
+        
+        console.log('\n📄 Raw location data:', JSON.stringify(location, null, 2))
+        return
+      }
+      
+      if (error && error.code !== '42P01') {
+        console.log(`Error with ${tableName}:`, error)
+      }
+    }
+    
+    console.log('❌ Location not found in any table')
+  }
 }
 
 // 実行関数
 export async function generateEnhancedSitemap(): Promise<void> {
   const generator = new EnhancedSitemapGenerator()
+  
+  // コマンドライン引数をチェック
+  const args = process.argv.slice(2)
+  const debugLocationArg = args.find(arg => arg.startsWith('--debug-location='))
+  
+  if (debugLocationArg) {
+    const locationId = debugLocationArg.split('=')[1]
+    await generator.debugLocationInfo(locationId)
+    return
+  }
+  
   await generator.generateEnhancedSitemap()
 }
 

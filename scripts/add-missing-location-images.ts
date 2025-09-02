@@ -65,7 +65,7 @@ const missingLocationImages = [
     name: 'GiGO 新宿歌舞伎町店',
     searchPatterns: ['GiGO', 'ギーゴ', 'ゲームセンター', '歌舞伎町'],
     images: [
-      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop&q=80', // ゲームセンター
+      'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop&q=80', // ゲームセンター
       'https://images.unsplash.com/photo-1511882150382-421056c89033?w=400&h=250&fit=crop&q=80', // アーケード
       'https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?w=400&h=250&fit=crop&q=80'  // ネオン街
     ],
@@ -85,7 +85,7 @@ const missingLocationImages = [
     name: 'GINZA過門香',
     searchPatterns: ['過門香', 'GINZA過門香', '錦糸町'],
     images: [
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80', // 中華料理
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80', // 中華料理
       'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400&h=250&fit=crop&q=80', // 中華レストラン
       'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=400&h=250&fit=crop&q=80'  // 高級中華
     ],
@@ -159,7 +159,7 @@ const missingLocationImages = [
     name: '青山迎賓館',
     searchPatterns: ['青山迎賓館', '迎賓館', '赤坂迎賓館'],
     images: [
-      'https://images.unsplash.com/photo-1555529902-1974e9dd9e97?w=400&h=250&fit=crop&q=80', // 洋館建築
+      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop&q=80', // 洋館建築
       'https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=400&h=250&fit=crop&q=80', // 迎賓館
       'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop&q=80'  // 豪華な内装
     ],

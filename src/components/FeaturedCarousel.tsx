@@ -211,7 +211,7 @@ const FeaturedCarousel: React.FC = () => {
         <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden">
           <div className="relative">
             <img 
-              src={celebrity.image_url || 'https://via.placeholder.com/200x200'} 
+              src={celebrity.image_url || '/placeholder-celebrity.jpg'} 
               alt={celebrity.name}
               className="w-full h-48 object-cover"
             />
@@ -261,8 +261,29 @@ const FeaturedCarousel: React.FC = () => {
     </Link>
   )
 
-  const renderLocationCard = (location: Location) => (
-    <Link to={`/locations/${location.id}`} key={location.id}>
+  const const renderLocationCard = (item: Location) => (
+    <div key={item.id} className="w-72 flex-shrink-0 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden">
+      <div className="h-48 bg-gray-200 relative">
+        <img 
+          src={item.image_url || '/placeholder-location.jpg'} 
+          alt={item.name}
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement
+            target.src = '/placeholder-location.jpg'
+          }}
+        />
+        <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium">
+          {item.episode_count || 0}回登場
+        </div>
+      </div>
+      <div className="p-4">
+        <h3 className="font-bold text-lg text-gray-900 mb-1">{item.name}</h3>
+        <p className="text-sm text-gray-600 mb-2">{item.address || '住所未登録'}</p>
+        <p className="text-xs text-gray-500 line-clamp-2">{item.description || '詳しい説明は準備中です'}</p>
+      </div>
+    </div>
+  )} key={location.id}>
       <div className="relative group cursor-pointer">
         <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden">
           <div className="relative">

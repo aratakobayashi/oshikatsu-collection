@@ -16,7 +16,7 @@ const priority3LocationImages = [
     name: '竹下通り',
     images: [
       'https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=400&h=250&fit=crop&q=80', // 原宿竹下通りの人混み
-      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop&q=80', // ポップカルチャーの街並み
+      'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop&q=80', // ポップカルチャーの街並み
       'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&h=250&fit=crop&q=80'  // 原宿のカラフルな店舗
     ],
     description: '原宿のポップカルチャーの聖地。若者文化の発信地として多くのタレントが訪れる人気スポット',
@@ -25,7 +25,7 @@ const priority3LocationImages = [
   {
     name: '江ノ島',
     images: [
-      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop&q=80', // 江ノ島の海岸風景
+      'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop&q=80', // 江ノ島の海岸風景
       'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=400&h=250&fit=crop&q=80', // 江ノ島弁天橋
       'https://images.unsplash.com/photo-1480796927426-f609979314bd?w=400&h=250&fit=crop&q=80'  // 江ノ島灯台と夕景
     ],
@@ -67,7 +67,7 @@ const priority3LocationImages = [
     images: [
       'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=400&h=250&fit=crop&q=80', // アメ横商店街の活気
       'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop&q=80', // 商店街のショッピング
-      'https://images.unsplash.com/photo-1555529902-1974e9dd9e97?w=400&h=250&fit=crop&q=80'  // 上野アメ横の賑わい
+      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop&q=80'  // 上野アメ横の賑わい
     ],
     description: '上野駅前の活気ある商店街。戦後から続く歴史ある市場で食べ歩きやお買い物が楽しめる',
     category: 'shop'
@@ -75,7 +75,7 @@ const priority3LocationImages = [
   {
     name: '築地場外市場',
     images: [
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop&q=80', // 築地の新鮮な海鮮
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&q=80', // 築地の新鮮な海鮮
       'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=400&h=250&fit=crop&q=80', // 市場の活気
       'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&h=250&fit=crop&q=80'  // 食べ歩きグルメ
     ],

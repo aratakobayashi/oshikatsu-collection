@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkSwitch収益化動作確認テスト</title>
+    
+    <!-- バリューコマース LinkSwitch -->
+    <script type="text/javascript" language="javascript">
+        var vc_pid = "891908080";
+    </script>
+    <script type="text/javascript" src="//aml.valuecommerce.com/vcdal.js" async></script>
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .restaurant {
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            background: #f9f9ff;
+        }
+        .restaurant h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        .tabelog-link {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 0;
+            transition: background 0.3s;
+        }
+        .tabelog-link:hover {
+            background: #ff5252;
+        }
+        .info-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .success-badge {
+            background: #28a745;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        .closed-badge {
+            background: #6c757d;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎯 LinkSwitch収益化動作確認テスト</h1>
+        <p>バリューコマースPID: <strong>891908080</strong></p>
+        <p>このページで食べログリンクをクリックすると、自動的にアフィリエイトリンクに変換されます</p>
+    </div>
+    
+    <div class="info-box">
+        <h3>💰 確認方法</h3>
+        <ol>
+            <li>下記の食べログリンクをクリック</li>
+            <li>URLが自動的にアフィリエイトパラメータ付きに変換される</li>
+            <li>バリューコマース管理画面でクリック数が計測される</li>
+        </ol>
+    </div>
+    
+    <div class="test-section">
+        <h2>📺 孤独のグルメ Season7 ロケ地一覧（収益化テスト）</h2>
+        
+        <div class="restaurant">
+            <h3>第1話: キセキ食堂 上尾店 <span class="success-badge">営業中</span></h3>
+            <p>埼玉県上尾市本町の肩ロースカツ定食</p>
+            <a href="https://tabelog.com/saitama/A1104/A110401/11043868/" target="_blank" class="tabelog-link">
+                食べログで詳細を見る →
+            </a>
+        </div>
+        
+        <div class="restaurant">
+            <h3>第5話: 眞実一路 <span class="success-badge">営業中（お茶の水移転）</span></h3>
+            <p>荒川区三河島の緑と赤の麻婆豆腐</p>
+            <a href="https://tabelog.com/tokyo/A1310/A131002/13311831/" target="_blank" class="tabelog-link">
+                食べログで詳細を見る →
+            </a>
+        </div>
+        
+        <div class="restaurant">
+            <h3>第6話: 羅甸（ラテン） <span class="closed-badge">2025年3月閉店</span></h3>
+            <p>千葉県浦安市の真っ黒な銀ダラの煮付定食</p>
+            <a href="https://tabelog.com/chiba/A1202/A120203/12024675/" target="_blank" class="tabelog-link">
+                食べログで詳細を見る →
+            </a>
+        </div>
+        
+        <div class="restaurant">
+            <h3>第7話: カトリカ <span class="success-badge">営業中</span></h3>
+            <p>東京都墨田区東向島の納豆のピザと辛いパスタ</p>
+            <a href="https://tabelog.com/tokyo/A1312/A131203/13040601/" target="_blank" class="tabelog-link">
+                食べログで詳細を見る →
+            </a>
+        </div>
+        
+        <div class="restaurant">
+            <h3>第8話: 炭火やきとり 泪橋 <span class="success-badge">営業中</span></h3>
+            <p>中野区百軒横丁のチキン南蛮と地鶏モモ串</p>
+            <a href="https://tabelog.com/tokyo/A1319/A131902/13049477/" target="_blank" class="tabelog-link">
+                食べログで詳細を見る →
+            </a>
+        </div>
+        
+        <div class="restaurant">
+            <h3>第11話: 味のレストラン えびすや <span class="success-badge">営業中</span></h3>
+            <p>千葉県千葉市の特製ニンニクスープと生鮭のバター焼き</p>
+            <a href="https://tabelog.com/chiba/A1201/A120103/12000797/" target="_blank" class="tabelog-link">
+                食べログで詳細を見る →
+            </a>
+        </div>
+        
+        <div class="restaurant">
+            <h3>第12話: 中華シブヤ <span class="closed-badge">2018年9月閉店</span></h3>
+            <p>東京都中央区八丁堀のニラ玉ライスとエビチリ</p>
+            <a href="https://tabelog.com/tokyo/A1302/A130202/13025477/" target="_blank" class="tabelog-link">
+                食べログで詳細を見る →
+            </a>
+        </div>
+    </div>
+    
+    <div class="info-box">
+        <h3>✅ LinkSwitch動作確認チェックリスト</h3>
+        <ul>
+            <li>□ 食べログリンクにマウスオーバーすると、通常のURLが表示される</li>
+            <li>□ クリック時に自動的にアフィリエイトURLに変換される</li>
+            <li>□ バリューコマース管理画面でクリックが計測される</li>
+            <li>□ PID: 891908080 として記録される</li>
+        </ul>
+    </div>
+    
+    <div class="test-section">
+        <h2>🔍 技術的な動作確認</h2>
+        <p>ブラウザの開発者ツール（F12）でNetworkタブを開いて確認:</p>
+        <ol>
+            <li>vcdal.jsが読み込まれている</li>
+            <li>vc_pid = "891908080"が設定されている</li>
+            <li>食べログリンククリック時にValueCommerceのトラッキングが動作</li>
+        </ol>
+    </div>
+    
+    <script>
+        // LinkSwitch読み込み確認
+        window.addEventListener('load', function() {
+            console.log('🎯 LinkSwitch確認:');
+            console.log('vc_pid:', typeof vc_pid !== 'undefined' ? vc_pid : '未設定');
+            
+            if (typeof vc_pid !== 'undefined' && vc_pid === "891908080") {
+                console.log('✅ LinkSwitch正常動作中（PID: 891908080）');
+            } else {
+                console.log('❌ LinkSwitch設定エラー');
+            }
+        });
+    </script>
+</body>
+</html>
