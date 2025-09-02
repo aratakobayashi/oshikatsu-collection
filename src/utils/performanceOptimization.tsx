@@ -245,15 +245,17 @@ export const useDebouncedSearch = (searchTerm: string, delay: number = 300) => {
 
 // 10. パフォーマンス最適化の初期化
 export const initializePerformanceOptimizations = () => {
-  // Critical resources のプリロード
-  preloadCriticalResources()
+  // Critical resources のプリロード（存在するリソースのみ）
+  // preloadCriticalResources() // 一時的に無効化
   
   // Web Vitals の監視開始
   measureWebVitals()
   
   // Service Worker の登録（PWA対応）
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch(console.error)
+    navigator.serviceWorker.register('/sw.js')
+      .then(registration => console.log('SW registered:', registration))
+      .catch(console.error)
   }
   
   // パフォーマンスヒント
