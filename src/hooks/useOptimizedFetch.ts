@@ -214,8 +214,8 @@ export const useCriticalHomeData = () => {
     'home-critical-celebrities', 
     () => supabase
       .from('celebrities')
-      .select('id, name, slug, description, profile_image_url, tags')
-      .eq('is_featured', true)
+      .select('id, name, slug, bio, image_url, group_name')
+      .eq('status', 'active')
       .order('view_count', { ascending: false })
       .limit(3)
       .then(({ data }) => data || []),
@@ -257,7 +257,7 @@ export const useCriticalHomeData = () => {
     isLoading: popularCelebrities.loading || siteStats.loading,
     hasError: !!popularCelebrities.error || !!siteStats.error
   };
-};
+};;
 
 // 🎯 Progressive Enhancement Data for Home
 export const useProgressiveHomeData = () => {
@@ -303,7 +303,7 @@ export const useCelebritiesList = (limit = 12, offset = 0) => {
     `celebrities-list-${limit}-${offset}`,
     () => supabase
       .from('celebrities')
-      .select('id, name, slug, description, profile_image_url, tags, view_count')
+      .select('id, name, slug, bio, image_url, view_count, group_name, type', { count: 'exact' })
       .order('view_count', { ascending: false })
       .range(offset, offset + limit - 1)
       .then(({ data, count }) => ({ 
@@ -317,7 +317,7 @@ export const useCelebritiesList = (limit = 12, offset = 0) => {
       dependencies: [limit, offset]
     }
   );
-};
+};;
 
 // 🔍 Search-optimized query
 export const useSearchCelebrities = (query: string, limit = 6) => {

@@ -12,10 +12,11 @@ interface Celebrity {
   id: string
   name: string
   slug: string
-  description?: string
-  profile_image_url?: string
-  tags?: string[]
+  bio?: string
+  image_url?: string
   view_count: number
+  group_name?: string
+  type: string
 }
 
 interface CelebCardProps {
@@ -44,7 +45,7 @@ const CelebCard = React.memo(({ celebrity, index, isVisible }: CelebCardProps) =
     >
       {/* Image section with lazy loading */}
       <div className="relative h-48 overflow-hidden">
-        {celebrity.profile_image_url && !imageError ? (
+        {celebrity.image_url && !imageError ? (
           <>
             {!imageLoaded && (
               <div className="w-full h-full bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center">
@@ -52,7 +53,7 @@ const CelebCard = React.memo(({ celebrity, index, isVisible }: CelebCardProps) =
               </div>
             )}
             <img
-              src={celebrity.profile_image_url}
+              src={celebrity.image_url}
               alt={celebrity.name}
               className={`w-full h-full object-cover transition-opacity duration-500 ${
                 imageLoaded ? 'opacity-100' : 'opacity-0 absolute'
@@ -85,25 +86,22 @@ const CelebCard = React.memo(({ celebrity, index, isVisible }: CelebCardProps) =
           <Heart className="h-5 w-5 text-rose-400 ml-2 flex-shrink-0" />
         </div>
         
-        {celebrity.description && (
+        {celebrity.bio && (
           <p className="text-gray-600 text-sm line-clamp-3 mb-4 leading-relaxed">
-            {celebrity.description}
+            {celebrity.bio}
           </p>
         )}
         
-        {celebrity.tags && celebrity.tags.length > 0 && (
+        {(celebrity.group_name || celebrity.type) && (
           <div className="flex flex-wrap gap-2 mb-2">
-            {celebrity.tags.slice(0, 3).map((tag, idx) => (
-              <span 
-                key={idx} 
-                className="px-3 py-1 bg-purple-100 text-purple-600 text-xs rounded-full font-medium"
-              >
-                {tag}
+            {celebrity.group_name && (
+              <span className="px-3 py-1 bg-purple-100 text-purple-600 text-xs rounded-full font-medium">
+                {celebrity.group_name}
               </span>
-            ))}
-            {celebrity.tags.length > 3 && (
-              <span className="px-3 py-1 bg-gray-100 text-gray-500 text-xs rounded-full">
-                +{celebrity.tags.length - 3}
+            )}
+            {celebrity.type && (
+              <span className="px-3 py-1 bg-blue-100 text-blue-600 text-xs rounded-full font-medium">
+                {celebrity.type === 'individual' ? '個人' : celebrity.type}
               </span>
             )}
           </div>

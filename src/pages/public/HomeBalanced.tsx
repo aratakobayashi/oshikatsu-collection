@@ -15,7 +15,7 @@ interface CelebCardProps {
     name: string
     slug: string
     description?: string
-    profile_image_url?: string
+    image_url?: string
     tags?: string[]
   }
   priority?: 'high' | 'low'
@@ -130,7 +130,7 @@ const CelebCard = ({ celeb, priority = 'low' }: CelebCardProps) => {
       onClick={() => navigate(`/celebrities/${celeb.slug}`)}
     >
       <div className="relative w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden">
-        {celeb.profile_image_url ? (
+        {celeb.image_url ? (
           <>
             {!imageLoaded && (
               <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
@@ -138,7 +138,7 @@ const CelebCard = ({ celeb, priority = 'low' }: CelebCardProps) => {
               </div>
             )}
             <img
-              src={celeb.profile_image_url}
+              src={celeb.image_url}
               alt={celeb.name}
               className={`w-full h-full object-cover transition-opacity duration-300 ${
                 imageLoaded ? 'opacity-100' : 'opacity-0 absolute'
