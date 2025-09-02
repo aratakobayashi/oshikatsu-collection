@@ -92,16 +92,36 @@ export const MetaTags: React.FC<MetaTagsProps> = ({
 
 // SEO utility functions for generating meta content
 export const generateSEO = {
-  celebrity: (name: string, worksCount: number = 0, locationsCount: number = 0) => ({
-    title: `${name}の出演作品・ロケ地情報 | 推し活コレクション`,
-    description: `${name}が出演した作品${worksCount}件とロケ地情報。聖地巡礼スポット${locationsCount}件を写真付きで紹介。ファン必見の推し活情報をまとめています。`,
-    keywords: `${name}, 推し活, 聖地巡礼, ロケ地, 出演作品, ファン, アイドル`
+  celebrity: (
+    name: string, 
+    worksCount: number = 0, 
+    locationsCount: number = 0,
+    options: {
+      items?: number
+      recentVisits?: string[]
+      popularTags?: string[]
+    } = {}
+  ) => ({
+    title: `${name}のロケ地・聖地巡礼ガイド${locationsCount > 0 ? `（${locationsCount}箇所）` : ''} | 推し活コレクション`,
+    description: generateEnhancedCelebrityDescription(name, { worksCount, locationsCount, ...options }),
+    keywords: `${name}, 推し活, 聖地巡礼, ロケ地, ${name} 行きつけの店, ${name} 私服, ${name} グルメ, ${name} 関連, ファン, ${name} 聖地巡礼, ${name} ロケ地巡り`
   }),
 
-  location: (name: string, address: string = '', celebrityName: string = '') => ({
+  location: (
+    name: string, 
+    address: string = '', 
+    celebrityName: string = '',
+    options: {
+      visitType?: string
+      category?: string
+      area?: string
+      features?: string[]
+      priceRange?: string
+    } = {}
+  ) => ({
     title: `${name} - ロケ地・聖地巡礼情報 | 推し活コレクション`,
-    description: `${name}${address ? `（${address}）` : ''}の詳細情報。${celebrityName ? `${celebrityName}の` : ''}聖地巡礼スポットとして人気。アクセス方法や営業時間、周辺情報を掲載。`,
-    keywords: `${name}, ${celebrityName}, ロケ地, 聖地巡礼, ${address}, 推し活, 撮影場所`
+    description: generateEnhancedLocationDescription(name, { celebrity: celebrityName, ...options }),
+    keywords: `${name}, ${celebrityName}, ロケ地, 聖地巡礼, ${celebrityName} 行きつけ, ${address}, 推し活, 撮影場所`
   }),
 
   item: (name: string, brand: string = '', celebrityName: string = '') => ({
@@ -153,9 +173,116 @@ export const generateSEO = {
     keywords: 'アイテム, 私服特定, ファッション, ブランド, 推し活, 衣装'
   }),
 
+  episodes: (count: number = 0) => ({
+    title: `エピソード一覧（${count}話）| 推し活コレクション`,
+    description: `人気作品の全${count}話のエピソード情報を掲載。各話のロケ地・使用アイテム・聖地巡礼情報を網羅。推し活ファン必見のエピソードガイド。`,
+    keywords: 'エピソード, 作品, ロケ地, 聖地巡礼, 推し活, テレビ, 映画, アニメ'
+  }),
+
   posts: (count: number = 0) => ({
     title: `質問・投稿一覧（${count}件）| 推し活コレクション`,
     description: `推し活に関する質問・投稿${count}件を掲載。ファン同士で情報交換し、推し活をより楽しもう。疑問や発見をシェアしよう。`,
     keywords: '質問, 投稿, 推し活, 情報交換, ファン, コミュニティ'
+  })
+}
+
+// Enhanced content generation for high-volume keywords
+export const generateEnhancedCelebrityDescription = (
+  name: string,
+  stats: {
+    worksCount?: number
+    locationsCount?: number
+    items?: number
+    recentVisits?: string[]
+    popularTags?: string[]
+  } = {}
+): string => {
+  const { worksCount = 0, locationsCount = 0, items = 0, recentVisits = [], popularTags = [] } = stats
+  
+  // High-volume keyword templates for strategic SEO
+  const templates = [
+    `${name}が出演した番組・映画のロケ地巡り完全ガイド。`,
+    `推し活ファン必見！${name}の聖地巡礼スポット${locationsCount}箇所を詳しく紹介。`,
+    `${name}の行きつけグルメスポット情報まとめ。実際に訪問したファンの口コミも掲載。`,
+    `【${name} 私服特定】着用アイテム${items}件をブランド・価格付きで解説。`
+  ]
+
+  let description = templates.join(' ')
+  
+  // Add recent visits if available
+  if (recentVisits.length > 0) {
+    description += ` 最近の訪問店舗：${recentVisits.slice(0, 2).join('、')}など。`
+  }
+  
+  // Add trending tags for longtail keyword coverage
+  if (popularTags.length > 0) {
+    description += ` ${popularTags.slice(0, 3).join('・')}で話題のスポット情報も充実。`
+  }
+  
+  return description
+}
+
+export const generateEnhancedLocationDescription = (
+  name: string,
+  options: {
+    celebrity?: string
+    visitType?: string
+    category?: string
+    area?: string
+    features?: string[]
+    priceRange?: string
+  } = {}
+): string => {
+  const { celebrity, visitType = 'ロケ地', category = 'グルメスポット', area, features = [], priceRange } = options
+  
+  const templates = [
+    `${name}は${celebrity ? `${celebrity}の` : ''}${visitType}として人気の${category}。`,
+    `推し活ファンが実際に訪れた体験談・写真・アクセス情報をまとめました。`,
+    `営業時間・予約方法・周辺の推し活スポットも併せて紹介。`
+  ]
+  
+  if (area) {
+    templates.splice(1, 0, `${area}エリアで話題の聖地巡礼スポット。`)
+  }
+  
+  if (features.length > 0) {
+    templates.push(`${features.slice(0, 2).join('・')}が特徴の名店です。`)
+  }
+  
+  if (priceRange) {
+    templates.push(`予算${priceRange}で楽しめる推し活デートにもおすすめ。`)
+  }
+  
+  return templates.join(' ')
+}
+
+// Keyword-optimized content generators for specific high-volume search terms
+export const generateKeywordOptimizedContent = {
+  // For targeting "[タレント名] ロケ地" keywords (25k+ searches)
+  celebrityLocation: (celebrity: string, location: string, program?: string) => ({
+    title: `${celebrity}のロケ地「${location}」詳細情報 | 推し活聖地巡礼`,
+    description: `${celebrity}が${program ? `${program}で` : ''}訪れた${location}の詳細情報。アクセス方法、営業時間、推し活ファンの体験談を写真付きで紹介。聖地巡礼の参考に。`,
+    keywords: `${celebrity} ロケ地, ${celebrity} ${location}, ${celebrity} 聖地巡礼, 推し活 ${location}${program ? `, ${program} ロケ地` : ''}`
+  }),
+  
+  // For targeting "[タレント名] 行きつけ" keywords (5k+ searches)  
+  celebrityFavorite: (celebrity: string, location: string, visitCount?: number) => ({
+    title: `${celebrity}の行きつけ「${location}」情報 | 推し活グルメガイド`,
+    description: `${celebrity}がよく通う${location}の詳細レポート。${visitCount ? `${visitCount}回以上の訪問実績。` : ''}メニュー、価格、予約方法まで推し活ファン向けに徹底解説。`,
+    keywords: `${celebrity} 行きつけ, ${celebrity} グルメ, ${celebrity} ${location}, 推し活 グルメ, ${celebrity} おすすめ店`
+  }),
+  
+  // For targeting "推し活 聖地巡礼" longtail keywords (30k+ searches)
+  pilgrimageGuide: (area: string, celebrities: string[], locationCount: number) => ({
+    title: `${area}エリア推し活聖地巡礼ガイド | ${locationCount}スポット完全攻略`,
+    description: `${area}の推し活聖地巡礼スポット${locationCount}箇所を完全ガイド。${celebrities.slice(0, 3).join('・')}ゆかりの地を効率よく回るルートやアクセス方法を詳しく解説。`,
+    keywords: `${area} 聖地巡礼, 推し活 ${area}, ${celebrities.slice(0, 2).join(' ')}, 聖地巡礼 ルート`
+  }),
+  
+  // For targeting "[タレント名] 私服" keywords (12k+ searches)
+  celebrityFashion: (celebrity: string, itemCount: number, brands: string[] = []) => ({
+    title: `【${celebrity} 私服特定】着用アイテム${itemCount}件 | ブランド・価格まとめ`,
+    description: `${celebrity}の私服コーディネート完全特定。着用アイテム${itemCount}件を${brands.length > 0 ? `${brands.slice(0, 2).join('・')}など` : ''}ブランド・価格・購入リンク付きで詳しく解説。`,
+    keywords: `${celebrity} 私服, ${celebrity} ファッション, ${celebrity} 着用アイテム, ${celebrity} ブランド, 私服特定${brands.length > 0 ? `, ${brands.slice(0, 2).join(' ')}` : ''}`
   })
 }

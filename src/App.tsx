@@ -23,6 +23,7 @@ import AuthDebug from './pages/debug/AuthDebug' // デバッグ用
 // Public Pages
 import Home from './pages/public/Home'
 import Celebrities from './pages/public/Celebrities'
+import Episodes from './pages/public/Episodes'
 import Items from './pages/public/Items'
 import Locations from './pages/public/Locations'
 import Posts from './pages/public/Posts'
@@ -123,6 +124,7 @@ function App() {
         {/* Public Routes */}
         <Route path="/" element={<Layout><Home /></Layout>} />
         <Route path="/celebrities" element={<Layout><Celebrities /></Layout>} />
+        <Route path="/episodes" element={<Layout><Episodes /></Layout>} />
         <Route path="/items" element={<Layout><Items /></Layout>} />
         <Route path="/locations" element={<Layout><Locations /></Layout>} />
         <Route path="/posts" element={<Layout><Posts /></Layout>} />
