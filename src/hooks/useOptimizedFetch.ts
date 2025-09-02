@@ -25,13 +25,25 @@ export function useOptimizedFetch<T>(
     ttl?: number; // Cache time-to-live in milliseconds
     dependencies?: any[]; // Re-run dependencies
     enabled?: boolean; // Enable/disable the query
+    priority?: 'critical' | 'high' | 'normal' | 'low'; // 🚀 New: Priority levels
+    retryCount?: number; // 🚀 New: Retry attempts for critical data
   } = {}
 ) {
-  const { ttl = 30000, dependencies = [], enabled = true } = options;
+  const { 
+    ttl = 30000, 
+    dependencies = [], 
+    enabled = true,
+    priority = 'normal',
+    retryCount = priority === 'critical' ? 3 : 1
+  } = options;
+  
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
+
+  // 🎯 Critical data gets shorter TTL for freshness
+  const adjustedTTL = priority === 'critical' ? Math.min(ttl, 300000) : ttl; // Max 5min for critical
 
   const fetchData = useCallback(async () => {
     if (!enabled) return;
@@ -74,40 +86,69 @@ export function useOptimizedFetch<T>(
     // Create new abort controller
     abortControllerRef.current = new AbortController();
 
-    const requestPromise = queryFn();
-    pendingRequests.set(cacheKey, requestPromise);
+    // 🚀 Retry logic for critical data
+    let lastError: Error | null = null;
+    let attempt = 0;
 
-    try {
-      const result = await requestPromise;
-      
-      // Cache the result
-      requestCache.set(cacheKey, {
-        data: result,
-        timestamp: now,
-        ttl
-      });
+    while (attempt < retryCount) {
+      try {
+        const requestPromise = queryFn();
+        
+        if (attempt === 0) {
+          pendingRequests.set(cacheKey, requestPromise);
+        }
 
-      setData(result);
-      setLoading(false);
-    } catch (err) {
-      if (err instanceof Error && err.name !== 'AbortError') {
-        setError(err);
+        const result = await requestPromise;
+        
+        // Cache the result
+        requestCache.set(cacheKey, {
+          data: result,
+          timestamp: now,
+          ttl: adjustedTTL
+        });
+
+        setData(result);
+        setLoading(false);
+        pendingRequests.delete(cacheKey);
+        return;
+
+      } catch (err) {
+        lastError = err instanceof Error ? err : new Error('Unknown error');
+        attempt++;
+        
+        if (attempt < retryCount && priority === 'critical') {
+          // Exponential backoff for retries
+          await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 100));
+        }
       }
-      setLoading(false);
-    } finally {
-      pendingRequests.delete(cacheKey);
     }
-  }, [queryKey, enabled, ttl, ...dependencies]);
+
+    // All attempts failed
+    if (lastError && lastError.name !== 'AbortError') {
+      setError(lastError);
+    }
+    setLoading(false);
+    pendingRequests.delete(cacheKey);
+
+  }, [queryKey, enabled, adjustedTTL, priority, retryCount, ...dependencies]);
 
   useEffect(() => {
-    fetchData();
+    // 🚀 Priority-based delay
+    const delay = priority === 'critical' ? 0 : 
+                  priority === 'high' ? 50 :
+                  priority === 'normal' ? 100 : 200;
+
+    const timeoutId = setTimeout(() => {
+      fetchData();
+    }, delay);
 
     return () => {
+      clearTimeout(timeoutId);
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
       }
     };
-  }, [fetchData]);
+  }, [fetchData, priority]);
 
   return { data, loading, error, refetch: fetchData };
 }
@@ -165,6 +206,141 @@ export const optimizedQueries = {
       if (error) throw error;
       return data;
     }, { ttl: options.ttl || 300000 }), // 5 minutes cache
+};
+// 🚀 Critical-First Query Hooks for Phase 4
+export const useCriticalHomeData = () => {
+  // Critical: TOP3 most popular celebrities (immediate display)
+  const popularCelebrities = useOptimizedFetch(
+    'home-critical-celebrities', 
+    () => supabase
+      .from('celebrities')
+      .select('id, name, slug, description, profile_image_url, tags')
+      .eq('is_featured', true)
+      .order('view_count', { ascending: false })
+      .limit(3)
+      .then(({ data }) => data || []),
+    { 
+      ttl: 300000, // 5 minutes - short for freshness
+      priority: 'critical',
+      retryCount: 3
+    }
+  );
+
+  // High: Essential stats for counters
+  const siteStats = useOptimizedFetch(
+    'home-critical-stats',
+    async () => {
+      const [celebs, episodes, locations, items] = await Promise.all([
+        supabase.from('celebrities').select('id', { count: 'exact', head: true }),
+        supabase.from('episodes').select('id', { count: 'exact', head: true }),
+        supabase.from('locations').select('id', { count: 'exact', head: true }),
+        supabase.from('items').select('id', { count: 'exact', head: true })
+      ]);
+      
+      return {
+        celebrities: celebs.count || 0,
+        episodes: episodes.count || 0,
+        locations: locations.count || 0,
+        items: items.count || 0
+      };
+    },
+    {
+      ttl: 600000, // 10 minutes - stats change slowly
+      priority: 'high',
+      retryCount: 2
+    }
+  );
+
+  return {
+    popularCelebrities: popularCelebrities.data || [],
+    siteStats: siteStats.data || { celebrities: 25, episodes: 600, locations: 150, items: 300 },
+    isLoading: popularCelebrities.loading || siteStats.loading,
+    hasError: !!popularCelebrities.error || !!siteStats.error
+  };
+};
+
+// 🎯 Progressive Enhancement Data for Home
+export const useProgressiveHomeData = () => {
+  const recentEpisodes = useOptimizedFetch(
+    'home-progressive-episodes',
+    () => supabase
+      .from('episodes')
+      .select('id, title, description, thumbnail_url, celebrity:celebrities(name, slug)')
+      .order('created_at', { ascending: false })
+      .limit(4)
+      .then(({ data }) => data || []),
+    {
+      ttl: 120000, // 2 minutes - recent content changes frequently
+      priority: 'normal'
+    }
+  );
+
+  const featuredLocations = useOptimizedFetch(
+    'home-progressive-locations',
+    () => supabase
+      .from('locations')
+      .select('id, name, address, prefecture, images, category')
+      .eq('is_featured', true)
+      .order('view_count', { ascending: false })
+      .limit(3)
+      .then(({ data }) => data || []),
+    {
+      ttl: 300000, // 5 minutes
+      priority: 'normal'
+    }
+  );
+
+  return {
+    recentEpisodes: recentEpisodes.data || [],
+    featuredLocations: featuredLocations.data || [],
+    isLoading: recentEpisodes.loading || featuredLocations.loading
+  };
+};
+
+// 📱 Celebrities List Page with Virtualization Support
+export const useCelebritiesList = (limit = 12, offset = 0) => {
+  return useOptimizedFetch(
+    `celebrities-list-${limit}-${offset}`,
+    () => supabase
+      .from('celebrities')
+      .select('id, name, slug, description, profile_image_url, tags, view_count')
+      .order('view_count', { ascending: false })
+      .range(offset, offset + limit - 1)
+      .then(({ data, count }) => ({ 
+        data: data || [], 
+        total: count || 0,
+        hasMore: count ? (offset + limit) < count : false
+      })),
+    {
+      ttl: 300000, // 5 minutes
+      priority: offset === 0 ? 'high' : 'normal', // First page is high priority
+      dependencies: [limit, offset]
+    }
+  );
+};
+
+// 🔍 Search-optimized query
+export const useSearchCelebrities = (query: string, limit = 6) => {
+  return useOptimizedFetch(
+    `search-celebrities-${query}-${limit}`,
+    () => {
+      if (!query.trim()) return Promise.resolve([]);
+      
+      return supabase
+        .from('celebrities')
+        .select('id, name, slug, profile_image_url')
+        .or(`name.ilike.%${query}%, tags.cs.{${query}}`)
+        .order('view_count', { ascending: false })
+        .limit(limit)
+        .then(({ data }) => data || []);
+    },
+    {
+      ttl: 30000, // 30 seconds - search results should be fresh
+      priority: 'high', // Search is user-initiated, high priority
+      dependencies: [query, limit],
+      enabled: query.trim().length >= 2
+    }
+  );
 };
 
 // Batch fetch function for multiple queries
