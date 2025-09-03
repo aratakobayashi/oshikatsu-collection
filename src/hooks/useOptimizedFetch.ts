@@ -327,8 +327,9 @@ export const useSearchCelebrities = (query: string, limit = 6) => {
       
       return supabase
         .from('celebrities')
-        .select('id, name, slug, profile_image_url')
-        .or(`name.ilike.%${query}%, tags.cs.{${query}}`)
+        .select('id, name, slug, image_url')           // ✅ 正しいカラム名に修正
+        .ilike('name', `%${query}%`)                   // ✅ シンプルな名前検索（tagsカラム除去）
+        .eq('status', 'active')                        // ✅ アクティブな推しのみ検索
         .order('view_count', { ascending: false })
         .limit(limit)
         .then(({ data }) => data || []);
@@ -340,7 +341,7 @@ export const useSearchCelebrities = (query: string, limit = 6) => {
       enabled: query.trim().length >= 2
     }
   );
-};
+};;
 
 // Batch fetch function for multiple queries
 export function useBatchFetch<T>(
