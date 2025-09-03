@@ -23,7 +23,7 @@ const CriticalHero = ({ onSearch }: { onSearch: (query: string) => void }) => {
   }
 
   return (
-    <section className="relative bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 min-h-[70vh] flex items-center justify-center overflow-hidden">
+    <section className="relative bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 min-h-[80vh] flex items-center justify-center overflow-hidden pt-12 md:pt-16">
       {/* Optimized background - CSS only */}
       <div className="absolute inset-0">
         <div className="absolute -top-40 -right-32 w-80 h-80 bg-gradient-to-br from-rose-200/30 to-pink-200/30 rounded-full blur-3xl animate-pulse"></div>
