@@ -255,9 +255,8 @@ export const useProgressiveHomeData = () => {
     'home-progressive-locations',
     () => supabase
       .from('locations')
-      .select('id, name, address, prefecture, images, category')
-      .eq('is_featured', true)
-      .order('view_count', { ascending: false })
+      .select('id, name, address, image_url, website_url, tags')
+      .order('created_at', { ascending: false })
       .limit(3)
       .then(({ data }) => data || []),
     {
@@ -272,7 +271,7 @@ export const useProgressiveHomeData = () => {
     featuredLocations: featuredLocations.data || [],
     isLoading: recentEpisodes.loading || featuredLocations.loading
   };
-};;
+};
 
 // 📱 Celebrities List Page with Virtualization Support
 export const useCelebritiesList = (limit = 12, offset = 0) => {

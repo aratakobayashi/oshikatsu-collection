@@ -162,15 +162,12 @@ const ProgressiveContent = () => {
                         alt={episode.title}
                         className="w-full h-full object-cover"
                         loading="lazy"
-                        onError={(e) => {
-                          e.currentTarget.style.display = 'none'
-                          e.currentTarget.nextElementSibling.style.display = 'flex'
-                        }}
                       />
-                    ) : null}
-                    <div className="absolute inset-0 bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center">
-                      <Play className="h-12 w-12 text-rose-400" />
-                    </div>
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center">
+                        <Play className="h-12 w-12 text-rose-400" />
+                      </div>
+                    )}
                   </div>
                   <div className="p-4">
                     <h3 className="font-semibold text-gray-800 mb-2 line-clamp-2">{episode.title}</h3>
@@ -213,7 +210,7 @@ const ProgressiveContent = () => {
                   <h3 className="font-bold text-lg text-gray-800 mb-2">{location.name}</h3>
                   <p className="text-sm text-gray-600 mb-2">{location.address}</p>
                   <span className="inline-block px-3 py-1 bg-green-100 text-green-600 text-xs rounded-full">
-                    {location.category || '飲食店'}
+                    {location.tags?.[0] || '飲食店'}
                   </span>
                 </div>
               ))}
