@@ -204,8 +204,17 @@ const ProgressiveContent = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
               {featuredLocations.slice(0, 3).map((location) => (
                 <div key={location.id} className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                  <div className="w-full h-48 bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl mb-4 flex items-center justify-center">
-                    <MapPin className="h-12 w-12 text-green-400" />
+                  <div className="w-full h-48 bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl mb-4 flex items-center justify-center overflow-hidden relative">
+                    {(location.image_url || location.image_urls?.[0]) ? (
+                      <img
+                        src={location.image_url || location.image_urls?.[0]}
+                        alt={location.name}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <MapPin className="h-12 w-12 text-green-400" />
+                    )}
                   </div>
                   <h3 className="font-bold text-lg text-gray-800 mb-2">{location.name}</h3>
                   <p className="text-sm text-gray-600 mb-2">{location.address}</p>

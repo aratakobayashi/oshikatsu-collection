@@ -255,7 +255,8 @@ export const useProgressiveHomeData = () => {
     'home-progressive-locations',
     () => supabase
       .from('locations')
-      .select('id, name, address, image_url, website_url, tags')
+      .select('id, name, address, image_url, image_urls, website_url, tags')
+      .not('image_url', 'is', null)
       .order('created_at', { ascending: false })
       .limit(3)
       .then(({ data }) => data || []),
