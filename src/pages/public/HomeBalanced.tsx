@@ -155,8 +155,22 @@ const ProgressiveContent = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               {recentEpisodes.slice(0, 4).map((episode) => (
                 <div key={episode.id} className="bg-white/90 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                  <div className="aspect-video bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center">
-                    <Play className="h-12 w-12 text-rose-400" />
+                  <div className="relative aspect-video bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center overflow-hidden">
+                    {episode.thumbnail_url ? (
+                      <img
+                        src={episode.thumbnail_url}
+                        alt={episode.title}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none'
+                          e.currentTarget.nextElementSibling.style.display = 'flex'
+                        }}
+                      />
+                    ) : null}
+                    <div className="absolute inset-0 bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center">
+                      <Play className="h-12 w-12 text-rose-400" />
+                    </div>
                   </div>
                   <div className="p-4">
                     <h3 className="font-semibold text-gray-800 mb-2 line-clamp-2">{episode.title}</h3>
