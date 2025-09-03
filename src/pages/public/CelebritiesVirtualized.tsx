@@ -204,13 +204,17 @@ export default function CelebritiesVirtualized() {
     debouncedSetSearchQuery(searchQuery)
   }, [searchQuery, debouncedSetSearchQuery])
 
-  // Load more data
+  // Load more data with duplication prevention
   useEffect(() => {
     if (listData?.data && !searchQuery) {
       if (offset === 0) {
         setAllCelebrities(listData.data)
       } else {
-        setAllCelebrities(prev => [...prev, ...listData.data])
+        setAllCelebrities(prev => {
+          const existingIds = new Set(prev.map(c => c.id))
+          const newItems = listData.data.filter(c => !existingIds.has(c.id))
+          return [...prev, ...newItems]
+        })
       }
       setHasMore(listData.hasMore)
     }
