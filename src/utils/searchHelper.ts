@@ -7,10 +7,16 @@ export type SearchType = 'celebrity' | 'location' | 'item' | 'unknown'
 
 // キーワード辞書
 const CELEBRITY_KEYWORDS = [
+  // 既存のキーワード
   'よにの', 'ちゃんねる', '二宮', '和也', '中丸', '雄一', 
   '山田', '涼介', '菊池', '風磨', '森本', '慎太郎',
   'ジャニーズ', 'KAT-TUN', 'SixTONES', 'Snow Man', '嵐',
-  'アイドル', '推し', 'タレント', '俳優', '歌手'
+  'アイドル', '推し', 'タレント', '俳優', '歌手',
+  
+  // 実際のセレブリティ名から抽出（よく検索される名前）
+  '亀梨', '松重', '伊藤', 'かりん', '吉澤', '髙地', '京本', 
+  '川島', '七五三掛', '中村', '田中', '松村', 'ジェシー',
+  '宮近', 'Travis', 'Japan', 'ジュニア'
 ]
 
 const LOCATION_KEYWORDS = [
@@ -86,8 +92,8 @@ export function getSearchPath(query: string): string {
     case 'item':
       return `/items?search=${encodedQuery}`
     default:
-      // 不明な場合は全体検索ページへ（将来実装）
-      return `/search?q=${encodedQuery}`
+      // 不明な場合はセレブリティページで検索（緊急対応）
+      return `/celebrities?search=${encodedQuery}`
   }
 }
 
