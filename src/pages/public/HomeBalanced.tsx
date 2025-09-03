@@ -263,6 +263,53 @@ export default function HomeBalanced() {
   const homeSEO = generateSEO.home()
   const websiteStructuredData = generateStructuredData.website()
 
+  // 🚀 Enhanced structured data for better indexing
+  const enhancedStructuredData = [
+    websiteStructuredData,
+    // Organization schema for better brand recognition
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://collection.oshikatsu-guide.com/#organization",
+      name: "推し活コレクション",
+      url: "https://collection.oshikatsu-guide.com",
+      logo: "https://collection.oshikatsu-guide.com/logo.png",
+      description: "推し活の聖地巡礼・私服特定をもっとリッチに。ファン同士で情報を共有し、お気に入りのアイテムやスポットを発見するプラットフォーム。",
+      sameAs: [],
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "customer service",
+        availableLanguage: "Japanese"
+      }
+    },
+    // HomePage schema for explicit page identification
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "@id": "https://collection.oshikatsu-guide.com/#webpage",
+      url: "https://collection.oshikatsu-guide.com",
+      name: "推し活コレクション | みんなで作る推し活辞典",
+      description: "推し活の聖地巡礼・私服特定をもっとリッチに。2600+エピソード、250+ロケ地、100+アイテムの情報を掲載",
+      datePublished: "2024-01-01",
+      dateModified: new Date().toISOString().split('T')[0],
+      breadcrumb: {
+        "@type": "BreadcrumbList",
+        itemListElement: [{
+          "@type": "ListItem",
+          position: 1,
+          name: "ホーム",
+          item: "https://collection.oshikatsu-guide.com"
+        }]
+      },
+      mainEntity: {
+        "@type": "ItemList",
+        name: "推し活コンテンツ",
+        description: "推し活に関するエピソード、ロケ地、アイテム情報の総合リスト",
+        numberOfItems: "2950+"
+      }
+    }
+  ]
+
   return (
     <div className="bg-white">
       <MetaTags 
@@ -273,7 +320,7 @@ export default function HomeBalanced() {
         ogUrl="https://collection.oshikatsu-guide.com/"
       />
       
-      <StructuredData data={websiteStructuredData} />
+      <StructuredData data={enhancedStructuredData} />
       
       {/* 🚀 Critical path: Real data + instant rendering */}
       <CriticalHero onSearch={handleSearch} />
