@@ -31,12 +31,8 @@ const CRITICAL_RESOURCES: ResourceHint[] = [
     href: 'https://www.google-analytics.com'
   },
   
-  // Preload critical CSS (if using external fonts)
-  {
-    rel: 'preload',
-    href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
-    as: 'style'
-  }
+  // Note: Using system fonts (system-ui, -apple-system) instead of external fonts
+  // for better performance and reduced network requests
 ]
 
 /**
