@@ -4,7 +4,7 @@ import IdolSearchComponentV2 from '../../components/IdolSearchComponentV2'
 import { db } from '../../lib/supabase'
 
 export default function Celebrities() {
-  const [celebrityCount, setCelebrityCount] = useState(0)
+  const [celebrityCount, setCelebrityCount] = useState(28)
 
   useEffect(() => {
     const fetchCount = async () => {

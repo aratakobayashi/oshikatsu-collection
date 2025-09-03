@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Search, Users, Filter, Star, Heart, TrendingUp } from 'lucide-react'
-import { useCelebritiesList, useSearchCelebrities } from '../../hooks/useOptimizedFetch'
+import { useCelebritiesList, useSearchCelebrities, useTotalCelebritiesCount } from '../../hooks/useOptimizedFetch'
 import { MetaTags, generateSEO } from '../../components/SEO/MetaTags'
 import { debounce } from 'lodash'
 
@@ -186,6 +186,7 @@ export default function CelebritiesVirtualized() {
   // Data fetching
   const { data: listData, loading } = useCelebritiesList(ITEMS_PER_PAGE, offset)
   const { data: searchResults } = useSearchCelebrities(searchQuery, 20)
+  const { data: totalCount } = useTotalCelebritiesCount()
 
   // Debounced search query update
   const debouncedSetSearchQuery = useCallback(
@@ -292,7 +293,7 @@ export default function CelebritiesVirtualized() {
     )
   }
 
-  const seoData = generateSEO.celebrities()
+  const seoData = generateSEO.celebrities(totalCount || 28)
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -316,7 +317,7 @@ export default function CelebritiesVirtualized() {
             {searchQuery ? (
               <span>「{searchQuery}」の検索結果: {searchResults?.length || 0}件</span>
             ) : (
-              <span>全{allCelebrities.length}人の推し</span>
+              <span>全{totalCount || 28}人の推し</span>
             )}
           </div>
           

@@ -303,8 +303,10 @@ export const useCelebritiesList = (limit = 12, offset = 0) => {
     `celebrities-list-${limit}-${offset}`,
     () => supabase
       .from('celebrities')
-      .select('id, name, slug, bio, image_url, view_count, group_name, type', { count: 'exact' })
-      .order('view_count', { ascending: false })
+      .select('id, name, slug, bio, image_url, view_count, group_name, type, created_at', { count: 'exact' })
+      .eq('status', 'active')
+      // 🎯 created_at順（新しい順）のみでソート
+      .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1)
       .then(({ data, count }) => ({ 
         data: data || [], 
@@ -317,7 +319,27 @@ export const useCelebritiesList = (limit = 12, offset = 0) => {
       dependencies: [limit, offset]
     }
   );
-};;
+}
+// 総推し数取得用フック
+export const useTotalCelebritiesCount = () => {
+  return useOptimizedFetch(
+    'total-celebrities-count',
+    async () => {
+      const { count, error } = await supabase
+        .from('celebrities')
+        .select('id', { count: 'exact', head: true })
+        .eq('status', 'active')
+      
+      if (error) throw error
+      return count || 0
+    },
+    {
+      priority: 'high',
+      cacheTime: 10 * 60 * 1000, // 10分キャッシュ（頻繁に変わらない）
+      refetchOnMount: false
+    }
+  )
+}
 
 // 🔍 Search-optimized query
 export const useSearchCelebrities = (query: string, limit = 6) => {
