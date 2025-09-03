@@ -116,9 +116,17 @@ async function cacheFirst(request, cacheName = CACHE_NAME) {
 
   try {
     const networkResponse = await fetch(request);
-    if (networkResponse.ok) {
-      const cache = await caches.open(cacheName);
-      cache.put(request, networkResponse.clone());
+    
+    // ✅ キャッシュ可能な条件をチェック
+    if (networkResponse.ok && 
+        networkResponse.status === 200 && // 完全なレスポンスのみ
+        request.method === 'GET') {       // GET リクエストのみ
+      try {
+        const cache = await caches.open(cacheName);
+        await cache.put(request, networkResponse.clone());
+      } catch (error) {
+        console.log('[SW] Cache first put failed (non-critical):', error.message);
+      }
     }
     return networkResponse;
   } catch (error) {
@@ -132,12 +140,21 @@ async function staleWhileRevalidate(request, cacheName = CACHE_NAME) {
   
   const networkResponsePromise = fetch(request)
     .then((networkResponse) => {
-      if (networkResponse.ok) {
-        // Clone before using the response to avoid "body already used" error
-        const responseToCache = networkResponse.clone();
-        caches.open(cacheName).then(cache => 
-          cache.put(request, responseToCache)
-        );
+      // ✅ キャッシュ可能な条件をチェック
+      if (networkResponse.ok && 
+          networkResponse.status === 200 && // 完全なレスポンスのみ
+          request.method === 'GET') {       // GET リクエストのみ
+        try {
+          // Clone before using the response to avoid "body already used" error
+          const responseToCache = networkResponse.clone();
+          caches.open(cacheName).then(cache => 
+            cache.put(request, responseToCache)
+          ).catch(error => {
+            console.log('[SW] Cache put failed (non-critical):', error.message);
+          });
+        } catch (error) {
+          console.log('[SW] Response clone failed (non-critical):', error.message);
+        }
       }
       return networkResponse;
     })

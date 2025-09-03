@@ -38,12 +38,24 @@ const CelebCard = React.memo(({ celebrity, index, isVisible }: CelebCardProps) =
     )
   }
 
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const target = e.target as HTMLImageElement
+    console.log(`[CelebCard] Image failed: ${target.src}`)
+    
+    // フォールバック画像に置換
+    if (!target.src.includes('/placeholder-celebrity.jpg')) {
+      target.src = '/placeholder-celebrity.jpg'
+      setImageError(true)
+      setImageLoaded(true)
+    }
+  }
+
   return (
     <div 
       className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] cursor-pointer overflow-hidden"
       onClick={() => navigate(`/celebrities/${celebrity.slug}`)}
     >
-      {/* Image section with lazy loading */}
+      {/* Image section with improved error handling */}
       <div className="relative h-48 overflow-hidden">
         {celebrity.image_url && !imageError ? (
           <>
@@ -60,10 +72,7 @@ const CelebCard = React.memo(({ celebrity, index, isVisible }: CelebCardProps) =
               }`}
               loading="lazy"
               onLoad={() => setImageLoaded(true)}
-              onError={() => {
-                setImageError(true)
-                setImageLoaded(true)
-              }}
+              onError={handleImageError}
             />
           </>
         ) : (
