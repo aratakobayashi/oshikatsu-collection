@@ -1,6 +1,6 @@
 import React, { useEffect, useState, Suspense } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Users, Play, MapPin, Heart, Search, TrendingUp } from 'lucide-react'
+import { Users, Play, MapPin, Search, TrendingUp } from 'lucide-react'
 import { MetaTags, generateSEO } from '../../components/SEO/MetaTags'
 import { StructuredData, generateStructuredData } from '../../components/SEO/StructuredData'
 import { getSearchPath } from '../../utils/searchHelper'
@@ -33,9 +33,8 @@ const CriticalHero = ({ onSearch }: { onSearch: (query: string) => void }) => {
       <div className="relative max-w-4xl mx-auto px-6 text-center z-10">
         {/* Instant heading */}
         <div className="mb-8">
-          <div className="flex items-center justify-center mb-6">
-            <Heart className="h-10 w-10 text-rose-500 mr-4 animate-pulse" fill="currentColor" />
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight">
+          <div className="mb-6">
+            <h1 className="text-5xl md:text-7xl font-bold leading-tight text-center">
               <span className="bg-gradient-to-r from-rose-600 via-pink-600 to-purple-600 bg-clip-text text-transparent">
                 推し活
               </span>
