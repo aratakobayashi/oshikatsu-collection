@@ -209,7 +209,7 @@ export const optimizedQueries = {
 };
 // 🚀 Critical-First Query Hooks for Phase 4
 export const useCriticalHomeData = () => {
-  // Critical: Only load popular celebrities immediately
+  // Critical: Only popular celebrities for showcase
   const popularCelebrities = useOptimizedFetch(
     'home-critical-celebrities', 
     () => supabase
@@ -226,22 +226,12 @@ export const useCriticalHomeData = () => {
     }
   );
 
-  // High: Use hardcoded stats to avoid 4 parallel DB calls
-  // Update these values periodically via admin panel
-  const siteStats = {
-    celebrities: 28, // Fixed count from recent data
-    episodes: 650,   // Approximate count
-    locations: 180,  // Approximate count  
-    items: 320       // Approximate count
-  };
-
   return {
     popularCelebrities: popularCelebrities.data || [],
-    siteStats,
     isLoading: popularCelebrities.loading,
     hasError: !!popularCelebrities.error
   };
-};;;
+};
 
 // 🎯 Progressive Enhancement Data for Home
 export const useProgressiveHomeData = () => {
