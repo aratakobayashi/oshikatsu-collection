@@ -297,6 +297,25 @@ export const useCelebritiesList = (limit = 12, offset = 0) => {
     }
   );
 }
+// 🌟 All Celebrities (Simplified) - No pagination needed for small dataset
+export const useAllCelebrities = () => {
+  return useOptimizedFetch(
+    'all-celebrities',
+    () => supabase
+      .from('celebrities')
+      .select('id, name, slug, bio, image_url, view_count, group_name, type, created_at')
+      .eq('status', 'active')
+      .order('created_at', { ascending: false })
+      .then(({ data, error }) => {
+        if (error) throw error;
+        return data || [];
+      }),
+    {
+      ttl: 300000, // 5 minutes
+      priority: 'high', // Always high priority for simplicity
+    }
+  );
+};
 // 総推し数取得用フック
 export const useTotalCelebritiesCount = () => {
   return useOptimizedFetch(

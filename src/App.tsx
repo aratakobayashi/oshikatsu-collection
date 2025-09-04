@@ -22,7 +22,7 @@ import AuthDebug from './pages/debug/AuthDebug' // デバッグ用
 
 // Public Pages  
 import Home from './pages/public/HomeBalanced'
-import Celebrities from './pages/public/CelebritiesVirtualized'
+import Celebrities from './pages/public/CelebritiesSimple'
 import Episodes from './pages/public/Episodes'
 import Items from './pages/public/Items'
 import Locations from './pages/public/Locations'
