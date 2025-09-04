@@ -65,8 +65,13 @@ export default function EpisodeDetail() {
   const [error, setError] = useState<string | null>(null)
   
   useEffect(() => {
+    console.log('🔍 EpisodeDetail mounted with ID:', id)
     if (id) {
       fetchEpisodeData(id)
+    } else {
+      console.error('❌ No episode ID found in URL params')
+      setError('エピソードIDが見つかりません')
+      setLoading(false)
     }
   }, [id])
   

@@ -8,6 +8,7 @@ const EnvironmentGate: React.FC<EnvironmentGateProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [isInitializing, setIsInitializing] = useState(true)
 
   // 環境判定（環境変数 + URL判定）
   let appEnv = import.meta.env.VITE_ENVIRONMENT || import.meta.env.APP_ENV || 'development'
@@ -30,21 +31,28 @@ const EnvironmentGate: React.FC<EnvironmentGateProps> = ({ children }) => {
     APP_ENV: import.meta.env.APP_ENV,
     appEnv,
     requiresAuth,
-    url: window.location.href
+    url: window.location.href,
+    pathname: window.location.pathname
   })
 
   // 認証不要な環境はそのまま表示
   useEffect(() => {
-    if (!requiresAuth) {
-      setIsAuthenticated(true)
-      return
-    }
+    const timer = setTimeout(() => {
+      if (!requiresAuth) {
+        setIsAuthenticated(true)
+        setIsInitializing(false)
+        return
+      }
 
-    // セッションストレージから認証状態を復元
-    const savedAuth = sessionStorage.getItem('env-authenticated')
-    if (savedAuth === appEnv) {
-      setIsAuthenticated(true)
-    }
+      // セッションストレージから認証状態を復元
+      const savedAuth = sessionStorage.getItem('env-authenticated')
+      if (savedAuth === appEnv) {
+        setIsAuthenticated(true)
+      }
+      setIsInitializing(false)
+    }, 100) // 100ms待機して初期化を確実にする
+    
+    return () => clearTimeout(timer)
   }, [requiresAuth, appEnv])
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -66,6 +74,14 @@ const EnvironmentGate: React.FC<EnvironmentGateProps> = ({ children }) => {
       setError('パスワードが正しくありません')
       setPassword('')
     }
+  }
+
+  if (isInitializing) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    )
   }
 
   if (isAuthenticated) {

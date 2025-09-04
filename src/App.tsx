@@ -56,7 +56,12 @@ function App() {
     <EnvironmentGate>
       <Router future={{ v7_startTransition: true }}>
         <ScrollToTop />
-        <Routes>
+        <Suspense fallback={
+          <div className="flex items-center justify-center min-h-screen">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          </div>
+        }>
+          <Routes>
         {/* Admin Routes - ProtectedRouteをAdminProtectedRouteに変更 */}
         <Route path="/admin" element={
           <AdminProtectedRoute>
@@ -159,7 +164,8 @@ function App() {
         <Route path="/contact" element={<Layout><Contact /></Layout>} />
         <Route path="/about" element={<Layout><About /></Layout>} />
         
-        </Routes>
+          </Routes>
+        </Suspense>
       </Router>
     </EnvironmentGate>
   )
