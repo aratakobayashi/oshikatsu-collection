@@ -45,24 +45,9 @@ async function addMoenoazukiLocations() {
         description: 'もえのあずきがデカ盛りチャレンジ「特製肉盛り麻婆茄子丼2.3kg」に挑戦した人気ラーメン店。BIGFUN平和島のフードコート内にあり、担々麺が人気。30分以内に完食すれば無料になるチャレンジメニューでも有名。',
         website_url: 'https://www.big-fun.jp/restaurant/motchiriya/',
         tabelog_url: 'https://tabelog.com/tokyo/A1315/A131502/13105084/',
-        phone: '03-3768-9099',
-        image_url: null, // 後で追加
+        image_url: null,
         image_urls: [],
-        tags: ['ラーメン', '大食い', 'チャレンジメニュー', '平和島', 'フードコート', '担々麺', 'もえのあずき'],
-        prefecture: '東京都',
-        city: '大田区',
-        latitude: null, // 後で調査
-        longitude: null,
-        google_maps_url: 'https://maps.google.com/?q=東京都大田区平和島1-1-1',
-        opening_hours: '11:00-21:00',
-        closed_days: null,
-        price_range: '～999円',
-        genre: 'ラーメン',
-        status: 'active',
-        view_count: 0,
-        featured: true, // もえのあずき関連で特集対象
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        tags: ['ラーメン', '大食い', 'チャレンジメニュー', '平和島', 'フードコート', '担々麺', 'もえのあずき']
       }
     ]
 
@@ -95,10 +80,7 @@ async function addMoenoazukiLocations() {
           location_id: locationData.id,
           visit_date: '2023-11-03', // コラボチャレンジ開始日
           description: '特製肉盛り麻婆茄子丼2.3kgのデカ盛りチャレンジに成功。約20分で完食し、チャレンジ動画もYouTubeで公開。',
-          episode_url: null, // YouTube動画URL（後で追加）
-          featured: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
+          episode_url: null // YouTube動画URL（後で追加）
         })
 
       if (relationError) {
