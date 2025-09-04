@@ -10,20 +10,27 @@ const EnvironmentGate: React.FC<EnvironmentGateProps> = ({ children }) => {
   const [error, setError] = useState('')
   const [isInitializing, setIsInitializing] = useState(true)
 
-  // 環境判定（環境変数 + URL判定）
-  let appEnv = import.meta.env.VITE_ENVIRONMENT || import.meta.env.APP_ENV || 'development'
-  const currentUrl = window.location.href
-  
-  // URL ベースの環境判定（フォールバック）
-  if (currentUrl.includes('deploy-preview-')) {
-    appEnv = 'preview'
-  } else if (currentUrl.includes('develop--')) {
-    appEnv = 'staging'  
-  } else if (currentUrl.includes('collection.oshikatsu-guide.com')) {
-    appEnv = 'production'
-  }
-  
-  const requiresAuth = appEnv === 'staging' || appEnv === 'preview'
+  // 環境判定（環境変数 + URL判定） - useMemoで安定化
+  const { appEnv, requiresAuth } = useState(() => {
+    let environment = import.meta.env.VITE_ENVIRONMENT || import.meta.env.APP_ENV || 'development'
+    const currentUrl = window.location.href
+    
+    // URL ベースの環境判定（フォールバック）
+    if (currentUrl.includes('deploy-preview-')) {
+      environment = 'preview'
+    } else if (currentUrl.includes('develop--')) {
+      environment = 'staging'  
+    } else if (currentUrl.includes('collection.oshikatsu-guide.com')) {
+      environment = 'production'
+    }
+    
+    const needsAuth = environment === 'staging' || environment === 'preview'
+    
+    return {
+      appEnv: environment,
+      requiresAuth: needsAuth
+    }
+  })[0]
   
   // デバッグ情報
   console.log('EnvironmentGate Debug:', {
@@ -35,10 +42,23 @@ const EnvironmentGate: React.FC<EnvironmentGateProps> = ({ children }) => {
     pathname: window.location.pathname
   })
 
-  // 認証不要な環境はそのまま表示
+  // 認証不要な環境はそのまる表示
   useEffect(() => {
+    console.log('🔄 EnvironmentGate useEffect triggered:', {
+      requiresAuth,
+      appEnv,
+      isInitializing,
+      isAuthenticated
+    })
+    
     const timer = setTimeout(() => {
+      console.log('⏰ EnvironmentGate timer executed:', {
+        requiresAuth,
+        appEnv
+      })
+      
       if (!requiresAuth) {
+        console.log('✅ No auth required, setting authenticated')
         setIsAuthenticated(true)
         setIsInitializing(false)
         return
@@ -46,14 +66,22 @@ const EnvironmentGate: React.FC<EnvironmentGateProps> = ({ children }) => {
 
       // セッションストレージから認証状態を復元
       const savedAuth = sessionStorage.getItem('env-authenticated')
+      console.log('🔑 Checking saved auth:', { savedAuth, appEnv })
+      
       if (savedAuth === appEnv) {
+        console.log('✅ Saved auth matches, setting authenticated')
         setIsAuthenticated(true)
       }
+      
+      console.log('🏁 Setting isInitializing to false')
       setIsInitializing(false)
     }, 100) // 100ms待機して初期化を確実にする
     
-    return () => clearTimeout(timer)
-  }, [requiresAuth, appEnv])
+    return () => {
+      console.log('🧹 EnvironmentGate cleanup')
+      clearTimeout(timer)
+    }
+  }, []) // 依存配列を空にして一度だけ実行
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
