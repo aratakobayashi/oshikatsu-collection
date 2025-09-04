@@ -47,8 +47,9 @@ import { About } from './components/legal/About'
 
 function App() {
   useEffect(() => {
-    // パフォーマンス最適化の初期化
-    initializePerformanceOptimizations()
+    // パフォーマンス最適化の初期化を一時的に無効化（無限ローディング対策）
+    console.log('App initialized - performance optimization disabled')
+    // initializePerformanceOptimizations()
   }, [])
 
   return (
