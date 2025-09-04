@@ -8,6 +8,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   
   return {
+    base: '/', // SPAのベースパスを明示的にルートに設定
     plugins: [
       react({
         // React最適化
