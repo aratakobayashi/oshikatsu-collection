@@ -151,12 +151,12 @@ export default function CelebritiesSimple() {
     }
   }, [searchQuery, setSearchParams])
 
-  // 表示するデータを決定
-  const displayData = searchQuery ? searchResults : allCelebrities
+  // 表示するデータを決定（null/undefinedチェック）
+  const displayData = searchQuery ? (searchResults || []) : (allCelebrities || [])
   const isLoading = allLoading
 
   // SEO データ
-  const totalCount = allCelebrities.length
+  const totalCount = (allCelebrities || []).length
   const seoData = generateSEO.celebrities(totalCount)
 
   if (isLoading) {
@@ -206,7 +206,7 @@ export default function CelebritiesSimple() {
         />
 
         {/* 結果表示 */}
-        {displayData.length === 0 ? (
+        {(displayData || []).length === 0 ? (
           <div className="text-center py-12">
             <Users className="h-24 w-24 text-gray-300 mx-auto mb-6" />
             <h3 className="text-xl font-semibold text-gray-700 mb-2">
@@ -220,7 +220,7 @@ export default function CelebritiesSimple() {
           <>
             {/* セレブリティグリッド */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {displayData.map((celebrity) => (
+              {(displayData || []).map((celebrity) => (
                 <CelebCard 
                   key={celebrity.id} 
                   celebrity={celebrity}
@@ -231,7 +231,7 @@ export default function CelebritiesSimple() {
             {/* フッター統計 */}
             <div className="text-center mt-12 text-gray-500">
               <p>
-                {displayData.length} 件を表示中
+                {(displayData || []).length} 件を表示中
                 {searchQuery && ` (全 ${totalCount} 件中)`}
               </p>
             </div>
