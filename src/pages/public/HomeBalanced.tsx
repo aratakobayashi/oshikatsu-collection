@@ -14,6 +14,7 @@ import { useCriticalHomeData, useProgressiveHomeData } from '../../hooks/useOpti
 const CriticalHero = ({ onSearch }: { onSearch: (query: string) => void }) => {
   const [searchQuery, setSearchQuery] = useState('')
   const { popularCelebrities, isLoading } = useCriticalHomeData()
+  const navigate = useNavigate()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
