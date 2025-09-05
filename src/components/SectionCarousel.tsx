@@ -129,8 +129,32 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
   }
 
   // カードレンダリング関数
-  const renderCelebrityCard = (celebrity: Celebrity) => (
-    <Link to={`/celebrities/${celebrity.slug}`} key={celebrity.id}>
+  const const renderCelebrityCard = (celebrity: Celebrity) => (
+    <Link to={`/celebrities/${celebrity.slug}`} key={celebrity.id} className="block cursor-pointer">
+      <div className="relative group">
+        <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden">
+          <div className="relative">
+            <img 
+              src={celebrity.image_url || '/placeholder-celebrity.jpg'} 
+              alt={celebrity.name}
+              className="w-full h-48 object-cover"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement
+                target.src = '/placeholder-celebrity.jpg'
+              }}
+            />
+            <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-gray-700">
+              {celebrity.episode_count || 0}回登場
+            </div>
+          </div>
+          <div className="p-4">
+            <h3 className="font-bold text-lg text-gray-900 mb-1">{celebrity.name}</h3>
+            <p className="text-sm text-gray-600">{celebrity.group_name || '個人'}</p>
+          </div>
+        </div>
+      </div>
+    </Link>
+  )} key={celebrity.id}>
       <div className="relative group cursor-pointer">
         <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden">
           <div className="relative">
@@ -156,12 +180,66 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
     </Link>
   )
 
-  const renderEpisodeCard = (episode: Episode) => {
+  const const renderEpisodeCard = (episode: Episode) => {
     // YouTube動画IDを抽出
     const videoId = episode.thumbnail_url ? extractYouTubeVideoId(episode.thumbnail_url) : null
     
     return (
-    <Link to={`/episodes/${episode.id}`} key={episode.id}>
+    <Link to={`/episodes/${episode.id}`} key={episode.id} className="block cursor-pointer">
+      <div className="relative group">
+        <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden">
+          <div className="relative">
+            {videoId ? (
+              <OptimizedYouTubeThumbnail
+                videoId={videoId}
+                alt={episode.title}
+                className="w-full h-48 object-cover"
+                fallbackSrc="/placeholder-episode.jpg"
+              />
+            ) : (
+              <img 
+                src={episode.thumbnail_url || '/placeholder-episode.jpg'}
+                alt={episode.title}
+                className="w-full h-48 object-cover"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement
+                  target.src = '/placeholder-episode.jpg'
+                }}
+              />
+            )}
+            <div className="absolute top-2 left-2 bg-black/70 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-white flex items-center">
+              <Play className="h-3 w-3 mr-1" />
+              {episode.duration || '動画'}
+            </div>
+            {episode.view_count && (
+              <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+                {(episode.view_count / 10000).toFixed(0)}万回再生
+              </div>
+            )}
+          </div>
+          <div className="p-4">
+            <h3 className="font-bold text-lg text-gray-900 mb-1">{episode.title}</h3>
+            <p className="text-sm text-gray-600 mb-2">{new Date(episode.date).toLocaleDateString()}</p>
+            
+            {/* ロケ地タグ */}
+            {episode.location_count && episode.location_count > 0 && (
+              <div className="mb-2">
+                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                  <MapPin className="h-3 w-3 mr-1" />
+                  ロケ地あり
+                </span>
+              </div>
+            )}
+            
+            <p className="text-xs text-gray-500 line-clamp-2">
+              {episode.celebrities?.name && `出演: ${episode.celebrities.name}`}
+            </p>
+          </div>
+        </div>
+      </div>
+    </Link>
+    )
+  } key={episode.id}>
       <div className="relative group cursor-pointer">
         <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden">
           <div className="relative">
@@ -217,9 +295,43 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
     )
   }
 
-  const renderLocationCard = (location: Location) => {
+  const const renderLocationCard = (location: Location) => {
     return (
-      <Link to={`/locations/${location.id}`} key={location.id}>
+      <Link to={`/locations/${location.id}`} key={location.id} className="block cursor-pointer">
+        <div className="relative group">
+          <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden">
+            <div className="relative">
+              <img 
+                src={location.image_url || '/placeholder-location.jpg'} 
+                alt={location.name}
+                className="w-full h-48 object-cover"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement
+                  target.src = '/placeholder-location.jpg'
+                }}
+              />
+              <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-gray-700">
+                {location.episode_count || 0}回登場
+              </div>
+              {location.tabelog_url && (
+                <div className="absolute bottom-2 right-2">
+                  <div className="bg-orange-500 text-white px-2 py-1 rounded text-xs font-medium flex items-center">
+                    <ExternalLink className="h-3 w-3 mr-1" />
+                    予約
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="p-4">
+              <h3 className="font-bold text-lg text-gray-900 mb-1">{location.name}</h3>
+              <p className="text-sm text-gray-600 mb-2">{location.address}</p>
+              <p className="text-xs text-gray-500 line-clamp-2">{location.description}</p>
+            </div>
+          </div>
+        </div>
+      </Link>
+    )
+  } key={location.id}>
         <div className="relative group cursor-pointer">
           <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden">
             <div className="relative">
@@ -255,9 +367,44 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
     )
   }
 
-  const renderItemCard = (item: Item) => {
+  const const renderItemCard = (item: Item) => {
     return (
-      <Link to={`/items/${item.id}`} key={item.id}>
+      <Link to={`/items/${item.id}`} key={item.id} className="block cursor-pointer">
+        <div className="relative group">
+          <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden">
+            <div className="relative">
+              <img 
+                src={item.image_url || '/placeholder-item.jpg'} 
+                alt={item.name}
+                className="w-full h-48 object-cover"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement
+                  target.src = '/placeholder-item.jpg'
+                }}
+              />
+              {item.brand && (
+                <div className="absolute top-2 left-2 bg-black/70 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-white">
+                  {item.brand}
+                </div>
+              )}
+              {item.price && (
+                <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+                  {item.price}
+                </div>
+              )}
+            </div>
+            <div className="p-4">
+              <h3 className="font-bold text-lg text-gray-900 mb-1">{item.name}</h3>
+              <p className="text-sm text-gray-600 mb-2">{item.category || 'アイテム'}</p>
+              <p className="text-xs text-gray-500 line-clamp-2">
+                {item.description || '推しが愛用するこだわりのアイテム'}
+              </p>
+            </div>
+          </div>
+        </div>
+      </Link>
+    )
+  } key={item.id}>
         <div className="relative group cursor-pointer">
           <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden">
             <div className="relative">
