@@ -3,8 +3,18 @@
 
 # プラグイン設定
 [[plugins]]
-  # SEO最適化: SPAページの事前レンダリング
+  # SEO最適化: SPAページの事前レンダリング（重要ページのみ）
   package = "netlify-plugin-prerender-spa"
+  [plugins.inputs]
+    # 最大50ページまで制限（タイムアウト回避）
+    max_pages = 50
+    # 重要なルートのみ対象
+    routes = [
+      "/",
+      "/episodes/*",
+      "/locations/*", 
+      "/celebrities/*"
+    ]
 
 [build]
   # ビルドコマンド
