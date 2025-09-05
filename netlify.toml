@@ -2,19 +2,10 @@
 # https://docs.netlify.com/configure-builds/file-based-configuration/
 
 # プラグイン設定
-[[plugins]]
-  # SEO最適化: SPAページの事前レンダリング（重要ページのみ）
-  package = "netlify-plugin-prerender-spa"
-  [plugins.inputs]
-    # 最大50ページまで制限（タイムアウト回避）
-    max_pages = 50
-    # 重要なルートのみ対象
-    routes = [
-      "/",
-      "/episodes/*",
-      "/locations/*", 
-      "/celebrities/*"
-    ]
+# 注：netlify-plugin-prerender-spaは全ページを処理して時間がかかりすぎるため
+# 一旦コメントアウトし、別の方法を検討
+# [[plugins]]
+#   package = "netlify-plugin-prerender-spa"
 
 [build]
   # ビルドコマンド
