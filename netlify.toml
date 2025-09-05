@@ -11,21 +11,44 @@
   # Node.jsバージョン
   environment = { NODE_VERSION = "18" }
 
-# 静的アセットを優先してからSPAリダイレクト
+# 静的アセットの404を防ぐためのリダイレクト
+# 重要: force = false で実際のファイルが存在する場合は優先される
 [[redirects]]
-  from = "/js/*"
+  from = "/episodes/js/*"
   to = "/js/:splat"
   status = 200
+  force = false
 
 [[redirects]]
-  from = "/css/*"  
+  from = "/episodes/css/*"  
   to = "/css/:splat"
   status = 200
+  force = false
 
 [[redirects]]
-  from = "/assets/*"
+  from = "/episodes/assets/*"
   to = "/assets/:splat"
   status = 200
+  force = false
+
+# その他のサブディレクトリからのアセット参照も修正
+[[redirects]]
+  from = "/*/js/*"
+  to = "/js/:splat"
+  status = 200
+  force = false
+
+[[redirects]]
+  from = "/*/css/*"  
+  to = "/css/:splat"
+  status = 200
+  force = false
+
+[[redirects]]
+  from = "/*/assets/*"
+  to = "/assets/:splat"
+  status = 200
+  force = false
 
 # SPAリダイレクト設定（静的ファイル以外）
 [[redirects]]
