@@ -154,7 +154,11 @@ const ProgressiveContent = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               {recentEpisodes.slice(0, 4).map((episode) => (
-                <div key={episode.id} className="bg-white/90 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                <div 
+                  key={episode.id} 
+                  className="bg-white/90 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer"
+                  onClick={() => navigate(`/episodes/${episode.id}`)}
+                >
                   <div className="relative aspect-video bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center overflow-hidden">
                     {episode.thumbnail_url ? (
                       <img
@@ -203,7 +207,11 @@ const ProgressiveContent = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
               {featuredLocations.slice(0, 3).map((location) => (
-                <div key={location.id} className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                <div 
+                  key={location.id} 
+                  className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer"
+                  onClick={() => navigate(`/locations/${location.id}`)}
+                >
                   <div className="w-full h-48 bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl mb-4 flex items-center justify-center overflow-hidden relative">
                     {(location.image_url || location.image_urls?.[0]) ? (
                       <img
