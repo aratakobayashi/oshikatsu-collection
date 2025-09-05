@@ -1,6 +1,11 @@
 # Netlify設定ファイル
 # https://docs.netlify.com/configure-builds/file-based-configuration/
 
+# プラグイン設定
+[[plugins]]
+  # SEO最適化: SPAページの事前レンダリング
+  package = "@netlify/plugin-prerender-spa"
+
 [build]
   # ビルドコマンド
   command = "npm run build"
