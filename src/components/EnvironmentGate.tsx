@@ -10,8 +10,8 @@ const EnvironmentGate: React.FC<EnvironmentGateProps> = ({ children }) => {
   const [error, setError] = useState('')
   const [isInitializing, setIsInitializing] = useState(true)
 
-  // 環境判定（環境変数 + URL判定） - useMemoで安定化
-  const { appEnv, requiresAuth } = useState(() => {
+  // 環境判定（環境変数 + URL判定） - useState を正しく使用
+  const [envConfig] = useState(() => {
     let environment = import.meta.env.VITE_ENVIRONMENT || import.meta.env.APP_ENV || 'development'
     const currentUrl = window.location.href
     
@@ -30,7 +30,9 @@ const EnvironmentGate: React.FC<EnvironmentGateProps> = ({ children }) => {
       appEnv: environment,
       requiresAuth: needsAuth
     }
-  })[0]
+  })
+
+  const { appEnv, requiresAuth } = envConfig
   
   // デバッグ情報
   console.log('EnvironmentGate Debug:', {
@@ -42,7 +44,7 @@ const EnvironmentGate: React.FC<EnvironmentGateProps> = ({ children }) => {
     pathname: window.location.pathname
   })
 
-  // 認証不要な環境はそのまる表示
+  // 認証不要な環境はそのまま表示
   useEffect(() => {
     console.log('🔄 EnvironmentGate useEffect triggered:', {
       requiresAuth,
@@ -81,7 +83,7 @@ const EnvironmentGate: React.FC<EnvironmentGateProps> = ({ children }) => {
       console.log('🧹 EnvironmentGate cleanup')
       clearTimeout(timer)
     }
-  }, []) // 依存配列を空にして一度だけ実行
+  }, [requiresAuth, appEnv])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
