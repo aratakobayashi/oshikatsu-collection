@@ -37,14 +37,33 @@ interface ExtractedLocation {
 
 // 店舗名抽出用のパターン
 const RESTAURANT_PATTERNS = [
+  // 「」『』で囲まれた店舗名（最高確度）
+  /「([^「」]+?)」/g,
+  /『([^『』]+?)』/g,
+  
   // 明確な店舗表記
-  /([^\s]*(?:店|屋|亭|庵|堂|処|食堂|レストラン|ラーメン|うどん|そば|寿司|焼肉|居酒屋|カフェ|喫茶|バー)[^\s]*)/g,
-  // 有名チェーン店
-  /(マクドナルド|ケンタッキー|吉野家|松屋|すき家|ココイチ|サイゼリヤ|ガスト|デニーズ|ロイホ|びっくりドンキー)/g,
+  /([^\s]*(?:店|屋|亭|庵|堂|処|食堂|レストラン)[^\s]*)/g,
+  /([^\s]*(?:ラーメン|うどん|そば|寿司|焼肉|居酒屋|カフェ|喫茶|バー)[^\s]*)/g,
+  
+  // 有名チェーン店（確実にマッチするもの）
+  /(マクドナルド|マック|ケンタッキー|KFC|吉野家|松屋|すき家|なか卯|ココイチ|CoCo壱番屋)/g,
+  /(サイゼリヤ|ガスト|デニーズ|ロイホ|ロイヤルホスト|びっくりドンキー|ジョナサン)/g,
+  /(スターバックス|スタバ|ドトール|タリーズ|コメダ珈琲|珈琲館)/g,
+  /(はなまるうどん|丸亀製麺|讃岐うどん|一風堂|一蘭|天下一品)/g,
+  /(回転寿司|スシロー|くら寿司|はま寿司|かっぱ寿司|魚べい)/g,
+  
   // 地域性のある表記
-  /([^\s]*(?:本店|支店|〇〇店|駅前店|本館|別館)[^\s]*)/g,
+  /([^\s]*(?:本店|支店|駅前店|駅中店|本館|別館|新宿店|渋谷店|池袋店)[^\s]*)/g,
+  
   // 食べ物系キーワード含む
-  /([^\s]*(?:グリル|ビストロ|トラットリア|オステリア|タベルナ|ブラッスリー)[^\s]*)/g
+  /([^\s]*(?:グリル|ビストロ|トラットリア|オステリア|タベルナ|ブラッスリー|ダイニング)[^\s]*)/g,
+  
+  // 〇〇で大食い、〇〇を食べる、〇〇に行く などの表現
+  /([^\s]+?)で大食い/g,
+  /([^\s]+?)を食べる/g,
+  /([^\s]+?)に行く/g,
+  /([^\s]+?)でランチ/g,
+  /([^\s]+?)でディナー/g
 ]
 
 async function extractLocationsFromMoenoazuki() {
@@ -54,7 +73,7 @@ async function extractLocationsFromMoenoazuki() {
     // 1. YouTube APIで最新動画を取得
     console.log('📺 YouTube APIで最新動画取得中...')
     const channelId = 'UCepkcGa3-DVdNHcHGwEkXTg' // もえのあずき
-    const videosUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&type=video&order=date&maxResults=20&key=${youtubeApiKey}`
+    const videosUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&type=video&order=date&maxResults=40&key=${youtubeApiKey}`
     
     const response = await fetch(videosUrl)
     if (!response.ok) {

@@ -209,11 +209,11 @@ export default defineConfig(({ mode }) => {
       }
     },
     
-    // 実験的機能
+    // 🔧 重要: 絶対パスを強制してSPAでのアセット参照問題を解決
     experimental: {
       renderBuiltUrl: (filename, { hostType }) => {
-        // CDN URLに書き換える場合
-        return filename;
+        // 常に絶対パスを返すことでSPAのパス問題を解決
+        return `/${filename}`;
       }
     }
   };
