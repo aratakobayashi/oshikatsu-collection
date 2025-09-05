@@ -83,6 +83,23 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
+# HTMLファイルのキャッシュ制御（短時間キャッシュ）
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=300, s-maxage=300, stale-while-revalidate=86400"
+
+# JSとCSSファイルのキャッシュ制御（長期キャッシュ、ただし更新検知）
+[[headers]]
+  for = "/js/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/css/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
 # XMLサイトマップの正しいContent-Type設定
 [[headers]]
   for = "/*.xml"

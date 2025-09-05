@@ -204,6 +204,30 @@
     
     <!-- Optimized script loading -->
     <script>
+      // キャッシュバスティング（開発用）
+      if (window.location.search.includes('force-reload')) {
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            for(let registration of registrations) {
+              registration.unregister();
+            }
+          });
+        }
+        // キャッシュクリア
+        if ('caches' in window) {
+          caches.keys().then(names => {
+            names.forEach(name => {
+              caches.delete(name);
+            });
+          });
+        }
+        // URLからforce-reloadを削除してリロード
+        const url = new URL(window.location);
+        url.searchParams.delete('force-reload');
+        window.history.replaceState({}, '', url);
+        window.location.reload(true);
+      }
+
       // Mark when React is ready
       window.addEventListener('DOMContentLoaded', function() {
         // Add react-loaded class when React mounts
