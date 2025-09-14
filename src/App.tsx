@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Suspense, useEffect } from 'react'
 import { initializePerformanceOptimizations, PerformanceLoadingFallback } from './utils/performanceOptimization'
+import { HelmetProvider } from 'react-helmet-async'
 import Layout from './components/Layout'
 import AdminLayout from './components/AdminLayout'
 import PublicProtectedRoute from './components/PublicProtectedRoute'
@@ -53,9 +54,10 @@ function App() {
   }, [])
 
   return (
-    <EnvironmentGate>
-      <Router future={{ v7_startTransition: true }}>
-        <ScrollToTop />
+    <HelmetProvider>
+      <EnvironmentGate>
+        <Router future={{ v7_startTransition: true }}>
+          <ScrollToTop />
         <Suspense fallback={
           <div className="flex items-center justify-center min-h-screen">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
@@ -166,8 +168,9 @@ function App() {
         
           </Routes>
         </Suspense>
-      </Router>
-    </EnvironmentGate>
+        </Router>
+      </EnvironmentGate>
+    </HelmetProvider>
   )
 }
 

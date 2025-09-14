@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { Calendar, ExternalLink, MapPin, Package, Users, Award, Globe, ArrowLeft, Star, Heart, Eye, Play, Filter, Search, Coffee, ShoppingBag } from 'lucide-react'
 import { MetaTags, generateSEO } from '../../components/SEO/MetaTags'
 import { StructuredData, generateStructuredData } from '../../components/SEO/StructuredData'
@@ -438,7 +439,23 @@ export default function CelebrityProfile() {
     <div className="min-h-screen bg-white">
       {celebrity && (
         <>
-          <MetaTags 
+          <Helmet>
+            <title>{celebritySEO.title}</title>
+            <meta name="description" content={celebritySEO.description} />
+            <meta name="keywords" content={celebritySEO.keywords} />
+            <link rel="canonical" href={`https://collection.oshikatsu-guide.com/celebrities/${encodeURIComponent(celebrity.slug)}`} />
+            <meta property="og:title" content={celebritySEO.title} />
+            <meta property="og:description" content={celebritySEO.description} />
+            <meta property="og:url" content={`https://collection.oshikatsu-guide.com/celebrities/${encodeURIComponent(celebrity.slug)}`} />
+            <meta property="og:type" content="profile" />
+            {celebrity.image_url && <meta property="og:image" content={celebrity.image_url} />}
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:title" content={celebritySEO.title} />
+            <meta name="twitter:description" content={celebritySEO.description} />
+            {celebrity.image_url && <meta name="twitter:image" content={celebrity.image_url} />}
+          </Helmet>
+
+          <MetaTags
             title={celebritySEO.title}
             description={celebritySEO.description}
             keywords={celebritySEO.keywords}

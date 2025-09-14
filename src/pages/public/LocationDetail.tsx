@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { ArrowLeft, ExternalLink, MapPin, Phone, Globe, Calendar, Tag, Clock, Play, Eye, Users, Film, Utensils } from 'lucide-react'
 import { MetaTags, generateSEO } from '../../components/SEO/MetaTags'
 import { StructuredData, generateStructuredData } from '../../components/SEO/StructuredData'
@@ -282,7 +283,23 @@ export default function LocationDetail() {
     <div className="min-h-screen bg-gray-50">
       {location && (
         <>
-          <MetaTags 
+          <Helmet>
+            <title>{locationSEO.title}</title>
+            <meta name="description" content={locationSEO.description} />
+            <meta name="keywords" content={locationSEO.keywords} />
+            <link rel="canonical" href={`https://collection.oshikatsu-guide.com/locations/${location.id}`} />
+            <meta property="og:title" content={locationSEO.title} />
+            <meta property="og:description" content={locationSEO.description} />
+            <meta property="og:url" content={`https://collection.oshikatsu-guide.com/locations/${location.id}`} />
+            <meta property="og:type" content="place" />
+            {location.image_url && <meta property="og:image" content={location.image_url} />}
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:title" content={locationSEO.title} />
+            <meta name="twitter:description" content={locationSEO.description} />
+            {location.image_url && <meta name="twitter:image" content={location.image_url} />}
+          </Helmet>
+
+          <MetaTags
             title={locationSEO.title}
             description={locationSEO.description}
             keywords={locationSEO.keywords}

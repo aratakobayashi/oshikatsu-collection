@@ -1,5 +1,6 @@
 import React, { useEffect, useState, Suspense } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { Users, Play, MapPin, Search, TrendingUp } from 'lucide-react'
 import { MetaTags, generateSEO } from '../../components/SEO/MetaTags'
 import { StructuredData, generateStructuredData } from '../../components/SEO/StructuredData'
@@ -321,7 +322,21 @@ export default function HomeBalanced() {
 
   return (
     <div className="bg-white">
-      <MetaTags 
+      <Helmet>
+        <title>{homeSEO.title}</title>
+        <meta name="description" content={homeSEO.description} />
+        <meta name="keywords" content={homeSEO.keywords} />
+        <link rel="canonical" href="https://collection.oshikatsu-guide.com/" />
+        <meta property="og:title" content={homeSEO.title} />
+        <meta property="og:description" content={homeSEO.description} />
+        <meta property="og:url" content="https://collection.oshikatsu-guide.com/" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={homeSEO.title} />
+        <meta name="twitter:description" content={homeSEO.description} />
+      </Helmet>
+
+      <MetaTags
         title={homeSEO.title}
         description={homeSEO.description}
         keywords={homeSEO.keywords}
