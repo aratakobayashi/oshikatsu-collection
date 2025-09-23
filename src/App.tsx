@@ -13,6 +13,9 @@ import ScrollToTop from './components/ScrollToTop'
 import AdminDashboard from './pages/admin/Dashboard'
 import AdminWorks from './pages/admin/Works'
 import AdminCelebrities from './pages/admin/Celebrities'
+import AdminArticles from './pages/admin/Articles'
+import AdminArticleImport from './pages/admin/ArticleImport'
+import AdminWordPressMigration from './pages/admin/WordPressMigration'
 import AdminEpisodes from './pages/admin/Episodes'
 import AdminEpisodeDetail from './pages/admin/EpisodeDetail'
 import AdminItems from './pages/admin/Items'
@@ -21,7 +24,7 @@ import AdminUserPosts from './pages/admin/UserPosts'
 import AdminDataCollection from './pages/admin/DataCollection' // 追加
 import AuthDebug from './pages/debug/AuthDebug' // デバッグ用
 
-// Public Pages  
+// Public Pages
 import Home from './pages/public/HomeBalanced'
 import Celebrities from './pages/public/CelebritiesSimple'
 import Episodes from './pages/public/Episodes'
@@ -35,6 +38,8 @@ import CelebrityProfile from './pages/public/CelebrityProfile'
 import EpisodeDetail from './pages/public/EpisodeDetail'
 import Works from './pages/public/Works'
 import WorkDetail from './pages/public/WorkDetail'
+import ArticlesSimple from './pages/public/ArticlesSimple'
+import ArticleDetail from './pages/public/ArticleDetail'
 import Submit from './pages/public/Submit'
 import Login from './pages/public/Login'
 import Register from './pages/public/Register'
@@ -83,6 +88,27 @@ function App() {
           <AdminProtectedRoute>
             <AdminLayout>
               <AdminCelebrities />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        } />
+        <Route path="/admin/articles" element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <AdminArticles />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        } />
+        <Route path="/admin/articles/import" element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <AdminArticleImport />
+            </AdminLayout>
+          </AdminProtectedRoute>
+        } />
+        <Route path="/admin/articles/migrate" element={
+          <AdminProtectedRoute>
+            <AdminLayout>
+              <AdminWordPressMigration />
             </AdminLayout>
           </AdminProtectedRoute>
         } />
@@ -137,35 +163,47 @@ function App() {
         <Route path="/locations" element={<Layout><Locations /></Layout>} />
         <Route path="/posts" element={<Layout><Posts /></Layout>} />
         <Route path="/works" element={<Layout><Works /></Layout>} />
+        <Route path="/articles" element={<Layout><ArticlesSimple /></Layout>} />
         
         {/* Detail Routes */}
         <Route path="/celebrities/:slug" element={<Layout><CelebrityProfile /></Layout>} />
+        <Route path="/works/:slug" element={<Layout><WorkDetail /></Layout>} />
         <Route path="/episodes/:id" element={<Layout><EpisodeDetail /></Layout>} />
-        <Route path="/posts/:id" element={<Layout><PostDetail /></Layout>} />
         <Route path="/items/:id" element={<Layout><ItemDetail /></Layout>} />
         <Route path="/locations/:id" element={<Layout><LocationDetail /></Layout>} />
-        <Route path="/works/:slug" element={<Layout><WorkDetail /></Layout>} />
+        <Route path="/posts/:id" element={<Layout><PostDetail /></Layout>} />
+        <Route path="/articles/:slug" element={<Layout><ArticleDetail /></Layout>} />
         
-        {/* Auth Routes */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/submit" element={
-          <Layout>
-            <PublicProtectedRoute>
-              <Submit />
-            </PublicProtectedRoute>
-          </Layout>
+        {/* Authentication Routes */}
+        <Route path="/login" element={
+          <PublicProtectedRoute>
+            <Layout>
+              <Login />
+            </Layout>
+          </PublicProtectedRoute>
+        } />
+        <Route path="/register" element={
+          <PublicProtectedRoute>
+            <Layout>
+              <Register />
+            </Layout>
+          </PublicProtectedRoute>
         } />
         
-        {/* Debug Routes */}
-        <Route path="/debug/auth" element={<Layout><AuthDebug /></Layout>} />
+        {/* Submission Route */}
+        <Route path="/submit" element={<Layout><Submit /></Layout>} />
         
-        {/* Legal Routes */}
-        <Route path="/privacy-policy" element={<Layout><PrivacyPolicy /></Layout>} />
-        <Route path="/terms-of-service" element={<Layout><TermsOfService /></Layout>} />
+        {/* Legal Pages */}
+        <Route path="/privacy" element={<Layout><PrivacyPolicy /></Layout>} />
+        <Route path="/terms" element={<Layout><TermsOfService /></Layout>} />
         <Route path="/contact" element={<Layout><Contact /></Layout>} />
         <Route path="/about" element={<Layout><About /></Layout>} />
+
+        {/* デバッグ用ルート */}
+        <Route path="/debug/auth" element={<AuthDebug />} />
         
+        {/* 404 */}
+        <Route path="*" element={<Layout><div className="text-center py-12"><h2 className="text-2xl font-bold text-gray-900 mb-4">ページが見つかりません</h2><p className="text-gray-600">お探しのページは存在しないか、移動した可能性があります。</p></div></Layout>} />
           </Routes>
         </Suspense>
         </Router>

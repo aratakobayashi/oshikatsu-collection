@@ -38,3 +38,5 @@ export default function TextArea({
     </div>
   )
 }
+
+export { TextArea }

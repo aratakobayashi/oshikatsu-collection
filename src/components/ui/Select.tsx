@@ -46,3 +46,5 @@ export default function Select({
     </div>
   )
 }
+
+export { Select }

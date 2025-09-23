@@ -13,6 +13,8 @@ export default function Card({ children, className = '' }: CardProps) {
   )
 }
 
+export { Card }
+
 interface CardHeaderProps {
   children: React.ReactNode
   className?: string
