@@ -1,44 +1,60 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+const supabase = createClient(supabaseUrl, supabaseAnonKey)
+
+interface Article {
+  id: string
+  title: string
+  slug: string
+  excerpt: string
+  published_at: string
+}
 
 export default function ArticlesSimple() {
-  const articles = [
-    {
-      id: '1',
-      title: '✅ WordPress移行成功！初心者向け盆栽の始め方完全ガイド',
-      slug: 'bonsai-guide',
-      excerpt: '移行されたWordPress記事です。盆栽を始めるための完全ガイド。初心者でも簡単に始められます。',
-      published_at: '2025-06-11T12:36:12+00:00'
-    },
-    {
-      id: '2',
-      title: '✅ WordPress移行テスト記事',
-      slug: 'wordpress-test',
-      excerpt: 'WordPressからの移行テストのための記事です。正常に移行されました。',
-      published_at: '2025-06-10T10:00:00+00:00'
-    },
-    {
-      id: '3',
-      title: '✅ oshikatsu-guide.com からの移行記事（3件目）',
-      slug: 'oshikatsu-guide-3',
-      excerpt: 'oshikatsu-guide.comから正常に移行された記事の3件目です。',
-      published_at: '2025-06-09T09:00:00+00:00'
-    },
-    {
-      id: '4',
-      title: '✅ データベース保存確認済み記事（4件目）',
-      slug: 'database-test-4',
-      excerpt: 'データベースに正常に保存されていることが確認された記事です。',
-      published_at: '2025-06-08T08:00:00+00:00'
-    },
-    {
-      id: '5',
-      title: '✅ 移行作業完了確認記事（5件目）',
-      slug: 'migration-complete-5',
-      excerpt: 'WordPress移行作業が完全に完了したことを示す記事です。',
-      published_at: '2025-06-07T07:00:00+00:00'
+  const [articles, setArticles] = useState<Article[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchArticles()
+  }, [])
+
+  async function fetchArticles() {
+    try {
+      setLoading(true)
+      const { data, error } = await supabase
+        .from('articles')
+        .select('id, title, slug, excerpt, published_at')
+        .eq('status', 'published')
+        .order('published_at', { ascending: false })
+        .limit(20)
+
+      if (error) {
+        console.error('記事取得エラー:', error)
+        return
+      }
+
+      setArticles(data || [])
+    } catch (error) {
+      console.error('予期しないエラー:', error)
+    } finally {
+      setLoading(false)
     }
-  ]
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-purple-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">記事を読み込み中...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -47,7 +63,7 @@ export default function ArticlesSimple() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-4">
-              📄 記事一覧
+              📄 推し活ガイド記事
             </h1>
             <p className="text-xl md:text-2xl mb-2">
               WordPress移行完了！
