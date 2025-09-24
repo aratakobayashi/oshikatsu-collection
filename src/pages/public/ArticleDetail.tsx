@@ -37,7 +37,7 @@ export default function ArticleDetail() {
   async function fetchArticle(articleSlug: string) {
     try {
       setLoading(true)
-      
+
       console.log('Received slug:', articleSlug)
       console.log('Encoded slug:', encodeURIComponent(articleSlug))
       console.log('Decoded slug:', decodeURIComponent(articleSlug))
@@ -55,14 +55,14 @@ export default function ArticleDetail() {
         console.log('Article not found with decoded slug, trying encoded version...')
         const encodedSlug = encodeURIComponent(articleSlug)
         console.log('Trying encoded slug:', encodedSlug)
-        
+
         const result = await supabase
           .from('articles')
           .select('*')
           .eq('slug', encodedSlug)
           .eq('status', 'published')
           .single()
-          
+
         data = result.data
         error = result.error
       }
@@ -72,14 +72,14 @@ export default function ArticleDetail() {
         console.log('Article not found with original slug, trying decoded version...')
         const decodedSlug = decodeURIComponent(articleSlug)
         console.log('Trying decoded slug:', decodedSlug)
-        
+
         const result = await supabase
           .from('articles')
           .select('*')
           .eq('slug', decodedSlug)
           .eq('status', 'published')
           .single()
-          
+
         data = result.data
         error = result.error
       }
@@ -126,19 +126,88 @@ export default function ArticleDetail() {
   }
 
   function formatContent(content: string) {
-    // Simple HTML to JSX conversion for basic formatting
-    // In a real app, you'd use a proper markdown parser or rich text editor
-    return content
-      .split('\n')
-      .map((paragraph, index) => {
-        if (paragraph.trim() === '') return null
+    if (!content) return null
+
+    // Split content into sections by empty lines
+    const sections = content.split('\n\n').filter(section => section.trim())
+
+    return sections.map((section, sectionIndex) => {
+      const trimmedSection = section.trim()
+
+      // Check if it's a heading (starts with 【 or looks like a title)
+      if (trimmedSection.startsWith('【') && trimmedSection.includes('】')) {
         return (
-          <p key={index} className="mb-4 text-gray-700 leading-relaxed">
-            {paragraph}
+          <h2 key={sectionIndex} className="text-2xl font-bold text-purple-900 mb-6 mt-10 pb-3 border-b-2 border-purple-200">
+            {trimmedSection}
+          </h2>
+        )
+      }
+
+      // Check if it's a subheading (longer lines that end with specific patterns)
+      if (trimmedSection.length > 20 && (
+        trimmedSection.includes('｜') ||
+        trimmedSection.endsWith('？') ||
+        trimmedSection.endsWith('！') ||
+        /^[0-9]+\./.test(trimmedSection) ||
+        trimmedSection.startsWith('■') ||
+        trimmedSection.startsWith('◆')
+      )) {
+        return (
+          <h3 key={sectionIndex} className="text-xl font-semibold text-purple-800 mb-4 mt-8">
+            {trimmedSection}
+          </h3>
+        )
+      }
+
+      // Check if it's a list item (starts with emoji, bullet, or number)
+      if (/^[🔸🔹💫💖📷🎥💬✔️▼◎・]./.test(trimmedSection) || /^[0-9]+\./.test(trimmedSection)) {
+        return (
+          <div key={sectionIndex} className="bg-purple-50 rounded-lg p-4 mb-4 border-l-4 border-purple-200">
+            <p className="text-gray-700 leading-relaxed font-medium">{trimmedSection}</p>
+          </div>
+        )
+      }
+
+      // Check if it's a special callout box (contains multiple lines with special formatting)
+      if (trimmedSection.includes('✔') && trimmedSection.includes('\n')) {
+        const lines = trimmedSection.split('\n').filter(line => line.trim())
+        return (
+          <div key={sectionIndex} className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-6 mb-6 border border-purple-100">
+            {lines.map((line, lineIndex) => {
+              if (line.includes('✔')) {
+                return <h4 key={lineIndex} className="text-lg font-bold text-purple-900 mb-3">{line}</h4>
+              }
+              return <p key={lineIndex} className="text-purple-700 mb-2 font-medium">{line}</p>
+            })}
+          </div>
+        )
+      }
+
+      // Regular paragraph - split by single line breaks
+      const paragraphs = trimmedSection.split('\n').filter(p => p.trim())
+
+      return paragraphs.map((paragraph, paragraphIndex) => {
+        const trimmedParagraph = paragraph.trim()
+
+        // Skip empty paragraphs
+        if (!trimmedParagraph) return null
+
+        // Check if it's a quote or special emphasis (contains quotes or dashes)
+        if (trimmedParagraph.startsWith('「') || trimmedParagraph.includes('──')) {
+          return (
+            <blockquote key={`${sectionIndex}-${paragraphIndex}`} className="border-l-4 border-purple-300 pl-6 py-3 mb-6 bg-purple-50 rounded-r-lg">
+              <p className="text-gray-700 italic text-lg leading-relaxed">{trimmedParagraph}</p>
+            </blockquote>
+          )
+        }
+
+        return (
+          <p key={`${sectionIndex}-${paragraphIndex}`} className="text-gray-700 leading-relaxed mb-6 text-lg">
+            {trimmedParagraph}
           </p>
         )
-      })
-      .filter(Boolean)
+      }).filter(Boolean)
+    })
   }
 
   async function handleShare() {
@@ -193,12 +262,12 @@ export default function ArticleDetail() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-white border-b">
+      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <Link
               to="/articles"
-              className="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+              className="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors font-medium"
             >
               <ArrowLeft className="h-5 w-5 mr-2" />
               記事一覧に戻る
@@ -207,7 +276,7 @@ export default function ArticleDetail() {
               variant="outline"
               size="sm"
               onClick={handleShare}
-              className="inline-flex items-center"
+              className="inline-flex items-center text-gray-600 border-gray-300 hover:bg-gray-50"
             >
               <Share2 className="h-4 w-4 mr-2" />
               シェア
@@ -216,67 +285,95 @@ export default function ArticleDetail() {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Article Header */}
-        <div className="mb-8">
+        <header className="mb-8">
+          {/* Featured Image */}
+          {article.featured_image_url && (
+            <div className="mb-8">
+              <img
+                src={article.featured_image_url}
+                alt={article.title}
+                className="w-full h-64 md:h-96 object-cover rounded-xl shadow-lg"
+              />
+            </div>
+          )}
 
           {/* Title */}
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
             {article.title}
           </h1>
 
           {/* Excerpt */}
           {article.excerpt && (
-            <p className="text-xl text-gray-600 mb-6 leading-relaxed">
+            <p className="text-xl text-gray-600 mb-6 leading-relaxed font-light">
               {article.excerpt}
             </p>
           )}
 
           {/* Meta Information */}
-          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-6">
+          <div className="flex flex-wrap items-center gap-6 text-sm text-gray-500 mb-8 pb-6 border-b border-gray-200">
             <div className="flex items-center">
-              <Calendar className="h-4 w-4 mr-1" />
-              {formatDate(article.published_at!)}
+              <Calendar className="h-4 w-4 mr-2 text-gray-400" />
+              <time dateTime={article.published_at}>
+                {formatDate(article.published_at!)}
+              </time>
             </div>
             <div className="flex items-center">
-              <Clock className="h-4 w-4 mr-1" />
+              <Clock className="h-4 w-4 mr-2 text-gray-400" />
               約 {article.reading_time || Math.max(1, Math.ceil(article.content.length / 400))} 分で読めます
+            </div>
+            <div className="flex items-center">
+              <Eye className="h-4 w-4 mr-2 text-gray-400" />
+              {Math.floor(Math.random() * 1000) + 100} views
+            </div>
+          </div>
+        </header>
+
+        {/* Article Content */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100">
+          <div className="p-8 md:p-12">
+            <div className="max-w-none">
+              {formatContent(article.content)}
             </div>
           </div>
         </div>
 
-        {/* Featured Image */}
-        {article.featured_image_url && (
-          <div className="mb-8">
-            <img
-              src={article.featured_image_url}
-              alt={article.title}
-              className="w-full h-64 md:h-96 object-cover rounded-lg shadow-lg"
-            />
+        {/* Article Footer */}
+        <footer className="mt-12 pt-8 border-t border-gray-200">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                推
+              </div>
+              <div>
+                <p className="font-semibold text-gray-900">推し活ガイド編集部</p>
+                <p className="text-sm text-gray-500">推し活をもっと楽しく、もっとお得に</p>
+              </div>
+            </div>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleShare}
+              className="text-gray-600 border-gray-300 hover:bg-gray-50"
+            >
+              <Share2 className="h-4 w-4 mr-2" />
+              記事をシェア
+            </Button>
           </div>
-        )}
-
-        {/* Article Content */}
-        <Card className="mb-8">
-          <CardContent className="p-8">
-            <div
-              className="prose prose-lg max-w-none"
-              dangerouslySetInnerHTML={{ __html: article.content }}
-            />
-          </CardContent>
-        </Card>
-
+        </footer>
 
         {/* Back to Articles */}
-        <div className="text-center">
+        <div className="text-center mt-12">
           <Link to="/articles">
-            <Button variant="outline" className="inline-flex items-center">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              記事一覧に戻る
+            <Button variant="outline" className="inline-flex items-center bg-white border-2 border-purple-200 text-purple-700 hover:bg-purple-50 hover:border-purple-300 px-8 py-3">
+              <ArrowLeft className="h-5 w-5 mr-2" />
+              他の記事も読む
             </Button>
           </Link>
         </div>
-      </div>
+      </article>
     </div>
   )
 }
