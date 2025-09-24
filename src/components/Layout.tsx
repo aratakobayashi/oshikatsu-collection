@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Home, Users, Search, MessageSquare, Plus, Menu, X, Heart, Star, Package, MapPin, ExternalLink, LogIn, UserPlus } from 'lucide-react'
+import { Home, Users, Search, MessageSquare, Plus, Menu, X, Heart, Star, Package, MapPin, ExternalLink, LogIn, UserPlus, BookOpen } from 'lucide-react'
 import { useAuth } from '../hooks/useAuth'
 
 interface LayoutProps {
@@ -15,6 +15,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const navigationItems = [
     { id: 'home', path: '/', icon: Home, label: 'ホーム', color: 'text-blue-500', bgColor: 'bg-blue-50' },
     { id: 'celebrities', path: '/celebrities', icon: Users, label: '推し', color: 'text-rose-500', bgColor: 'bg-rose-50' },
+    { id: 'articles', path: '/articles', icon: BookOpen, label: '記事', color: 'text-indigo-500', bgColor: 'bg-indigo-50' },
     { id: 'locations', path: '/locations', icon: MapPin, label: '場所', color: 'text-purple-500', bgColor: 'bg-purple-50' },
     { id: 'items', path: '/items', icon: Package, label: 'アイテム', color: 'text-orange-500', bgColor: 'bg-orange-50' },
     { id: 'posts', path: '/posts', icon: MessageSquare, label: '質問', color: 'text-green-500', bgColor: 'bg-green-50' }

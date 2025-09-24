@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from './AuthProvider'
-import { 
+import {
   Home,
   Users,
   Calendar,
@@ -10,6 +10,7 @@ import {
   MessageSquare,
   Film,
   Database,
+  BookOpen,
   LogOut
 } from 'lucide-react'
 
@@ -25,6 +26,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     { path: '/admin', label: 'ダッシュボード', icon: Home },
     { path: '/admin/data-collection', label: 'データ収集', icon: Database },
     { path: '/admin/celebrities', label: '推し管理', icon: Users },
+    { path: '/admin/articles', label: '記事管理', icon: BookOpen },
     { path: '/admin/episodes', label: 'エピソード', icon: Calendar },
     { path: '/admin/locations', label: 'ロケーション', icon: MapPin },
     { path: '/admin/items', label: 'アイテム', icon: Package },

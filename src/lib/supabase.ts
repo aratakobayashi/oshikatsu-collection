@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
 import { developmentDb } from './mock-database'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || import.meta.env.VITE_PUBLIC_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY
 
 // 🔧 開発環境判定
 const isDevelopment = import.meta.env.VITE_ENVIRONMENT === 'development'
@@ -46,6 +46,36 @@ interface UpdateItemData {
 interface WorkUpdates {
   is_trending: boolean
   trending_order?: number
+}
+
+// 記事システム用の型エイリアス
+export type Category = Database['public']['Tables']['categories']['Row']
+export type CategoryInsert = Database['public']['Tables']['categories']['Insert']
+export type CategoryUpdate = Database['public']['Tables']['categories']['Update']
+
+export type Article = Database['public']['Tables']['articles']['Row']
+export type ArticleInsert = Database['public']['Tables']['articles']['Insert']
+export type ArticleUpdate = Database['public']['Tables']['articles']['Update']
+
+export type ArticleCelebrity = Database['public']['Tables']['article_celebrities']['Row']
+export type ArticleCelebrityInsert = Database['public']['Tables']['article_celebrities']['Insert']
+
+export type ArticleItem = Database['public']['Tables']['article_items']['Row']
+export type ArticleItemInsert = Database['public']['Tables']['article_items']['Insert']
+
+export type ArticleLocation = Database['public']['Tables']['article_locations']['Row']
+export type ArticleLocationInsert = Database['public']['Tables']['article_locations']['Insert']
+
+// 記事と関連データを含む拡張型
+export interface ArticleWithCategory extends Article {
+  category: Category
+}
+
+export interface ArticleWithRelations extends Article {
+  category: Category
+  celebrities?: Celebrity[]
+  items?: Item[]
+  locations?: Location[]
 }
 
 // Generic CRUD operations helper
@@ -693,6 +723,232 @@ const supabaseDb = {
     }
   },
 
+  // Categories
+  categories: {
+    ...createCrudOperations('categories'),
+    async getOrderedList() {
+      console.log('🔍 Fetching categories in order')
+      const { data, error } = await supabase
+        .from('categories')
+        .select('*')
+        .order('order_index', { ascending: true })
+      if (error) {
+        console.error('❌ Error fetching ordered categories:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} categories`)
+      return data
+    }
+  },
+
+  // Articles
+  articles: {
+    ...createCrudOperations('articles'),
+
+    async getAllWithCategory() {
+      console.log('🔍 Fetching all articles with category info')
+      const { data, error } = await supabase
+        .from('articles')
+        .select(`
+          *,
+          category:categories(id, name, slug, color)
+        `)
+        .order('published_at', { ascending: false, nullsLast: true })
+      if (error) {
+        console.error('❌ Error fetching articles with category:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} articles`)
+      return data
+    },
+
+    async getPublished() {
+      console.log('🔍 Fetching published articles (categories disabled)')
+      const { data, error } = await supabase
+        .from('articles')
+        .select('*')
+        .eq('status', 'published')
+        .order('published_at', { ascending: false })
+      if (error) {
+        console.error('❌ Error fetching published articles:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} published articles`)
+      return data
+    },
+
+    async getBySlugWithCategory(slug: string) {
+      console.log('🔍 Fetching article by slug with category and relations:', slug)
+      const { data, error } = await supabase
+        .from('articles')
+        .select(`
+          *,
+          category:categories(*),
+          article_celebrities(celebrities(*)),
+          article_items(items(*)),
+          article_locations(locations(*))
+        `)
+        .eq('slug', slug)
+        .eq('status', 'published')
+        .single()
+      if (error) {
+        console.error('❌ Error fetching article by slug:', error)
+        throw error
+      }
+      console.log('✅ Successfully fetched article:', data?.title || 'not found')
+      return data
+    },
+
+    async getByCategoryId(categoryId: string) {
+      console.log('🔍 Fetching articles by category ID:', categoryId)
+      const { data, error } = await supabase
+        .from('articles')
+        .select(`
+          *,
+          category:categories(id, name, slug, color)
+        `)
+        .eq('category_id', categoryId)
+        .eq('status', 'published')
+        .order('published_at', { ascending: false })
+      if (error) {
+        console.error('❌ Error fetching articles by category:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} articles by category`)
+      return data
+    },
+
+    async getFeatured(limit = 5) {
+      console.log('🔍 Fetching featured articles, limit:', limit)
+      const { data, error } = await supabase
+        .from('articles')
+        .select(`
+          *,
+          category:categories(id, name, slug, color)
+        `)
+        .eq('status', 'published')
+        .eq('featured', true)
+        .order('published_at', { ascending: false })
+        .limit(limit)
+      if (error) {
+        console.error('❌ Error fetching featured articles:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} featured articles`)
+      return data
+    },
+
+    async incrementViewCount(id: string) {
+      console.log('🔍 Incrementing view count for article:', id)
+      const { data, error } = await supabase.rpc('increment_view_count', {
+        article_id: id
+      })
+      if (error) {
+        console.error('❌ Error incrementing view count:', error)
+        throw error
+      }
+      console.log('✅ Successfully incremented view count')
+      return data
+    },
+
+    async searchArticles(query: string) {
+      console.log('🔍 Searching articles for:', query)
+      const { data, error } = await supabase
+        .from('articles')
+        .select(`
+          *,
+          category:categories(id, name, slug, color)
+        `)
+        .eq('status', 'published')
+        .or(`title.ilike.%${query}%, content.ilike.%${query}%, excerpt.ilike.%${query}%`)
+        .order('published_at', { ascending: false })
+      if (error) {
+        console.error('❌ Error searching articles:', error)
+        throw error
+      }
+      console.log(`✅ Successfully found ${data?.length || 0} articles`)
+      return data
+    }
+  },
+
+  // Article relationships
+  articleCelebrities: {
+    ...createCrudOperations('article_celebrities'),
+    async getByArticleId(articleId: string) {
+      console.log('🔍 Fetching article celebrities by article ID:', articleId)
+      const { data, error } = await supabase
+        .from('article_celebrities')
+        .select(`
+          *,
+          celebrity:celebrities(*)
+        `)
+        .eq('article_id', articleId)
+      if (error) {
+        console.error('❌ Error fetching article celebrities:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} article celebrities`)
+      return data
+    },
+
+    async getByCelebrityId(celebrityId: string) {
+      console.log('🔍 Fetching articles by celebrity ID:', celebrityId)
+      const { data, error } = await supabase
+        .from('article_celebrities')
+        .select(`
+          *,
+          article:articles(*, category:categories(*))
+        `)
+        .eq('celebrity_id', celebrityId)
+      if (error) {
+        console.error('❌ Error fetching articles by celebrity:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} articles by celebrity`)
+      return data
+    }
+  },
+
+  articleItems: {
+    ...createCrudOperations('article_items'),
+    async getByArticleId(articleId: string) {
+      console.log('🔍 Fetching article items by article ID:', articleId)
+      const { data, error } = await supabase
+        .from('article_items')
+        .select(`
+          *,
+          item:items(*)
+        `)
+        .eq('article_id', articleId)
+      if (error) {
+        console.error('❌ Error fetching article items:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} article items`)
+      return data
+    }
+  },
+
+  articleLocations: {
+    ...createCrudOperations('article_locations'),
+    async getByArticleId(articleId: string) {
+      console.log('🔍 Fetching article locations by article ID:', articleId)
+      const { data, error } = await supabase
+        .from('article_locations')
+        .select(`
+          *,
+          location:locations(*)
+        `)
+        .eq('article_id', articleId)
+      if (error) {
+        console.error('❌ Error fetching article locations:', error)
+        throw error
+      }
+      console.log(`✅ Successfully fetched ${data?.length || 0} article locations`)
+      return data
+    }
+  },
+
   // Storage operations
   storage: {
     async uploadImage(bucket: string, path: string, file: File) {
@@ -1310,6 +1566,160 @@ export type Database = {
           like_count?: number | null
           created_at?: string | null
           updated_at?: string | null
+        }
+      }
+      categories: {
+        Row: {
+          id: string
+          name: string
+          slug: string
+          description: string | null
+          color: string | null
+          order_index: number | null
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          name: string
+          slug: string
+          description?: string | null
+          color?: string | null
+          order_index?: number | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          name?: string
+          slug?: string
+          description?: string | null
+          color?: string | null
+          order_index?: number | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+      }
+      articles: {
+        Row: {
+          id: string
+          title: string
+          slug: string
+          content: string
+          excerpt: string | null
+          featured_image: string | null
+          category_id: string
+          tags: string[] | null
+          status: string | null
+          published_at: string | null
+          view_count: number | null
+          featured: boolean | null
+          seo_title: string | null
+          meta_description: string | null
+          wordpress_id: number | null
+          wordpress_slug: string | null
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          title: string
+          slug: string
+          content: string
+          excerpt?: string | null
+          featured_image?: string | null
+          category_id: string
+          tags?: string[] | null
+          status?: string | null
+          published_at?: string | null
+          view_count?: number | null
+          featured?: boolean | null
+          seo_title?: string | null
+          meta_description?: string | null
+          wordpress_id?: number | null
+          wordpress_slug?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          title?: string
+          slug?: string
+          content?: string
+          excerpt?: string | null
+          featured_image?: string | null
+          category_id?: string
+          tags?: string[] | null
+          status?: string | null
+          published_at?: string | null
+          view_count?: number | null
+          featured?: boolean | null
+          seo_title?: string | null
+          meta_description?: string | null
+          wordpress_id?: number | null
+          wordpress_slug?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+      }
+      article_celebrities: {
+        Row: {
+          id: string
+          article_id: string
+          celebrity_id: string
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          article_id: string
+          celebrity_id: string
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          article_id?: string
+          celebrity_id?: string
+          created_at?: string | null
+        }
+      }
+      article_items: {
+        Row: {
+          id: string
+          article_id: string
+          item_id: string
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          article_id: string
+          item_id: string
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          article_id?: string
+          item_id?: string
+          created_at?: string | null
+        }
+      }
+      article_locations: {
+        Row: {
+          id: string
+          article_id: string
+          location_id: string
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          article_id: string
+          location_id: string
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          article_id?: string
+          location_id?: string
+          created_at?: string | null
         }
       }
     }

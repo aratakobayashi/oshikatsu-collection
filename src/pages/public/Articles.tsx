@@ -39,41 +39,51 @@ export default function Articles() {
   async function fetchData() {
     try {
       console.log('記事データ取得開始...')
-      // テスト用のモックデータを表示
-      const mockArticles = [
-        {
-          id: '1',
-          title: '初心者向け盆栽の始め方完全ガイド',
-          slug: 'bonsai-guide',
-          content: '盆栽の基本的な始め方について...',
-          excerpt: '盆栽を始めるための完全ガイドです。初心者でも簡単に始められます。',
-          featured_image: '',
-          published_at: '2025-06-11T12:36:12+00:00',
-          status: 'published',
-          created_at: '2025-09-15T02:00:01.266947+00:00',
-          view_count: 150,
-          featured: false,
-          tags: ['初心者', '盆栽', 'ガイド']
-        },
-        {
-          id: '2',
-          title: 'WordPress移行テスト記事',
-          slug: 'wordpress-test',
-          content: 'WordPressから移行されたテスト記事です...',
-          excerpt: 'WordPressからの移行テストのための記事です。',
-          featured_image: '',
-          published_at: '2025-06-10T10:00:00+00:00',
-          status: 'published',
-          created_at: '2025-09-15T01:00:00.000000+00:00',
-          view_count: 75,
-          featured: true,
-          tags: ['テスト', 'WordPress', '移行']
-        }
-      ]
+      
+      // Supabaseから記事を取得
+      const { data: articlesData, error: articlesError } = await supabase
+        .from('articles')
+        .select(`
+          *,
+          category:article_categories(*)
+        `)
+        .eq('status', 'published')
+        .order('published_at', { ascending: false })
 
-      console.log('モックデータを設定:', mockArticles.length, '件')
-      setArticles(mockArticles)
-      setCategories([])
+      if (articlesError) {
+        console.error('記事取得エラー:', articlesError)
+        // エラー時はモックデータを表示
+        const mockArticles = [
+          {
+            id: '1',
+            title: '記事の読み込みに失敗しました',
+            slug: 'error',
+            content: 'データベースへの接続に問題があります。',
+            excerpt: '後ほど再度お試しください。',
+            featured_image: '',
+            published_at: new Date().toISOString(),
+            status: 'published',
+            created_at: new Date().toISOString(),
+            view_count: 0,
+            featured: false,
+            tags: []
+          }
+        ]
+        setArticles(mockArticles)
+      } else {
+        setArticles(articlesData || [])
+      }
+
+      // カテゴリーを取得
+      const { data: categoriesData, error: categoriesError } = await supabase
+        .from('article_categories')
+        .select('*')
+        .order('order_index', { ascending: true })
+
+      if (!categoriesError) {
+        setCategories(categoriesData || [])
+      }
+
     } catch (error) {
       console.error('Error fetching data:', error)
       setArticles([])

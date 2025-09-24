@@ -80,7 +80,7 @@ export default function ArticlesSimple() {
           <div className="flex">
             <div className="ml-3">
               <p className="text-sm">
-                <strong>✅ 移行成功:</strong> WordPressから{articles.length}件の記事が正常に移行されました！
+                <strong>✅ 移行成功:</strong> WordPressから {articles.length} 件の記事が正常に移行されました！
               </p>
             </div>
           </div>
