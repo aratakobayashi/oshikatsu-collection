@@ -37,14 +37,52 @@ export default function ArticleDetail() {
   async function fetchArticle(articleSlug: string) {
     try {
       setLoading(true)
+      
+      console.log('Received slug:', articleSlug)
+      console.log('Encoded slug:', encodeURIComponent(articleSlug))
+      console.log('Decoded slug:', decodeURIComponent(articleSlug))
 
-      // Supabaseから記事を取得
-      const { data, error } = await supabase
+      // Try the slug as-is first
+      let { data, error } = await supabase
         .from('articles')
         .select('*')
         .eq('slug', articleSlug)
         .eq('status', 'published')
         .single()
+
+      // If not found and slug contains Japanese characters, try encoding it
+      if (error && /[^\x00-\x7F]/.test(articleSlug)) {
+        console.log('Article not found with decoded slug, trying encoded version...')
+        const encodedSlug = encodeURIComponent(articleSlug)
+        console.log('Trying encoded slug:', encodedSlug)
+        
+        const result = await supabase
+          .from('articles')
+          .select('*')
+          .eq('slug', encodedSlug)
+          .eq('status', 'published')
+          .single()
+          
+        data = result.data
+        error = result.error
+      }
+
+      // If still not found and slug is already encoded, try decoding it
+      if (error && articleSlug.includes('%')) {
+        console.log('Article not found with original slug, trying decoded version...')
+        const decodedSlug = decodeURIComponent(articleSlug)
+        console.log('Trying decoded slug:', decodedSlug)
+        
+        const result = await supabase
+          .from('articles')
+          .select('*')
+          .eq('slug', decodedSlug)
+          .eq('status', 'published')
+          .single()
+          
+        data = result.data
+        error = result.error
+      }
 
       if (error) {
         console.error('記事取得エラー:', error)
