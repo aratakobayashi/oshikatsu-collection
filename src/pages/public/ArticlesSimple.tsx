@@ -31,7 +31,6 @@ export default function ArticlesSimple() {
         .select('id, title, slug, excerpt, published_at, featured_image_url')
         .eq('status', 'published')
         .order('published_at', { ascending: false })
-        .limit(20)
 
       if (error) {
         console.error('記事取得エラー:', error)
