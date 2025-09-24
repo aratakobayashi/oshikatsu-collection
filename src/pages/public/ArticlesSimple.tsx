@@ -12,6 +12,7 @@ interface Article {
   slug: string
   excerpt: string
   published_at: string
+  featured_image_url?: string
 }
 
 export default function ArticlesSimple() {
@@ -27,7 +28,7 @@ export default function ArticlesSimple() {
       setLoading(true)
       const { data, error } = await supabase
         .from('articles')
-        .select('id, title, slug, excerpt, published_at')
+        .select('id, title, slug, excerpt, published_at, featured_image_url')
         .eq('status', 'published')
         .order('published_at', { ascending: false })
         .limit(20)
@@ -86,29 +87,54 @@ export default function ArticlesSimple() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {articles.map((article) => (
-            <div key={article.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+            <article key={article.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden">
+              {/* Featured Image */}
+              {article.featured_image_url && (
+                <div className="aspect-video w-full overflow-hidden">
+                  <img
+                    src={article.featured_image_url}
+                    alt={article.title}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                </div>
+              )}
+
               <div className="p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  {article.title}
+                <h3 className="text-lg font-semibold text-gray-900 mb-3 line-clamp-2">
+                  <Link
+                    to={`/articles/${article.slug}`}
+                    className="hover:text-purple-600 transition-colors"
+                  >
+                    {article.title}
+                  </Link>
                 </h3>
-                <p className="text-gray-600 text-sm mb-4">
+
+                <p className="text-gray-600 text-sm mb-4 line-clamp-3">
                   {article.excerpt}
                 </p>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-gray-500">
+
+                <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+                  <span className="text-xs text-gray-500 flex items-center">
+                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
                     {new Date(article.published_at).toLocaleDateString('ja-JP')}
                   </span>
                   <Link
                     to={`/articles/${article.slug}`}
-                    className="text-purple-600 hover:text-purple-700 font-medium text-sm"
+                    className="inline-flex items-center text-purple-600 hover:text-purple-700 font-medium text-sm hover:underline transition-colors"
                   >
-                    続きを読む →
+                    続きを読む
+                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
                   </Link>
                 </div>
               </div>
-            </div>
+            </article>
           ))}
         </div>
       </div>

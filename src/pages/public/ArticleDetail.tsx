@@ -132,8 +132,24 @@ export default function ArticleDetail() {
     )
   }
 
-  if (error || !article) {
-    return <Navigate to="/articles" replace />
+  if (error && !loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-8">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">記事が見つかりません</h1>
+            <p className="text-gray-600 mb-8">お探しの記事は削除されたか、URLが間違っている可能性があります。</p>
+            <Link
+              to="/articles"
+              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              記事一覧に戻る
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
