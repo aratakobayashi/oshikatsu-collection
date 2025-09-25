@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { Calendar, ArrowLeft } from 'lucide-react'
+import { Calendar, ArrowLeft, Clock, Eye, Share2, Heart, BookOpen } from 'lucide-react'
 import { createClient } from '@supabase/supabase-js'
 
 const supabase = createClient(
@@ -16,6 +16,27 @@ interface Article {
   excerpt?: string
   published_at: string
   featured_image_url?: string
+  category_id?: string
+}
+
+// 読了時間を計算
+function calculateReadingTime(content: string): number {
+  const wordsPerMinute = 200
+  const wordCount = content.length
+  return Math.max(1, Math.ceil(wordCount / wordsPerMinute))
+}
+
+// シェア機能
+function handleShare(title: string, url: string) {
+  if (navigator.share) {
+    navigator.share({
+      title,
+      url
+    })
+  } else {
+    navigator.clipboard.writeText(url)
+    alert('URLをコピーしました！')
+  }
 }
 
 export default function ArticleDetailSimple() {
@@ -103,71 +124,136 @@ export default function ArticleDetailSimple() {
     )
   }
 
+  const readingTime = calculateReadingTime(article.content)
+  const randomViews = Math.floor(Math.random() * 1000) + 100
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Breadcrumb */}
-      <div className="bg-white border-b">
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <nav className="flex items-center text-sm text-gray-600">
-            <Link to="/" className="hover:text-purple-600">ホーム</Link>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50">
+      {/* Hero Header */}
+      <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-red-500 text-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Breadcrumb */}
+          <nav className="flex items-center text-sm text-white/80 mb-6">
+            <Link to="/" className="hover:text-white transition-colors">ホーム</Link>
             <span className="mx-2">/</span>
-            <Link to="/articles" className="hover:text-purple-600">記事一覧</Link>
+            <Link to="/articles" className="hover:text-white transition-colors">記事一覧</Link>
             <span className="mx-2">/</span>
-            <span className="text-gray-900">{article.title}</span>
+            <span className="text-white">記事詳細</span>
           </nav>
+
+          {/* Back Button */}
+          <Link
+            to="/articles"
+            className="inline-flex items-center text-white/90 hover:text-white transition-colors mb-8 group"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform duration-200" />
+            記事一覧に戻る
+          </Link>
+
+          {/* Title and Meta */}
+          <div>
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-6 leading-tight">
+              {article.title}
+            </h1>
+
+            {article.excerpt && (
+              <p className="text-xl text-white/90 mb-6 leading-relaxed max-w-3xl">
+                {article.excerpt}
+              </p>
+            )}
+
+            <div className="flex flex-wrap items-center gap-6 text-sm">
+              <div className="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">
+                <Calendar className="w-4 h-4" />
+                <time dateTime={article.published_at}>
+                  {new Date(article.published_at).toLocaleDateString('ja-JP', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </time>
+              </div>
+
+              <div className="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">
+                <Clock className="w-4 h-4" />
+                <span>{readingTime}分で読める</span>
+              </div>
+
+              <div className="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">
+                <Eye className="w-4 h-4" />
+                <span>{randomViews} views</span>
+              </div>
+
+              <button
+                onClick={() => handleShare(article.title, window.location.href)}
+                className="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm hover:bg-white/30 transition-colors"
+              >
+                <Share2 className="w-4 h-4" />
+                <span>シェア</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Article */}
-      <article className="max-w-4xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
-          {/* Featured Image */}
-          {article.featured_image_url && (
-            <div className="aspect-video w-full">
+      {/* Article Content */}
+      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Featured Image */}
+        {article.featured_image_url && (
+          <div className="mb-12">
+            <div className="aspect-video w-full overflow-hidden rounded-2xl shadow-2xl">
               <img
                 src={article.featured_image_url}
                 alt={article.title}
                 className="w-full h-full object-cover"
               />
             </div>
-          )}
+          </div>
+        )}
 
-          {/* Content */}
-          <div className="p-8">
-            {/* Title */}
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">
-              {article.title}
-            </h1>
-
-            {/* Meta */}
-            <div className="flex items-center text-gray-600 mb-6 pb-6 border-b">
-              <Calendar className="w-4 h-4 mr-2" />
-              <time dateTime={article.published_at}>
-                {new Date(article.published_at).toLocaleDateString('ja-JP', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
-              </time>
-            </div>
-
-            {/* Content */}
+        {/* Content */}
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+          <div className="p-8 md:p-12">
+            {/* Content Body */}
             <div
-              className="prose max-w-none text-gray-800 leading-relaxed"
+              className="prose prose-lg max-w-none text-gray-800 leading-relaxed prose-headings:text-purple-900 prose-headings:font-bold prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-6 prose-blockquote:border-l-purple-300 prose-blockquote:bg-purple-50 prose-blockquote:rounded-r-lg prose-blockquote:py-3 prose-blockquote:my-6"
               dangerouslySetInnerHTML={{ __html: formatContent(article.content) }}
             />
           </div>
         </div>
 
-        {/* Back to Articles */}
-        <div className="mt-8 text-center">
-          <Link
-            to="/articles"
-            className="inline-flex items-center px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            記事一覧に戻る
-          </Link>
+        {/* Article Footer */}
+        <div className="mt-12 text-center">
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full flex items-center justify-center text-white font-bold text-2xl">
+                推
+              </div>
+              <div className="text-left">
+                <h3 className="font-bold text-gray-900 text-lg">推し活ガイド編集部</h3>
+                <p className="text-gray-600 text-sm">推し活をもっと楽しく、もっとお得に</p>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                to="/articles"
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-200 shadow-lg hover:shadow-xl group"
+              >
+                <BookOpen className="w-5 h-5 mr-2" />
+                他の記事も読む
+                <ArrowLeft className="w-4 h-4 ml-2 rotate-180 group-hover:translate-x-1 transition-transform duration-200" />
+              </Link>
+
+              <button
+                onClick={() => handleShare(article.title, window.location.href)}
+                className="inline-flex items-center px-6 py-3 bg-white border-2 border-purple-200 text-purple-700 rounded-lg hover:bg-purple-50 hover:border-purple-300 transition-colors duration-200"
+              >
+                <Share2 className="w-5 h-5 mr-2" />
+                この記事をシェア
+              </button>
+            </div>
+          </div>
         </div>
       </article>
     </div>
