@@ -70,16 +70,16 @@ export default function ArticlesImproved() {
         }
       }
 
-      // タグフィルタ（複数選択対応）
-      if (selectedTags.length > 0) {
-        const tagIds = tags
-          .filter(t => selectedTags.includes(t.slug))
-          .map(t => t.id)
+      // タグフィルタ（一時的に無効化）
+      // if (selectedTags.length > 0) {
+      //   const tagIds = tags
+      //     .filter(t => selectedTags.includes(t.slug))
+      //     .map(t => t.id)
 
-        if (tagIds.length > 0) {
-          query = query.overlaps('tag_ids', tagIds)
-        }
-      }
+      //   if (tagIds.length > 0) {
+      //     query = query.overlaps('tag_ids', tagIds)
+      //   }
+      // }
 
       // ページネーション
       const from = (currentPage - 1) * ARTICLES_PER_PAGE
@@ -100,7 +100,7 @@ export default function ArticlesImproved() {
     } finally {
       setLoading(false)
     }
-  }, [currentPage, selectedCategory, selectedTags, categories, tags])
+  }, [currentPage, selectedCategory, selectedTags, categories])
 
   useEffect(() => {
     fetchArticles()
@@ -116,13 +116,14 @@ export default function ArticlesImproved() {
 
       setCategories(categoriesData || [])
 
-      // タグを取得
-      const { data: tagsData } = await supabase
-        .from('tags')
-        .select('*')
-        .order('name')
+      // タグ機能を一時的に無効化（tagsテーブルが存在しないため）
+      console.log('タグ機能は一時的に無効化されています')
+      // const { data: tagsData } = await supabase
+      //   .from('tags')
+      //   .select('*')
+      //   .order('name')
 
-      setTags(tagsData || [])
+      // setTags(tagsData || [])
     } catch (error) {
       console.error('初期データ読み込みエラー:', error)
     }
@@ -228,8 +229,8 @@ export default function ArticlesImproved() {
           </div>
         </div>
 
-        {/* Tag Filter */}
-        {tags.length > 0 && (
+        {/* Tag Filter - 一時的に無効化 (tagsテーブルが存在しないため) */}
+        {false && tags.length > 0 && (
           <div className="bg-white border-b">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
               <h3 className="text-sm font-medium text-gray-700 mb-3">タグで絞り込む（複数選択可）</h3>
