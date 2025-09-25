@@ -38,8 +38,8 @@ import CelebrityProfile from './pages/public/CelebrityProfile'
 import EpisodeDetail from './pages/public/EpisodeDetail'
 import Works from './pages/public/Works'
 import WorkDetail from './pages/public/WorkDetail'
-import ArticlesSimple from './pages/public/ArticlesSimple'
-import ArticleDetail from './pages/public/ArticleDetail'
+import ArticlesImproved from './pages/public/ArticlesImproved'
+import ArticleDetailImproved from './pages/public/ArticleDetailImproved'
 import Submit from './pages/public/Submit'
 import Login from './pages/public/Login'
 import Register from './pages/public/Register'
@@ -163,7 +163,7 @@ function App() {
         <Route path="/locations" element={<Layout><Locations /></Layout>} />
         <Route path="/posts" element={<Layout><Posts /></Layout>} />
         <Route path="/works" element={<Layout><Works /></Layout>} />
-        <Route path="/articles" element={<Layout><ArticlesSimple /></Layout>} />
+        <Route path="/articles" element={<Layout><ArticlesImproved /></Layout>} />
         
         {/* Detail Routes */}
         <Route path="/celebrities/:slug" element={<Layout><CelebrityProfile /></Layout>} />
@@ -172,7 +172,7 @@ function App() {
         <Route path="/items/:id" element={<Layout><ItemDetail /></Layout>} />
         <Route path="/locations/:id" element={<Layout><LocationDetail /></Layout>} />
         <Route path="/posts/:id" element={<Layout><PostDetail /></Layout>} />
-        <Route path="/articles/:slug" element={<Layout><ArticleDetail /></Layout>} />
+        <Route path="/articles/:slug" element={<Layout><ArticleDetailImproved /></Layout>} />
         
         {/* Authentication Routes */}
         <Route path="/login" element={
