@@ -40,6 +40,7 @@ import Works from './pages/public/Works'
 import WorkDetail from './pages/public/WorkDetail'
 import ArticlesImproved from './pages/public/ArticlesImproved'
 import ArticleDetailImproved from './pages/public/ArticleDetailImproved'
+import ArticlesDebug from './pages/public/ArticlesDebug'
 import Submit from './pages/public/Submit'
 import Login from './pages/public/Login'
 import Register from './pages/public/Register'
@@ -164,6 +165,7 @@ function App() {
         <Route path="/posts" element={<Layout><Posts /></Layout>} />
         <Route path="/works" element={<Layout><Works /></Layout>} />
         <Route path="/articles" element={<Layout><ArticlesImproved /></Layout>} />
+        <Route path="/articles-debug" element={<Layout><ArticlesDebug /></Layout>} />
         
         {/* Detail Routes */}
         <Route path="/celebrities/:slug" element={<Layout><CelebrityProfile /></Layout>} />

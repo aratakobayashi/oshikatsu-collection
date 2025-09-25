@@ -52,59 +52,62 @@ export default function ArticlesImproved() {
     loadInitialData()
   }, [])
 
-  const fetchArticles = useCallback(async () => {
-    try {
-      setLoading(true)
+  useEffect(() => {
+    async function fetchArticles() {
+      console.log('🔍 ArticlesImproved: 記事取得開始...')
+      try {
+        setLoading(true)
 
-      let query = supabase
-        .from('articles')
-        .select('*', { count: 'exact' })
-        .eq('status', 'published')
-        .order('published_at', { ascending: false })
+        let query = supabase
+          .from('articles')
+          .select('*', { count: 'exact' })
+          .eq('status', 'published')
+          .order('published_at', { ascending: false })
 
-      // カテゴリフィルタ
-      if (selectedCategory) {
-        const category = categories.find(c => c.slug === selectedCategory)
-        if (category) {
-          query = query.eq('category_id', category.id)
+        // カテゴリフィルタ
+        if (selectedCategory) {
+          const category = categories.find(c => c.slug === selectedCategory)
+          if (category) {
+            query = query.eq('category_id', category.id)
+            console.log('📂 カテゴリフィルタ適用:', category.name)
+          }
         }
+
+        // ページネーション
+        const from = (currentPage - 1) * ARTICLES_PER_PAGE
+        const to = from + ARTICLES_PER_PAGE - 1
+        query = query.range(from, to)
+
+        console.log('🎯 クエリ実行中...')
+        const { data, error, count } = await query
+
+        console.log('📊 Supabase応答:')
+        console.log('  データ数:', data?.length)
+        console.log('  エラー:', error)
+        console.log('  総件数:', count)
+
+        if (error) {
+          console.error('❌ 記事取得エラー:', error)
+          return
+        }
+
+        console.log('✅ 記事設定中...')
+        setArticles(data || [])
+        setTotalArticles(count || 0)
+        console.log('✅ 記事設定完了')
+      } catch (error) {
+        console.error('❌ 予期しないエラー:', error)
+      } finally {
+        console.log('🔄 ローディング終了')
+        setLoading(false)
       }
+    }
 
-      // タグフィルタ（一時的に無効化）
-      // if (selectedTags.length > 0) {
-      //   const tagIds = tags
-      //     .filter(t => selectedTags.includes(t.slug))
-      //     .map(t => t.id)
-
-      //   if (tagIds.length > 0) {
-      //     query = query.overlaps('tag_ids', tagIds)
-      //   }
-      // }
-
-      // ページネーション
-      const from = (currentPage - 1) * ARTICLES_PER_PAGE
-      const to = from + ARTICLES_PER_PAGE - 1
-      query = query.range(from, to)
-
-      const { data, error, count } = await query
-
-      if (error) {
-        console.error('記事取得エラー:', error)
-        return
-      }
-
-      setArticles(data || [])
-      setTotalArticles(count || 0)
-    } catch (error) {
-      console.error('予期しないエラー:', error)
-    } finally {
-      setLoading(false)
+    // カテゴリが読み込まれた後に実行
+    if (categories.length > 0 || selectedCategory === '') {
+      fetchArticles()
     }
   }, [currentPage, selectedCategory, selectedTags, categories])
-
-  useEffect(() => {
-    fetchArticles()
-  }, [fetchArticles])
 
   async function loadInitialData() {
     try {
