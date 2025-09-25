@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { Calendar, ArrowRight, Clock, Eye, Tag, Search } from 'lucide-react'
+import { Link, useSearchParams } from 'react-router-dom'
+import { Calendar, ArrowRight, Clock, Eye, Tag, Search, ChevronLeft, ChevronRight } from 'lucide-react'
 import { createClient } from '@supabase/supabase-js'
 
 const supabase = createClient(
@@ -18,6 +18,15 @@ interface Article {
   category_id?: string
   content?: string
 }
+
+interface Category {
+  id: string
+  name: string
+  slug: string
+  description?: string
+}
+
+const ARTICLES_PER_PAGE = 9
 
 // カテゴリー設定
 const categoryConfig = {
@@ -62,31 +71,83 @@ function calculateReadingTime(content?: string): number {
 }
 
 export default function ArticlesList() {
+  const [searchParams, setSearchParams] = useSearchParams()
   const [articles, setArticles] = useState<Article[]>([])
+  const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(true)
+  const [totalArticles, setTotalArticles] = useState(0)
+
+  const selectedCategory = searchParams.get('category')
+  const currentPage = parseInt(searchParams.get('page') || '1')
 
   useEffect(() => {
-    fetchArticles()
+    loadCategories()
   }, [])
+
+  useEffect(() => {
+    // カテゴリが読み込まれてから記事をフェッチ
+    if (categories.length > 0 || !selectedCategory) {
+      fetchArticles()
+    }
+  }, [selectedCategory, currentPage, categories])
+
+  async function loadCategories() {
+    try {
+      const { data, error } = await supabase
+        .from('article_categories')
+        .select('*')
+        .order('name')
+
+      if (error) {
+        console.error('❌ Category Error:', error)
+      } else {
+        console.log('✅ カテゴリデータを設定:', data?.length, '件')
+        setCategories(data || [])
+      }
+    } catch (error) {
+      console.error('❌ Category fetch error:', error)
+    }
+  }
 
   async function fetchArticles() {
     console.log('🔥 fetchArticles関数が実行されました')
     try {
+      setLoading(true)
       console.log('📡 Supabaseにリクエスト送信中...')
-      const { data, error } = await supabase
+      console.log('🏷️ 選択されたカテゴリ:', selectedCategory)
+      console.log('📄 現在のページ:', currentPage)
+
+      let query = supabase
         .from('articles')
-        .select('id, title, slug, excerpt, published_at, featured_image_url')
+        .select('id, title, slug, excerpt, published_at, featured_image_url, category_id', { count: 'exact' })
         .eq('status', 'published')
         .order('published_at', { ascending: false })
-        .limit(20)
 
-      console.log('📊 Supabase応答:', { data: data?.length, error })
+      // カテゴリフィルターを適用
+      if (selectedCategory) {
+        const category = categories.find(c => c.slug === selectedCategory)
+        if (category) {
+          query = query.eq('category_id', category.id)
+          console.log('🎯 カテゴリフィルター適用:', category.name)
+        }
+      }
+
+      // ページネーション
+      const from = (currentPage - 1) * ARTICLES_PER_PAGE
+      const to = from + ARTICLES_PER_PAGE - 1
+      query = query.range(from, to)
+      console.log(`📊 ページネーション: ${from}-${to} (ページ ${currentPage})`)
+
+      const { data, error, count } = await query
+
+      console.log('📊 Supabase応答:', { data: data?.length, error, totalCount: count })
 
       if (error) {
         console.error('❌ Error:', error)
       } else {
         console.log('✅ 記事データを設定:', data?.length, '件')
         setArticles(data || [])
+        setTotalArticles(count || 0)
       }
     } catch (error) {
       console.error('❌ Fetch error:', error)
@@ -94,6 +155,26 @@ export default function ArticlesList() {
       console.log('🔄 Loading終了')
       setLoading(false)
     }
+  }
+
+  function handleCategoryClick(categorySlug: string) {
+    const newParams = new URLSearchParams(searchParams)
+    if (selectedCategory === categorySlug) {
+      // 同じカテゴリをクリックした場合はフィルターを解除
+      newParams.delete('category')
+    } else {
+      // 新しいカテゴリを選択
+      newParams.set('category', categorySlug)
+    }
+    // カテゴリ変更時はページを1にリセット
+    newParams.set('page', '1')
+    setSearchParams(newParams)
+  }
+
+  function handlePageChange(page: number) {
+    const newParams = new URLSearchParams(searchParams)
+    newParams.set('page', page.toString())
+    setSearchParams(newParams)
   }
 
   if (loading) {
@@ -116,10 +197,16 @@ export default function ArticlesList() {
               </span>
             </div>
             <h1 className="text-5xl md:text-6xl font-extrabold mb-6 bg-gradient-to-r from-white to-purple-100 bg-clip-text text-transparent">
-              推し活ガイド
+              {selectedCategory
+                ? `${categories.find(c => c.slug === selectedCategory)?.name || '推し活ガイド'}の記事`
+                : '推し活ガイド'
+              }
             </h1>
             <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto">
-              推し活初心者からベテランまで、あなたの推し活をサポートする記事を{articles.length}件お届け
+              {selectedCategory
+                ? `${categories.find(c => c.slug === selectedCategory)?.name}に関する記事を${articles.length}件お届け`
+                : `推し活初心者からベテランまで、あなたの推し活をサポートする記事を${articles.length}件お届け`
+              }
             </p>
             <div className="flex items-center justify-center gap-6 text-sm">
               <div className="flex items-center gap-2">
@@ -138,6 +225,65 @@ export default function ArticlesList() {
           </div>
         </div>
       </div>
+
+      {/* Category Filter */}
+      {categories.length > 0 && (
+        <div className="bg-white border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">カテゴリーで絞り込む</h2>
+              <p className="text-gray-600">気になるテーマの記事を見つけよう</p>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+              {categories.map((category) => {
+                const config = categoryConfig[category.slug as keyof typeof categoryConfig] || {
+                  icon: '📄',
+                  color: 'bg-gray-100 text-gray-800 border-gray-300'
+                }
+                const isActive = selectedCategory === category.slug
+
+                return (
+                  <button
+                    key={category.id}
+                    onClick={() => handleCategoryClick(category.slug)}
+                    className={`
+                      group relative p-6 rounded-2xl border-2 transition-all duration-300 text-center
+                      ${isActive
+                        ? 'bg-gradient-to-br from-purple-50 to-pink-50 border-purple-400 ring-4 ring-purple-200 shadow-lg transform scale-105'
+                        : 'bg-white border-gray-200 hover:border-purple-300 hover:shadow-lg hover:transform hover:scale-105'
+                      }
+                    `}
+                  >
+                    <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
+                      {config.icon}
+                    </div>
+                    <h3 className={`font-semibold text-sm ${isActive ? 'text-purple-900' : 'text-gray-900'}`}>
+                      {category.name}
+                    </h3>
+                    {isActive && (
+                      <div className="absolute -top-2 -right-2 w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center">
+                        <span className="text-white text-xs font-bold">✓</span>
+                      </div>
+                    )}
+                  </button>
+                )
+              })}
+            </div>
+
+            {selectedCategory && (
+              <div className="mt-6 text-center">
+                <button
+                  onClick={() => handleCategoryClick(selectedCategory)}
+                  className="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-colors text-sm"
+                >
+                  🗂️ フィルターをクリア
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Articles Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -160,6 +306,7 @@ export default function ArticlesList() {
               {articles.map((article) => {
                 const readingTime = calculateReadingTime(article.content)
                 const randomViews = Math.floor(Math.random() * 1000) + 100
+                const category = categories.find(c => c.id === article.category_id)
 
                 return (
                   <article
@@ -186,11 +333,14 @@ export default function ArticlesList() {
                     {/* Content */}
                     <div className="p-6">
                       {/* Category Badge */}
-                      {article.category_id && (
+                      {category && (
                         <div className="mb-3">
-                          <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${categoryConfig[article.category_id as keyof typeof categoryConfig]?.color || 'bg-gray-100 text-gray-800'}`}>
-                            {categoryConfig[article.category_id as keyof typeof categoryConfig]?.icon} {categoryConfig[article.category_id as keyof typeof categoryConfig]?.name || 'その他'}
-                          </span>
+                          <button
+                            onClick={() => handleCategoryClick(category.slug)}
+                            className={`inline-block px-3 py-1 rounded-full text-xs font-medium border transition-colors hover:bg-opacity-80 ${categoryConfig[category.slug as keyof typeof categoryConfig]?.color || 'bg-gray-100 text-gray-800 border-gray-300'}`}
+                          >
+                            {categoryConfig[category.slug as keyof typeof categoryConfig]?.icon} {category.name}
+                          </button>
                         </div>
                       )}
 
@@ -236,6 +386,91 @@ export default function ArticlesList() {
                 )
               })}
             </div>
+
+            {/* Pagination */}
+            {Math.ceil(totalArticles / ARTICLES_PER_PAGE) > 1 && (
+              <div className="mt-12">
+                <nav className="flex justify-center items-center space-x-2" aria-label="Pagination">
+                  {/* Previous Button */}
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className={`
+                      flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-colors
+                      ${currentPage === 1
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        : 'bg-white text-gray-700 hover:bg-purple-50 hover:text-purple-600 border border-gray-300'
+                      }
+                    `}
+                  >
+                    <ChevronLeft className="w-4 h-4 mr-1" />
+                    前のページ
+                  </button>
+
+                  {/* Page Numbers */}
+                  <div className="flex space-x-1">
+                    {Array.from({ length: Math.ceil(totalArticles / ARTICLES_PER_PAGE) }, (_, i) => {
+                      const pageNumber = i + 1
+                      const totalPages = Math.ceil(totalArticles / ARTICLES_PER_PAGE)
+
+                      // Show first page, last page, current page, and pages around current
+                      if (
+                        pageNumber === 1 ||
+                        pageNumber === totalPages ||
+                        Math.abs(pageNumber - currentPage) <= 1
+                      ) {
+                        return (
+                          <button
+                            key={pageNumber}
+                            onClick={() => handlePageChange(pageNumber)}
+                            className={`
+                              px-3 py-2 text-sm font-medium rounded-lg transition-colors
+                              ${pageNumber === currentPage
+                                ? 'bg-purple-600 text-white shadow-sm'
+                                : 'bg-white text-gray-700 hover:bg-purple-50 hover:text-purple-600 border border-gray-300'
+                              }
+                            `}
+                          >
+                            {pageNumber}
+                          </button>
+                        )
+                      } else if (
+                        (pageNumber === 2 && currentPage > 4) ||
+                        (pageNumber === totalPages - 1 && currentPage < totalPages - 3)
+                      ) {
+                        return (
+                          <span key={pageNumber} className="px-2 py-2 text-gray-400">
+                            ...
+                          </span>
+                        )
+                      }
+                      return null
+                    })}
+                  </div>
+
+                  {/* Next Button */}
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === Math.ceil(totalArticles / ARTICLES_PER_PAGE)}
+                    className={`
+                      flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-colors
+                      ${currentPage === Math.ceil(totalArticles / ARTICLES_PER_PAGE)
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        : 'bg-white text-gray-700 hover:bg-purple-50 hover:text-purple-600 border border-gray-300'
+                      }
+                    `}
+                  >
+                    次のページ
+                    <ChevronRight className="w-4 h-4 ml-1" />
+                  </button>
+                </nav>
+
+                {/* Page Info */}
+                <div className="mt-4 text-center text-sm text-gray-600">
+                  {totalArticles}件中 {((currentPage - 1) * ARTICLES_PER_PAGE) + 1}-{Math.min(currentPage * ARTICLES_PER_PAGE, totalArticles)}件を表示
+                </div>
+              </div>
+            )}
           </>
         )}
       </div>
