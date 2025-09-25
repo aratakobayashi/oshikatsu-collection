@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { Calendar, Tag, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 import { createClient } from '@supabase/supabase-js'
@@ -52,33 +52,7 @@ export default function ArticlesImproved() {
     loadInitialData()
   }, [])
 
-  useEffect(() => {
-    fetchArticles()
-  }, [currentPage, selectedCategory, selectedTags])
-
-  async function loadInitialData() {
-    try {
-      // カテゴリを取得
-      const { data: categoriesData } = await supabase
-        .from('article_categories')
-        .select('*')
-        .order('name')
-
-      setCategories(categoriesData || [])
-
-      // タグを取得
-      const { data: tagsData } = await supabase
-        .from('tags')
-        .select('*')
-        .order('name')
-
-      setTags(tagsData || [])
-    } catch (error) {
-      console.error('初期データ読み込みエラー:', error)
-    }
-  }
-
-  async function fetchArticles() {
+  const fetchArticles = useCallback(async () => {
     try {
       setLoading(true)
 
@@ -126,7 +100,34 @@ export default function ArticlesImproved() {
     } finally {
       setLoading(false)
     }
+  }, [currentPage, selectedCategory, selectedTags, categories, tags])
+
+  useEffect(() => {
+    fetchArticles()
+  }, [fetchArticles])
+
+  async function loadInitialData() {
+    try {
+      // カテゴリを取得
+      const { data: categoriesData } = await supabase
+        .from('article_categories')
+        .select('*')
+        .order('name')
+
+      setCategories(categoriesData || [])
+
+      // タグを取得
+      const { data: tagsData } = await supabase
+        .from('tags')
+        .select('*')
+        .order('name')
+
+      setTags(tagsData || [])
+    } catch (error) {
+      console.error('初期データ読み込みエラー:', error)
+    }
   }
+
 
   function handleCategoryClick(categorySlug: string) {
     const newParams = new URLSearchParams(searchParams)
