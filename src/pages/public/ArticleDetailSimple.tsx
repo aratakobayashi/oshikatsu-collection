@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { Calendar, ArrowLeft, Clock, Eye, Share2, Heart, BookOpen, ListOrdered, ChevronRight, Twitter, Facebook, MessageCircle, Copy, CheckCircle } from 'lucide-react'
+import { Calendar, ArrowLeft, Clock, Eye, Share2, Heart, BookOpen, ListOrdered, ChevronRight, Twitter, Facebook, MessageCircle, Copy, CheckCircle, Home, FolderOpen } from 'lucide-react'
 import { createClient } from '@supabase/supabase-js'
 
 // Instagram埋め込み用の型定義
@@ -28,6 +28,13 @@ interface Article {
   published_at: string
   featured_image_url?: string
   category_id?: string
+}
+
+interface Category {
+  id: string
+  name: string
+  slug: string
+  description?: string
 }
 
 interface TocItem {
@@ -103,6 +110,7 @@ export default function ArticleDetailSimple() {
   const [showToc, setShowToc] = useState(false)
   const [copiedUrl, setCopiedUrl] = useState(false)
   const [relatedArticles, setRelatedArticles] = useState<Article[]>([])
+  const [category, setCategory] = useState<Category | null>(null)
   const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -146,7 +154,10 @@ export default function ArticleDetailSimple() {
 
       const { data, error: supabaseError } = await supabase
         .from('articles')
-        .select('id, title, slug, content, excerpt, published_at, featured_image_url')
+        .select(`
+          id, title, slug, content, excerpt, published_at, featured_image_url, category_id,
+          article_categories(id, name, slug, description)
+        `)
         .eq('slug', encodedSlug)
         .eq('status', 'published')
         .single()
@@ -155,6 +166,10 @@ export default function ArticleDetailSimple() {
         setError('記事が見つかりませんでした')
       } else {
         setArticle(data)
+        // カテゴリ情報をセット
+        if (data.article_categories) {
+          setCategory(data.article_categories)
+        }
       }
     } catch (error) {
       console.error('予期しないエラー:', error)
@@ -342,13 +357,42 @@ export default function ArticleDetailSimple() {
       {/* Hero Header */}
       <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-red-500 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Breadcrumb */}
+          {/* Dynamic Breadcrumb */}
           <nav className="flex items-center text-sm text-white/80 mb-6">
-            <Link to="/" className="hover:text-white transition-colors">ホーム</Link>
-            <span className="mx-2">/</span>
-            <Link to="/articles" className="hover:text-white transition-colors">記事一覧</Link>
-            <span className="mx-2">/</span>
-            <span className="text-white">記事詳細</span>
+            <Link
+              to="/"
+              className="flex items-center hover:text-white transition-colors group"
+            >
+              <Home className="w-4 h-4 mr-1 group-hover:scale-110 transition-transform duration-200" />
+              ホーム
+            </Link>
+            <ChevronRight className="w-4 h-4 mx-2 text-white/60" />
+
+            <Link
+              to="/articles"
+              className="flex items-center hover:text-white transition-colors group"
+            >
+              <BookOpen className="w-4 h-4 mr-1 group-hover:scale-110 transition-transform duration-200" />
+              記事一覧
+            </Link>
+            <ChevronRight className="w-4 h-4 mx-2 text-white/60" />
+
+            {category && (
+              <>
+                <Link
+                  to={`/articles?category=${category.slug}`}
+                  className="flex items-center hover:text-white transition-colors group"
+                >
+                  <FolderOpen className="w-4 h-4 mr-1 group-hover:scale-110 transition-transform duration-200" />
+                  {category.name}
+                </Link>
+                <ChevronRight className="w-4 h-4 mx-2 text-white/60" />
+              </>
+            )}
+
+            <span className="text-white font-medium truncate max-w-xs">
+              {article?.title || '記事詳細'}
+            </span>
           </nav>
 
           {/* Back Button */}
