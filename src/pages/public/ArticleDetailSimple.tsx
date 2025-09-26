@@ -228,32 +228,32 @@ export default function ArticleDetailSimple() {
       return `<h4${attrs} id="${id}" class="wp-h4 text-lg md:text-xl font-semibold text-gray-800 mb-3 mt-6 pl-4 border-l-4 border-teal-500 bg-teal-50 py-2">${content}</h4>`
     })
 
-    // 段落のスタイリング
-    formatted = formatted.replace(/<p([^>]*)>/g, '<p$1 class="mb-6 leading-relaxed text-gray-700 text-lg">')
+    // 段落のスタイリング - より読みやすく
+    formatted = formatted.replace(/<p([^>]*)>/g, '<p$1 class="mb-8 leading-loose text-gray-800 text-lg md:text-xl font-light tracking-wide">')
 
-    // リストのスタイリング
-    formatted = formatted.replace(/<ul([^>]*)>/g, '<ul$1 class="mb-6 pl-6 space-y-2 list-none">')
-    formatted = formatted.replace(/<ol([^>]*)>/g, '<ol$1 class="mb-6 pl-6 space-y-2 list-decimal list-inside">')
-    formatted = formatted.replace(/<li([^>]*)>/g, '<li$1 class="relative pl-4 text-gray-700 leading-relaxed before:content-[\'✓\'] before:absolute before:left-0 before:text-teal-500 before:font-bold">')
+    // リストのスタイリング - より視覚的に
+    formatted = formatted.replace(/<ul([^>]*)>/g, '<ul$1 class="mb-8 pl-0 space-y-4 list-none bg-gradient-to-r from-gray-50 to-white p-6 rounded-lg border-l-4 border-teal-400">')
+    formatted = formatted.replace(/<ol([^>]*)>/g, '<ol$1 class="mb-8 pl-6 space-y-4 list-decimal bg-gradient-to-r from-blue-50 to-white p-6 rounded-lg border-l-4 border-blue-400">')
+    formatted = formatted.replace(/<li([^>]*)>/g, '<li$1 class="relative pl-8 text-gray-800 text-lg leading-relaxed py-2 before:content-[\'▶\'] before:absolute before:left-0 before:text-teal-600 before:font-bold before:text-xl">')
 
-    // 引用のスタイリング
-    formatted = formatted.replace(/<blockquote([^>]*)>/g, '<blockquote$1 class="my-8 pl-6 pr-4 py-4 border-l-4 border-teal-400 bg-gradient-to-r from-teal-50 to-blue-50 italic text-gray-700 text-lg rounded-r-lg shadow-sm">')
+    // 引用のスタイリング - より目立つように
+    formatted = formatted.replace(/<blockquote([^>]*)>/g, '<blockquote$1 class="my-10 pl-8 pr-6 py-6 border-l-8 border-gradient-to-b from-purple-400 to-pink-400 bg-gradient-to-r from-purple-50 via-pink-50 to-purple-50 italic text-gray-800 text-xl leading-relaxed rounded-r-2xl shadow-lg relative">')
 
-    // 強調テキストのスタイリング
-    formatted = formatted.replace(/<strong([^>]*)>/g, '<strong$1 class="font-bold text-gray-900 bg-yellow-100 px-1 py-0.5 rounded">')
-    formatted = formatted.replace(/<em([^>]*)>/g, '<em$1 class="italic text-teal-700 font-medium">')
+    // 強調テキストのスタイリング - よりインパクトのある表現
+    formatted = formatted.replace(/<strong([^>]*)>/g, '<strong$1 class="font-bold text-gray-900 bg-gradient-to-r from-yellow-200 to-yellow-300 px-3 py-1 rounded-lg shadow-sm border border-yellow-400 text-lg">')
+    formatted = formatted.replace(/<em([^>]*)>/g, '<em$1 class="italic text-purple-700 font-semibold bg-purple-50 px-2 py-1 rounded border-l-2 border-purple-400">')
 
-    // 画像のスタイリング
-    formatted = formatted.replace(/<img([^>]*?)>/g, '<img$1 class="my-8 mx-auto max-w-full h-auto rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300" loading="lazy">')
+    // 画像のスタイリング - より魅力的に
+    formatted = formatted.replace(/<img([^>]*?)>/g, '<img$1 class="my-12 mx-auto max-w-full h-auto rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 border-4 border-white" loading="lazy">')
 
-    // リンクのスタイリング
-    formatted = formatted.replace(/<a([^>]*?)>/g, '<a$1 class="text-teal-600 hover:text-teal-800 underline decoration-2 underline-offset-2 hover:decoration-teal-800 transition-colors font-medium">')
+    // リンクのスタイリング - より目立つように
+    formatted = formatted.replace(/<a([^>]*?)>/g, '<a$1 class="text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-2 py-1 rounded-md underline decoration-2 underline-offset-4 hover:decoration-blue-800 transition-all duration-200 font-semibold border border-blue-200 hover:border-blue-300">')
 
-    // 改行を適切に処理
+    // 改行を適切に処理 - より読みやすく
     if (!formatted.includes('<p>') && !formatted.includes('<h')) {
-      formatted = formatted.replace(/\n\n/g, '</p><p class="mb-6 leading-relaxed text-gray-700 text-lg">')
-      formatted = formatted.replace(/\n/g, '<br>')
-      formatted = '<p class="mb-6 leading-relaxed text-gray-700 text-lg">' + formatted + '</p>'
+      formatted = formatted.replace(/\n\n/g, '</p><p class="mb-8 leading-loose text-gray-800 text-lg md:text-xl font-light tracking-wide">')
+      formatted = formatted.replace(/\n/g, '<br class="mb-4">')
+      formatted = '<p class="mb-8 leading-loose text-gray-800 text-lg md:text-xl font-light tracking-wide">' + formatted + '</p>'
     }
 
     return formatted
@@ -505,9 +505,10 @@ export default function ArticleDetailSimple() {
                   ref={contentRef}
                   className="wordpress-content max-w-none"
                   style={{
-                    fontFamily: '"Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", sans-serif',
-                    lineHeight: '1.8',
-                    color: '#333'
+                    fontFamily: '"Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "Hiragino Sans", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", sans-serif',
+                    lineHeight: '1.9',
+                    color: '#2d3748',
+                    letterSpacing: '0.02em'
                   }}
                   dangerouslySetInnerHTML={{ __html: formatContent(article.content) }}
                 />
@@ -519,7 +520,8 @@ export default function ArticleDetailSimple() {
         {/* WordPress-like Custom Styles */}
         <style jsx>{`
           .wordpress-content {
-            font-size: 16px;
+            font-size: 18px;
+            line-height: 1.8;
           }
 
           .wordpress-content .wp-h2 {
