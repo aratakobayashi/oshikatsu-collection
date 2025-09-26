@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { Calendar, ArrowLeft, Clock, Eye, Share2, Heart, BookOpen } from 'lucide-react'
+import { Calendar, ArrowLeft, Clock, Eye, Share2, Heart, BookOpen, ListOrdered, ChevronRight } from 'lucide-react'
 import { createClient } from '@supabase/supabase-js'
 
 // Instagram埋め込み用の型定義
@@ -30,6 +30,12 @@ interface Article {
   category_id?: string
 }
 
+interface TocItem {
+  id: string
+  text: string
+  level: number
+}
+
 // 読了時間を計算
 function calculateReadingTime(content: string): number {
   const wordsPerMinute = 200
@@ -55,6 +61,9 @@ export default function ArticleDetailSimple() {
   const [article, setArticle] = useState<Article | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [tocItems, setTocItems] = useState<TocItem[]>([])
+  const [showToc, setShowToc] = useState(false)
+  const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (slug) {
@@ -95,23 +104,6 @@ export default function ArticleDetailSimple() {
       // ブラウザが自動的にデコードしてしまうので、再度エンコードする
       const encodedSlug = encodeURIComponent(articleSlug).toLowerCase()
 
-      console.log('記事取得開始')
-      console.log('  元のスラッグ:', articleSlug)
-      console.log('  エンコード済みスラッグ:', encodedSlug)
-
-      // まず全記事のスラッグを確認してデバッグ
-      const { data: allArticles } = await supabase
-        .from('articles')
-        .select('slug, title')
-        .eq('status', 'published')
-        .limit(5)
-
-      console.log('🔍 データベース内の記事スラッグ (最初の5件):')
-      allArticles?.forEach((art, index) => {
-        console.log(`${index + 1}. "${art.slug}" - ${art.title}`)
-      })
-      console.log('🎯 検索中のスラッグ (エンコード済み):', `"${encodedSlug}"`)
-
       const { data, error: supabaseError } = await supabase
         .from('articles')
         .select('id, title, slug, content, excerpt, published_at, featured_image_url')
@@ -120,10 +112,8 @@ export default function ArticleDetailSimple() {
         .single()
 
       if (supabaseError) {
-        console.error('記事取得エラー:', supabaseError)
         setError('記事が見つかりませんでした')
       } else {
-        console.log('記事取得成功:', data)
         setArticle(data)
       }
     } catch (error) {
@@ -154,10 +144,27 @@ export default function ArticleDetailSimple() {
     // HTMLタグをそのまま保持（WordPressからのHTMLコンテンツ対応）
     // 段落タグ、見出しタグ、リストタグなどを保持
 
-    // WordPressスタイルの見出しを強化
-    formatted = formatted.replace(/<h2([^>]*)>/g, '<h2$1 class="wp-h2 text-2xl md:text-3xl font-bold text-white bg-gradient-to-r from-teal-600 to-teal-700 px-6 py-4 my-8 rounded-lg shadow-md border-t-4 border-b-4 border-teal-800">')
-    formatted = formatted.replace(/<h3([^>]*)>/g, '<h3$1 class="wp-h3 text-xl md:text-2xl font-semibold text-gray-800 pb-2 mb-4 mt-8 border-b-2 border-gradient bg-gradient-to-r from-teal-500 to-blue-500 bg-clip-border" style="border-image: linear-gradient(to right, #0d9488, #3b82f6) 1;">')
-    formatted = formatted.replace(/<h4([^>]*)>/g, '<h4$1 class="wp-h4 text-lg md:text-xl font-semibold text-gray-800 mb-3 mt-6 pl-4 border-l-4 border-teal-500 bg-teal-50 py-2">')
+    // 見出しにIDを追加してTOC用のアンカーを作成
+    let headingIdCounter = 0
+    const generateHeadingId = (text: string): string => {
+      headingIdCounter++
+      const cleanText = text.replace(/<[^>]*>/g, '').replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').toLowerCase()
+      return `heading-${headingIdCounter}-${cleanText.substring(0, 30)}`
+    }
+
+    // WordPressスタイルの見出しを強化（IDを追加）
+    formatted = formatted.replace(/<h2([^>]*?)>(.*?)<\/h2>/g, (match, attrs, content) => {
+      const id = generateHeadingId(content)
+      return `<h2${attrs} id="${id}" class="wp-h2 text-2xl md:text-3xl font-bold text-white bg-gradient-to-r from-teal-600 to-teal-700 px-6 py-4 my-8 rounded-lg shadow-md border-t-4 border-b-4 border-teal-800">${content}</h2>`
+    })
+    formatted = formatted.replace(/<h3([^>]*?)>(.*?)<\/h3>/g, (match, attrs, content) => {
+      const id = generateHeadingId(content)
+      return `<h3${attrs} id="${id}" class="wp-h3 text-xl md:text-2xl font-semibold text-gray-800 pb-2 mb-4 mt-8 border-b-2 border-gradient bg-gradient-to-r from-teal-500 to-blue-500 bg-clip-border" style="border-image: linear-gradient(to right, #0d9488, #3b82f6) 1;">${content}</h3>`
+    })
+    formatted = formatted.replace(/<h4([^>]*?)>(.*?)<\/h4>/g, (match, attrs, content) => {
+      const id = generateHeadingId(content)
+      return `<h4${attrs} id="${id}" class="wp-h4 text-lg md:text-xl font-semibold text-gray-800 mb-3 mt-6 pl-4 border-l-4 border-teal-500 bg-teal-50 py-2">${content}</h4>`
+    })
 
     // 段落のスタイリング
     formatted = formatted.replace(/<p([^>]*)>/g, '<p$1 class="mb-6 leading-relaxed text-gray-700 text-lg">')
@@ -188,6 +195,42 @@ export default function ArticleDetailSimple() {
     }
 
     return formatted
+  }
+
+  function generateToc(content: string): TocItem[] {
+    const tocItems: TocItem[] = []
+    const headingRegex = /<h([234])[^>]*id="([^"]*)"[^>]*>(.*?)<\/h[234]>/gi
+    let match
+
+    while ((match = headingRegex.exec(content)) !== null) {
+      const level = parseInt(match[1])
+      const id = match[2]
+      const text = match[3].replace(/<[^>]*>/g, '').trim()
+      
+      tocItems.push({
+        id,
+        text,
+        level
+      })
+    }
+
+    return tocItems
+  }
+
+  useEffect(() => {
+    if (article && article.content) {
+      const formattedContent = formatContent(article.content)
+      const tocItems = generateToc(formattedContent)
+      setTocItems(tocItems)
+      setShowToc(tocItems.length > 2)
+    }
+  }, [article])
+
+  function scrollToHeading(id: string) {
+    const element = document.getElementById(id)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
   }
 
   if (loading) {
@@ -307,18 +350,53 @@ export default function ArticleDetailSimple() {
         )}
 
         {/* Content */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
-          <div className="px-6 py-8 md:px-12 md:py-12">
-            {/* Content Body */}
-            <div
-              className="wordpress-content max-w-none"
-              style={{
-                fontFamily: '"Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", sans-serif',
-                lineHeight: '1.8',
-                color: '#333'
-              }}
-              dangerouslySetInnerHTML={{ __html: formatContent(article.content) }}
-            />
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Table of Contents */}
+          {showToc && tocItems.length > 0 && (
+            <div className="lg:w-80">
+              <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-6 sticky top-8">
+                <div className="flex items-center mb-4">
+                  <ListOrdered className="w-5 h-5 text-teal-600 mr-2" />
+                  <h3 className="text-lg font-semibold text-gray-900">目次</h3>
+                </div>
+                <nav className="space-y-2">
+                  {tocItems.map((item, index) => (
+                    <button
+                      key={index}
+                      onClick={() => scrollToHeading(item.id)}
+                      className={`
+                        flex items-start w-full text-left p-2 rounded-lg transition-all hover:bg-gray-50 group
+                        ${item.level === 2 ? 'text-gray-900 font-medium' :
+                          item.level === 3 ? 'text-gray-700 ml-4' :
+                          'text-gray-600 ml-8 text-sm'}
+                      `}
+                    >
+                      <ChevronRight className="w-4 h-4 text-teal-500 mr-2 mt-0.5 group-hover:text-teal-600 transition-colors flex-shrink-0" />
+                      <span className="leading-relaxed">{item.text}</span>
+                    </button>
+                  ))}
+                </nav>
+              </div>
+            </div>
+          )}
+
+          {/* Article Content */}
+          <div className="flex-1">
+            <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+              <div className="px-6 py-8 md:px-12 md:py-12">
+                {/* Content Body */}
+                <div
+                  ref={contentRef}
+                  className="wordpress-content max-w-none"
+                  style={{
+                    fontFamily: '"Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", sans-serif',
+                    lineHeight: '1.8',
+                    color: '#333'
+                  }}
+                  dangerouslySetInnerHTML={{ __html: formatContent(article.content) }}
+                />
+              </div>
+            </div>
           </div>
         </div>
 

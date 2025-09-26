@@ -308,10 +308,6 @@ export default function ArticlesList() {
                 const randomViews = Math.floor(Math.random() * 1000) + 100
                 const category = categories.find(c => c.id === article.category_id)
 
-                // デバッグ用：スラッグをログ出力
-                console.log('📰 記事:', article.title)
-                console.log('🔗 スラッグ:', `"${article.slug}"`)
-                console.log('🌐 URL:', `/articles/${article.slug}`)
 
                 return (
                   <article
