@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { Calendar, ArrowLeft, Clock, Eye, Share2, Heart, BookOpen, ListOrdered, ChevronRight } from 'lucide-react'
+import { Calendar, ArrowLeft, Clock, Eye, Share2, Heart, BookOpen, ListOrdered, ChevronRight, Twitter, Facebook, MessageCircle, Copy, CheckCircle } from 'lucide-react'
 import { createClient } from '@supabase/supabase-js'
 
 // Instagram埋め込み用の型定義
@@ -44,6 +44,43 @@ function calculateReadingTime(content: string): number {
 }
 
 // シェア機能
+// 各SNSプラットフォーム用のシェア関数
+function shareToTwitter(title: string, url: string) {
+  const text = `${title} | 推し活ガイド`
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`
+  window.open(twitterUrl, '_blank', 'width=600,height=400')
+}
+
+function shareToFacebook(url: string) {
+  const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`
+  window.open(facebookUrl, '_blank', 'width=600,height=400')
+}
+
+function shareToLine(title: string, url: string) {
+  const text = `${title} | 推し活ガイド`
+  const lineUrl = `https://line.me/R/msg/text/?${encodeURIComponent(`${text}\n${url}`)}`
+  window.open(lineUrl, '_blank')
+}
+
+async function copyUrlToClipboard(url: string, setCopiedUrl: (value: boolean) => void) {
+  try {
+    await navigator.clipboard.writeText(url)
+    setCopiedUrl(true)
+    setTimeout(() => setCopiedUrl(false), 2000)
+  } catch (error) {
+    // フォールバック：古いブラウザ対応
+    const textArea = document.createElement('textarea')
+    textArea.value = url
+    document.body.appendChild(textArea)
+    textArea.select()
+    document.execCommand('copy')
+    document.body.removeChild(textArea)
+    setCopiedUrl(true)
+    setTimeout(() => setCopiedUrl(false), 2000)
+  }
+}
+
+// 汎用シェア関数（ネイティブシェアAPI対応）
 function handleShare(title: string, url: string) {
   if (navigator.share) {
     navigator.share({
@@ -51,7 +88,8 @@ function handleShare(title: string, url: string) {
       url
     })
   } else {
-    navigator.clipboard.writeText(url)
+    // フォールバック：URLコピー
+    copyUrlToClipboard(url, () => {})
     alert('URLをコピーしました！')
   }
 }
@@ -63,6 +101,7 @@ export default function ArticleDetailSimple() {
   const [error, setError] = useState<string | null>(null)
   const [tocItems, setTocItems] = useState<TocItem[]>([])
   const [showToc, setShowToc] = useState(false)
+  const [copiedUrl, setCopiedUrl] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -505,13 +544,57 @@ export default function ArticleDetailSimple() {
                 <ArrowLeft className="w-4 h-4 ml-2 rotate-180 group-hover:translate-x-1 transition-transform duration-200" />
               </Link>
 
-              <button
-                onClick={() => handleShare(article.title, window.location.href)}
-                className="inline-flex items-center px-6 py-3 bg-white border-2 border-purple-200 text-purple-700 rounded-lg hover:bg-purple-50 hover:border-purple-300 transition-colors duration-200"
-              >
-                <Share2 className="w-5 h-5 mr-2" />
-                この記事をシェア
-              </button>
+              {/* SNSシェアボタン */}
+              <div className="bg-gray-50 rounded-xl p-6">
+                <h4 className="text-gray-900 font-semibold mb-4 text-center">この記事をシェア</h4>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {/* Twitter */}
+                  <button
+                    onClick={() => shareToTwitter(article.title, window.location.href)}
+                    className="flex flex-col items-center p-3 bg-sky-500 hover:bg-sky-600 text-white rounded-lg transition-colors duration-200 group"
+                  >
+                    <Twitter className="w-6 h-6 mb-1" />
+                    <span className="text-xs font-medium">Twitter</span>
+                  </button>
+
+                  {/* Facebook */}
+                  <button
+                    onClick={() => shareToFacebook(window.location.href)}
+                    className="flex flex-col items-center p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 group"
+                  >
+                    <Facebook className="w-6 h-6 mb-1" />
+                    <span className="text-xs font-medium">Facebook</span>
+                  </button>
+
+                  {/* LINE */}
+                  <button
+                    onClick={() => shareToLine(article.title, window.location.href)}
+                    className="flex flex-col items-center p-3 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors duration-200 group"
+                  >
+                    <MessageCircle className="w-6 h-6 mb-1" />
+                    <span className="text-xs font-medium">LINE</span>
+                  </button>
+
+                  {/* URLコピー */}
+                  <button
+                    onClick={() => copyUrlToClipboard(window.location.href, setCopiedUrl)}
+                    className={`flex flex-col items-center p-3 rounded-lg transition-all duration-200 group ${
+                      copiedUrl
+                        ? 'bg-green-500 text-white'
+                        : 'bg-gray-600 hover:bg-gray-700 text-white'
+                    }`}
+                  >
+                    {copiedUrl ? (
+                      <CheckCircle className="w-6 h-6 mb-1" />
+                    ) : (
+                      <Copy className="w-6 h-6 mb-1" />
+                    )}
+                    <span className="text-xs font-medium">
+                      {copiedUrl ? 'コピー済' : 'URLコピー'}
+                    </span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
