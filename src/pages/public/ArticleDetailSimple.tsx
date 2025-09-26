@@ -102,6 +102,7 @@ export default function ArticleDetailSimple() {
   const [tocItems, setTocItems] = useState<TocItem[]>([])
   const [showToc, setShowToc] = useState(false)
   const [copiedUrl, setCopiedUrl] = useState(false)
+  const [relatedArticles, setRelatedArticles] = useState<Article[]>([])
   const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -162,6 +163,13 @@ export default function ArticleDetailSimple() {
       setLoading(false)
     }
   }
+
+  // 関連記事を取得するuseEffect
+  useEffect(() => {
+    if (article && article.id && article.category_id) {
+      fetchRelatedArticles(article.id, article.category_id).then(setRelatedArticles)
+    }
+  }, [article])
 
   function formatContent(content: string): string {
     if (!content) return ''
@@ -269,6 +277,31 @@ export default function ArticleDetailSimple() {
     const element = document.getElementById(id)
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
+  async function fetchRelatedArticles(currentArticleId: string, categoryId?: string): Promise<Article[]> {
+    if (!categoryId) return []
+
+    try {
+      const { data, error } = await supabase
+        .from('articles')
+        .select('id, title, slug, excerpt, published_at, featured_image_url, category_id')
+        .eq('status', 'published')
+        .eq('category_id', categoryId)
+        .neq('id', currentArticleId)
+        .order('published_at', { ascending: false })
+        .limit(3)
+
+      if (error) {
+        console.error('関連記事取得エラー:', error)
+        return []
+      }
+
+      return data || []
+    } catch (error) {
+      console.error('関連記事取得エラー:', error)
+      return []
     }
   }
 
@@ -598,6 +631,75 @@ export default function ArticleDetailSimple() {
             </div>
           </div>
         </div>
+
+        {/* Related Articles */}
+        {relatedArticles.length > 0 && (
+          <div className="mt-12">
+            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+              <div className="flex items-center mb-6">
+                <BookOpen className="w-6 h-6 text-purple-600 mr-3" />
+                <h3 className="text-2xl font-bold text-gray-900">関連記事</h3>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {relatedArticles.map((relatedArticle) => (
+                  <Link
+                    key={relatedArticle.id}
+                    to={`/articles/${relatedArticle.slug}`}
+                    className="group block bg-gray-50 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 hover:bg-gray-100"
+                  >
+                    {/* Featured Image */}
+                    <div className="aspect-video w-full overflow-hidden bg-gray-200">
+                      {relatedArticle.featured_image_url ? (
+                        <img
+                          src={relatedArticle.featured_image_url}
+                          alt={relatedArticle.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-gray-400">
+                          <span className="text-4xl">📄</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Content */}
+                    <div className="p-4">
+                      <h4 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-purple-600 transition-colors">
+                        {relatedArticle.title}
+                      </h4>
+                      {relatedArticle.excerpt && (
+                        <p className="text-sm text-gray-600 line-clamp-2 mb-3">
+                          {relatedArticle.excerpt}
+                        </p>
+                      )}
+                      <div className="flex items-center text-xs text-gray-500">
+                        <Calendar className="w-3 h-3 mr-1" />
+                        <time dateTime={relatedArticle.published_at}>
+                          {new Date(relatedArticle.published_at).toLocaleDateString('ja-JP', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric'
+                          })}
+                        </time>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+              <div className="text-center mt-6">
+                <Link
+                  to="/articles"
+                  className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-200 shadow-lg hover:shadow-xl group"
+                >
+                  <BookOpen className="w-5 h-5 mr-2" />
+                  記事一覧を見る
+                  <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
       </article>
     </div>
   )
