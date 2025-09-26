@@ -91,12 +91,31 @@ export default function ArticleDetailSimple() {
       setLoading(true)
       setError(null)
 
-      console.log('記事取得開始 - slug:', articleSlug)
+      // URLパラメータをエンコードしたまま保持
+      // ブラウザが自動的にデコードしてしまうので、再度エンコードする
+      const encodedSlug = encodeURIComponent(articleSlug).toLowerCase()
+
+      console.log('記事取得開始')
+      console.log('  元のスラッグ:', articleSlug)
+      console.log('  エンコード済みスラッグ:', encodedSlug)
+
+      // まず全記事のスラッグを確認してデバッグ
+      const { data: allArticles } = await supabase
+        .from('articles')
+        .select('slug, title')
+        .eq('status', 'published')
+        .limit(5)
+
+      console.log('🔍 データベース内の記事スラッグ (最初の5件):')
+      allArticles?.forEach((art, index) => {
+        console.log(`${index + 1}. "${art.slug}" - ${art.title}`)
+      })
+      console.log('🎯 検索中のスラッグ (エンコード済み):', `"${encodedSlug}"`)
 
       const { data, error: supabaseError } = await supabase
         .from('articles')
         .select('id, title, slug, content, excerpt, published_at, featured_image_url')
-        .eq('slug', articleSlug)
+        .eq('slug', encodedSlug)
         .eq('status', 'published')
         .single()
 
