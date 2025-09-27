@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { Calendar, ArrowLeft, Clock, Eye, Share2, Heart, BookOpen, ListOrdered, ChevronRight, Twitter, Facebook, MessageCircle, Copy, CheckCircle, Home, FolderOpen, Tag } from 'lucide-react'
+import { Calendar, ArrowLeft, Clock, Eye, Share2, Heart, BookOpen, ListOrdered, ChevronRight, Twitter, Facebook, MessageCircle, Copy, CheckCircle, Home, FolderOpen, Tag, X } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
 import OptimizedYouTubeThumbnail from '../../components/OptimizedYouTubeThumbnail'
 
@@ -98,6 +98,9 @@ export default function ArticleDetailSimple() {
   const [copiedUrl, setCopiedUrl] = useState(false)
   const [relatedArticles, setRelatedArticles] = useState<Article[]>([])
   const [category, setCategory] = useState<Category | null>(null)
+  const [activeHeadingId, setActiveHeadingId] = useState<string | null>(null)
+  const [readingProgress, setReadingProgress] = useState(0)
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null)
   const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -209,8 +212,8 @@ export default function ArticleDetailSimple() {
     formatted = formatted.replace(/<strong([^>]*)>/g, '<strong$1 class="font-bold text-gray-900 bg-gradient-to-r from-yellow-200 to-yellow-300 px-3 py-1 rounded-lg shadow-sm border border-yellow-400 text-lg">')
     formatted = formatted.replace(/<em([^>]*)>/g, '<em$1 class="italic text-purple-700 font-semibold bg-purple-50 px-2 py-1 rounded border-l-2 border-purple-400">')
 
-    // 画像のスタイリング - より魅力的に
-    formatted = formatted.replace(/<img([^>]*?)>/g, '<img$1 class="my-12 mx-auto max-w-full h-auto rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 border-4 border-white" loading="lazy">')
+    // 画像のスタイリング - より魅力的に（クリックでライトボックス表示）
+    formatted = formatted.replace(/<img([^>]*?)>/g, '<img$1 class="my-12 mx-auto max-w-full h-auto rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 border-4 border-white cursor-zoom-in" loading="lazy" data-lightbox="true">')
 
     // リンクのスタイリング - より目立つように
     formatted = formatted.replace(/<a([^>]*?)>/g, '<a$1 class="text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-2 py-1 rounded-md underline decoration-2 underline-offset-4 hover:decoration-blue-800 transition-all duration-200 font-semibold border border-blue-200 hover:border-blue-300">')
@@ -309,6 +312,83 @@ export default function ArticleDetailSimple() {
           placeholder.replaceWith(container)
         }
       })
+    }
+  }, [article])
+
+  // スクロール位置に応じて目次のアクティブ項目と読書進捗を更新
+  useEffect(() => {
+    if (!showToc || tocItems.length === 0) return
+
+    const handleScroll = () => {
+      // 読書進捗の計算
+      const windowHeight = window.innerHeight
+      const documentHeight = document.documentElement.scrollHeight
+      const scrollTop = window.scrollY
+      const progress = Math.min((scrollTop / (documentHeight - windowHeight)) * 100, 100)
+      setReadingProgress(progress)
+
+      // アクティブなセクションの判定
+      const headings = tocItems.map(item => ({
+        id: item.id,
+        element: document.getElementById(item.id)
+      })).filter(item => item.element !== null)
+
+      if (headings.length === 0) return
+
+      // 各見出しの位置を取得
+      const scrollPosition = scrollTop + 100 // オフセット調整
+
+      let activeId = null
+      for (let i = headings.length - 1; i >= 0; i--) {
+        const heading = headings[i]
+        if (heading.element) {
+          const rect = heading.element.getBoundingClientRect()
+          const absoluteTop = rect.top + scrollTop
+
+          if (absoluteTop <= scrollPosition) {
+            activeId = heading.id
+            break
+          }
+        }
+      }
+
+      // 最初のセクションより上にいる場合は最初のセクションをアクティブに
+      if (activeId === null && headings.length > 0) {
+        activeId = headings[0].id
+      }
+
+      setActiveHeadingId(activeId)
+    }
+
+    // 初回実行
+    handleScroll()
+
+    // スクロールイベントリスナー
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [tocItems, showToc])
+
+  // 画像クリックでライトボックス表示
+  useEffect(() => {
+    if (!contentRef.current) return
+
+    const handleImageClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement
+      if (target.tagName === 'IMG' && target.dataset.lightbox === 'true') {
+        const imgSrc = (target as HTMLImageElement).src
+        setLightboxImage(imgSrc)
+      }
+    }
+
+    contentRef.current.addEventListener('click', handleImageClick)
+
+    return () => {
+      if (contentRef.current) {
+        contentRef.current.removeEventListener('click', handleImageClick)
+      }
     }
   }, [article])
 
@@ -416,6 +496,13 @@ export default function ArticleDetailSimple() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50">
+      {/* 読書進捗バー */}
+      <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
+        <div
+          className="h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-150 ease-out"
+          style={{ width: `${readingProgress}%` }}
+        />
+      </div>
       {/* Hero Header */}
       <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-red-500 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -567,10 +654,13 @@ export default function ArticleDetailSimple() {
                         key={index}
                         onClick={() => scrollToHeading(item.id)}
                         className={`
-                          flex items-start w-full text-left p-2 rounded-lg transition-all hover:bg-gray-50 group
-                          ${item.level === 2 ? 'text-gray-900 font-medium' :
-                            item.level === 3 ? 'text-gray-700 ml-4' :
-                            'text-gray-600 ml-8 text-sm'}
+                          flex items-start w-full text-left p-2 rounded-lg transition-all group
+                          ${item.level === 2 ? 'font-medium' :
+                            item.level === 3 ? 'ml-4' :
+                            'ml-8 text-sm'}
+                          ${activeHeadingId === item.id
+                            ? 'bg-purple-100 text-purple-700 border-l-4 border-purple-500'
+                            : 'hover:bg-gray-50 text-gray-700 border-l-2 border-transparent hover:border-purple-300'}
                         `}
                       >
                         <ChevronRight className="w-4 h-4 text-teal-500 mr-2 mt-0.5 group-hover:text-teal-600 transition-colors flex-shrink-0" />
@@ -634,38 +724,77 @@ export default function ArticleDetailSimple() {
         {relatedArticles.length > 0 && (
           <div className="mt-16">
             <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-8 flex items-center">
-                <BookOpen className="w-6 h-6 text-purple-600 mr-3" />
-                関連記事
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {relatedArticles.map((relatedArticle) => (
+              <div className="relative">
+                <h3 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-10 flex items-center">
+                  <BookOpen className="w-8 h-8 text-purple-600 mr-3" />
+                  おすすめの関連記事
+                </h3>
+                <div className="absolute -top-2 left-0 w-20 h-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {relatedArticles.map((relatedArticle, index) => (
                   <Link
                     key={relatedArticle.id}
                     to={`/articles/${relatedArticle.slug}`}
-                    className="group block bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-colors"
+                    className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden"
                   >
-                    {relatedArticle.featured_image_url && (
-                      <div className="aspect-video w-full overflow-hidden rounded-lg mb-4">
+                    {/* カードの装飾的な要素 */}
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-bl-full"></div>
+
+                    {/* サムネイル画像 */}
+                    <div className="relative h-48 overflow-hidden bg-gradient-to-br from-purple-100 to-pink-100">
+                      {relatedArticle.featured_image_url ? (
                         <img
                           src={relatedArticle.featured_image_url}
                           alt={relatedArticle.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          loading="lazy"
                         />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <BookOpen className="w-16 h-16 text-purple-300" />
+                        </div>
+                      )}
+
+                      {/* オーバーレイグラデーション */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                      {/* インデックス番号バッジ */}
+                      <div className="absolute top-4 left-4 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg">
+                        <span className="text-purple-600 font-bold">{index + 1}</span>
                       </div>
-                    )}
-                    <h4 className="font-semibold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors">
-                      {relatedArticle.title}
-                    </h4>
-                    {relatedArticle.excerpt && (
-                      <p className="text-sm text-gray-600 line-clamp-2 mb-3">
-                        {relatedArticle.excerpt}
-                      </p>
-                    )}
-                    <div className="flex items-center text-xs text-gray-500">
-                      <Calendar className="w-3 h-3 mr-1" />
-                      {new Date(relatedArticle.published_at).toLocaleDateString('ja-JP')}
                     </div>
+
+                    {/* コンテンツ部分 */}
+                    <div className="p-6">
+                      <h4 className="font-bold text-lg text-gray-900 mb-3 line-clamp-2 group-hover:text-purple-600 transition-colors duration-300">
+                        {relatedArticle.title}
+                      </h4>
+
+                      {relatedArticle.excerpt && (
+                        <p className="text-sm text-gray-600 line-clamp-3 mb-4">
+                          {relatedArticle.excerpt}
+                        </p>
+                      )}
+
+                      {/* メタ情報 */}
+                      <div className="flex items-center justify-between text-xs text-gray-500">
+                        <div className="flex items-center">
+                          <Calendar className="w-4 h-4 mr-1.5 text-purple-400" />
+                          {new Date(relatedArticle.published_at).toLocaleDateString('ja-JP')}
+                        </div>
+
+                        {/* 読むボタン風の矢印 */}
+                        <div className="flex items-center text-purple-600 font-medium group-hover:translate-x-1 transition-transform duration-300">
+                          読む
+                          <ChevronRight className="w-4 h-4 ml-1" />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* ホバー時のボーダーアニメーション */}
+                    <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-purple-300 transition-colors duration-300 pointer-events-none"></div>
                   </Link>
                 ))}
               </div>
@@ -725,6 +854,38 @@ export default function ArticleDetailSimple() {
           }
         `}</style>
       </div>
+
+      {/* ライトボックス */}
+      {lightboxImage && (
+        <div
+          className="fixed inset-0 bg-black/95 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-fadeIn"
+          onClick={() => setLightboxImage(null)}
+        >
+          {/* 閉じるボタン */}
+          <button
+            onClick={() => setLightboxImage(null)}
+            className="absolute top-4 right-4 p-2 bg-white/10 backdrop-blur-md rounded-full hover:bg-white/20 transition-colors z-[101]"
+            aria-label="閉じる"
+          >
+            <X className="w-6 h-6 text-white" />
+          </button>
+
+          {/* 画像コンテナ */}
+          <div className="relative max-w-7xl max-h-[90vh] w-full h-full flex items-center justify-center">
+            <img
+              src={lightboxImage}
+              alt="拡大表示"
+              className="max-w-full max-h-[90vh] w-auto h-auto object-contain rounded-lg shadow-2xl animate-zoomIn"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+
+          {/* 操作説明 */}
+          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full text-white text-sm">
+            画像の外側をクリックで閉じる
+          </div>
+        </div>
+      )}
     </div>
   )
 }
