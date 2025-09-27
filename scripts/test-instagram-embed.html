@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Embed Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .test-container {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #E1306C;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Instagram埋め込みテスト</h1>
+
+    <div class="test-container">
+        <h2>方法1: iframe直接埋め込み</h2>
+        <iframe width="100%" height="640"
+                src="https://www.instagram.com/reel/DKW36dWJcn8/embed"
+                frameborder="0"
+                allowfullscreen="allowfullscreen">
+        </iframe>
+    </div>
+
+    <div class="test-container">
+        <h2>方法2: Instagram oEmbed (blockquote)</h2>
+        <blockquote class="instagram-media"
+                    data-instgrm-captioned
+                    data-instgrm-permalink="https://www.instagram.com/reel/DKW36dWJcn8/"
+                    data-instgrm-version="14"
+                    style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);">
+            <div style="padding:16px;">
+                <a href="https://www.instagram.com/reel/DKW36dWJcn8/" style="background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank">
+                    View this post on Instagram
+                </a>
+            </div>
+        </blockquote>
+        <script async src="//www.instagram.com/embed.js"></script>
+    </div>
+
+    <div class="test-container">
+        <h2>方法3: 簡易iframe（キャプションなし）</h2>
+        <iframe src="https://www.instagram.com/reel/DKW36dWJcn8/embed/captioned"
+                width="100%"
+                height="700"
+                frameborder="0"
+                scrolling="no"
+                allowtransparency="true">
+        </iframe>
+    </div>
+
+    <script>
+        // Instagram Embeds.jsが読み込まれているか確認
+        setTimeout(() => {
+            if (window.instgrm) {
+                console.log('✅ Instagram Embed.js loaded');
+                window.instgrm.Embeds.process();
+            } else {
+                console.log('❌ Instagram Embed.js not loaded');
+            }
+        }, 2000);
+    </script>
+</body>
+</html>
