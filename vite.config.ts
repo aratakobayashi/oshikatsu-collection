@@ -56,73 +56,11 @@ export default defineConfig(({ mode }) => {
       
       rollupOptions: {
         output: {
-          // 🎯 更に細かいコード分割戦略
-          manualChunks: (id) => {
-            // Vendor chunks - 最も重要
-            if (id.includes('node_modules')) {
-              // React ecosystem
-              if (id.includes('react') || id.includes('react-dom')) {
-                return 'react-core'
-              }
-              if (id.includes('react-router-dom')) {
-                return 'react-router'  
-              }
-              
-              // External services
-              if (id.includes('@supabase')) {
-                return 'supabase'
-              }
-              
-              // UI libraries  
-              if (id.includes('lucide-react')) {
-                return 'ui-libs'
-              }
-              
-              // Utilities
-              if (id.includes('lodash') || id.includes('uuid')) {
-                return 'utils'
-              }
-              
-              // Performance monitoring
-              if (id.includes('web-vitals')) {
-                return 'web-vitals'
-              }
-              
-              // Other vendor code
-              return 'vendor'
-            }
-            
-            // App chunks - feature-based splitting
-            if (id.includes('pages/public')) {
-              if (id.includes('Home')) return 'home-page'
-              if (id.includes('Celebrities')) return 'celebrities-page'  
-              if (id.includes('Items')) return 'items-page'
-              if (id.includes('Locations')) return 'locations-page'
-              if (id.includes('Episodes')) return 'episodes-page'
-              return 'other-pages'
-            }
-            
-            if (id.includes('pages/admin')) {
-              return 'admin-pages'
-            }
-            
-            // Component chunks
-            if (id.includes('components/SEO')) {
-              return 'seo-components'
-            }
-            
-            if (id.includes('components') && (
-              id.includes('Search') || 
-              id.includes('Carousel') || 
-              id.includes('Hero')
-            )) {
-              return 'ui-components'
-            }
-            
-            // Utils and libs
-            if (id.includes('utils') || id.includes('lib')) {
-              return 'app-utils'
-            }
+          // シンプルな chunk 分割に変更（初期化エラー回避）
+          manualChunks: {
+            'vendor': ['react', 'react-dom', 'react-router-dom'],
+            'supabase': ['@supabase/supabase-js'],
+            'utils': ['lucide-react', 'uuid']
           },
           
           // ファイル名最適化（キャッシュ効率化）
