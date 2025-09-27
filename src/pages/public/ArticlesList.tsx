@@ -307,22 +307,29 @@ export default function ArticlesList() {
                 return (
                   <article
                     key={article.id}
-                    className="group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden hover:-translate-y-2 border border-gray-100"
+                    className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden hover:-translate-y-3 border border-gray-100 hover:border-purple-200 backdrop-blur-sm hover:bg-gradient-to-br hover:from-white hover:to-purple-50"
                   >
                     {/* Image */}
-                    <Link to={`/articles/${article.slug}`} className="block">
-                      <div className="aspect-video w-full overflow-hidden bg-gradient-to-br from-purple-100 to-pink-100">
+                    <Link to={`/articles/${article.slug}`} className="block relative">
+                      <div className="aspect-video w-full overflow-hidden bg-gradient-to-br from-purple-100 via-pink-100 to-purple-200 relative">
                         {article.featured_image_url ? (
-                          <img
-                            src={article.featured_image_url}
-                            alt={article.title}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                          />
+                          <>
+                            <img
+                              src={article.featured_image_url}
+                              alt={article.title}
+                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                              loading="lazy"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          </>
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-purple-300">
-                            <span className="text-6xl">📝</span>
+                          <div className="w-full h-full flex items-center justify-center text-purple-400 relative">
+                            <div className="absolute inset-0 bg-gradient-to-br from-purple-200 via-pink-200 to-purple-300 opacity-50"></div>
+                            <span className="text-6xl relative z-10 group-hover:scale-110 transition-transform duration-300">📝</span>
                           </div>
                         )}
+                        {/* グラデーションオーバーレイ */}
+                        <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-white/30 to-transparent opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
                       </div>
                     </Link>
 
@@ -330,17 +337,18 @@ export default function ArticlesList() {
                     <div className="p-6">
                       {/* Category Badge */}
                       {category && (
-                        <div className="mb-3">
+                        <div className="mb-4 -mt-2">
                           <button
                             onClick={() => handleCategoryClick(category.slug)}
-                            className={`inline-block px-3 py-1 rounded-full text-xs font-medium border transition-colors hover:bg-opacity-80 ${categoryConfig[category.slug as keyof typeof categoryConfig]?.color || 'bg-gray-100 text-gray-800 border-gray-300'}`}
+                            className={`inline-block px-4 py-2 rounded-full text-xs font-semibold border-2 transition-all duration-300 hover:scale-105 hover:shadow-md ${categoryConfig[category.slug as keyof typeof categoryConfig]?.color || 'bg-gray-100 text-gray-800 border-gray-300'} backdrop-blur-sm`}
                           >
-                            {categoryConfig[category.slug as keyof typeof categoryConfig]?.icon} {category.name}
+                            <span className="mr-1 text-sm">{categoryConfig[category.slug as keyof typeof categoryConfig]?.icon}</span>
+                            {category.name}
                           </button>
                         </div>
                       )}
 
-                      <h2 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-purple-600 transition-colors">
+                      <h2 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 transition-all duration-300">
                         <Link to={`/articles/${article.slug}`}>
                           {article.title}
                         </Link>
@@ -372,10 +380,10 @@ export default function ArticlesList() {
 
                       <Link
                         to={`/articles/${article.slug}`}
-                        className="inline-flex items-center text-purple-600 hover:text-purple-700 font-semibold text-sm group-hover:gap-2 transition-all duration-200"
+                        className="inline-flex items-center text-purple-600 hover:text-white font-semibold text-sm group-hover:gap-2 transition-all duration-300 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-600 hover:px-4 hover:py-2 hover:rounded-full hover:shadow-lg transform hover:scale-105"
                       >
                         続きを読む
-                        <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-200" />
+                        <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" />
                       </Link>
                     </div>
                   </article>
