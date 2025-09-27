@@ -230,7 +230,7 @@ export default function ArticlesList() {
               <p className="text-gray-600">気になるテーマの記事を見つけよう</p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
               {categories.map((category) => {
                 const config = categoryConfig[category.slug as keyof typeof categoryConfig] || {
                   icon: '📄',
@@ -281,7 +281,7 @@ export default function ArticlesList() {
       )}
 
       {/* Articles Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-8xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-12 md:py-16">
         {articles.length === 0 ? (
           <div className="text-center py-20">
             <div className="text-6xl mb-4">📝</div>
@@ -297,7 +297,7 @@ export default function ArticlesList() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
               {articles.map((article) => {
                 const readingTime = calculateReadingTime(article.content)
                 const randomViews = Math.floor(Math.random() * 1000) + 100
@@ -334,7 +334,7 @@ export default function ArticlesList() {
                     </Link>
 
                     {/* Content */}
-                    <div className="p-6">
+                    <div className="p-4 sm:p-6">
                       {/* Category Badge */}
                       {category && (
                         <div className="mb-4 -mt-2">
@@ -348,7 +348,7 @@ export default function ArticlesList() {
                         </div>
                       )}
 
-                      <h2 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 transition-all duration-300">
+                      <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3 line-clamp-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 transition-all duration-300">
                         <Link to={`/articles/${article.slug}`}>
                           {article.title}
                         </Link>
