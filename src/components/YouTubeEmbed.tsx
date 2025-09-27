@@ -18,7 +18,7 @@ interface YouTubeEmbedProps {
   showInfo?: boolean;
 }
 
-export const YouTubeEmbed: React.FC<YouTubeEmbedProps> = ({
+const YouTubeEmbed: React.FC<YouTubeEmbedProps> = ({
   videoId,
   autoPlay = false,
   showInfo = true
@@ -214,4 +214,5 @@ export const YouTubeEmbed: React.FC<YouTubeEmbedProps> = ({
   );
 };
 
+export { YouTubeEmbed };
 export default YouTubeEmbed;
