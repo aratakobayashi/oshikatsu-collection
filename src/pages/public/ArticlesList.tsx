@@ -229,7 +229,7 @@ export default function ArticlesList() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50">
       {/* Top Header with Search */}
-      <div className="bg-white/90 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
+      <div className="bg-white/95 backdrop-blur-md border-b border-gray-300 sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
@@ -284,6 +284,7 @@ export default function ArticlesList() {
 
       {/* Main Content */}
       <div className="max-w-8xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-6 md:py-8">
+        <div className="bg-white/60 backdrop-blur-sm rounded-2xl shadow-sm border border-white/80 p-4 sm:p-6 md:p-8">
         {/* Active Filters */}
         {hasActiveFilters && (
           <div className="mb-6">
@@ -534,6 +535,7 @@ export default function ArticlesList() {
             </div>
           </div>
         )}
+        </div>
       </div>
     </div>
   )
