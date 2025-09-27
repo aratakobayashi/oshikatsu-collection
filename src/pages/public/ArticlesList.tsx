@@ -452,13 +452,87 @@ export default function ArticlesList() {
 
         {/* Pagination */}
         {totalArticles > ARTICLES_PER_PAGE && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={Math.ceil(totalArticles / ARTICLES_PER_PAGE)}
-            onPageChange={handlePageChange}
-            totalItems={totalArticles}
-            itemsPerPage={ARTICLES_PER_PAGE}
-          />
+          <div className="mt-12">
+            <nav className="flex justify-center items-center space-x-2" aria-label="Pagination">
+              {/* Previous Button */}
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className={`
+                  flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-colors
+                  ${currentPage === 1
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-white text-gray-700 hover:bg-purple-50 hover:text-purple-600 border border-gray-300'
+                  }
+                `}
+              >
+                <ChevronLeft className="w-4 h-4 mr-1" />
+                前のページ
+              </button>
+
+              {/* Page Numbers */}
+              <div className="flex space-x-1">
+                {Array.from({ length: Math.ceil(totalArticles / ARTICLES_PER_PAGE) }, (_, i) => {
+                  const pageNumber = i + 1
+                  const totalPages = Math.ceil(totalArticles / ARTICLES_PER_PAGE)
+
+                  // Show first page, last page, current page, and pages around current
+                  if (
+                    pageNumber === 1 ||
+                    pageNumber === totalPages ||
+                    Math.abs(pageNumber - currentPage) <= 1
+                  ) {
+                    return (
+                      <button
+                        key={pageNumber}
+                        onClick={() => handlePageChange(pageNumber)}
+                        className={`
+                          px-3 py-2 text-sm font-medium rounded-lg transition-colors
+                          ${pageNumber === currentPage
+                            ? 'bg-purple-600 text-white shadow-sm'
+                            : 'bg-white text-gray-700 hover:bg-purple-50 hover:text-purple-600 border border-gray-300'
+                          }
+                        `}
+                      >
+                        {pageNumber}
+                      </button>
+                    )
+                  } else if (
+                    (pageNumber === 2 && currentPage > 4) ||
+                    (pageNumber === totalPages - 1 && currentPage < totalPages - 3)
+                  ) {
+                    return (
+                      <span key={pageNumber} className="px-2 py-2 text-gray-400">
+                        ...
+                      </span>
+                    )
+                  }
+                  return null
+                })}
+              </div>
+
+              {/* Next Button */}
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === Math.ceil(totalArticles / ARTICLES_PER_PAGE)}
+                className={`
+                  flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-colors
+                  ${currentPage === Math.ceil(totalArticles / ARTICLES_PER_PAGE)
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-white text-gray-700 hover:bg-purple-50 hover:text-purple-600 border border-gray-300'
+                  }
+                `}
+              >
+                次のページ
+                <ChevronRight className="w-4 h-4 ml-1" />
+              </button>
+            </nav>
+
+            {/* Page Info */}
+            <div className="mt-4 text-center text-sm text-gray-600">
+              {totalArticles}件中 {((currentPage - 1) * ARTICLES_PER_PAGE) + 1}-{Math.min(currentPage * ARTICLES_PER_PAGE, totalArticles)}件を表示
+            </div>
+          </div>
         )}
       </div>
     </div>
