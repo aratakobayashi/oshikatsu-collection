@@ -376,6 +376,34 @@ export default function ArticleDetailSimple() {
   const readingTime = calculateReadingTime(article.content)
   const randomViews = Math.floor(Math.random() * 1000) + 100
 
+  // シェア機能
+  const shareToTwitter = () => {
+    const url = encodeURIComponent(window.location.href)
+    const text = encodeURIComponent(`${article.title} | 推し活コレクション`)
+    window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank')
+  }
+
+  const shareToFacebook = () => {
+    const url = encodeURIComponent(window.location.href)
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank')
+  }
+
+  const shareToLine = () => {
+    const url = encodeURIComponent(window.location.href)
+    const text = encodeURIComponent(article.title)
+    window.open(`https://social-plugins.line.me/lineit/share?url=${url}&text=${text}`, '_blank')
+  }
+
+  const copyUrlToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+      setCopiedUrl(true)
+      setTimeout(() => setCopiedUrl(false), 2000)
+    } catch (err) {
+      console.error('URLのコピーに失敗しました:', err)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50">
       {/* Hero Header */}
@@ -454,28 +482,30 @@ export default function ArticleDetailSimple() {
 
               <div className="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">
                 <Clock className="w-4 h-4" />
-                <span>{readingTime}分で読める</span>
+                <span>約{readingTime}分で読めます</span>
               </div>
 
               <div className="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">
                 <Eye className="w-4 h-4" />
-                <span>{randomViews} views</span>
+                <span>{randomViews}回読まれています</span>
               </div>
 
-              <button
-                onClick={() => handleShare(article.title, window.location.href)}
-                className="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm hover:bg-white/30 transition-colors"
-              >
-                <Share2 className="w-4 h-4" />
-                <span>シェア</span>
-              </button>
+              {category && (
+                <Link
+                  to={`/articles?category=${category.slug}`}
+                  className="flex items-center gap-2 bg-white/20 hover:bg-white/30 px-3 py-1 rounded-full backdrop-blur-sm transition-colors group"
+                >
+                  <Tag className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+                  <span>{category.name}</span>
+                </Link>
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Article Content */}
-      <article className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* Main Content Container */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Featured Image */}
         {article.featured_image_url && (
           <div className="mb-12">
@@ -489,10 +519,10 @@ export default function ArticleDetailSimple() {
           </div>
         )}
 
-        {/* Content */}
+        {/* Content Layout - 常に一貫したレイアウトを使用 */}
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Article Content - 左側、幅拡大 */}
-          <div className={showToc && tocItems.length > 0 ? "flex-1 lg:order-1" : "w-full"}>
+          <div className="flex-1 lg:order-1">
             <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
               <div className="px-6 py-8 md:px-12 md:py-12">
                 {/* Content Body */}
@@ -512,34 +542,126 @@ export default function ArticleDetailSimple() {
           </div>
 
           {/* Table of Contents - 右側に移動、幅をコンパクトに */}
-          {showToc && tocItems.length > 0 && (
-            <div className="lg:w-72 lg:order-2">
-              <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-6 sticky top-8">
-                <div className="flex items-center mb-4">
-                  <ListOrdered className="w-5 h-5 text-teal-600 mr-2" />
-                  <h3 className="text-lg font-semibold text-gray-900">目次</h3>
+          <div className="lg:w-72 lg:order-2">
+            <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-6 sticky top-8">
+              {/* 目次がある場合は表示、ない場合はシェア機能を表示 */}
+              {showToc && tocItems.length > 0 ? (
+                <>
+                  <div className="flex items-center mb-4">
+                    <ListOrdered className="w-5 h-5 text-teal-600 mr-2" />
+                    <h3 className="text-lg font-semibold text-gray-900">目次</h3>
+                  </div>
+                  <nav className="space-y-2 mb-8">
+                    {tocItems.map((item, index) => (
+                      <button
+                        key={index}
+                        onClick={() => scrollToHeading(item.id)}
+                        className={`
+                          flex items-start w-full text-left p-2 rounded-lg transition-all hover:bg-gray-50 group
+                          ${item.level === 2 ? 'text-gray-900 font-medium' :
+                            item.level === 3 ? 'text-gray-700 ml-4' :
+                            'text-gray-600 ml-8 text-sm'}
+                        `}
+                      >
+                        <ChevronRight className="w-4 h-4 text-teal-500 mr-2 mt-0.5 group-hover:text-teal-600 transition-colors flex-shrink-0" />
+                        <span className="leading-relaxed">{item.text}</span>
+                      </button>
+                    ))}
+                  </nav>
+                </>
+              ) : (
+                <div className="mb-8">
+                  <div className="flex items-center mb-4">
+                    <Share2 className="w-5 h-5 text-purple-600 mr-2" />
+                    <h3 className="text-lg font-semibold text-gray-900">記事を共有</h3>
+                  </div>
                 </div>
-                <nav className="space-y-2">
-                  {tocItems.map((item, index) => (
-                    <button
-                      key={index}
-                      onClick={() => scrollToHeading(item.id)}
-                      className={`
-                        flex items-start w-full text-left p-2 rounded-lg transition-all hover:bg-gray-50 group
-                        ${item.level === 2 ? 'text-gray-900 font-medium' :
-                          item.level === 3 ? 'text-gray-700 ml-4' :
-                          'text-gray-600 ml-8 text-sm'}
-                      `}
-                    >
-                      <ChevronRight className="w-4 h-4 text-teal-500 mr-2 mt-0.5 group-hover:text-teal-600 transition-colors flex-shrink-0" />
-                      <span className="leading-relaxed">{item.text}</span>
-                    </button>
-                  ))}
-                </nav>
+              )}
+
+              {/* シェア機能（常に表示） */}
+              <div>
+                <h4 className="text-sm font-semibold text-gray-700 mb-3">この記事をシェア</h4>
+                <div className="space-y-2">
+                  <button
+                    onClick={shareToTwitter}
+                    className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
+                  >
+                    <Twitter className="w-4 h-4" />
+                    Twitter
+                  </button>
+                  <button
+                    onClick={shareToFacebook}
+                    className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                  >
+                    <Facebook className="w-4 h-4" />
+                    Facebook
+                  </button>
+                  <button
+                    onClick={shareToLine}
+                    className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    LINE
+                  </button>
+                  <button
+                    onClick={copyUrlToClipboard}
+                    className={`w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                      copiedUrl 
+                        ? 'bg-green-100 text-green-800 border border-green-300'
+                        : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                    }`}
+                  >
+                    <Copy className="w-4 h-4" />
+                    {copiedUrl ? 'コピー済' : 'URLをコピー'}
+                  </button>
+                </div>
               </div>
             </div>
-          )}
+          </div>
         </div>
+
+        {/* Related Articles */}
+        {relatedArticles.length > 0 && (
+          <div className="mt-16">
+            <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
+              <h3 className="text-2xl font-bold text-gray-900 mb-8 flex items-center">
+                <BookOpen className="w-6 h-6 text-purple-600 mr-3" />
+                関連記事
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {relatedArticles.map((relatedArticle) => (
+                  <Link
+                    key={relatedArticle.id}
+                    to={`/articles/${relatedArticle.slug}`}
+                    className="group block bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-colors"
+                  >
+                    {relatedArticle.featured_image_url && (
+                      <div className="aspect-video w-full overflow-hidden rounded-lg mb-4">
+                        <img
+                          src={relatedArticle.featured_image_url}
+                          alt={relatedArticle.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                    )}
+                    <h4 className="font-semibold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors">
+                      {relatedArticle.title}
+                    </h4>
+                    {relatedArticle.excerpt && (
+                      <p className="text-sm text-gray-600 line-clamp-2 mb-3">
+                        {relatedArticle.excerpt}
+                      </p>
+                    )}
+                    <div className="flex items-center text-xs text-gray-500">
+                      <Calendar className="w-3 h-3 mr-1" />
+                      {new Date(relatedArticle.published_at).toLocaleDateString('ja-JP')}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* WordPress-like Custom Styles */}
         <style jsx>{`
@@ -578,193 +700,21 @@ export default function ArticleDetailSimple() {
             content: "✓";
             font-weight: bold;
             color: #0d9488;
-            position: absolute;
-            left: 0;
-          }
-
-          .wordpress-content blockquote {
-            position: relative;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
           }
 
           .wordpress-content blockquote::before {
-            content: """;
+            content: '"';
             font-size: 4rem;
-            color: #0d9488;
+            color: #a855f7;
             position: absolute;
             top: -10px;
             left: 10px;
             font-family: serif;
+            opacity: 0.3;
           }
-
-          .wordpress-content img {
-            transition: transform 0.3s ease;
-          }
-
-          .wordpress-content img:hover {
-            transform: scale(1.02);
-          }
-
-          .wordpress-content a:hover {
-            text-decoration-thickness: 3px;
-          }
-
-          /* YouTube iframe responsive */
-          .wordpress-content iframe {
-            max-width: 100%;
-            border-radius: 12px;
-          }
-
-          /* Instagram styling removed - now using simple links */
         `}</style>
-
-        {/* Article Footer */}
-        <div className="mt-12 text-center">
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
-            <div className="flex items-center justify-center gap-4 mb-6">
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full flex items-center justify-center text-white font-bold text-2xl">
-                推
-              </div>
-              <div className="text-left">
-                <h3 className="font-bold text-gray-900 text-lg">推し活ガイド編集部</h3>
-                <p className="text-gray-600 text-sm">推し活をもっと楽しく、もっとお得に</p>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                to="/articles"
-                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-200 shadow-lg hover:shadow-xl group"
-              >
-                <BookOpen className="w-5 h-5 mr-2" />
-                他の記事も読む
-                <ArrowLeft className="w-4 h-4 ml-2 rotate-180 group-hover:translate-x-1 transition-transform duration-200" />
-              </Link>
-
-              {/* SNSシェアボタン */}
-              <div className="bg-gray-50 rounded-xl p-6">
-                <h4 className="text-gray-900 font-semibold mb-4 text-center">この記事をシェア</h4>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  {/* Twitter */}
-                  <button
-                    onClick={() => shareToTwitter(article.title, window.location.href)}
-                    className="flex flex-col items-center p-3 bg-sky-500 hover:bg-sky-600 text-white rounded-lg transition-colors duration-200 group"
-                  >
-                    <Twitter className="w-6 h-6 mb-1" />
-                    <span className="text-xs font-medium">Twitter</span>
-                  </button>
-
-                  {/* Facebook */}
-                  <button
-                    onClick={() => shareToFacebook(window.location.href)}
-                    className="flex flex-col items-center p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 group"
-                  >
-                    <Facebook className="w-6 h-6 mb-1" />
-                    <span className="text-xs font-medium">Facebook</span>
-                  </button>
-
-                  {/* LINE */}
-                  <button
-                    onClick={() => shareToLine(article.title, window.location.href)}
-                    className="flex flex-col items-center p-3 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors duration-200 group"
-                  >
-                    <MessageCircle className="w-6 h-6 mb-1" />
-                    <span className="text-xs font-medium">LINE</span>
-                  </button>
-
-                  {/* URLコピー */}
-                  <button
-                    onClick={() => copyUrlToClipboard(window.location.href, setCopiedUrl)}
-                    className={`flex flex-col items-center p-3 rounded-lg transition-all duration-200 group ${
-                      copiedUrl
-                        ? 'bg-green-500 text-white'
-                        : 'bg-gray-600 hover:bg-gray-700 text-white'
-                    }`}
-                  >
-                    {copiedUrl ? (
-                      <CheckCircle className="w-6 h-6 mb-1" />
-                    ) : (
-                      <Copy className="w-6 h-6 mb-1" />
-                    )}
-                    <span className="text-xs font-medium">
-                      {copiedUrl ? 'コピー済' : 'URLコピー'}
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Related Articles */}
-        {relatedArticles.length > 0 && (
-          <div className="mt-12">
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
-              <div className="flex items-center mb-6">
-                <BookOpen className="w-6 h-6 text-purple-600 mr-3" />
-                <h3 className="text-2xl font-bold text-gray-900">関連記事</h3>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {relatedArticles.map((relatedArticle) => (
-                  <Link
-                    key={relatedArticle.id}
-                    to={`/articles/${relatedArticle.slug}`}
-                    className="group block bg-gray-50 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 hover:bg-gray-100"
-                  >
-                    {/* Featured Image */}
-                    <div className="aspect-video w-full overflow-hidden bg-gray-200">
-                      {relatedArticle.featured_image_url ? (
-                        <img
-                          src={relatedArticle.featured_image_url}
-                          alt={relatedArticle.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-gray-400">
-                          <span className="text-4xl">📄</span>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-4">
-                      <h4 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-purple-600 transition-colors">
-                        {relatedArticle.title}
-                      </h4>
-                      {relatedArticle.excerpt && (
-                        <p className="text-sm text-gray-600 line-clamp-2 mb-3">
-                          {relatedArticle.excerpt}
-                        </p>
-                      )}
-                      <div className="flex items-center text-xs text-gray-500">
-                        <Calendar className="w-3 h-3 mr-1" />
-                        <time dateTime={relatedArticle.published_at}>
-                          {new Date(relatedArticle.published_at).toLocaleDateString('ja-JP', {
-                            year: 'numeric',
-                            month: 'short',
-                            day: 'numeric'
-                          })}
-                        </time>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-              <div className="text-center mt-6">
-                <Link
-                  to="/articles"
-                  className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-200 shadow-lg hover:shadow-xl group"
-                >
-                  <BookOpen className="w-5 h-5 mr-2" />
-                  記事一覧を見る
-                  <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
-      </article>
+      </div>
     </div>
   )
 }
