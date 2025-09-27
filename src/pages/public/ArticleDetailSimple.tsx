@@ -462,9 +462,29 @@ export default function ArticleDetailSimple() {
 
         {/* Content */}
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Table of Contents */}
+          {/* Article Content - 左側、幅拡大 */}
+          <div className={showToc && tocItems.length > 0 ? "flex-1 lg:order-1" : "w-full"}>
+            <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+              <div className="px-6 py-8 md:px-12 md:py-12">
+                {/* Content Body */}
+                <div
+                  ref={contentRef}
+                  className="wordpress-content max-w-none"
+                  style={{
+                    fontFamily: '"Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "Hiragino Sans", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", sans-serif',
+                    lineHeight: '1.9',
+                    color: '#2d3748',
+                    letterSpacing: '0.02em'
+                  }}
+                  dangerouslySetInnerHTML={{ __html: formatContent(article.content) }}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Table of Contents - 右側に移動 */}
           {showToc && tocItems.length > 0 && (
-            <div className="lg:w-80">
+            <div className="lg:w-80 lg:order-2">
               <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-6 sticky top-8">
                 <div className="flex items-center mb-4">
                   <ListOrdered className="w-5 h-5 text-teal-600 mr-2" />
@@ -490,26 +510,6 @@ export default function ArticleDetailSimple() {
               </div>
             </div>
           )}
-
-          {/* Article Content */}
-          <div className="flex-1">
-            <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
-              <div className="px-6 py-8 md:px-12 md:py-12">
-                {/* Content Body */}
-                <div
-                  ref={contentRef}
-                  className="wordpress-content max-w-none"
-                  style={{
-                    fontFamily: '"Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "Hiragino Sans", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", sans-serif',
-                    lineHeight: '1.9',
-                    color: '#2d3748',
-                    letterSpacing: '0.02em'
-                  }}
-                  dangerouslySetInnerHTML={{ __html: formatContent(article.content) }}
-                />
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* WordPress-like Custom Styles */}
