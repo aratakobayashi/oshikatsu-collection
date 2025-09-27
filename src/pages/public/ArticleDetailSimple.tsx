@@ -918,321 +918,6 @@ export default function ArticleDetailSimple() {
           }
         `}</style>
 
-        {/* Related Articles Section */}
-        {relatedArticles.length > 0 && (
-          <section className="mt-16">
-            <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                <Bookmark className="w-6 h-6 text-purple-600 mr-3" />
-                関連記事
-              </h3>
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {relatedArticles.map((relatedArticle) => (
-                  <Link
-                    key={relatedArticle.id}
-                    to={`/articles/${relatedArticle.slug}`}
-                    className="group block bg-gray-50 rounded-xl p-6 hover:bg-gray-100 transition-colors"
-                  >
-                    {relatedArticle.featured_image_url && (
-                      <div className="aspect-[16/9] mb-4 overflow-hidden rounded-lg">
-                        <img
-                          src={relatedArticle.featured_image_url}
-                          alt={relatedArticle.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                      </div>
-                    )}
-                    <h4 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors">
-                      {relatedArticle.title}
-                    </h4>
-                    {relatedArticle.excerpt && (
-                      <p className="text-gray-600 text-sm mb-3 line-clamp-3">
-                        {relatedArticle.excerpt}
-                      </p>
-                    )}
-                    <div className="flex items-center text-xs text-gray-500">
-                      <Calendar className="w-3 h-3 mr-1" />
-                      {formatDate(relatedArticle.published_at)}
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-      </article>
-    </div>
-  )
-}
-
-  const readingTime = calculateReadingTime(article.content)
-  const randomViews = Math.floor(Math.random() * 1000) + 100
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50">
-      {/* Hero Header */}
-      <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-red-500 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Dynamic Breadcrumb */}
-          <nav className="flex items-center text-sm text-white/80 mb-6">
-            <Link
-              to="/"
-              className="flex items-center hover:text-white transition-colors group"
-            >
-              <Home className="w-4 h-4 mr-1 group-hover:scale-110 transition-transform duration-200" />
-              ホーム
-            </Link>
-            <ChevronRight className="w-4 h-4 mx-2 text-white/60" />
-
-            <Link
-              to="/articles"
-              className="flex items-center hover:text-white transition-colors group"
-            >
-              <BookOpen className="w-4 h-4 mr-1 group-hover:scale-110 transition-transform duration-200" />
-              記事一覧
-            </Link>
-            <ChevronRight className="w-4 h-4 mx-2 text-white/60" />
-
-            {category && (
-              <>
-                <Link
-                  to={`/articles?category=${category.slug}`}
-                  className="flex items-center hover:text-white transition-colors group"
-                >
-                  <FolderOpen className="w-4 h-4 mr-1 group-hover:scale-110 transition-transform duration-200" />
-                  {category.name}
-                </Link>
-                <ChevronRight className="w-4 h-4 mx-2 text-white/60" />
-              </>
-            )}
-
-            <span className="text-white font-medium truncate max-w-xs">
-              {article?.title || '記事詳細'}
-            </span>
-          </nav>
-
-          {/* Back Button */}
-          <Link
-            to="/articles"
-            className="inline-flex items-center text-white/90 hover:text-white transition-colors mb-8 group"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform duration-200" />
-            記事一覧に戻る
-          </Link>
-
-          {/* Title and Meta */}
-          <div>
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-6 leading-tight">
-              {article.title}
-            </h1>
-
-            {article.excerpt && (
-              <p className="text-xl text-white/90 mb-6 leading-relaxed max-w-3xl">
-                {article.excerpt}
-              </p>
-            )}
-
-            <div className="flex flex-wrap items-center gap-6 text-sm">
-              <div className="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">
-                <Calendar className="w-4 h-4" />
-                <time dateTime={article.published_at}>
-                  {new Date(article.published_at).toLocaleDateString('ja-JP', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </time>
-              </div>
-
-              <div className="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">
-                <Clock className="w-4 h-4" />
-                <span>{readingTime}分で読める</span>
-              </div>
-
-              <div className="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">
-                <Eye className="w-4 h-4" />
-                <span>{randomViews} views</span>
-              </div>
-
-              <button
-                onClick={() => handleShare(article.title, window.location.href)}
-                className="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm hover:bg-white/30 transition-colors"
-              >
-                <Share2 className="w-4 h-4" />
-                <span>シェア</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Article Content */}
-      <article className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Featured Image */}
-        {article.featured_image_url && (
-          <div className="mb-8">
-            <div className="aspect-[16/9] sm:aspect-[2/1] lg:aspect-[5/2] w-full max-w-4xl mx-auto overflow-hidden rounded-2xl shadow-xl">
-              <img
-                src={article.featured_image_url}
-                alt={article.title}
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-              />
-            </div>
-          </div>
-        )}
-
-        {/* Content */}
-        <div className="flex flex-col xl:flex-row gap-8">
-          {/* Article Content - 左側メイン */}
-          <div className="xl:flex-1 xl:max-w-5xl">
-            <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
-              <div className="px-6 py-8 md:px-12 md:py-12">
-                {/* Content Body */}
-
-                <div
-                  ref={contentRef}
-                  className="wordpress-content max-w-none"
-                  style={{
-                    fontFamily: '"Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "Hiragino Sans", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", sans-serif',
-                    lineHeight: '1.9',
-                    color: '#2d3748',
-                    letterSpacing: '0.02em'
-                  }}
-                  dangerouslySetInnerHTML={{ __html: formattedContent }}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Table of Contents - 右側サイドバー */}
-          {showToc && tocItems.length > 0 && (
-            <div className="xl:w-80 xl:flex-shrink-0">
-              <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-6 sticky top-8">
-                <div className="flex items-center mb-4">
-                  <ListOrdered className="w-5 h-5 text-teal-600 mr-2" />
-                  <h3 className="text-lg font-semibold text-gray-900">目次</h3>
-                </div>
-                <nav className="space-y-2">
-                  {tocItems.map((item, index) => (
-                    <button
-                      key={index}
-                      onClick={() => scrollToHeading(item.id)}
-                      className={`
-                        flex items-start w-full text-left p-2 rounded-lg transition-all hover:bg-gray-50 group
-                        ${item.level === 2 ? 'text-gray-900 font-medium' :
-                          item.level === 3 ? 'text-gray-700 ml-4' :
-                          'text-gray-600 ml-8 text-sm'}
-                      `}
-                    >
-                      <ChevronRight className="w-4 h-4 text-teal-500 mr-2 mt-0.5 group-hover:text-teal-600 transition-colors flex-shrink-0" />
-                      <span className="leading-relaxed">{item.text}</span>
-                    </button>
-                  ))}
-                </nav>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* WordPress-like Custom Styles */}
-        <style jsx>{`
-          .wordpress-content {
-            font-size: 18px;
-            line-height: 1.8;
-          }
-
-          .wordpress-content .wp-h2 {
-            font-family: inherit;
-            font-weight: bold;
-            text-align: center;
-            position: relative;
-            margin: 2rem 0;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-          }
-
-          .wordpress-content .wp-h3 {
-            font-family: inherit;
-            position: relative;
-            background: linear-gradient(90deg, #0d9488, #3b82f6);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            border-bottom: 3px solid;
-            border-image: linear-gradient(90deg, #0d9488, #3b82f6) 1;
-          }
-
-          .wordpress-content .wp-h4 {
-            font-family: inherit;
-            border-radius: 6px;
-            background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
-          }
-
-          .wordpress-content ul li::before {
-            content: "✓";
-            font-weight: bold;
-            color: #0d9488;
-            position: absolute;
-            left: 0;
-          }
-
-          .wordpress-content blockquote {
-            position: relative;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-          }
-
-          .wordpress-content blockquote::before {
-            content: """;
-            font-size: 4rem;
-            color: #0d9488;
-            position: absolute;
-            top: -10px;
-            left: 10px;
-            font-family: serif;
-          }
-
-          .wordpress-content img {
-            transition: transform 0.3s ease;
-          }
-
-          .wordpress-content img:hover {
-            transform: scale(1.02);
-          }
-
-          .wordpress-content a:hover {
-            text-decoration-thickness: 3px;
-          }
-
-          /* YouTube iframe responsive */
-          .wordpress-content iframe {
-            max-width: 100%;
-            border-radius: 12px;
-          }
-
-          /* Instagram link card styling */
-          .wordpress-content .instagram-link-card {
-            margin: 2rem auto !important;
-            max-width: 540px !important;
-          }
-
-          .wordpress-content .instagram-link-card a {
-            text-decoration: none !important;
-            display: block;
-            transition: all 0.3s ease;
-          }
-
-          .wordpress-content .instagram-link-card a:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15) !important;
-          }
-
-          .wordpress-content .instagram-media {
-            margin: 2rem auto !important;
-            max-width: 540px !important;
-            border-radius: 12px !important;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
-          }
-        `}</style>
-
         {/* Article Footer */}
         <div className="mt-12 text-center">
           <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
@@ -1324,57 +1009,31 @@ export default function ArticleDetailSimple() {
                   <Link
                     key={relatedArticle.id}
                     to={`/articles/${relatedArticle.slug}`}
-                    className="group block bg-gray-50 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 hover:bg-gray-100"
+                    className="group block bg-gray-50 rounded-xl p-6 hover:bg-gray-100 transition-colors"
                   >
-                    {/* Featured Image */}
-                    <div className="aspect-video w-full overflow-hidden bg-gray-200">
-                      {relatedArticle.featured_image_url ? (
+                    {relatedArticle.featured_image_url && (
+                      <div className="aspect-[16/9] mb-4 overflow-hidden rounded-lg">
                         <img
                           src={relatedArticle.featured_image_url}
                           alt={relatedArticle.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          loading="lazy"
                         />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-gray-400">
-                          <span className="text-4xl">📄</span>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-4">
-                      <h4 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-purple-600 transition-colors">
-                        {relatedArticle.title}
-                      </h4>
-                      {relatedArticle.excerpt && (
-                        <p className="text-sm text-gray-600 line-clamp-2 mb-3">
-                          {relatedArticle.excerpt}
-                        </p>
-                      )}
-                      <div className="flex items-center text-xs text-gray-500">
-                        <Calendar className="w-3 h-3 mr-1" />
-                        <time dateTime={relatedArticle.published_at}>
-                          {new Date(relatedArticle.published_at).toLocaleDateString('ja-JP', {
-                            year: 'numeric',
-                            month: 'short',
-                            day: 'numeric'
-                          })}
-                        </time>
                       </div>
+                    )}
+                    <h4 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors">
+                      {relatedArticle.title}
+                    </h4>
+                    {relatedArticle.excerpt && (
+                      <p className="text-gray-600 text-sm mb-3 line-clamp-3">
+                        {relatedArticle.excerpt}
+                      </p>
+                    )}
+                    <div className="flex items-center text-xs text-gray-500">
+                      <Calendar className="w-3 h-3 mr-1" />
+                      {formatDate(relatedArticle.published_at)}
                     </div>
                   </Link>
                 ))}
-              </div>
-              <div className="text-center mt-6">
-                <Link
-                  to="/articles"
-                  className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-200 shadow-lg hover:shadow-xl group"
-                >
-                  <BookOpen className="w-5 h-5 mr-2" />
-                  記事一覧を見る
-                  <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
-                </Link>
               </div>
             </div>
           </div>
@@ -1383,3 +1042,5 @@ export default function ArticleDetailSimple() {
     </div>
   )
 }
+
+export default ArticleDetailSimple
