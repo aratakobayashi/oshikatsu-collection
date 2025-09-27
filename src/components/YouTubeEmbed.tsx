@@ -214,5 +214,4 @@ function YouTubeEmbed({
   );
 }
 
-export { YouTubeEmbed };
 export default YouTubeEmbed;
