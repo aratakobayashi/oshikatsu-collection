@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { Calendar, ArrowLeft, Clock, Eye, Share2, Heart, BookOpen, ListOrdered, ChevronRight, Twitter, Facebook, MessageCircle, Copy, CheckCircle, Home, FolderOpen } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
+import OptimizedYouTubeThumbnail from '../../components/OptimizedYouTubeThumbnail'
 
 // Instagram埋め込み用の型定義
 declare global {
@@ -186,10 +187,10 @@ export default function ArticleDetailSimple() {
 
     let formatted = content
 
-    // YouTube URLを埋め込みiframeに変換
+    // YouTube URLを最適化されたサムネイルに変換
     formatted = formatted.replace(
       /https?:\/\/(?:www\.|m\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/g,
-      '<div class="my-8 mx-auto max-w-4xl"><div class="relative w-full" style="padding-bottom: 56.25%;"><iframe class="absolute top-0 left-0 w-full h-full rounded-lg shadow-lg" src="https://www.youtube.com/embed/$1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>'
+      '<div class="youtube-placeholder my-8 mx-auto max-w-4xl" data-video-id="$1"></div>'
     )
 
     // Instagram URLを埋め込みに変換
@@ -280,6 +281,45 @@ export default function ArticleDetailSimple() {
       const tocItems = generateToc(formattedContent)
       setTocItems(tocItems)
       setShowToc(tocItems.length > 2)
+    }
+  }, [article])
+
+  // YouTubeプレースホルダーを最適化コンポーネントに置き換え
+  useEffect(() => {
+    if (contentRef.current) {
+      const placeholders = contentRef.current.querySelectorAll('.youtube-placeholder')
+      placeholders.forEach((placeholder) => {
+        const videoId = placeholder.getAttribute('data-video-id')
+        if (videoId) {
+          // ReactDOMを使わずに直接DOMで画像を作成
+          const container = document.createElement('div')
+          container.className = 'my-8 mx-auto max-w-4xl'
+
+          const img = document.createElement('img')
+          img.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+          img.alt = 'YouTube thumbnail'
+          img.className = 'w-full h-auto rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow duration-300'
+          img.loading = 'lazy'
+
+          const playButton = document.createElement('div')
+          playButton.className = 'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full w-16 h-16 flex items-center justify-center hover:bg-red-700 transition-colors'
+          playButton.innerHTML = '<svg class="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M8 5v10l8-5-8-5z"/></svg>'
+
+          const wrapper = document.createElement('div')
+          wrapper.className = 'relative'
+          wrapper.appendChild(img)
+          wrapper.appendChild(playButton)
+
+          container.appendChild(wrapper)
+
+          // クリックでYouTube再生
+          container.addEventListener('click', () => {
+            window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank')
+          })
+
+          placeholder.replaceWith(container)
+        }
+      })
     }
   }, [article])
 
