@@ -337,7 +337,17 @@ export default function ArticleDetailSimple() {
         return []
       }
 
-      return data || []
+      // slugにHTMLタグが含まれている記事を除外
+      const validArticles = (data || []).filter(article => {
+        // slugがHTMLタグで始まっていないかチェック
+        if (!article.slug || article.slug.startsWith('<')) {
+          console.warn('Invalid slug detected:', article.slug)
+          return false
+        }
+        return true
+      })
+
+      return validArticles
     } catch (error) {
       console.error('関連記事取得エラー:', error)
       return []
