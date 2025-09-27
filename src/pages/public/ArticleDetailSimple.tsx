@@ -1042,5 +1042,3 @@ export default function ArticleDetailSimple() {
     </div>
   )
 }
-
-export default ArticleDetailSimple
