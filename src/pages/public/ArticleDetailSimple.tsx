@@ -560,15 +560,22 @@ export default function ArticleDetailSimple() {
 
   useEffect(() => {
     if (article && article.content) {
-      let contentToProcess = article.content;
+      try {
+        let contentToProcess = article.content;
 
-
-      const result = formatContent(contentToProcess)
-      setFormattedContent(result.html)
-      setYoutubeComponents(result.components)
-      const tocItems = generateToc(result.html)
-      setTocItems(tocItems)
-      setShowToc(tocItems.length > 2)
+        const result = formatContent(contentToProcess)
+        setFormattedContent(result.html)
+        setYoutubeComponents(result.components)
+        const tocItems = generateToc(result.html)
+        setTocItems(tocItems)
+        setShowToc(tocItems.length > 2)
+      } catch (error) {
+        console.error('❌ コンテンツフォーマットエラー:', error)
+        setFormattedContent(article.content) // フォールバック: 元のコンテンツを表示
+        setYoutubeComponents([])
+        setTocItems([])
+        setShowToc(false)
+      }
     }
   }, [article])
 
@@ -715,6 +722,16 @@ export default function ArticleDetailSimple() {
 
   const readingTime = calculateReadingTime(article.content)
   const randomViews = Math.floor(Math.random() * 1000) + 100
+
+  // デバッグ: 記事表示前の状態をコンソールに出力
+  console.log('🎯 Article rendering state:', {
+    hasArticle: !!article,
+    articleTitle: article?.title,
+    contentLength: article?.content?.length,
+    formattedContentLength: formattedContent?.length,
+    tocItemsCount: tocItems.length,
+    youtubeComponentsCount: youtubeComponents.length
+  })
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50">
