@@ -446,7 +446,7 @@ export default function ArticleDetailSimple() {
       </div>
 
       {/* Article Content */}
-      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <article className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Featured Image */}
         {article.featured_image_url && (
           <div className="mb-12">
@@ -482,9 +482,9 @@ export default function ArticleDetailSimple() {
             </div>
           </div>
 
-          {/* Table of Contents - 右側に移動 */}
+          {/* Table of Contents - 右側に移動、幅をコンパクトに */}
           {showToc && tocItems.length > 0 && (
-            <div className="lg:w-80 lg:order-2">
+            <div className="lg:w-72 lg:order-2">
               <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-6 sticky top-8">
                 <div className="flex items-center mb-4">
                   <ListOrdered className="w-5 h-5 text-teal-600 mr-2" />
