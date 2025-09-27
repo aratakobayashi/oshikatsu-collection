@@ -185,7 +185,8 @@ export default function ArticleDetailSimple() {
   function formatContent(content: string): string {
     if (!content) return ''
 
-    let formatted = content
+    try {
+      let formatted = content
 
     // YouTube URLを最適化されたサムネイルに変換
     formatted = formatted.replace(
@@ -252,35 +253,54 @@ export default function ArticleDetailSimple() {
       formatted = '<p class="mb-8 leading-loose text-gray-800 text-lg md:text-xl font-light tracking-wide">' + formatted + '</p>'
     }
 
-    return formatted
+      return formatted
+    } catch (error) {
+      console.error('❌ コンテンツフォーマットエラー:', error)
+      // エラーが発生した場合は元のコンテンツを返す
+      return content
+    }
   }
 
   function generateToc(content: string): TocItem[] {
-    const tocItems: TocItem[] = []
-    const headingRegex = /<h([234])[^>]*id="([^"]*)"[^>]*>(.*?)<\/h[234]>/gi
-    let match
+    try {
+      const tocItems: TocItem[] = []
+      const headingRegex = /<h([234])[^>]*id="([^"]*)"[^>]*>(.*?)<\/h[234]>/gi
+      let match
 
-    while ((match = headingRegex.exec(content)) !== null) {
-      const level = parseInt(match[1])
-      const id = match[2]
-      const text = match[3].replace(/<[^>]*>/g, '').trim()
-      
-      tocItems.push({
-        id,
-        text,
-        level
-      })
+      while ((match = headingRegex.exec(content)) !== null) {
+        const level = parseInt(match[1])
+        const id = match[2]
+        const text = match[3].replace(/<[^>]*>/g, '').trim()
+
+        if (id && text) {
+          tocItems.push({
+            id,
+            text,
+            level
+          })
+        }
+      }
+
+      return tocItems
+    } catch (error) {
+      console.error('❌ 目次生成エラー:', error)
+      return []
     }
-
-    return tocItems
   }
 
   useEffect(() => {
     if (article && article.content) {
-      const formattedContent = formatContent(article.content)
-      const tocItems = generateToc(formattedContent)
-      setTocItems(tocItems)
-      setShowToc(tocItems.length > 2)
+      try {
+        const formattedContent = formatContent(article.content)
+        const tocItems = generateToc(formattedContent)
+        setTocItems(tocItems)
+        setShowToc(tocItems.length > 2)
+      } catch (error) {
+        console.error('❌ 記事処理エラー:', error)
+        // エラーが発生した場合は目次なしで続行
+        setTocItems([])
+        setShowToc(false)
+      }
     }
   }, [article])
 
