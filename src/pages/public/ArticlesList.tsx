@@ -228,20 +228,472 @@ export default function ArticlesList() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-red-500 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="text-center">
-            <div className="mb-6">
-              <span className="inline-block px-4 py-2 bg-white/20 rounded-full text-sm font-medium backdrop-blur-sm">
-                ✨ 推し活をもっと楽しく
-              </span>
+      {/* Top Header with Search */}
+      <div className="bg-white/90 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                {selectedCategory
+                  ? `${categories.find(c => c.slug === selectedCategory)?.name || '推し活ガイド'}`
+                  : '推し活ガイド'
+                }
+              </h1>
+              {selectedCategory && (
+                <span className="text-sm text-gray-500">の記事</span>
+              )}
             </div>
-            <h1 className="text-5xl md:text-6xl font-extrabold mb-6 bg-gradient-to-r from-white to-purple-100 bg-clip-text text-transparent">
-              {selectedCategory
-                ? `${categories.find(c => c.slug === selectedCategory)?.name || '推し活ガイド'}の記事`
-                : '推し活ガイド'
+            
+            {/* Search Form */}
+            <div className="w-full sm:w-auto sm:min-w-80">
+              <form onSubmit={handleSearchSubmit} className="relative">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  placeholder="記事を検索..."
+                  className="w-full px-4 py-2.5 pr-24 text-gray-900 bg-white border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
+                />
+                <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center gap-1">
+                  {searchQuery && (
+                    <button
+                      type="button"
+                      onClick={clearSearch}
+                      className="p-1 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100 transition-all duration-200"
+                      title="検索をクリア"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  )}
+                  <button
+                    type="submit"
+                    className="px-3 py-1.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:shadow-lg transform hover:scale-105 transition-all duration-200 font-medium text-sm"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-8xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-6 md:py-8">
+        {/* Active Filters */}
+        {hasActiveFilters && (
+          <div className="mb-6">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="text-sm font-medium text-gray-600">活性フィルター:</span>
+              {selectedCategory && (
+                <span className="inline-flex items-center gap-2 px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">
+                  {categories.find(c => c.slug === selectedCategory)?.name}
+                  <button
+                    onClick={() => handleCategoryClick(selectedCategory)}
+                    className="p-0.5 hover:bg-purple-200 rounded-full transition-colors duration-200"
+                  >
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </span>
+              )}
+              {currentSearchTerm && (
+                <span className="inline-flex items-center gap-2 px-3 py-1 bg-pink-100 text-pink-800 rounded-full text-sm font-medium">
+                  検索: "{currentSearchTerm}"
+                  <button
+                    onClick={clearSearch}
+                    className="p-0.5 hover:bg-pink-200 rounded-full transition-colors duration-200"
+                  >
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </span>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Category Filter */}
+        <div className="mb-6">
+          <h2 className="text-lg font-bold text-gray-900 mb-4">カテゴリで絞り込み</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3">
+            <button
+              onClick={() => {
+                const newParams = new URLSearchParams(searchParams)
+                newParams.delete('category')
+                newParams.set('page', '1')
+                setSearchParams(newParams)
+              }}
+              className={`p-3 rounded-xl text-center transition-all duration-300 transform hover:scale-105 hover:shadow-md border-2 ${
+                !selectedCategory
+                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-transparent shadow-md scale-105'
+                  : 'bg-white text-gray-700 border-gray-200 hover:border-purple-300 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50'
+              }`}
+            >
+              <div className="font-semibold text-sm">すべて</div>
+              <div className="text-xs opacity-75 mt-1">{totalArticles}記事</div>
+            </button>
+            {categories.map((category) => (
+              <button
+                key={category.id}
+                onClick={() => handleCategoryClick(category.slug)}
+                className={`p-3 rounded-xl text-center transition-all duration-300 transform hover:scale-105 hover:shadow-md border-2 ${
+                  selectedCategory === category.slug
+                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-transparent shadow-md scale-105'
+                    : 'bg-white text-gray-700 border-gray-200 hover:border-purple-300 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50'
+                }`}
+              >
+                <div className="font-semibold text-sm">{category.name}</div>
+                <div className="text-xs opacity-75 mt-1">{category.article_count || 0}記事</div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Results Summary */}
+        <div className="mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h2 className="text-xl font-bold text-gray-900">
+                {currentSearchTerm ? `"${currentSearchTerm}"の検索結果` : '記事一覧'}
+              </h2>
+              <p className="text-gray-600 text-sm mt-1">
+                {totalArticles > 0 ? (
+                  <>全{totalArticles}件中 {((currentPage - 1) * ARTICLES_PER_PAGE) + 1}-{Math.min(currentPage * ARTICLES_PER_PAGE, totalArticles)}件を表示</>
+                ) : (
+                  hasActiveFilters ? '条件に一致する記事が見つかりませんでした' : '記事がありません'
+                )}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Articles Grid */}
+        {articles.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mb-12">
+            {articles.map((article) => (
+              <Link
+                key={article.id}
+                to={`/articles/${article.slug}`}
+                className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden hover:-translate-y-3 border border-gray-100 hover:border-purple-200 backdrop-blur-sm hover:bg-gradient-to-br hover:from-white hover:to-purple-50"
+              >
+                {article.featured_image_url && (
+                  <div className="aspect-video overflow-hidden">
+                    <img
+                      src={article.featured_image_url}
+                      alt={article.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+                <div className="p-4 sm:p-6">
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 group-hover:text-purple-700 transition-colors duration-300 line-clamp-2">
+                    {article.title}
+                  </h3>
+                  {article.excerpt && (
+                    <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
+                      {article.excerpt}
+                    </p>
+                  )}
+                  <div className="flex items-center justify-between text-xs text-gray-500">
+                    <span>
+                      {new Date(article.published_at).toLocaleDateString('ja-JP', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                    </span>
+                    <span className="group-hover:text-purple-600 transition-colors duration-300">
+                      読む →
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16">
+            <div className="w-24 h-24 mx-auto mb-6 opacity-50">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" className="w-full h-full text-gray-400">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              {hasActiveFilters ? '条件に一致する記事がありません' : '記事がまだありません'}
+            </h3>
+            <p className="text-gray-600 mb-6">
+              {hasActiveFilters 
+                ? '検索条件やカテゴリフィルターを変更してみてください'
+                : '記事が公開されるまでしばらくお待ちください'
               }
+            </p>
+            {hasActiveFilters && (
+              <button
+                onClick={() => {
+                  setSearchQuery('')
+                  const newParams = new URLSearchParams()
+                  newParams.set('page', '1')
+                  setSearchParams(newParams)
+                }}
+                className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-200 font-medium"
+              >
+                すべての記事を表示
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* Pagination */}
+        {totalArticles > ARTICLES_PER_PAGE && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(totalArticles / ARTICLES_PER_PAGE)}
+            onPageChange={handlePageChange}
+            totalItems={totalArticles}
+            itemsPerPage={ARTICLES_PER_PAGE}
+          />
+        )}
+      </div>
+    </div>
+  )
+}
+            </h1>
+            <p className="text-lg md:text-xl text-purple-100 font-light max-w-2xl mx-auto leading-relaxed mb-6">
+              {selectedCategory
+                ? `${categories.find(c => c.slug === selectedCategory)?.name}に関する役立つ情報をお届けします`
+                : 'あなたの推し活をサポートする情報をお届けします'
+              }
+            </p>
+            
+            {/* Compact Search Form */}
+            <div className="max-w-xl mx-auto">
+              <form onSubmit={handleSearchSubmit} className="relative">
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    placeholder="記事を検索..."
+                    className="w-full px-5 py-3 pr-28 text-gray-900 bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 focus:outline-none focus:ring-4 focus:ring-white/30 focus:bg-white transition-all duration-300"
+                  />
+                  <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center gap-1">
+                    {searchQuery && (
+                      <button
+                        type="button"
+                        onClick={clearSearch}
+                        className="p-1.5 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100 transition-all duration-200"
+                        title="検索をクリア"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    )}
+                    <button
+                      type="submit"
+                      className="px-4 py-1.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:shadow-lg transform hover:scale-105 transition-all duration-200 font-medium text-sm"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-8xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-8 md:py-12">
+        {/* Active Filters */}
+        {hasActiveFilters && (
+          <div className="mb-6">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="text-sm font-medium text-gray-600">活性フィルター:</span>
+              {selectedCategory && (
+                <span className="inline-flex items-center gap-2 px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">
+                  {categories.find(c => c.slug === selectedCategory)?.name}
+                  <button
+                    onClick={() => handleCategoryClick(selectedCategory)}
+                    className="p-0.5 hover:bg-purple-200 rounded-full transition-colors duration-200"
+                  >
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </span>
+              )}
+              {currentSearchTerm && (
+                <span className="inline-flex items-center gap-2 px-3 py-1 bg-pink-100 text-pink-800 rounded-full text-sm font-medium">
+                  検索: "{currentSearchTerm}"
+                  <button
+                    onClick={clearSearch}
+                    className="p-0.5 hover:bg-pink-200 rounded-full transition-colors duration-200"
+                  >
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </span>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Category Filter */}
+        <div className="mb-8">
+          <h2 className="text-lg font-bold text-gray-900 mb-4 text-center">カテゴリで絞り込み</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
+            <button
+              onClick={() => {
+                const newParams = new URLSearchParams(searchParams)
+                newParams.delete('category')
+                newParams.set('page', '1')
+                setSearchParams(newParams)
+              }}
+              className={`p-3 rounded-2xl text-center transition-all duration-300 transform hover:scale-105 hover:shadow-lg border-2 ${
+                !selectedCategory
+                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-transparent shadow-lg scale-105'
+                  : 'bg-white text-gray-700 border-gray-200 hover:border-purple-300 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50'
+              }`}
+            >
+              <div className="font-semibold text-sm">すべて</div>
+              <div className="text-xs opacity-75 mt-1">{totalArticles}記事</div>
+            </button>
+            {categories.map((category) => (
+              <button
+                key={category.id}
+                onClick={() => handleCategoryClick(category.slug)}
+                className={`p-3 rounded-2xl text-center transition-all duration-300 transform hover:scale-105 hover:shadow-lg border-2 ${
+                  selectedCategory === category.slug
+                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-transparent shadow-lg scale-105'
+                    : 'bg-white text-gray-700 border-gray-200 hover:border-purple-300 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50'
+                }`}
+              >
+                <div className="font-semibold text-sm">{category.name}</div>
+                <div className="text-xs opacity-75 mt-1">{category.article_count || 0}記事</div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Results Summary */}
+        <div className="mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h2 className="text-xl font-bold text-gray-900">
+                {currentSearchTerm ? `"${currentSearchTerm}"の検索結果` : '記事一覧'}
+              </h2>
+              <p className="text-gray-600 text-sm mt-1">
+                {totalArticles > 0 ? (
+                  <>全{totalArticles}件中 {((currentPage - 1) * ARTICLES_PER_PAGE) + 1}-{Math.min(currentPage * ARTICLES_PER_PAGE, totalArticles)}件を表示</>
+                ) : (
+                  hasActiveFilters ? '条件に一致する記事が見つかりませんでした' : '記事がありません'
+                )}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Articles Grid */}
+        {articles.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mb-12">
+            {articles.map((article) => (
+              <Link
+                key={article.id}
+                to={`/articles/${article.slug}`}
+                className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden hover:-translate-y-3 border border-gray-100 hover:border-purple-200 backdrop-blur-sm hover:bg-gradient-to-br hover:from-white hover:to-purple-50"
+              >
+                {article.featured_image_url && (
+                  <div className="aspect-video overflow-hidden">
+                    <img
+                      src={article.featured_image_url}
+                      alt={article.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+                <div className="p-4 sm:p-6">
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 group-hover:text-purple-700 transition-colors duration-300 line-clamp-2">
+                    {article.title}
+                  </h3>
+                  {article.excerpt && (
+                    <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
+                      {article.excerpt}
+                    </p>
+                  )}
+                  <div className="flex items-center justify-between text-xs text-gray-500">
+                    <span>
+                      {new Date(article.published_at).toLocaleDateString('ja-JP', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                    </span>
+                    <span className="group-hover:text-purple-600 transition-colors duration-300">
+                      読む →
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16">
+            <div className="w-24 h-24 mx-auto mb-6 opacity-50">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" className="w-full h-full text-gray-400">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              {hasActiveFilters ? '条件に一致する記事がありません' : '記事がまだありません'}
+            </h3>
+            <p className="text-gray-600 mb-6">
+              {hasActiveFilters 
+                ? '検索条件やカテゴリフィルターを変更してみてください'
+                : '記事が公開されるまでしばらくお待ちください'
+              }
+            </p>
+            {hasActiveFilters && (
+              <button
+                onClick={() => {
+                  setSearchQuery('')
+                  const newParams = new URLSearchParams()
+                  newParams.set('page', '1')
+                  setSearchParams(newParams)
+                }}
+                className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-200 font-medium"
+              >
+                すべての記事を表示
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* Pagination */}
+        {totalArticles > ARTICLES_PER_PAGE && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(totalArticles / ARTICLES_PER_PAGE)}
+            onPageChange={handlePageChange}
+            totalItems={totalArticles}
+            itemsPerPage={ARTICLES_PER_PAGE}
+          />
+        )}
+      </div>
+    </div>
+  )
+}
             </h1>
             <p className="text-xl md:text-2xl text-purple-100 font-light max-w-3xl mx-auto leading-relaxed">
               {selectedCategory
