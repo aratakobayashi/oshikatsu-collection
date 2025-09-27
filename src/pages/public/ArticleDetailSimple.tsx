@@ -94,7 +94,7 @@ export default function ArticleDetailSimple() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [tocItems, setTocItems] = useState<TocItem[]>([])
-  const [showToc, setShowToc] = useState(false)
+  const [showToc, setShowToc] = useState(true) // デフォルトで目次セクションを表示
   const [copiedUrl, setCopiedUrl] = useState(false)
   const [relatedArticles, setRelatedArticles] = useState<Article[]>([])
   const [category, setCategory] = useState<Category | null>(null)
@@ -266,12 +266,11 @@ export default function ArticleDetailSimple() {
         const formattedContent = formatContent(article.content)
         const tocItems = generateToc(formattedContent)
         setTocItems(tocItems)
-        setShowToc(tocItems.length > 2)
+        // setShowTocは削除 - 常に目次セクションを表示
       } catch (error) {
         console.error('❌ 記事処理エラー:', error)
         // エラーが発生した場合は目次なしで続行
         setTocItems([])
-        setShowToc(false)
       }
     }
   }, [article])
@@ -641,14 +640,15 @@ export default function ArticleDetailSimple() {
           {/* Table of Contents - 右側に移動、幅をコンパクトに */}
           <div className="lg:w-72 lg:order-2">
             <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-6 sticky top-8">
-              {/* 目次がある場合は表示、ない場合はシェア機能を表示 */}
-              {showToc && tocItems.length > 0 ? (
-                <>
-                  <div className="flex items-center mb-4">
-                    <ListOrdered className="w-5 h-5 text-teal-600 mr-2" />
-                    <h3 className="text-lg font-semibold text-gray-900">目次</h3>
-                  </div>
-                  <nav className="space-y-2 mb-8">
+              {/* 目次セクション - 常に表示 */}
+              <div className="mb-8">
+                <div className="flex items-center mb-4">
+                  <ListOrdered className="w-5 h-5 text-teal-600 mr-2" />
+                  <h3 className="text-lg font-semibold text-gray-900">目次</h3>
+                </div>
+
+                {tocItems.length > 0 ? (
+                  <nav className="space-y-2">
                     {tocItems.map((item, index) => (
                       <button
                         key={index}
@@ -668,19 +668,26 @@ export default function ArticleDetailSimple() {
                       </button>
                     ))}
                   </nav>
-                </>
-              ) : (
-                <div className="mb-8">
-                  <div className="flex items-center mb-4">
-                    <Share2 className="w-5 h-5 text-purple-600 mr-2" />
-                    <h3 className="text-lg font-semibold text-gray-900">記事を共有</h3>
+                ) : (
+                  <div className="bg-gray-50 rounded-lg p-4 text-center">
+                    <p className="text-sm text-gray-500">
+                      この記事には見出しがありません
+                    </p>
+                    <p className="text-xs text-gray-400 mt-2">
+                      記事を読みやすくするため、<br />
+                      見出しタグ（h2, h3）の追加を<br />
+                      おすすめします
+                    </p>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
 
-              {/* シェア機能（常に表示） */}
-              <div>
-                <h4 className="text-sm font-semibold text-gray-700 mb-3">この記事をシェア</h4>
+              {/* シェア機能 - 常に表示 */}
+              <div className="border-t pt-6">
+                <div className="flex items-center mb-4">
+                  <Share2 className="w-5 h-5 text-purple-600 mr-2" />
+                  <h3 className="text-lg font-semibold text-gray-900">記事を共有</h3>
+                </div>
                 <div className="space-y-2">
                   <button
                     onClick={shareToTwitter}
