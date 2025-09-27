@@ -9,7 +9,7 @@ interface OptimizedYouTubeThumbnailProps {
   priority?: boolean // Above the fold用
 }
 
-export const OptimizedYouTubeThumbnail: React.FC<OptimizedYouTubeThumbnailProps> = ({
+const OptimizedYouTubeThumbnail: React.FC<OptimizedYouTubeThumbnailProps> = ({
   videoId,
   alt,
   className = '',
@@ -103,6 +103,8 @@ export const OptimizedYouTubeThumbnail: React.FC<OptimizedYouTubeThumbnailProps>
     />
   )
 }
+
+export default OptimizedYouTubeThumbnail
 
 // 使用例:
 // <OptimizedYouTubeThumbnail

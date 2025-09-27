@@ -6,7 +6,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ChevronLeft, ChevronRight, Users, MapPin, Play, Package, ExternalLink, Calendar, Star } from 'lucide-react'
-import { OptimizedYouTubeThumbnail } from './OptimizedYouTubeThumbnail'
+import OptimizedYouTubeThumbnail from './OptimizedYouTubeThumbnail'
 
 // データ型定義
 interface Celebrity {

@@ -7,7 +7,7 @@ import { StructuredData, generateStructuredData } from '../../components/SEO/Str
 import { generateImageProps } from '../../utils/imageOptimization'
 import { RelatedContent } from '../../components/SEO/RelatedContent'
 import { generateCelebrityFAQ, generateFAQStructuredData, extractAreasFromAddresses } from '../../utils/faqGenerator'
-import { OptimizedYouTubeThumbnail } from '../../components/OptimizedYouTubeThumbnail'
+import OptimizedYouTubeThumbnail from '../../components/OptimizedYouTubeThumbnail'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import Select from '../../components/ui/Select'
