@@ -123,7 +123,7 @@ export default function ArticleDetailSimple() {
       const { data, error: supabaseError } = await supabase
         .from('articles')
         .select(`
-          id, title, slug, content, excerpt, published_at, featured_image_url, category_id,
+          *,
           article_categories(id, name, slug, description)
         `)
         .eq('slug', encodedSlug)
@@ -133,6 +133,20 @@ export default function ArticleDetailSimple() {
       if (supabaseError) {
         setError('記事が見つかりませんでした')
       } else {
+        // デバッグ: 取得したデータを確認
+        console.log('📄 Article data keys:', Object.keys(data))
+        console.log('📄 Article content analysis:', {
+          title: data.title,
+          contentLength: data.content?.length || 0,
+          contentSample: data.content?.substring(0, 300),
+          hasHtmlTags: /<[a-z][\s\S]*>/i.test(data.content || ''),
+          // 他の可能なコンテンツフィールドもチェック
+          post_content: data.post_content?.substring(0, 100),
+          content_html: data.content_html?.substring(0, 100),
+          content_rendered: data.content_rendered?.substring(0, 100),
+          wp_content: data.wp_content?.substring(0, 100)
+        })
+
         setArticle(data)
         // カテゴリ情報をセット
         if (data.article_categories) {
@@ -157,8 +171,16 @@ export default function ArticleDetailSimple() {
   function formatContent(content: string): string {
     if (!content) return ''
 
+    // デバッグ: 元のコンテンツを確認
+    console.log('🔍 Original content sample:', content.substring(0, 500))
+
     try {
       let formatted = content
+
+      // HTMLエンティティをデコード（&lt; を < に変換など）
+      const tempDiv = document.createElement('div')
+      tempDiv.innerHTML = formatted
+      formatted = tempDiv.innerHTML
 
     // YouTube URLを最適化されたサムネイルに変換
     formatted = formatted.replace(
@@ -224,6 +246,10 @@ export default function ArticleDetailSimple() {
       formatted = formatted.replace(/\n/g, '<br class="mb-4">')
       formatted = '<p class="mb-8 leading-loose text-gray-800 text-lg md:text-xl font-light tracking-wide">' + formatted + '</p>'
     }
+
+      // デバッグ: 処理後のコンテンツを確認
+      console.log('✨ Formatted content sample:', formatted.substring(0, 500))
+      console.log('📊 Content has HTML tags:', /<[a-z][\s\S]*>/i.test(formatted))
 
       return formatted
     } catch (error) {
