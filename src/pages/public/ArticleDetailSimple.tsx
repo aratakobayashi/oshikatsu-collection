@@ -133,19 +133,6 @@ export default function ArticleDetailSimple() {
       if (supabaseError) {
         setError('記事が見つかりませんでした')
       } else {
-        // デバッグ: 取得したデータを確認
-        console.log('📄 Article data keys:', Object.keys(data))
-        console.log('📄 Article content analysis:', {
-          title: data.title,
-          contentLength: data.content?.length || 0,
-          contentSample: data.content?.substring(0, 300),
-          hasHtmlTags: /<[a-z][\s\S]*>/i.test(data.content || ''),
-          // 他の可能なコンテンツフィールドもチェック
-          post_content: data.post_content?.substring(0, 100),
-          content_html: data.content_html?.substring(0, 100),
-          content_rendered: data.content_rendered?.substring(0, 100),
-          wp_content: data.wp_content?.substring(0, 100)
-        })
 
         setArticle(data)
         // カテゴリ情報をセット
@@ -171,9 +158,6 @@ export default function ArticleDetailSimple() {
   function formatContent(content: string): string {
     if (!content) return ''
 
-    // デバッグ: 元のコンテンツを確認
-    console.log('🔍 Original content sample:', content.substring(0, 500))
-
     try {
       let formatted = content
 
@@ -181,6 +165,40 @@ export default function ArticleDetailSimple() {
       const tempDiv = document.createElement('div')
       tempDiv.innerHTML = formatted
       formatted = tempDiv.innerHTML
+
+      // コンテンツがプレーンテキストの場合、基本的なHTMLタグを追加
+      const hasHtmlTags = /<(h[1-6]|p|div|ul|ol|li|blockquote|strong|em|a|img)[^>]*>/i.test(formatted)
+
+      if (!hasHtmlTags) {
+        // プレーンテキストの場合、段落と見出しを自動生成
+        console.log('📝 プレーンテキストを検出 - HTML変換を実行')
+
+        // 基本的な見出し構造を追加
+        formatted = formatted
+          // 見出しパターン（行頭の■や●など）を h2 に変換
+          .replace(/^[■●▼▲◆◇【]\s*(.+?)[\】]?$/gm, '<h2>$1</h2>')
+          // 数字付き見出しを h3 に変換
+          .replace(/^(\d+)[\.、]\s*(.+)$/gm, '<h3>$2</h3>')
+          // 箇条書きをリストに変換
+          .replace(/^[・•]\s*(.+)$/gm, '<li>$1</li>')
+
+        // リストタグで囲む
+        formatted = formatted.replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
+
+        // 改行を段落に変換
+        const paragraphs = formatted.split(/\n\n+/)
+        formatted = paragraphs
+          .map(p => {
+            // 既にHTMLタグがある場合はそのまま
+            if (/<[^>]+>/.test(p)) return p
+            // 空行はスキップ
+            if (!p.trim()) return ''
+            // 通常のテキストは段落タグで囲む
+            return `<p>${p.replace(/\n/g, '<br>')}</p>`
+          })
+          .filter(p => p)
+          .join('\n')
+      }
 
     // YouTube URLを最適化されたサムネイルに変換
     formatted = formatted.replace(
@@ -246,10 +264,6 @@ export default function ArticleDetailSimple() {
       formatted = formatted.replace(/\n/g, '<br class="mb-4">')
       formatted = '<p class="mb-8 leading-loose text-gray-800 text-lg md:text-xl font-light tracking-wide">' + formatted + '</p>'
     }
-
-      // デバッグ: 処理後のコンテンツを確認
-      console.log('✨ Formatted content sample:', formatted.substring(0, 500))
-      console.log('📊 Content has HTML tags:', /<[a-z][\s\S]*>/i.test(formatted))
 
       return formatted
     } catch (error) {
