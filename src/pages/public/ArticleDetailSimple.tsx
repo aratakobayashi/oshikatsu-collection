@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { Calendar, ArrowLeft, Clock, Eye, Share2, Heart, BookOpen, ListOrdered, ChevronRight, Twitter, Facebook, MessageCircle, Copy, CheckCircle, Home, FolderOpen, Tag, X } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
-import OptimizedYouTubeThumbnail from '../../components/OptimizedYouTubeThumbnail'
 
 // Instagram埋め込み型定義削除（シンプルなリンクに変更したため）
 
@@ -171,7 +170,6 @@ export default function ArticleDetailSimple() {
 
       if (!hasHtmlTags) {
         // プレーンテキストの場合、段落と見出しを自動生成
-        console.log('📝 プレーンテキストを検出 - HTML変換を実行')
 
         // 基本的な見出し構造を追加
         formatted = formatted
@@ -200,10 +198,51 @@ export default function ArticleDetailSimple() {
           .join('\n')
       }
 
-    // YouTube URLを最適化されたサムネイルに変換
+    // YouTube URLを魅力的なサムネイル付きカードに直接変換
     formatted = formatted.replace(
       /https?:\/\/(?:www\.|m\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/g,
-      '<div class="youtube-placeholder my-8 mx-auto max-w-4xl" data-video-id="$1"></div>'
+      (match, videoId) => {
+        return `<div class="youtube-embed my-8 mx-auto max-w-4xl bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-300 group">
+          <div class="relative">
+            <img 
+              src="https://img.youtube.com/vi/${videoId}/maxresdefault.jpg"
+              alt="YouTube動画サムネイル"
+              class="w-full h-64 md:h-80 object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
+              <div class="bg-red-600 hover:bg-red-700 text-white rounded-full p-4 shadow-lg transform group-hover:scale-110 transition-all duration-300 cursor-pointer">
+                <svg class="w-8 h-8 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="p-6">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center">
+                  <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">YouTube動画</p>
+                  <p class="text-sm text-gray-600">クリックして視聴</p>
+                </div>
+              </div>
+              <a 
+                href="${match}" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full font-medium transition-all duration-200 hover:shadow-lg transform hover:scale-105"
+              >
+                視聴する
+              </a>
+            </div>
+          </div>
+        </div>`
+      }
     )
 
     // Instagram URLをシンプルなリンクに変換（埋め込みは問題があるため）
@@ -315,44 +354,6 @@ export default function ArticleDetailSimple() {
     }
   }, [article])
 
-  // YouTubeプレースホルダーを最適化コンポーネントに置き換え
-  useEffect(() => {
-    if (contentRef.current) {
-      const placeholders = contentRef.current.querySelectorAll('.youtube-placeholder')
-      placeholders.forEach((placeholder) => {
-        const videoId = placeholder.getAttribute('data-video-id')
-        if (videoId) {
-          // ReactDOMを使わずに直接DOMで画像を作成
-          const container = document.createElement('div')
-          container.className = 'my-8 mx-auto max-w-4xl'
-
-          const img = document.createElement('img')
-          img.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
-          img.alt = 'YouTube thumbnail'
-          img.className = 'w-full h-auto rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow duration-300'
-          img.loading = 'lazy'
-
-          const playButton = document.createElement('div')
-          playButton.className = 'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full w-16 h-16 flex items-center justify-center hover:bg-red-700 transition-colors'
-          playButton.innerHTML = '<svg class="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M8 5v10l8-5-8-5z"/></svg>'
-
-          const wrapper = document.createElement('div')
-          wrapper.className = 'relative'
-          wrapper.appendChild(img)
-          wrapper.appendChild(playButton)
-
-          container.appendChild(wrapper)
-
-          // クリックでYouTube再生
-          container.addEventListener('click', () => {
-            window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank')
-          })
-
-          placeholder.replaceWith(container)
-        }
-      })
-    }
-  }, [article])
 
   // スクロール位置に応じて目次のアクティブ項目と読書進捗を更新
   useEffect(() => {
