@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { Calendar, ArrowRight, Clock, Tag, Search, ChevronLeft, ChevronRight } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
-import Layout from '../../components/Layout'
 
 interface Article {
   id: string
@@ -206,326 +205,341 @@ export default function ArticlesList() {
 
   if (loading) {
     return (
-      <Layout>
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex justify-center items-center min-h-[400px]">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto mb-4"></div>
-              <p className="text-gray-600">記事を読み込み中...</p>
-            </div>
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex justify-center items-center min-h-[400px]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto mb-4"></div>
+            <p className="text-gray-600">記事を読み込み中...</p>
           </div>
         </div>
-      </Layout>
+      </div>
     )
   }
 
   return (
-    <Layout>
-      <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8">
 
-        {/* 検索フォーム */}
-        <div className="mb-8">
-          <form onSubmit={handleSearchSubmit} className="flex gap-2">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={handleSearchChange}
-                placeholder="記事を検索..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-              />
-            </div>
+      {/* 検索フォーム */}
+      <div className="mb-8">
+        <form onSubmit={handleSearchSubmit} className="flex gap-2">
+          <div className="flex-1 relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={handleSearchChange}
+              placeholder="記事を検索..."
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+            />
+          </div>
+          <button
+            type="submit"
+            className="px-6 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors"
+          >
+            検索
+          </button>
+          {searchFromUrl && (
             <button
-              type="submit"
-              className="px-6 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors"
+              type="button"
+              onClick={clearSearch}
+              className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
             >
-              検索
+              クリア
             </button>
-            {searchFromUrl && (
-              <button
-                type="button"
-                onClick={clearSearch}
-                className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                クリア
-              </button>
-            )}
-          </form>
-        </div>
+          )}
+        </form>
+      </div>
 
-        {/* フィルター */}
-        <div className="mb-8 space-y-4">
-          {/* カテゴリフィルター */}
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">カテゴリ</h3>
-            <div className="flex flex-wrap gap-2">
+      {/* フィルター */}
+      <div className="mb-8 space-y-4">
+        {/* カテゴリフィルター */}
+        <div>
+          <h3 className="text-lg font-semibold text-gray-900 mb-3">カテゴリ</h3>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => {
+                const newParams = new URLSearchParams(searchParams)
+                newParams.delete('category')
+                newParams.delete('page')
+                setSearchParams(newParams)
+              }}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                !selectedCategory
+                  ? 'bg-pink-500 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              すべて
+            </button>
+            {categories.map((category) => (
               <button
+                key={category.id}
                 onClick={() => {
                   const newParams = new URLSearchParams(searchParams)
-                  newParams.delete('category')
+                  newParams.set('category', category.slug)
                   newParams.delete('page')
                   setSearchParams(newParams)
                 }}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  !selectedCategory
+                  selectedCategory === category.slug
                     ? 'bg-pink-500 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                すべて
+                {category.name}
               </button>
-              {categories.map((category) => (
+            ))}
+          </div>
+        </div>
+
+        {/* タグフィルター */}
+        <div>
+          <h3 className="text-lg font-semibold text-gray-900 mb-3">タグ</h3>
+          <div className="flex flex-wrap gap-2">
+            {tags.map((tag) => (
+              <button
+                key={tag.id}
+                onClick={() => {
+                  const newParams = new URLSearchParams(searchParams)
+                  const currentTags = newParams.get('tags')?.split(',').filter(Boolean) || []
+
+                  if (currentTags.includes(tag.slug)) {
+                    const updatedTags = currentTags.filter(t => t !== tag.slug)
+                    if (updatedTags.length > 0) {
+                      newParams.set('tags', updatedTags.join(','))
+                    } else {
+                      newParams.delete('tags')
+                    }
+                  } else {
+                    currentTags.push(tag.slug)
+                    newParams.set('tags', currentTags.join(','))
+                  }
+
+                  newParams.delete('page')
+                  setSearchParams(newParams)
+                }}
+                className={`px-3 py-1 rounded-full text-sm transition-colors ${
+                  selectedTags.includes(tag.slug)
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                #{tag.name}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* アクティブフィルターのクリア */}
+        {hasActiveFilters && (
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-600">フィルター:</span>
+            {selectedCategory && (
+              <span className="inline-flex items-center gap-1 px-2 py-1 bg-pink-100 text-pink-800 text-sm rounded">
+                カテゴリ: {categories.find(c => c.slug === selectedCategory)?.name}
                 <button
-                  key={category.id}
                   onClick={() => {
                     const newParams = new URLSearchParams(searchParams)
-                    if (selectedCategory === category.slug) {
-                      newParams.delete('category')
-                    } else {
-                      newParams.set('category', category.slug)
-                    }
+                    newParams.delete('category')
                     newParams.delete('page')
                     setSearchParams(newParams)
                   }}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                    selectedCategory === category.slug
-                      ? 'bg-pink-500 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
+                  className="text-pink-600 hover:text-pink-800"
                 >
-                  {category.name}
+                  ×
                 </button>
-              ))}
-            </div>
-          </div>
-
-          {/* タグフィルター */}
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">タグ</h3>
-            <div className="flex flex-wrap gap-2">
-              {tags.map((tag) => {
-                const isSelected = selectedTags.includes(tag.slug)
-                return (
+              </span>
+            )}
+            {selectedTags.map(tagSlug => {
+              const tag = tags.find(t => t.slug === tagSlug)
+              return tag ? (
+                <span key={tagSlug} className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 text-sm rounded">
+                  #{tag.name}
                   <button
-                    key={tag.id}
                     onClick={() => {
                       const newParams = new URLSearchParams(searchParams)
-                      let newTags = [...selectedTags]
-
-                      if (isSelected) {
-                        newTags = newTags.filter(t => t !== tag.slug)
-                      } else {
-                        newTags.push(tag.slug)
-                      }
-
-                      if (newTags.length > 0) {
-                        newParams.set('tags', newTags.join(','))
+                      const currentTags = selectedTags.filter(t => t !== tagSlug)
+                      if (currentTags.length > 0) {
+                        newParams.set('tags', currentTags.join(','))
                       } else {
                         newParams.delete('tags')
                       }
                       newParams.delete('page')
                       setSearchParams(newParams)
                     }}
-                    className={`px-3 py-1 rounded-full text-xs font-medium transition-colors border ${
-                      isSelected
-                        ? 'bg-blue-500 text-white border-blue-500'
-                        : 'bg-white text-gray-700 border-gray-300 hover:border-blue-300 hover:bg-blue-50'
+                    className="text-blue-600 hover:text-blue-800"
+                  >
+                    ×
+                  </button>
+                </span>
+              ) : null
+            })}
+            {searchFromUrl && (
+              <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-800 text-sm rounded">
+                検索: "{searchFromUrl}"
+                <button
+                  onClick={clearSearch}
+                  className="text-green-600 hover:text-green-800"
+                >
+                  ×
+                </button>
+              </span>
+            )}
+            <button
+              onClick={() => {
+                setSearchQuery('')
+                setSearchParams(new URLSearchParams())
+              }}
+              className="text-sm text-gray-500 hover:text-gray-700 underline"
+            >
+              すべてクリア
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* 記事一覧 */}
+      {articles.length === 0 ? (
+        <div className="text-center py-12">
+          <p className="text-gray-600 text-lg">記事が見つかりませんでした。</p>
+          {hasActiveFilters && (
+            <button
+              onClick={() => {
+                setSearchQuery('')
+                setSearchParams(new URLSearchParams())
+              }}
+              className="mt-4 text-pink-500 hover:text-pink-600 underline"
+            >
+              フィルターをクリアして全ての記事を表示
+            </button>
+          )}
+        </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            {articles.map((article) => {
+              const category = categories.find(c => c.id === article.category_id)
+              const articleTags = tags.filter(tag =>
+                article.tag_ids && Array.isArray(article.tag_ids) && article.tag_ids.includes(tag.id)
+              )
+
+              return (
+                <Link
+                  key={article.id}
+                  to={`/articles/${article.slug}`}
+                  className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden"
+                >
+                  {article.featured_image_url && (
+                    <img
+                      src={article.featured_image_url}
+                      alt={article.title}
+                      className="w-full h-48 object-cover"
+                    />
+                  )}
+                  <div className="p-6">
+                    <div className="flex items-center justify-between mb-2">
+                      {category && (
+                        <span className="inline-block px-2 py-1 bg-pink-100 text-pink-800 text-xs rounded-full">
+                          {category.name}
+                        </span>
+                      )}
+                      <span className="text-sm text-gray-500">
+                        {calculateReadingTime(article.excerpt || '')}分で読める
+                      </span>
+                    </div>
+                    <h2 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">
+                      {article.title}
+                    </h2>
+                    <p className="text-gray-600 mb-4 line-clamp-3">
+                      {article.excerpt}
+                    </p>
+                    <div className="flex items-center justify-between">
+                      <div className="flex flex-wrap gap-1">
+                        {articleTags.slice(0, 3).map((tag) => (
+                          <span
+                            key={tag.id}
+                            className="inline-block px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded"
+                          >
+                            #{tag.name}
+                          </span>
+                        ))}
+                        {articleTags.length > 3 && (
+                          <span className="text-xs text-gray-500">
+                            +{articleTags.length - 3}
+                          </span>
+                        )}
+                      </div>
+                      <span className="text-sm text-gray-500">
+                        {new Date(article.published_at).toLocaleDateString('ja-JP')}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+
+          {/* ページネーション */}
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center space-x-2">
+              <button
+                onClick={() => {
+                  const newParams = new URLSearchParams(searchParams)
+                  newParams.set('page', String(Math.max(1, currentPage - 1)))
+                  setSearchParams(newParams)
+                }}
+                disabled={currentPage <= 1}
+                className="px-3 py-2 text-gray-500 border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+              >
+                前へ
+              </button>
+
+              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                let pageNumber
+                if (totalPages <= 5) {
+                  pageNumber = i + 1
+                } else if (currentPage <= 3) {
+                  pageNumber = i + 1
+                } else if (currentPage >= totalPages - 2) {
+                  pageNumber = totalPages - 4 + i
+                } else {
+                  pageNumber = currentPage - 2 + i
+                }
+
+                return (
+                  <button
+                    key={pageNumber}
+                    onClick={() => {
+                      const newParams = new URLSearchParams(searchParams)
+                      newParams.set('page', String(pageNumber))
+                      setSearchParams(newParams)
+                    }}
+                    className={`px-3 py-2 border rounded-lg ${
+                      currentPage === pageNumber
+                        ? 'bg-pink-500 text-white border-pink-500'
+                        : 'text-gray-700 border-gray-300 hover:bg-gray-50'
                     }`}
                   >
-                    <Tag className="w-3 h-3 inline mr-1" />
-                    {tag.name}
+                    {pageNumber}
                   </button>
                 )
               })}
-            </div>
-          </div>
 
-          {/* アクティブフィルターの表示 */}
-          {hasActiveFilters && (
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              <span>フィルター中:</span>
-              {selectedCategory && (
-                <span className="bg-pink-100 text-pink-800 px-2 py-1 rounded">
-                  {categories.find(c => c.slug === selectedCategory)?.name}
-                </span>
-              )}
-              {selectedTags.map(tagSlug => {
-                const tag = tags.find(t => t.slug === tagSlug)
-                return tag ? (
-                  <span key={tagSlug} className="bg-blue-100 text-blue-800 px-2 py-1 rounded flex items-center gap-1">
-                    <Tag className="w-3 h-3" />
-                    {tag.name}
-                  </span>
-                ) : null
-              })}
-              {searchFromUrl && (
-                <span className="bg-gray-100 text-gray-800 px-2 py-1 rounded">
-                  "{searchFromUrl}"
-                </span>
-              )}
               <button
                 onClick={() => {
-                  setSearchQuery('')
-                  setSearchParams({})
+                  const newParams = new URLSearchParams(searchParams)
+                  newParams.set('page', String(Math.min(totalPages, currentPage + 1)))
+                  setSearchParams(newParams)
                 }}
-                className="text-pink-600 hover:text-pink-800 font-medium"
+                disabled={currentPage >= totalPages}
+                className="px-3 py-2 text-gray-500 border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
               >
-                すべてクリア
+                次へ
               </button>
             </div>
           )}
-        </div>
-
-        {/* 記事一覧 */}
-        {articles.length === 0 ? (
-          <div className="text-center py-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">条件に一致する記事がありません</h2>
-            <p className="text-gray-600 mb-6">検索条件やカテゴリフィルターを変更してみてください</p>
-            {hasActiveFilters && (
-              <button
-                onClick={() => {
-                  setSearchQuery('')
-                  setSearchParams({})
-                }}
-                className="inline-flex items-center px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors"
-              >
-                <ArrowRight className="w-4 h-4 mr-2" />
-                すべての記事を見る
-              </button>
-            )}
-          </div>
-        ) : (
-          <>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              {articles.map((article) => {
-                const category = categories.find(c => c.id === article.category_id)
-                const articleTags = article.tag_ids
-                  ? tags.filter(tag => Array.isArray(article.tag_ids) && article.tag_ids.includes(tag.id))
-                  : []
-
-                return (
-                  <article key={article.id} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
-                    {article.featured_image_url && (
-                      <div className="aspect-video overflow-hidden">
-                        <img
-                          src={article.featured_image_url}
-                          alt={article.title}
-                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                        />
-                      </div>
-                    )}
-                    <div className="p-6">
-                      {category && (
-                        <div className="mb-3">
-                          <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${categoryConfig[category.slug] || 'bg-gray-50 text-gray-700'}`}>
-                            {category.name}
-                          </span>
-                        </div>
-                      )}
-
-                      <h2 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">
-                        <Link to={`/articles/${article.slug}`} className="hover:text-pink-600 transition-colors">
-                          {article.title}
-                        </Link>
-                      </h2>
-
-                      {article.excerpt && (
-                        <p className="text-gray-600 mb-4 line-clamp-3">{article.excerpt}</p>
-                      )}
-
-                      {/* タグ表示 */}
-                      {articleTags.length > 0 && (
-                        <div className="flex flex-wrap gap-1 mb-4">
-                          {articleTags.slice(0, 3).map(tag => (
-                            <span key={tag.id} className="inline-flex items-center px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">
-                              <Tag className="w-3 h-3 mr-1" />
-                              {tag.name}
-                            </span>
-                          ))}
-                          {articleTags.length > 3 && (
-                            <span className="text-xs text-gray-500">+{articleTags.length - 3}</span>
-                          )}
-                        </div>
-                      )}
-
-                      <div className="flex items-center justify-between text-sm text-gray-500">
-                        <div className="flex items-center gap-4">
-                          <span className="flex items-center gap-1">
-                            <Calendar className="w-4 h-4" />
-                            {new Date(article.published_at).toLocaleDateString('ja-JP')}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Clock className="w-4 h-4" />
-                            {calculateReadingTime(article.excerpt || '')}分
-                          </span>
-                        </div>
-                        <Link
-                          to={`/articles/${article.slug}`}
-                          className="flex items-center gap-1 text-pink-600 hover:text-pink-700 font-medium"
-                        >
-                          読む
-                          <ArrowRight className="w-4 h-4" />
-                        </Link>
-                      </div>
-                    </div>
-                  </article>
-                )
-              })}
-            </div>
-
-            {/* ページネーション */}
-            {totalPages > 1 && (
-              <div className="flex justify-center items-center gap-2">
-                <button
-                  onClick={() => {
-                    const newParams = new URLSearchParams(searchParams)
-                    newParams.set('page', String(currentPage - 1))
-                    setSearchParams(newParams)
-                  }}
-                  disabled={currentPage === 1}
-                  className="p-2 rounded-lg border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-
-                {Array.from({ length: totalPages }, (_, i) => {
-                  const pageNumber = i + 1
-                  return (
-                    <button
-                      key={pageNumber}
-                      onClick={() => {
-                        const newParams = new URLSearchParams(searchParams)
-                        newParams.set('page', String(pageNumber))
-                        setSearchParams(newParams)
-                      }}
-                      className={`px-4 py-2 rounded-lg ${
-                        currentPage === pageNumber
-                          ? 'bg-pink-500 text-white'
-                          : 'text-gray-700 hover:bg-gray-100'
-                      }`}
-                    >
-                      {pageNumber}
-                    </button>
-                  )
-                })}
-
-                <button
-                  onClick={() => {
-                    const newParams = new URLSearchParams(searchParams)
-                    newParams.set('page', String(currentPage + 1))
-                    setSearchParams(newParams)
-                  }}
-                  disabled={currentPage === totalPages}
-                  className="p-2 rounded-lg border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-              </div>
-            )}
-          </>
-        )}
-      </div>
-    </Layout>
+        </>
+      )}
+    </div>
   )
 }
