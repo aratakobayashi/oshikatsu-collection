@@ -20,6 +20,9 @@
 /works/js/*    /js/:splat    200
 /works/css/*   /css/:splat   200
 /works/assets/*    /assets/:splat    200
+/articles/js/*    /js/:splat    200
+/articles/css/*   /css/:splat   200
+/articles/assets/*    /assets/:splat    200
 
 # Catch all nested paths
 /*/js/*    /js/:splat    200

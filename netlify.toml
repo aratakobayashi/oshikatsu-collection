@@ -26,7 +26,7 @@
   force = false
 
 [[redirects]]
-  from = "/episodes/css/*"  
+  from = "/episodes/css/*"
   to = "/css/:splat"
   status = 200
   force = false
@@ -45,7 +45,7 @@
   force = false
 
 [[redirects]]
-  from = "/*/css/*"  
+  from = "/*/css/*"
   to = "/css/:splat"
   status = 200
   force = false
@@ -56,7 +56,7 @@
   status = 200
   force = false
 
-# SPAリダイレクト設定（静的ファイル以外）
+# SPAリダイレクト設定（推奨設定）
 [[redirects]]
   from = "/*"
   to = "/index.html"
