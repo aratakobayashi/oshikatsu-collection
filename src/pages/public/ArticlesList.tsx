@@ -21,6 +21,13 @@ interface Category {
   description?: string
 }
 
+interface Tag {
+  id: string
+  name: string
+  slug: string
+  color?: string
+}
+
 const ARTICLES_PER_PAGE = 9
 
 // カテゴリー設定
@@ -69,15 +76,18 @@ export default function ArticlesList() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [articles, setArticles] = useState<Article[]>([])
   const [categories, setCategories] = useState<Category[]>([])
+  const [tags, setTags] = useState<Tag[]>([])
   const [loading, setLoading] = useState(true)
   const [totalArticles, setTotalArticles] = useState(0)
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '')
 
   const selectedCategory = searchParams.get('category')
+  const selectedTags = searchParams.get('tags')?.split(',').filter(Boolean) || []
   const currentPage = parseInt(searchParams.get('page') || '1')
 
   useEffect(() => {
     loadCategories()
+    loadTags()
   }, [])
 
   useEffect(() => {
@@ -85,7 +95,7 @@ export default function ArticlesList() {
     if (categories.length > 0 || !selectedCategory) {
       fetchArticles()
     }
-  }, [selectedCategory, currentPage, categories, searchParams.get('search')])
+  }, [selectedCategory, selectedTags, currentPage, categories, tags, searchParams.get('search')])
 
   // 検索クエリの変更を監視
   useEffect(() => {
@@ -113,6 +123,24 @@ export default function ArticlesList() {
     }
   }
 
+  async function loadTags() {
+    try {
+      const { data, error } = await supabase
+        .from('article_tags')
+        .select('*')
+        .order('name')
+
+      if (error) {
+        console.error('❌ Tag Error:', error)
+      } else {
+        console.log('✅ タグデータを設定:', data?.length, '件')
+        setTags(data || [])
+      }
+    } catch (error) {
+      console.error('❌ Tag fetch error:', error)
+    }
+  }
+
   async function fetchArticles() {
     console.log('🔥 fetchArticles関数が実行されました')
     try {
@@ -124,7 +152,7 @@ export default function ArticlesList() {
 
       let query = supabase
         .from('articles')
-        .select('id, title, slug, excerpt, published_at, featured_image_url, category_id', { count: 'exact' })
+        .select('id, title, slug, excerpt, published_at, featured_image_url, category_id, tag_ids', { count: 'exact' })
         .eq('status', 'published')
         .order('published_at', { ascending: false })
 
@@ -141,6 +169,19 @@ export default function ArticlesList() {
         if (category) {
           query = query.eq('category_id', category.id)
           console.log('🎯 カテゴリフィルター適用:', category.name)
+        }
+      }
+
+      // タグフィルターを適用
+      if (selectedTags.length > 0) {
+        const tagIds = selectedTags.map(tagSlug =>
+          tags.find(t => t.slug === tagSlug)?.id
+        ).filter(Boolean)
+
+        if (tagIds.length > 0) {
+          // tag_ids配列に指定したタグIDのいずれかが含まれる記事を検索
+          query = query.overlaps('tag_ids', tagIds)
+          console.log('🏷️ タグフィルター適用:', selectedTags.join(', '))
         }
       }
 
@@ -209,6 +250,39 @@ export default function ArticlesList() {
     setSearchParams(newParams)
   }
 
+  function handleTagClick(tagSlug: string) {
+    const newParams = new URLSearchParams(searchParams)
+    let newSelectedTags = [...selectedTags]
+
+    if (selectedTags.includes(tagSlug)) {
+      // 既に選択されているタグは除去
+      newSelectedTags = newSelectedTags.filter(t => t !== tagSlug)
+    } else {
+      // 新しいタグを追加
+      newSelectedTags.push(tagSlug)
+    }
+
+    if (newSelectedTags.length > 0) {
+      newParams.set('tags', newSelectedTags.join(','))
+    } else {
+      newParams.delete('tags')
+    }
+
+    // タグ変更時はページを1にリセット
+    newParams.set('page', '1')
+    setSearchParams(newParams)
+  }
+
+  function clearAllFilters() {
+    const newParams = new URLSearchParams(searchParams)
+    newParams.delete('category')
+    newParams.delete('tags')
+    newParams.delete('search')
+    newParams.set('page', '1')
+    setSearchParams(newParams)
+    setSearchQuery('')
+  }
+
   function handlePageChange(page: number) {
     const newParams = new URLSearchParams(searchParams)
     newParams.set('page', page.toString())
@@ -224,7 +298,7 @@ export default function ArticlesList() {
   }
 
   const currentSearchTerm = searchParams.get('search')
-  const hasActiveFilters = selectedCategory || currentSearchTerm
+  const hasActiveFilters = selectedCategory || selectedTags.length > 0 || currentSearchTerm
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50">
@@ -326,6 +400,50 @@ export default function ArticlesList() {
                 </div>
               </div>
 
+              {/* Tag Filter */}
+              <div className="mb-8">
+                <h2 className="text-lg font-bold text-gray-900 mb-4">タグ</h2>
+                <div className="flex flex-wrap gap-2">
+                  {tags.slice(0, 20).map((tag) => (
+                    <button
+                      key={tag.id}
+                      onClick={() => handleTagClick(tag.slug)}
+                      className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300 border ${
+                        selectedTags.includes(tag.slug)
+                          ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-transparent shadow-md'
+                          : tag.color || 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100'
+                      }`}
+                    >
+                      {tag.name}
+                    </button>
+                  ))}
+                  {tags.length > 20 && (
+                    <button
+                      className="px-3 py-1.5 text-sm text-gray-500 hover:text-gray-700"
+                      onClick={() => {
+                        // TODO: Show all tags modal
+                        console.log('Show all tags modal')
+                      }}
+                    >
+                      +{tags.length - 20}個のタグ
+                    </button>
+                  )}
+                </div>
+                {selectedTags.length > 0 && (
+                  <button
+                    onClick={() => {
+                      const newParams = new URLSearchParams(searchParams)
+                      newParams.delete('tags')
+                      newParams.set('page', '1')
+                      setSearchParams(newParams)
+                    }}
+                    className="mt-3 text-sm text-purple-600 hover:text-purple-800 underline"
+                  >
+                    タグ選択をクリア
+                  </button>
+                )}
+              </div>
+
               {/* Active Filters */}
               {hasActiveFilters && (
                 <div>
@@ -344,6 +462,22 @@ export default function ArticlesList() {
                         </button>
                       </span>
                     )}
+                    {selectedTags.map(tagSlug => {
+                      const tag = tags.find(t => t.slug === tagSlug)
+                      return tag ? (
+                        <span key={tagSlug} className="inline-flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                          {tag.name}
+                          <button
+                            onClick={() => handleTagClick(tagSlug)}
+                            className="p-0.5 hover:bg-blue-200 rounded-full transition-colors duration-200"
+                          >
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </span>
+                      ) : null
+                    })}
                     {currentSearchTerm && (
                       <span className="inline-flex items-center gap-2 px-3 py-1 bg-pink-100 text-pink-800 rounded-full text-sm font-medium">
                         検索: "{currentSearchTerm}"
@@ -356,6 +490,17 @@ export default function ArticlesList() {
                           </svg>
                         </button>
                       </span>
+                    )}
+                    {hasActiveFilters && (
+                      <button
+                        onClick={clearAllFilters}
+                        className="inline-flex items-center gap-2 px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors duration-200"
+                      >
+                        すべてクリア
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
                     )}
                   </div>
                 </div>
@@ -410,6 +555,31 @@ export default function ArticlesList() {
                           {article.excerpt}
                         </p>
                       )}
+
+                      {/* Tags */}
+                      {article.tag_ids && Array.isArray(article.tag_ids) && article.tag_ids.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mb-3">
+                          {article.tag_ids.slice(0, 3).map(tagId => {
+                            const tag = tags.find(t => t.id === tagId)
+                            return tag ? (
+                              <span
+                                key={tag.id}
+                                className={`px-2 py-1 text-xs font-medium rounded-full ${
+                                  tag.color || 'bg-gray-100 text-gray-600'
+                                }`}
+                              >
+                                {tag.name}
+                              </span>
+                            ) : null
+                          })}
+                          {article.tag_ids.length > 3 && (
+                            <span className="px-2 py-1 text-xs text-gray-400">
+                              +{article.tag_ids.length - 3}
+                            </span>
+                          )}
+                        </div>
+                      )}
+
                       <div className="flex items-center justify-between text-xs text-gray-500">
                         <span>
                           {new Date(article.published_at).toLocaleDateString('ja-JP', {
