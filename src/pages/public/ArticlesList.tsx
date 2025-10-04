@@ -222,11 +222,6 @@ export default function ArticlesList() {
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
-        {/* ヘッダー */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">推し活記事</h1>
-          <p className="text-gray-600">推し活に役立つ記事をお探しいただけます</p>
-        </div>
 
         {/* 検索フォーム */}
         <div className="mb-8">
