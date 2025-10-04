@@ -41,6 +41,9 @@ import WorkDetail from './pages/public/WorkDetail'
 import ArticlesList from './pages/public/ArticlesList'
 import ArticleDetailSimple from './pages/public/ArticleDetailSimple'
 import ArticlesDebug from './pages/public/ArticlesDebug'
+import TestYoutube from './pages/TestYoutube'
+import DebugBzai from './pages/DebugBzai'
+import YouTubeTest from './pages/public/YouTubeTest'
 import Submit from './pages/public/Submit'
 import Login from './pages/public/Login'
 import Register from './pages/public/Register'
@@ -166,6 +169,7 @@ function App() {
         <Route path="/works" element={<Layout><Works /></Layout>} />
         <Route path="/articles" element={<Layout><ArticlesList /></Layout>} />
         <Route path="/articles-debug" element={<Layout><ArticlesDebug /></Layout>} />
+        <Route path="/youtube-test" element={<Layout><YouTubeTest /></Layout>} />
         
         {/* Detail Routes */}
         <Route path="/celebrities/:slug" element={<Layout><CelebrityProfile /></Layout>} />
@@ -203,6 +207,8 @@ function App() {
 
         {/* デバッグ用ルート */}
         <Route path="/debug/auth" element={<AuthDebug />} />
+        <Route path="/test/youtube" element={<TestYoutube />} />
+        <Route path="/debug/bzai" element={<DebugBzai />} />
         
         {/* 404 */}
         <Route path="*" element={<Layout><div className="text-center py-12"><h2 className="text-2xl font-bold text-gray-900 mb-4">ページが見つかりません</h2><p className="text-gray-600">お探しのページは存在しないか、移動した可能性があります。</p></div></Layout>} />

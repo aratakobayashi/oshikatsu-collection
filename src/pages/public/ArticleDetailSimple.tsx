@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { Calendar, ArrowLeft, Clock, Eye, Share2, Heart, BookOpen, ListOrdered, ChevronRight, Twitter, Facebook, MessageCircle, Copy, CheckCircle, Home, FolderOpen, Tag, X } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
+import ArticleContent from '../../components/ArticleContent'
 
 // Instagram埋め込み型定義削除（シンプルなリンクに変更したため）
 
@@ -100,7 +102,6 @@ export default function ArticleDetailSimple() {
   const [activeHeadingId, setActiveHeadingId] = useState<string | null>(null)
   const [readingProgress, setReadingProgress] = useState(0)
   const [lightboxImage, setLightboxImage] = useState<string | null>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (slug) {
@@ -535,14 +536,37 @@ export default function ArticleDetailSimple() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50">
-      {/* 読書進捗バー */}
-      <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
-        <div
-          className="h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-150 ease-out"
-          style={{ width: `${readingProgress}%` }}
-        />
-      </div>
+    <>
+      {/* SEOメタタグ */}
+      <Helmet>
+        <title>{article.title} | 推し活コレクション</title>
+        <meta name="description" content={article.excerpt || article.content.substring(0, 160)} />
+        <meta property="og:title" content={article.title} />
+        <meta property="og:description" content={article.excerpt || article.content.substring(0, 160)} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={window.location.href} />
+        {article.featured_image_url && (
+          <meta property="og:image" content={article.featured_image_url} />
+        )}
+        <meta property="article:published_time" content={article.published_at} />
+        {category && <meta property="article:section" content={category.name} />}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={article.title} />
+        <meta name="twitter:description" content={article.excerpt || article.content.substring(0, 160)} />
+        {article.featured_image_url && (
+          <meta name="twitter:image" content={article.featured_image_url} />
+        )}
+        <link rel="canonical" href={window.location.href} />
+      </Helmet>
+
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50">
+        {/* 読書進捗バー */}
+        <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
+          <div
+            className="h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-150 ease-out"
+            style={{ width: `${readingProgress}%` }}
+          />
+        </div>
       {/* Hero Header */}
       <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-red-500 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -662,17 +686,10 @@ export default function ArticleDetailSimple() {
           <div className="flex-1 lg:order-1">
             <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
               <div className="px-6 py-8 md:px-12 md:py-12">
-                {/* Content Body */}
-                <div
-                  ref={contentRef}
-                  className="wordpress-content max-w-none"
-                  style={{
-                    fontFamily: '"Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "Hiragino Sans", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", sans-serif',
-                    lineHeight: '1.9',
-                    color: '#2d3748',
-                    letterSpacing: '0.02em'
-                  }}
-                  dangerouslySetInnerHTML={{ __html: formatContent(article.content) }}
+                {/* Content Body - 新しいArticleContentコンポーネント使用 */}
+                <ArticleContent
+                  content={article.content}
+                  onTocGenerated={setTocItems}
                 />
               </div>
             </div>
@@ -934,6 +951,7 @@ export default function ArticleDetailSimple() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   )
 }
