@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { Calendar, ArrowRight, Clock, Eye, Tag, Search, ChevronLeft, ChevronRight } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
@@ -91,11 +91,18 @@ export default function ArticlesList() {
   }, [])
 
   useEffect(() => {
-    // カテゴリが読み込まれてから記事をフェッチ
-    if (categories.length > 0 || !selectedCategory) {
+    // カテゴリとタグがロードされた後に記事をフェッチ
+    if (categories.length > 0 && tags.length > 0) {
       fetchArticles()
     }
-  }, [selectedCategory, selectedTags, currentPage, categories, tags, searchParams.get('search')])
+  }, [categories, tags])
+
+  useEffect(() => {
+    // フィルターやページ変更時に記事を再フェッチ
+    if (categories.length > 0 && tags.length > 0) {
+      fetchArticles()
+    }
+  }, [selectedCategory, selectedTags, currentPage, searchParams.get('search')])
 
   // 検索クエリの変更を監視
   useEffect(() => {
@@ -164,7 +171,7 @@ export default function ArticlesList() {
       }
 
       // カテゴリフィルターを適用
-      if (selectedCategory) {
+      if (selectedCategory && categories.length > 0) {
         const category = categories.find(c => c.slug === selectedCategory)
         if (category) {
           query = query.eq('category_id', category.id)
@@ -173,7 +180,7 @@ export default function ArticlesList() {
       }
 
       // タグフィルターを適用
-      if (selectedTags.length > 0) {
+      if (selectedTags.length > 0 && tags.length > 0) {
         const tagIds = selectedTags.map(tagSlug =>
           tags.find(t => t.slug === tagSlug)?.id
         ).filter(Boolean)
