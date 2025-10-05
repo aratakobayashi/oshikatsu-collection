@@ -29,5 +29,5 @@
 /*/*/css/*   /css/:splat   200
 /*/*/assets/*    /assets/:splat    200
 
-# SPA fallback - all other routes to index.html
+# SPA fallback - all other routes to index.html (force cache refresh)
 /*    /index.html    200
