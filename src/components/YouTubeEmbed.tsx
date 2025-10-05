@@ -160,9 +160,17 @@ function YouTubeEmbed({
       >
         {/* サムネイル */}
         <img
-          src={videoData?.thumbnail || `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
+          src={videoData?.thumbnail || `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
           alt={videoData?.title || 'YouTube動画'}
           className="absolute inset-0 w-full h-full object-cover"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            if (target.src.includes('hqdefault.jpg')) {
+              target.src = `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+            } else if (target.src.includes('mqdefault.jpg')) {
+              target.src = `https://img.youtube.com/vi/${videoId}/default.jpg`;
+            }
+          }}
         />
 
         {/* 再生ボタンオーバーレイ */}
