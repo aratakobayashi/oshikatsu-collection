@@ -66,7 +66,7 @@ function App() {
   return (
     <HelmetProvider>
       <EnvironmentGate>
-        <Router future={{ v7_startTransition: true }}>
+        <Router>
           <ScrollToTop />
         <Suspense fallback={
           <div className="flex items-center justify-center min-h-screen">
