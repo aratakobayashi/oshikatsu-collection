@@ -41,6 +41,7 @@ import WorkDetail from './pages/public/WorkDetail'
 import ArticlesList from './pages/public/ArticlesList'
 import ArticleDetailSimple from './pages/public/ArticleDetailSimple'
 import ArticlesDebug from './pages/public/ArticlesDebug'
+import ArticleDebugPage from './pages/public/ArticleDebugPage'
 import TestYoutube from './pages/TestYoutube'
 import DebugBzai from './pages/DebugBzai'
 import YouTubeTest from './pages/public/YouTubeTest'
@@ -169,6 +170,7 @@ function App() {
         <Route path="/works" element={<Layout><Works /></Layout>} />
         <Route path="/articles" element={<Layout><ArticlesList /></Layout>} />
         <Route path="/articles-debug" element={<Layout><ArticlesDebug /></Layout>} />
+        <Route path="/articles-debug/:slug" element={<Layout><ArticleDebugPage /></Layout>} />
         <Route path="/youtube-test" element={<Layout><YouTubeTest /></Layout>} />
         
         {/* Detail Routes */}
