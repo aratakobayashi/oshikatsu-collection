@@ -45,7 +45,7 @@ export default function ArticleContent({ content, onTocGenerated }: ArticleConte
     // インラインコード (`code` → <code>code</code>)
     html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
 
-    // マークダウン見出しの変換（### → h3, #### → h4）
+    // マークダウン見出しの変換（# → h1, ## → h2, ### → h3, #### → h4）
     // h5の変換 (##### text)
     html = html.replace(/^##### (.+)$/gm, '<h5>$1</h5>');
 
@@ -54,6 +54,12 @@ export default function ArticleContent({ content, onTocGenerated }: ArticleConte
 
     // h3の変換 (### text)
     html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+
+    // h2の変換 (## text)
+    html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+
+    // h1の変換 (# text)
+    html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
 
     // リンクの変換 ([text](url) → <a href="url">text</a>)
     html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
