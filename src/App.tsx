@@ -180,14 +180,7 @@ function App() {
         <Route path="/items/:id" element={<Layout><ItemDetail /></Layout>} />
         <Route path="/locations/:id" element={<Layout><LocationDetail /></Layout>} />
         <Route path="/posts/:id" element={<Layout><PostDetail /></Layout>} />
-        <Route path="/articles/:slug" element={
-          <Layout>
-            <div>
-              {console.log('🔍 Article detail route matched:', window.location.pathname)}
-              <ArticleDetailSimple />
-            </div>
-          </Layout>
-        } />
+        <Route path="/articles/:slug" element={<Layout><ArticleDetailSimple /></Layout>} />
         
         {/* Authentication Routes */}
         <Route path="/login" element={
