@@ -61,6 +61,54 @@ export default function ArticleContent({ content, onTocGenerated }: ArticleConte
     // h1の変換 (# text)
     html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
 
+    // YouTube URL を魅力的なサムネイル付きカードに直接変換
+    html = html.replace(
+      /https?:\/\/(?:www\.|m\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/g,
+      (match, videoId) => {
+        return `<div class="youtube-embed my-8 mx-auto max-w-4xl bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-300 group">
+          <div class="relative">
+            <img
+              src="https://img.youtube.com/vi/${videoId}/hqdefault.jpg"
+              alt="YouTube動画サムネイル"
+              class="w-full h-64 md:h-80 object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+              onerror="this.src='https://img.youtube.com/vi/${videoId}/mqdefault.jpg'; this.onerror=function(){this.src='https://img.youtube.com/vi/${videoId}/default.jpg';}"
+            />
+            <div class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
+              <div class="bg-red-600 hover:bg-red-700 text-white rounded-full p-4 shadow-lg transform group-hover:scale-110 transition-all duration-300 cursor-pointer">
+                <svg class="w-8 h-8 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="p-6">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center">
+                  <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">YouTube動画</p>
+                  <p class="text-sm text-gray-600">クリックして視聴</p>
+                </div>
+              </div>
+              <a
+                href="${match}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full font-medium transition-all duration-200 hover:shadow-lg transform hover:scale-105"
+              >
+                視聴する
+              </a>
+            </div>
+          </div>
+        </div>`;
+      }
+    );
+
     // リンクの変換 ([text](url) → <a href="url">text</a>)
     html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
 
