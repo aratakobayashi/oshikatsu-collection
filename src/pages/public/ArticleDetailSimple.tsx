@@ -97,6 +97,11 @@ export default function ArticleDetailSimple() {
   const [tocItems, setTocItems] = useState<TocItem[]>([])
   const [showToc, setShowToc] = useState(true) // デフォルトで目次セクションを表示
   const [copiedUrl, setCopiedUrl] = useState(false)
+
+  // デバッグログ追加
+  console.log('🔍 ArticleDetailSimple mounted, slug:', slug)
+  console.log('🔍 Current URL:', window.location.href)
+  console.log('🔍 Current pathname:', window.location.pathname)
   const [relatedArticles, setRelatedArticles] = useState<Article[]>([])
   const [category, setCategory] = useState<Category | null>(null)
   const [activeHeadingId, setActiveHeadingId] = useState<string | null>(null)
