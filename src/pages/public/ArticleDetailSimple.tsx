@@ -107,6 +107,7 @@ export default function ArticleDetailSimple() {
   const [activeHeadingId, setActiveHeadingId] = useState<string | null>(null)
   const [readingProgress, setReadingProgress] = useState(0)
   const [lightboxImage, setLightboxImage] = useState<string | null>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (slug) {
@@ -687,7 +688,7 @@ export default function ArticleDetailSimple() {
           {/* Article Content - 左側、幅拡大 */}
           <div className="flex-1 lg:order-1">
             <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
-              <div className="px-6 py-8 md:px-12 md:py-12">
+              <div className="px-6 py-8 md:px-12 md:py-12" ref={contentRef}>
                 {/* Content Body - 新しいArticleContentコンポーネント使用 */}
                 <ArticleContent
                   content={article.content}
