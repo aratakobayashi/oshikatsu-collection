@@ -116,17 +116,14 @@ export default function ArticleDetailSimple() {
       setLoading(true)
       setError(null)
 
-      // URLパラメータをエンコードしたまま保持
-      // ブラウザが自動的にデコードしてしまうので、再度エンコードする
-      const encodedSlug = encodeURIComponent(articleSlug).toLowerCase()
-
+      // URLパラメータはそのまま使用（デコードされている状態）
       const { data, error: supabaseError } = await supabase
         .from('articles')
         .select(`
           *,
           article_categories(id, name, slug, description)
         `)
-        .eq('slug', encodedSlug)
+        .eq('slug', articleSlug)
         .eq('status', 'published')
         .single()
 
