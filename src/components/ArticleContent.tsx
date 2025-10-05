@@ -62,8 +62,9 @@ export default function ArticleContent({ content, onTocGenerated }: ArticleConte
     html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
 
     // YouTube URL を魅力的なサムネイル付きカードに直接変換
+    // embed URLとwatch URLの両方に対応し、パラメータも考慮
     html = html.replace(
-      /https?:\/\/(?:www\.|m\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/g,
+      /https?:\/\/(?:www\.|m\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:[^\s<>"']*)?/g,
       (match, videoId) => {
         return `<div class="youtube-embed my-8 mx-auto max-w-4xl bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-300 group">
           <div class="relative">
@@ -96,7 +97,7 @@ export default function ArticleContent({ content, onTocGenerated }: ArticleConte
                 </div>
               </div>
               <a
-                href="${match}"
+                href="https://www.youtube.com/watch?v=${videoId}"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full font-medium transition-all duration-200 hover:shadow-lg transform hover:scale-105"
@@ -265,54 +266,6 @@ export default function ArticleContent({ content, onTocGenerated }: ArticleConte
         className="article-content"
         dangerouslySetInnerHTML={{ __html: processedContent }}
       />
-
-      <style jsx>{`
-        .article-content {
-          font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
-          line-height: 1.8;
-          color: #374151;
-        }
-
-        .article-content > *:first-child {
-          margin-top: 0;
-        }
-
-        .article-content > *:last-child {
-          margin-bottom: 0;
-        }
-
-        .article-content pre {
-          background-color: #1f2937;
-          color: #f3f4f6;
-          padding: 1rem;
-          border-radius: 0.5rem;
-          overflow-x: auto;
-          margin: 1.5rem 0;
-        }
-
-        .article-content code {
-          background-color: #f3f4f6;
-          padding: 0.125rem 0.25rem;
-          border-radius: 0.25rem;
-          font-size: 0.875em;
-        }
-
-        .article-content pre code {
-          background-color: transparent;
-          padding: 0;
-        }
-
-        .article-content hr {
-          border-top: 2px solid #e5e7eb;
-          margin: 2rem 0;
-        }
-
-        @media (min-width: 768px) {
-          .article-content {
-            font-size: 1.125rem;
-          }
-        }
-      `}</style>
     </article>
   );
 }
