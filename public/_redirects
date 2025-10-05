@@ -1,1 +1,33 @@
-/*    /index.html   200
+# Netlify redirects file for SPA
+# Order matters - specific rules first, then general rules
+
+# Redirect nested paths to root assets
+/episodes/js/*    /js/:splat    200
+/episodes/css/*   /css/:splat   200
+/episodes/assets/*    /assets/:splat    200
+/celebrities/js/*    /js/:splat    200
+/celebrities/css/*   /css/:splat   200
+/celebrities/assets/*    /assets/:splat    200
+/items/js/*    /js/:splat    200
+/items/css/*   /css/:splat   200
+/items/assets/*    /assets/:splat    200
+/locations/js/*    /js/:splat    200
+/locations/css/*   /css/:splat   200
+/locations/assets/*    /assets/:splat    200
+/posts/js/*    /js/:splat    200
+/posts/css/*   /css/:splat   200
+/posts/assets/*    /assets/:splat    200
+/works/js/*    /js/:splat    200
+/works/css/*   /css/:splat   200
+/works/assets/*    /assets/:splat    200
+
+# Catch all nested paths
+/*/js/*    /js/:splat    200
+/*/css/*   /css/:splat   200
+/*/assets/*    /assets/:splat    200
+/*/*/js/*    /js/:splat    200
+/*/*/css/*   /css/:splat   200
+/*/*/assets/*    /assets/:splat    200
+
+# SPA fallback - all other routes to index.html
+/*    /index.html    200
