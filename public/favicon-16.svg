@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <rect width="16" height="16" fill="#ec4899"/>
+  <text
+    x="8"
+    y="12"
+    font-size="11"
+    font-weight="900"
+    font-family="'Hiragino Sans', 'Yu Gothic', sans-serif"
+    text-anchor="middle"
+    fill="white">推</text>
+</svg>
