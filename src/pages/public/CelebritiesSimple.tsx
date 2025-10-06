@@ -137,10 +137,21 @@ export default function CelebritiesSimple() {
   const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
   const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '')
+  const [selectedGroup, setSelectedGroup] = useState<string>('all')
 
   // データ取得
   const { data: allCelebrities = [], loading: allLoading } = useAllCelebrities()
   const { data: searchResults = [] } = useSearchCelebrities(searchQuery, 50)
+
+  // グループ一覧を抽出（重複なし、ソート済み）
+  const availableGroups = React.useMemo(() => {
+    const groups = [...new Set(
+      (allCelebrities || [])
+        .map(c => c.group_name)
+        .filter((g): g is string => !!g && g.trim() !== '')
+    )].sort()
+    return groups
+  }, [allCelebrities])
 
   // URL パラメータの同期
   useEffect(() => {
@@ -151,8 +162,18 @@ export default function CelebritiesSimple() {
     }
   }, [searchQuery, setSearchParams])
 
-  // 表示するデータを決定（null/undefinedチェック）
-  const displayData = searchQuery ? (searchResults || []) : (allCelebrities || [])
+  // フィルタリング処理
+  const displayData = React.useMemo(() => {
+    let data = searchQuery ? (searchResults || []) : (allCelebrities || [])
+
+    // グループフィルター適用
+    if (selectedGroup !== 'all') {
+      data = data.filter(c => c.group_name === selectedGroup)
+    }
+
+    return data
+  }, [searchQuery, searchResults, allCelebrities, selectedGroup])
+
   const isLoading = allLoading
 
   // SEO データ
@@ -199,11 +220,45 @@ export default function CelebritiesSimple() {
         </div>
 
         {/* 検索セクション */}
-        <SearchHeader 
+        <SearchHeader
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           totalCount={totalCount}
         />
+
+        {/* グループフィルター（横スクロール可能） */}
+        {availableGroups.length > 0 && (
+          <div className="mb-8 -mx-6 px-6 overflow-x-auto scrollbar-hide">
+            <div className="flex space-x-2 pb-2 min-w-max">
+              {/* 全て表示ボタン */}
+              <button
+                onClick={() => setSelectedGroup('all')}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${
+                  selectedGroup === 'all'
+                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                }`}
+              >
+                全て
+              </button>
+
+              {/* グループボタン */}
+              {availableGroups.map((group) => (
+                <button
+                  key={group}
+                  onClick={() => setSelectedGroup(group)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${
+                    selectedGroup === group
+                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
+                      : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                  }`}
+                >
+                  {group}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* 結果表示 */}
         {(displayData || []).length === 0 ? (
