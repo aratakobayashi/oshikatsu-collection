@@ -43,7 +43,7 @@ async function main() {
 
   const result = await setFeaturedImage(
     '2025-debut-trainee-groups-complete-guide',
-    '2025年デビュー予定の注目練習生グループ完全ガイド.png'
+    '2025-debut-trainee-guide.png'
   );
 
   if (result) {
