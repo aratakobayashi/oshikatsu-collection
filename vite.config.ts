@@ -77,6 +77,10 @@ export default defineConfig(({ mode }) => {
             if (['css'].includes(ext)) {
               return `css/[name]-[hash].${ext}`;
             }
+            // public/articles/配下の画像はパスを保持
+            if (assetInfo.name && assetInfo.name.includes('articles/')) {
+              return assetInfo.name;
+            }
             if (['png', 'jpg', 'jpeg', 'webp', 'avif', 'svg'].includes(ext)) {
               return `images/[name]-[hash].${ext}`;
             }
