@@ -1,1 +1,9 @@
+# 画像ファイルはそのまま配信
+/articles/*.png   /articles/:splat.png   200
+/articles/*.jpg   /articles/:splat.jpg   200
+/articles/*.jpeg  /articles/:splat.jpeg  200
+/articles/*.webp  /articles/:splat.webp  200
+/articles/*.svg   /articles/:splat.svg   200
+
+# その他は全てSPAのindex.htmlへ
 /*    /index.html   200
