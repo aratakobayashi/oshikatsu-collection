@@ -17,7 +17,28 @@
   # Node.jsバージョン
   environment = { NODE_VERSION = "18" }
 
-# SPA リダイレクト設定
+# 画像ファイルは静的ファイルとして配信
+[[redirects]]
+  from = "/articles/*.png"
+  to = "/articles/:splat.png"
+  status = 200
+
+[[redirects]]
+  from = "/articles/*.jpg"
+  to = "/articles/:splat.jpg"
+  status = 200
+
+[[redirects]]
+  from = "/articles/*.jpeg"
+  to = "/articles/:splat.jpeg"
+  status = 200
+
+[[redirects]]
+  from = "/articles/*.webp"
+  to = "/articles/:splat.webp"
+  status = 200
+
+# SPA リダイレクト設定（画像以外）
 [[redirects]]
   from = "/*"
   to = "/index.html"
