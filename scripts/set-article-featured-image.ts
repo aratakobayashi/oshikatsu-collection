@@ -42,8 +42,8 @@ async function main() {
   console.log('=== 記事アイキャッチ画像設定スクリプト ===\n');
 
   const result = await setFeaturedImage(
-    '2025-debut-trainee-groups-complete-guide',
-    '2025-debut-trainee-guide.png'
+    'kpop-trainee-audition-complete-guide-2025',
+    'kpop-trainee-audition-complete-guide-2025.png'
   );
 
   if (result) {
